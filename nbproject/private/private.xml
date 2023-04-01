@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/C:/Users/lisre/Documents/NetBeansProjects/SPGER/src/logic/DAOs/ActivityDAO.java</file>
+            <file>file:/C:/Users/lisre/Documents/NetBeansProjects/SPGER/src/logic/domain/InvestigationProjectStatus.java</file>
+            <file>file:/C:/Users/lisre/Documents/NetBeansProjects/SPGER/src/logic/DAOs/UserDAO.java</file>
+            <file>file:/C:/Users/lisre/Documents/NetBeansProjects/SPGER/src/logic/DAOs/AcademicBodyDAO.java</file>
+            <file>file:/C:/Users/lisre/Documents/NetBeansProjects/SPGER/src/logic/domain/User.java</file>
+            <file>file:/C:/Users/lisre/Documents/NetBeansProjects/SPGER/src/logic/DAOsInterfaces/IAdvanceDAO.java</file>
+            <file>file:/C:/Users/lisre/Documents/NetBeansProjects/SPGER/src/logic/domain/ActivityStatus.java</file>
+            <file>file:/C:/Users/lisre/Documents/NetBeansProjects/SPGER/src/logic/domain/AcademicBodyHead.java</file>
+            <file>file:/C:/Users/lisre/Documents/NetBeansProjects/SPGER/src/logic/domain/ProfessorStatus.java</file>
+            <file>file:/C:/Users/lisre/Documents/NetBeansProjects/SPGER/src/logic/DAOsInterfaces/IUserDAO.java</file>
+            <file>file:/C:/Users/lisre/Documents/NetBeansProjects/SPGER/src/logic/DAOs/ReceptionalWorkDraftDAO.java</file>
+            <file>file:/C:/Users/lisre/Documents/NetBeansProjects/SPGER/src/logic/domain/ReceptionalWorkStatus.java</file>
+            <file>file:/C:/Users/lisre/Documents/NetBeansProjects/SPGER/src/logic/DAOs/ReceptionalWorkDAO.java</file>
+            <file>file:/C:/Users/lisre/Documents/NetBeansProjects/SPGER/src/logic/DAOsInterfaces/IReceptionalWorkDAO.java</file>
+            <file>file:/C:/Users/lisre/Documents/NetBeansProjects/SPGER/src/logic/domain/StudentStatus.java</file>
+            <file>file:/C:/Users/lisre/Documents/NetBeansProjects/SPGER/src/logic/DAOs/AdvanceDAO.java</file>
+        </group>
+    </open-files>
+</project-private>
