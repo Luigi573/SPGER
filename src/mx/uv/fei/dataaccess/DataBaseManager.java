@@ -21,8 +21,6 @@ public class DataBaseManager {
     public DataBaseManager(){
         try {
             path = Paths.get("src/dependencies/resources/DatabaseAccess.properties");
-            //System.out.println("Nah la rutahhhhhh: ");
-            //System.out.println(path.toAbsolutePath());
             fis = Files.newInputStream(path.toAbsolutePath());
             dataBaseUserPropertiesFile = new Properties();
             dataBaseUserPropertiesFile.load(fis);
