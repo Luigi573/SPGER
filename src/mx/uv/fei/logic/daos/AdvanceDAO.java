@@ -12,7 +12,6 @@ import mx.uv.fei.logic.domain.Advance;
 import mx.uv.fei.logic.exceptions.DataInsertionException;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
 import mx.uv.fei.dataaccess.DataBaseManager;
-import mx.uv.fei.logic.domain.AcademicBody;
 
 public class AdvanceDAO implements IAdvanceDAO{
     private DataBaseManager dataBaseManager;
