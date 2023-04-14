@@ -6,10 +6,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+
 import mx.uv.fei.dataaccess.DataBaseManager;
 import mx.uv.fei.logic.daosinterfaces.IAcademicBodyDAO;
 import mx.uv.fei.logic.domain.AcademicBody;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
+import mx.uv.fei.logic.exceptions.DataInsertionException;
 
 public class AcademicBodyDAO implements IAcademicBodyDAO{
     private DataBaseManager dataBaseManager;
@@ -19,21 +21,25 @@ public class AcademicBodyDAO implements IAcademicBodyDAO{
     }
     
     @Override
-    public int addAcademicBody(AcademicBody academicBody) throws SQLException {
+    public int addAcademicBody(AcademicBody academicBody) throws DataInsertionException {
         int result;
         String query = "insert into CuerposAcademicos(IdResponsableCA, descripcion) values(?, ?)";
-        DataBaseManager dataBaseManager = new DataBaseManager();
-        Connection connection = dataBaseManager.getConnection();
-        PreparedStatement statement = connection.prepareStatement(query);
-        statement.setInt(1, academicBody.getAcademicBodyHeadID());
-        statement.setString(2, academicBody.getDescription());
-        result = statement.executeUpdate();
+        try {
+            DataBaseManager dataBaseManager = new DataBaseManager();
+            Connection connection = dataBaseManager.getConnection();
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, academicBody.getAcademicBodyHeadID());
+            statement.setString(2, academicBody.getDescription());
+            result = statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new DataInsertionException("New Academic Body data could not be saved to the Database. Please try again later");
+        }
         return result;
     }
 
     @Override
-    public ArrayList<AcademicBody> getAcademicBodyList() throws DataRetrievalException {
-        ArrayList<AcademicBody> academicBodies = new ArrayList();
+    public ArrayList<AcademicBody> getAcademicBodiesList() throws DataRetrievalException {
+        ArrayList<AcademicBody> academicBodiesList = new ArrayList();
         
         String query = "select * from CuerposAcademicos";
         try {
@@ -47,18 +53,18 @@ public class AcademicBodyDAO implements IAcademicBodyDAO{
                 academicBody.setAcademicBodyHeadID(rs.getInt("IdResponsableCA"));
                 academicBody.setDescription(rs.getString("descripcion"));
                 
-                academicBodies.add(academicBody);
+                academicBodiesList.add(academicBody);
             }
         } catch (SQLException sql) {
             throw new DataRetrievalException("Failed to retrieve Academic Bodies information. Please try again later");
         }
         
-        return academicBodies;
+        return academicBodiesList;
     }
 
     @Override
     public AcademicBody getAcademicBodyByID(int academicBodyID) throws DataRetrievalException {     
-        ArrayList<AcademicBody> academicBodiesList = new ArrayList(getAcademicBodyList());
+        ArrayList<AcademicBody> academicBodiesList = new ArrayList(getAcademicBodiesList());
         AcademicBody academicBodyByID = new AcademicBody();
         int i = 0;
         boolean b = false;
@@ -66,11 +72,13 @@ public class AcademicBodyDAO implements IAcademicBodyDAO{
         while(i < academicBodiesList.size() && !b) {
             if(academicBodiesList.get(i).getAcademicBodyID() == academicBodyID) {
                 academicBodyByID = academicBodiesList.get(i);
-                System.out.println("We found a match");
                 b = true;
-            } else {
-                System.out.println("No match");
             }
+            i++;
+        }
+
+        if(!b){
+            System.out.println("There is no Academic Body that matches the given ID.");
         }
         
         return academicBodyByID;
