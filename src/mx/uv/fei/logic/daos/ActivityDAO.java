@@ -33,8 +33,7 @@ public class ActivityDAO implements IActivityDAO{
         
         try{
             Statement statement = dataBaseManager.getConnection().createStatement();
-            ResultSet resultSet = statement.executeQuery(query);
-            
+            ResultSet resultSet = statement.executeQuery(query);     
         }catch(SQLException exception){
             throw new DataRetrievalException("Failed to retrieve activity data, please verify your internet connection");
         }

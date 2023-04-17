@@ -23,7 +23,7 @@ public class Main {
         Advance advance2 = new Advance("zs21013873", 1, "Resumen capitulo 4 del libro tal", "Ya leí el capítulo 4 e hice un resumen con la información más relevante");
         Advance advance3 = new Advance("zs21013873", 1, "Resumen capitulo 5 del libro tal", "Para este capítulo realicé tambié un cuadro sinóptico");
         
-        ReceptionalWork receptionalWork = new ReceptionalWork(1, "Trabajo Recepcional número 1", "Este es un trabajo recepcional de prueba");
+        ReceptionalWork receptionalWork1 = new ReceptionalWork(1, "Trabajo Recepcional número 1", "Este es un trabajo recepcional de prueba");
 
         AcademicBody academicBody = new AcademicBody (5, "Tecnologías computacionales");
         testAddAcademicBody(academicBody);
