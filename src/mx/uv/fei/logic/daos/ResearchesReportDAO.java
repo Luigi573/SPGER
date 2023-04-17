@@ -6,13 +6,13 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import mx.uv.fei.dataaccess.DataBaseManager;
-import mx.uv.fei.logic.daosinterfaces.IReceptionalWorkReportDAO;
+import mx.uv.fei.logic.daosinterfaces.IResearchesReportDAO;
 import mx.uv.fei.logic.domain.Research;
 
-public class ReceptionalWorkReportDAO implements IReceptionalWorkReportDAO{
+public class ResearchesReportDAO implements IResearchesReportDAO{
 
     @Override
-    public ArrayList<Research> getResearchsFromDatabase(String title) {
+    public ArrayList<Research> getResearchesFromDatabase(String title) {
         ArrayList<Research> researches = new ArrayList<>();
 
         try {
