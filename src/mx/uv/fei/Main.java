@@ -12,27 +12,31 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import mx.uv.fei.dataaccess.DataBaseManager;
+import mx.uv.fei.gui.javafiles.guireporteanteproyectocontrollers.GuiReporteAnteproyectoController;
 import mx.uv.fei.logic.exceptions.DataInsertionException;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
 import mx.uv.fei.logic.daos.AcademicBodyDAO;
 import mx.uv.fei.logic.daos.AdvanceDAO;
 import mx.uv.fei.logic.daos.ReceptionalWorkDAO;
+import mx.uv.fei.logic.daos.ResearchesReportDAO;
+import mx.uv.fei.logic.domain.Research;
 
 
 public class Main extends Application{    
 
     @Override
     public void start(Stage arg0) throws Exception {
+        ResearchesReportDAO rrd = new ResearchesReportDAO();
+        for(Research r : rrd.getResearchesFromDatabase("p")){
+            System.out.println(r.getTitle());
+        }
         Parent guiReporteAnteproyecto;
         Path path = Paths.get("/home/luisalonso/Documentos/SPGER/src/mx/uv/fei/gui/fxmlfiles/guireporteanteproyecto/GuiReporteAnteproyecto.fxml");
         //Path path = Paths.get("src/mx/uv/fei/gui/fxmlfiles/GuiReporteAnteproyecto.fxml");
-        System.out.println(path.toAbsolutePath().toString());
         FXMLLoader loader = new FXMLLoader(
             //getClass().getResource(path.toAbsolutePath().toString())
             getClass().getResource("gui/fxmlfiles/guireporteanteproyecto/GuiReporteAnteproyecto.fxml")
-            //getClass().getResource("gui/fxmlfiles/guireporteanteproyecto/GuiReporteAnteproyecto.fxml")
         );
-        System.out.println(loader.getLocation());
         guiReporteAnteproyecto = loader.load();
 
         Scene scene = new Scene(guiReporteAnteproyecto);

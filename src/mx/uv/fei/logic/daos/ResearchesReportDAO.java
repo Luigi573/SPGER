@@ -22,7 +22,7 @@ public class ResearchesReportDAO implements IResearchesReportDAO{
             preparedStatement.setString(1, title + "%");
 
             ResultSet resultSet = preparedStatement.executeQuery();
-            if(resultSet.next()){
+            while(resultSet.next()){
                 Research research = new Research();
                 research.setTitle(resultSet.getString("título"));
                 research.setCodirector(resultSet.getString("codirector"));

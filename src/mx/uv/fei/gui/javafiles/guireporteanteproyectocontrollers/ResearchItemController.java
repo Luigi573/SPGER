@@ -2,28 +2,37 @@ package mx.uv.fei.gui.javafiles.guireporteanteproyectocontrollers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.RadioButton;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.text.Text;
 
 public class ResearchItemController {
 
-    @FXML
-    private Text researchNameText;
+    private GuiReporteAnteproyectoController guiReporteAnteproyectoController;
 
     @FXML
-    private RadioButton selectResearchRadioButton;
+    private Label researchNameLabel;
 
-    public Text getResearchNameText() {
-        return researchNameText;
+    @FXML
+    private Button selectButton;
+
+    @FXML
+    void selectButtonController(ActionEvent event) {
+        this.guiReporteAnteproyectoController.setElementToSelectedResearchesVBox(
+            this.researchNameLabel.getText()
+        );
+        this.guiReporteAnteproyectoController.removeElementFromResearchesVBox(
+            this.researchNameLabel.getText()
+        );
     }
 
-    public void setResearchNameText(String researchName) {
-        this.researchNameText.setText(researchName);
+    public void setResearchNameLabel(String researchName) {
+        this.researchNameLabel.setText(researchName);
     }
 
-    @FXML
-    void selectResearchRadioButtonController(ActionEvent event) {
-
+    public void setGuiReporteAnteproyectoController(
+        GuiReporteAnteproyectoController guiReporteAnteproyectoController){
+            this.guiReporteAnteproyectoController = guiReporteAnteproyectoController;
     }
 
 }

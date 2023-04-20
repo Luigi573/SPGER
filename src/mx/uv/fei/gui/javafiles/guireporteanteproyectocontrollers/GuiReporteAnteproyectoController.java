@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
@@ -23,9 +24,8 @@ import mx.uv.fei.logic.domain.Research;
 
 public class GuiReporteAnteproyectoController {
 
-    //private ArrayList<ResearchItemController> researchItems = new ArrayList<>();
-
-    //private ArrayList<RecentlySearchedResearchItemController> recentlySearchedResearchItemControllers = new ArrayList<>();
+    @FXML
+    private Text errorMessageText;
 
     @FXML
     private Text findByTitleText;
@@ -40,28 +40,16 @@ public class GuiReporteAnteproyectoController {
     private Pane guiCrearAnteproyectoBody;
 
     @FXML
-    private VBox recentlySearchedResearchesVBox;
+    private VBox selectedResearchesVBox;
 
     @FXML
     private Text recentlySelectedResearchesText;
-
-    @FXML
-    private Text researchNameText21;
-
-    @FXML
-    private Text researchNameText211;
 
     @FXML
     private VBox researchesVBox;
 
     @FXML
     private Button searchResearchesButton;
-
-    @FXML
-    private RadioButton selectResearchRadioButton21;
-
-    @FXML
-    private RadioButton selectResearchRadioButton211;
 
     @FXML
     private Text showNotValidatedText;
@@ -97,50 +85,31 @@ public class GuiReporteAnteproyectoController {
     private Text windowText;
 
     @FXML
-    void findByTitleTextFieldController(ActionEvent event) {
-    
-    }
-
-    @FXML
     void generateReportButtonController(ActionEvent event) {
 
     }
 
     @FXML
     void searchResearchesButtonController(ActionEvent event) {
+        this.researchesVBox.getChildren().removeAll(this.researchesVBox.getChildren());
+        ResearchesReportDAO researchesReportDAO = new ResearchesReportDAO();
+        ArrayList<Research> researches = new ArrayList<>();
+        researches = researchesReportDAO.getResearchesFromDatabase(this.findByTitleTextField.getText());
         try {
-            this.researchesVBox.getChildren().removeAll(this.researchesVBox.getChildren());
-            ResearchesReportDAO researchesReportDAO = new ResearchesReportDAO();
-            ArrayList<Research> researches = new ArrayList<>();
-            researches = researchesReportDAO.getResearchesFromDatabase(this.findByTitleTextField.getText());
             for(Research research : researches){
                 FXMLLoader researchItemControllerLoader = new FXMLLoader(
                     getClass().getResource("/mx/uv/fei/gui/fxmlfiles/guireporteanteproyecto/ResearchItem.fxml")
                 );
-                //ResearchItemController researchItemController = new ResearchItemController();
                 HBox researchItemHBox = researchItemControllerLoader.load();
                 ResearchItemController researchItemController = researchItemControllerLoader.getController();
-                System.out.println(research.getTitle());
-                researchItemController.setResearchNameText(research.getTitle());
-                //Label label = (Label) researchItemHBox.getChildren().get(1);
-                //label.getChildrenUnmodifiable();
-                //this.researchItems.add(researchItemController);
+                researchItemController.setResearchNameLabel(research.getTitle());
+                researchItemController.setGuiReporteAnteproyectoController(this);
                 this.researchesVBox.getChildren().add(researchItemHBox);
             }
-
-            //for(ResearchItemController researchItemController : this.researchItems){
-            //    
-            //    
-            //}
         } catch (IOException e) {
             e.printStackTrace();
         }
             
-    }
-
-    @FXML
-    void selectResearchRadioButton2Controller(ActionEvent event) {
-
     }
 
     @FXML
@@ -149,13 +118,68 @@ public class GuiReporteAnteproyectoController {
     }
 
     @FXML
-    void showResearchesToggleButtonController(ActionEvent event) {
+    void showValidatedToggleButtonController(ActionEvent event) {
 
     }
 
-    @FXML
-    void showValidatedToggleButtonController(ActionEvent event) {
+    //This method only should be executed by the ResearchItemController Class, do not execute this method in another class.
+    void setElementToSelectedResearchesVBox(String selectedResearchTitle) {
+        try {
+            FXMLLoader selectedResearchItemControllerLoader = new FXMLLoader(
+                getClass().getResource("/mx/uv/fei/gui/fxmlfiles/guireporteanteproyecto/SelectedResearchItem.fxml")
+            );
+            HBox selectedResearchItemHBox;
+            selectedResearchItemHBox = selectedResearchItemControllerLoader.load();
+            SelectedResearchItemController selectedResearchItemController = selectedResearchItemControllerLoader.getController();
+            selectedResearchItemController.setSelectedResearchNameLabel(selectedResearchTitle);
+            this.selectedResearchesVBox.getChildren().add(selectedResearchItemHBox);
+            selectedResearchItemController.setGuiReporteAnteproyectoController(this);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
+    //This method only should be executed by the SelectedResearchItemController Class, do not execute this method in another class.
+    void setElementToResearchesVBox(String researchTitle) {
+        try {
+            FXMLLoader researchItemControllerLoader = new FXMLLoader(
+                getClass().getResource("/mx/uv/fei/gui/fxmlfiles/guireporteanteproyecto/ResearchItem.fxml")
+            );
+            HBox researchItemHBox;
+            researchItemHBox = researchItemControllerLoader.load();
+            ResearchItemController researchItemController = researchItemControllerLoader.getController();
+            researchItemController.setResearchNameLabel(researchTitle);
+            this.researchesVBox.getChildren().add(researchItemHBox);
+            researchItemController.setGuiReporteAnteproyectoController(this);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //This method only should be executed by the ResearchItemController Class, do not execute this method in another class.
+    void removeElementFromResearchesVBox(String researchItemControllerTitle){
+        int researchesVBoxIndexForRemove = 0;
+        for(Node hbox : ((VBox)this.researchesVBox).getChildren()) {
+            Node label = ((HBox)hbox).getChildren().get(1); 
+            if(((Label)label).getText() == researchItemControllerTitle) {
+                this.researchesVBox.getChildren().remove(researchesVBoxIndexForRemove);
+                break;
+            }    
+            researchesVBoxIndexForRemove++;
+        }
+    }
+
+    //This method only should be executed by the SelectedResearchItemController Class, do not execute this method in another class.
+    void removeElementFromSelectedResearchesVBox(String selectedResearchItemControllerTitle){
+        int selectedResearchesVBoxIndexForRemove = 0;
+        for(Node hbox : ((VBox)this.selectedResearchesVBox).getChildren()) {
+            Node label = ((HBox)hbox).getChildren().get(1); 
+            if(((Label)label).getText() == selectedResearchItemControllerTitle) {
+                this.selectedResearchesVBox.getChildren().remove(selectedResearchesVBoxIndexForRemove);
+                break;
+            }    
+            selectedResearchesVBoxIndexForRemove++;
+        }
     }
 
 }
