@@ -1,12 +1,10 @@
 package mx.uv.fei.logic.daos;
 
 import java.util.ArrayList;
-
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
 import mx.uv.fei.logic.domain.Activity;
 import mx.uv.fei.dataaccess.DataBaseManager;
 import mx.uv.fei.logic.daosinterfaces.IActivityDAO;
-
 import java.sql.Statement;
 import java.sql.SQLException;
 import java.sql.ResultSet;
