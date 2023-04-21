@@ -21,13 +21,11 @@ public class DataBaseManager {
     public DataBaseManager(){
         try {
             path = Paths.get("src/dependencies/resources/DatabaseAccess.properties");
-            //System.out.println("Nah la rutahhhhhh: ");
-            //System.out.println(path.toAbsolutePath());
             fis = Files.newInputStream(path.toAbsolutePath());
             dataBaseUserPropertiesFile = new Properties();
             dataBaseUserPropertiesFile.load(fis);
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException exception) {
+            exception.printStackTrace();
         }
     }
     
@@ -41,7 +39,6 @@ public class DataBaseManager {
 
     public Connection getConnection() throws SQLException {
         this.connect();
-        System.out.println("Sucessful Connection");
         return connection;
     }
 

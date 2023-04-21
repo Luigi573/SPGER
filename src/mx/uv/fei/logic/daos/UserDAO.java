@@ -13,7 +13,6 @@ public class UserDAO implements IUserDAO{
 
     @Override
     public ArrayList<User> getUserList() {
-        
         throw new UnsupportedOperationException("Not supported yet."); 
     }
     

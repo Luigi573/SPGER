@@ -1,14 +1,14 @@
 package mx.uv.fei.logic.domain;
 
-import java.text.SimpleDateFormat;
+import java.sql.Date;
 
 public class Activity {
     String title;
     String description;
-    SimpleDateFormat startDate;
-    SimpleDateFormat dueDate;
-    
-    public Activity(String title, String description, SimpleDateFormat startDate, SimpleDateFormat dueDate){
+    Date startDate;
+    Date dueDate; 
+   
+    public Activity(String title, String description, Date startDate, Date dueDate){
         this.title = title;
         this.description = description;
         this.startDate = startDate;
@@ -20,10 +20,10 @@ public class Activity {
     public void setDescription(String description){
         this.description = description;
     }
-    public void setStartDate(SimpleDateFormat startDate){
+    public void setStartDate(Date startDate){
         this.startDate = startDate;
     }
-    public void setDueDate(SimpleDateFormat dueDate){
+    public void setDueDate(Date dueDate){
         this.dueDate = dueDate;
     }
     public String getTitle(){
@@ -32,10 +32,13 @@ public class Activity {
     public String getDescription(){
         return description;
     }
-    public SimpleDateFormat getStartDate(){
+    public Date getStartDate(){
         return startDate;
     }
-    public SimpleDateFormat getDueDate(){
+    public Date getDueDate(){
         return dueDate;
+    }
+    public String toString(){
+        return "Title: " + title + "\nDescription: " + description + "\nStartDate: " + startDate + "\nDueDate: " + dueDate;
     }
 }

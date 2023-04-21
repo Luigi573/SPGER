@@ -1,6 +1,6 @@
 package mx.uv.fei.logic.domain;
 
-public class User {
+public abstract class User {
     String name;
     String firstSurname;
     String secondSurname;
@@ -71,5 +71,4 @@ public class User {
     public String getPhoneNumber(){
         return phoneNumber;
     }
-    
 }

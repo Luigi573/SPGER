@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<Pane prefHeight="94.0" prefWidth="452.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.uv.fei.gui.ActivityPanel">
+   <children>
+      <Label fx:id="titleLabel" layoutX="8.0" layoutY="1.0" text="Actividad: ">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="startDateLabel" layoutX="8.0" layoutY="35.0" prefHeight="19.0" prefWidth="183.0" text="Fecha de inicio: ">
+         <font>
+            <Font size="13.0" />
+         </font>
+      </Label>
+      <Label fx:id="dueDateLabel" layoutX="194.0" layoutY="35.0" prefHeight="19.0" prefWidth="209.0" text="Fecha de entrega: ">
+         <font>
+            <Font size="13.0" />
+         </font>
+      </Label>
+      <Button fx:id="activityDetailButton" layoutX="349.0" layoutY="61.0" mnemonicParsing="false" onAction="#viewActivity" text="Ver detalles" />
+      <Label alignment="CENTER_RIGHT" layoutX="233.0" layoutY="64.0" prefHeight="19.0" prefWidth="107.0" text="[Estado]" textAlignment="RIGHT">
+         <font>
+            <Font size="13.0" />
+         </font>
+      </Label>
+   </children>
+</Pane>
