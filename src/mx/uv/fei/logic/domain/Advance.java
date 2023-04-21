@@ -33,7 +33,7 @@ public class Advance {
         this.title = title;
     }
     
-    public void setComment(String comments) {
+    public void setComments(String comments) {
         this.comments = comments;
     }
     
@@ -55,5 +55,19 @@ public class Advance {
     
     public String getComments() {
         return this.comments;
+    }
+    
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Advance)) {
+            return false;
+        }
+            Advance advance = (Advance) o;
+            return (this.studentID == advance.getStudentID()) && (this.directorID == advance.getDirectorID() && (this.title.equals(advance.getTitle())) && (this.comments.equals(advance.getComments())));
+    }
+
+    @Override
+    public String toString() {
+        return "ID Avance: " + this.advanceID + " ID Estudiante: " + this.studentID + " ID Director: " + this.directorID + " Titulo: " + this.title + " Comentarios: " + this.comments;
     }
 }

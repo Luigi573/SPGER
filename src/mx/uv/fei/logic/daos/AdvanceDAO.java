@@ -55,7 +55,7 @@ public class AdvanceDAO implements IAdvanceDAO{
                 advance.setStudentID(rs.getString("Matrícula"));
                 advance.setDirectorID(rs.getInt("IdDirector"));
                 advance.setTitle(rs.getString("título"));
-                advance.setComment(rs.getString("comentario"));
+                advance.setComments(rs.getString("comentario"));
                 
                advancesList.add(advance);
             }
