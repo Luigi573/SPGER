@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import mx.uv.fei.dataaccess.DataBaseManager;
 import mx.uv.fei.logic.domain.KGAL;
 import mx.uv.fei.logic.daosinterfaces.IKGALDAO;
-import mx.uv.fei.logic.domain.Advance;
 import mx.uv.fei.logic.exceptions.DataInsertionException;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
 
@@ -58,11 +57,62 @@ public class KGALDAO implements IKGALDAO {
 
     @Override
     public KGAL getKGALByID(int kgalID) throws DataRetrievalException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        ArrayList<KGAL> kgalList = new ArrayList(getKGALList());
+        KGAL kgalByID = new KGAL();
+        int i = 0;
+        boolean b = false;
+        
+        while(i < kgalList.size() && !b) {
+            if(kgalList.get(i).getKgalID() == kgalID) {
+                kgalByID = kgalList.get(i);
+                b = true;
+            }
+            i++;
+        }
+                
+        if(!b){
+            System.out.println("There is no KGAL that matches the given ID.");
+        }
+        
+        return kgalByID;
     }
 
     @Override
     public KGAL getKGALByDescription(String description) throws DataRetrievalException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        ArrayList<KGAL> kgalList = new ArrayList(getKGALList());
+        KGAL kgalByDescription = new KGAL();
+        int i = 0;
+        boolean b = false;
+        
+        while(i < kgalList.size() && !b) {
+            if(kgalList.get(i).getDescription().equals(description)) {
+                kgalByDescription = kgalList.get(i);
+                b = true;
+            }
+            i++;
+        }
+                
+        if(!b){
+            System.out.println("There is no KGAL that matches the given description.");
+        }
+        
+        return kgalByDescription;
+    }
+
+    @Override
+    public int updateKGALDescription(int kgalID, String description) throws DataRetrievalException {
+        int result = 1;
+        String query = "update LGAC set description=? where IdLGAC=?";
+        try {
+            dataBaseManager = new DataBaseManager();
+            Connection connection = dataBaseManager.getConnection();
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, description);
+            statement.setInt(2, kgalID);
+            result = statement.executeUpdate();
+        } catch (SQLException sql) {
+            throw new DataRetrievalException("New KGAL description could not be saved. Please try again later.");
+        }
+        return result;
     }
 }

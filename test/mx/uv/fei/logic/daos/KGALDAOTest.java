@@ -79,30 +79,46 @@ public class KGALDAOTest {
      * Test of getKGALByID method, of class KGALDAO.
      */
     @Test
-    public void testGetKGALByID() throws Exception {
+    public void testGetKGALByID() throws DataRetrievalException {
         System.out.println("getKGALByID");
-        int kgalID = 0;
+        int kgalID = 1;
         KGALDAO instance = new KGALDAO();
-        KGAL expResult = null;
+        KGAL expResult = new KGAL();
+        expResult.setKgalID(1);
+        expResult.setDescription("Este es una LGAC de prueba");
         KGAL result = instance.getKGALByID(kgalID);
+        System.out.println(result);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
      * Test of getKGALByDescription method, of class KGALDAO.
      */
     @Test
-    public void testGetKGALByDescription() throws Exception {
+    public void testGetKGALByDescription() throws DataRetrievalException {
         System.out.println("getKGALByDescription");
-        String description = "";
+        int kgalID = 1;
         KGALDAO instance = new KGALDAO();
-        KGAL expResult = null;
-        KGAL result = instance.getKGALByDescription(description);
+        KGAL expResult = new KGAL();
+        expResult.setKgalID(1);
+        expResult.setDescription("Este es una LGAC de prueba");
+        KGAL result = instance.getKGALByID(kgalID);
+        System.out.println(result);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of updateKGALDescription method, of class KGALDAO.
+     */
+    @Test
+    public void testUpdateKGALDescription() throws DataRetrievalException {
+        System.out.println("updateKGALDescription");
+        int kgalID = 1;
+        String description = "Esta es la KGAL de prueba modificada";
+        KGALDAO instance = new KGALDAO();
+        int expResult = 1;
+        int result = instance.updateKGALDescription(kgalID, description);
+        assertEquals(expResult, result);
     }
     
 }

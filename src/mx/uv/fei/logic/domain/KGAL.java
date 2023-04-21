@@ -12,7 +12,7 @@ public class KGAL {
         this.description = description;
     }
     
-    public int getKgallID() {
+    public int getKgalID() {
         return this.kgalID;
     }
     
