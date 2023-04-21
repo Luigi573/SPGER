@@ -14,38 +14,7 @@ import mx.uv.fei.logic.daos.ReceptionalWorkDAO;
 
 public class Main {
     public static void main (String arg[]) {
-        
-        AcademicBody academicBody1 = new AcademicBody(1, "Testing academic body Data Access Object");
-        AcademicBody academicBody2 = new AcademicBody(2, "Ingenieria de Software");
-        AcademicBody academicBody3 = new AcademicBody(3, "Redes"); 
-              
-        Advance advance1 = new Advance("zs21013873", 1, "Avance de Prueba No. 1", "Este avance es de prueba");
-        Advance advance2 = new Advance("zs21013873", 1, "Resumen capitulo 4 del libro tal", "Ya leí el capítulo 4 e hice un resumen con la información más relevante");
-        Advance advance3 = new Advance("zs21013873", 1, "Resumen capitulo 5 del libro tal", "Para este capítulo realicé tambié un cuadro sinóptico");
-        
-        ReceptionalWork receptionalWork1 = new ReceptionalWork(1, "Trabajo Recepcional número 1", "Este es un trabajo recepcional de prueba");
-
-        AcademicBody academicBody = new AcademicBody (5, "Tecnologías computacionales");
-        testAddAcademicBody(academicBody);
-        testAddAcademicBody(academicBody1);
-        testAddAcademicBody(academicBody2);
-        testAddAcademicBody(academicBody3);
-        testGetAcademicBodiesList();
-        testGetAcademicBodyByID(5);
-        
-        Advance advance = new Advance("zs21013873", 1, "Tabla comparativa de los métodos de tal", "Me retrasé porque tuve que salir de la ciudad. Tengo dudas en una parte...");
-        testAddAdvance(advance);
-        testAddAdvance(advance1);
-        testAddAdvance(advance2);
-        testAddAdvance(advance3);
-        testGetAdvancesList();
-        testGetAdvanceByID(10);
-
-        ReceptionalWork receptionalWork2 = new ReceptionalWork(2, "Trabajo Recepcional número 2", "Este también es un trabajo recepcional de prueba");
-        testAddReceptionalWork(receptionalWork1);
-        testAddReceptionalWork(receptionalWork2);
-        testGetReceptionalWorksList();
-        testGetReceptionalWorkByID(1);
+     
     }
     
     //tested
