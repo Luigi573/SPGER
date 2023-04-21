@@ -4,7 +4,7 @@ public class KGAL {
     public int kgalID;
     public String description;
     
-    public void setKaglID(int kgalID) {
+    public void setKgalID(int kgalID) {
         this.kgalID = kgalID;
     }
     
@@ -12,7 +12,7 @@ public class KGAL {
         this.description = description;
     }
     
-    public int getKAGL_ID() {
+    public int getKgallID() {
         return this.kgalID;
     }
     
