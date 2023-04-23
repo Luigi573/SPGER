@@ -5,9 +5,13 @@
         <group>
             <file>file:/C:/Users/Manuel/Desktop/SPGER/src/mx/uv/fei/logic/daos/KGALDAO.java</file>
             <file>file:/C:/Users/Manuel/Desktop/SPGER/src/mx/uv/fei/logic/daos/AdvanceDAO.java</file>
+            <file>file:/C:/Users/Manuel/Desktop/SPGER/src/mx/uv/fei/logic/daosinterfaces/IKGALDAO.java</file>
+            <file>file:/C:/Users/Manuel/Desktop/SPGER/src/mx/uv/fei/Main.java</file>
+            <file>file:/C:/Users/Manuel/Desktop/SPGER/src/mx/uv/fei/logic/domain/AcademicBody.java</file>
             <file>file:/C:/Users/Manuel/Desktop/SPGER/src/mx/uv/fei/dataaccess/DataBaseManager.java</file>
             <file>file:/C:/Users/Manuel/Desktop/SPGER/test/mx/uv/fei/logic/daos/KGALDAOTest.java</file>
             <file>file:/C:/Users/Manuel/Desktop/SPGER/src/mx/uv/fei/logic/domain/KGAL.java</file>
+            <file>file:/C:/Users/Manuel/Desktop/SPGER/src/mx/uv/fei/logic/daos/AcademicBodyDAO.java</file>
         </group>
     </open-files>
 </project-private>

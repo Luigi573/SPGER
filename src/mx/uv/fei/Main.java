@@ -14,7 +14,7 @@ import mx.uv.fei.logic.daos.ReceptionalWorkDAO;
 
 public class Main {
     public static void main (String arg[]) {
-     
+
     }
     
     //tested

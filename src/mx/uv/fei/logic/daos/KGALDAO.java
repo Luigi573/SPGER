@@ -57,46 +57,46 @@ public class KGALDAO implements IKGALDAO {
 
     @Override
     public KGAL getKGALByID(int kgalID) throws DataRetrievalException {
-        ArrayList<KGAL> kgalList = new ArrayList(getKGALList());
-        KGAL kgalByID = new KGAL();
-        int i = 0;
-        boolean b = false;
-        
-        while(i < kgalList.size() && !b) {
-            if(kgalList.get(i).getKgalID() == kgalID) {
-                kgalByID = kgalList.get(i);
-                b = true;
+        String query = "select * from LGAC where IdLGAC=?";
+        try {
+            dataBaseManager = new DataBaseManager();
+            Connection connection = dataBaseManager.getConnection();
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, kgalID);
+            ResultSet rs = statement.executeQuery();
+            KGAL kgal = new KGAL();
+            if(rs.next()) {
+                kgal.setKgalID(rs.getInt("IdLGAC"));
+                kgal.setDescription(rs.getString("descripcion"));
+            } else {
+                System.out.println("We couldn't find a KAGL that matches the given ID");
             }
-            i++;
+            return kgal;            
+        } catch (SQLException sql) {
+            throw new DataRetrievalException("Failed to retrieve the specified KGAL. Please try again later");
         }
-                
-        if(!b){
-            System.out.println("There is no KGAL that matches the given ID.");
-        }
-        
-        return kgalByID;
     }
 
     @Override
     public KGAL getKGALByDescription(String description) throws DataRetrievalException {
-        ArrayList<KGAL> kgalList = new ArrayList(getKGALList());
-        KGAL kgalByDescription = new KGAL();
-        int i = 0;
-        boolean b = false;
-        
-        while(i < kgalList.size() && !b) {
-            if(kgalList.get(i).getDescription().equals(description)) {
-                kgalByDescription = kgalList.get(i);
-                b = true;
+        String query = "select * from LGAC where descripcion=?";
+        try {
+            dataBaseManager = new DataBaseManager();
+            Connection connection = dataBaseManager.getConnection();
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, description);
+            ResultSet rs = statement.executeQuery();
+            KGAL kgal = new KGAL();
+            if(rs.next()) {
+                kgal.setKgalID(rs.getInt("IdLGAC"));
+                kgal.setDescription(rs.getString("descripcion"));
+            } else {
+                System.out.println("We couldn't find a KAGL that matches the given description");
             }
-            i++;
+            return kgal;            
+        } catch (SQLException sql) {
+            throw new DataRetrievalException("Failed to retrieve the specified KGAL. Please try again later");
         }
-                
-        if(!b){
-            System.out.println("There is no KGAL that matches the given description.");
-        }
-        
-        return kgalByDescription;
     }
 
     @Override
