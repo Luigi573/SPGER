@@ -11,6 +11,14 @@ public class Research {
     private String finishDate;
     private String waitedResults;
     private String note;
+    private String student;
+    private String lgac;
+    private String advancePercentage;
+
+
+    public void setAdvancePercentage(String advancePercentage) {
+        this.advancePercentage = advancePercentage;
+    }
 
     public String getTitle() {
         return title;
@@ -90,5 +98,25 @@ public class Research {
 
     public void setNote(String note) {
         this.note = note;
+    }
+
+    public String getStudent() {
+        return student;
+    }
+
+    public void setStudent(String student) {
+        this.student = student;
+    }
+
+    public String getLgac() {
+        return lgac;
+    }
+
+    public void setLgac(String lgac) {
+        this.lgac = lgac;
+    }
+
+    public String getAdvancePercentage() {
+        return advancePercentage;
     }
 }
