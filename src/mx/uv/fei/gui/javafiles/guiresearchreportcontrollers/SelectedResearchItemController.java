@@ -1,4 +1,4 @@
-package mx.uv.fei.gui.javafiles.guireporteanteproyectocontrollers;
+package mx.uv.fei.gui.javafiles.guiresearchreportcontrollers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -7,7 +7,7 @@ import javafx.scene.control.Label;
 
 public class SelectedResearchItemController {
 
-    private GuiReporteAnteproyectoController guiReporteAnteproyectoController;
+    private GuiResearchReportController guiResearchReportController;
 
     @FXML
     private Button deselectButton;
@@ -17,10 +17,10 @@ public class SelectedResearchItemController {
 
     @FXML
     void deselectButtonController(ActionEvent event) {
-        this.guiReporteAnteproyectoController.setElementToResearchesVBox(
+        this.guiResearchReportController.setElementToResearchesVBox(
             this.selectedResearchNameLabel.getText()
         );
-        this.guiReporteAnteproyectoController.removeElementFromSelectedResearchesVBox(
+        this.guiResearchReportController.removeElementFromSelectedResearchesVBox(
             this.selectedResearchNameLabel.getText()
         );
     }
@@ -29,8 +29,8 @@ public class SelectedResearchItemController {
         this.selectedResearchNameLabel.setText(title);
     }
 
-    void setGuiReporteAnteproyectoController(
-        GuiReporteAnteproyectoController guiReporteAnteproyectoController){
-            this.guiReporteAnteproyectoController = guiReporteAnteproyectoController;
+    void setGuiResearchReportController(
+        GuiResearchReportController guiResearchReportController){
+            this.guiResearchReportController = guiResearchReportController;
     }
 }

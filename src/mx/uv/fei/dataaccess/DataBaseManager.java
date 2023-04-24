@@ -21,7 +21,6 @@ public class DataBaseManager {
     public DataBaseManager(){
         try {
             path = Paths.get("src/dependencies/resources/DatabaseAccess.properties");
-            System.out.print(path.toAbsolutePath());
             fis = Files.newInputStream(path.toAbsolutePath());
             dataBaseUserPropertiesFile = new Properties();
             dataBaseUserPropertiesFile.load(fis);
@@ -40,7 +39,6 @@ public class DataBaseManager {
 
     public Connection getConnection() throws SQLException {
         this.connect();
-        System.out.println("Sucessful Connection");
         return connection;
     }
 
