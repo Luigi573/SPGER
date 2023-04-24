@@ -101,8 +101,8 @@ public class KGALDAO implements IKGALDAO {
 
     @Override
     public int updateKGALDescription(int kgalID, String description) throws DataRetrievalException {
-        int result = 1;
-        String query = "update LGAC set description=? where IdLGAC=?";
+        int result;
+        String query = "update LGAC set descripcion=? where IdLGAC=?";
         try {
             dataBaseManager = new DataBaseManager();
             Connection connection = dataBaseManager.getConnection();
@@ -111,6 +111,7 @@ public class KGALDAO implements IKGALDAO {
             statement.setInt(2, kgalID);
             result = statement.executeUpdate();
         } catch (SQLException sql) {
+            System.out.println(sql.getMessage());
             throw new DataRetrievalException("New KGAL description could not be saved. Please try again later.");
         }
         return result;

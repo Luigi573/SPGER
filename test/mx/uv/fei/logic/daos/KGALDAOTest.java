@@ -114,7 +114,7 @@ public class KGALDAOTest {
     public void testUpdateKGALDescription() throws DataRetrievalException {
         System.out.println("updateKGALDescription");
         int kgalID = 1;
-        String description = "Esta es la KGAL de prueba modificada";
+        String description = "Este LGAC ha sido modificada";
         KGALDAO instance = new KGALDAO();
         int expResult = 1;
         int result = instance.updateKGALDescription(kgalID, description);

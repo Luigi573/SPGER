@@ -11,7 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class ActivityDAO implements IActivityDAO{
+public class ActivityDAO implements IActivityDAO {
     private DataBaseManager dataBaseManager;
     
     public ActivityDAO(){
