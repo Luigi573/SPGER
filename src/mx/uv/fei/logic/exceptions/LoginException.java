@@ -1,5 +1,5 @@
 package mx.uv.fei.logic.exceptions;
 
-public class LoginException {
+public class LoginException extends Exception{
     
 }

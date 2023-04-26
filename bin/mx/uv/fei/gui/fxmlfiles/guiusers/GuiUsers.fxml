@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="529.0" prefWidth="820.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.uv.fei.gui.javafiles.guiuserscontrollers.GuiUsersController">
+   <children>
+      <HBox layoutX="10.0" layoutY="20.0" prefHeight="68.0" prefWidth="820.0" stylesheets="@../stylesfiles/GuiReporteAnteproyectoStyles.css">
+         <children>
+            <Label prefHeight="68.0" prefWidth="71.0" textAlignment="CENTER">
+               <graphic>
+                  <ImageView fx:id="spgerLogo" fitHeight="59.0" fitWidth="93.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../../dependencies/images/59cfc4d2d3b1936210a5ddc7.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Label>
+            <Label prefHeight="68.0" prefWidth="141.0" textAlignment="CENTER">
+               <graphic>
+                  <Text fx:id="spgerText" strokeType="OUTSIDE" strokeWidth="0.0" text="SPGER" textAlignment="CENTER" wrappingWidth="140.49200439453125">
+                     <font>
+                        <Font name="Ubuntu" size="41.0" />
+                     </font>
+                  </Text>
+               </graphic>
+            </Label>
+            <Label prefHeight="68.0" prefWidth="302.0">
+               <graphic>
+                  <Text fx:id="windowText" strokeType="OUTSIDE" strokeWidth="0.0" text="Usuarios" textAlignment="CENTER" wrappingWidth="302.0">
+                     <font>
+                        <Font name="Ubuntu" size="20.0" />
+                     </font>
+                  </Text>
+               </graphic>
+            </Label>
+            <Label prefHeight="68.0" prefWidth="203.0">
+               <graphic>
+                  <Text fx:id="userNameText" strokeType="OUTSIDE" strokeWidth="0.0" text="Nombre de Usuario" textAlignment="CENTER" wrappingWidth="202.7734375">
+                     <font>
+                        <Font name="Ubuntu" size="14.0" />
+                     </font>
+                  </Text>
+               </graphic>
+            </Label>
+            <Label prefHeight="68.0" prefWidth="103.0">
+               <graphic>
+                  <ImageView fx:id="userLogo" fitHeight="59.0" fitWidth="73.0" pickOnBounds="true" preserveRatio="true" />
+               </graphic>
+            </Label>
+         </children>
+      </HBox>
+      <ScrollPane layoutX="20.0" layoutY="159.0" prefHeight="352.0" prefWidth="371.0">
+         <content>
+            <VBox fx:id="usersVBox" prefHeight="88.0" prefWidth="369.0">
+               <children>
+                  <Button mnemonicParsing="false" prefHeight="180.0" prefWidth="369.0">
+                     <graphic>
+                        <VBox prefHeight="200.0" prefWidth="100.0">
+                           <children>
+                              <Label prefHeight="29.0" prefWidth="52.0" text="Nombre" />
+                              <Label prefHeight="29.0" prefWidth="57.0" text="Estatus: " />
+                              <Label prefHeight="29.0" prefWidth="37.0" text="Tipo: " />
+                           </children>
+                        </VBox>
+                     </graphic>
+                  </Button>
+               </children>
+            </VBox>
+         </content>
+      </ScrollPane>
+      <ScrollPane layoutX="428.0" layoutY="159.0" prefHeight="352.0" prefWidth="371.0" />
+      <Text layoutX="470.0" layoutY="145.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Mostrar Solo Usuarios Activos:" />
+      <Button fx:id="registerUserButton" layoutX="548.0" layoutY="96.0" mnemonicParsing="false" onAction="#registerUserButtonController" prefHeight="24.0" prefWidth="131.0" text="Registrar Usuario" />
+      <ToggleButton fx:id="onlyShowActiveUsersButton" layoutX="677.0" layoutY="128.0" mnemonicParsing="false" onAction="#onlyShowActiveUsersButtonController" prefHeight="24.0" prefWidth="81.0" text="Si" />
+      <ChoiceBox fx:id="orderByChoiceBox" layoutX="134.0" layoutY="128.0" prefHeight="24.0" prefWidth="156.0" />
+      <Button fx:id="orderByButton" layoutX="300.0" layoutY="128.0" mnemonicParsing="false" onAction="#orderByButtonController" text="Ordenar" />
+      <Text layoutX="40.0" layoutY="145.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ordenar por:" />
+      <Text layoutX="25.0" layoutY="112.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Buscar por nombre:" />
+      <TextField layoutX="158.0" layoutY="96.0" prefHeight="24.0" prefWidth="162.0" />
+      <Button fx:id="searchByNameButton" layoutX="328.0" layoutY="95.0" mnemonicParsing="false" onAction="#searchByNameButtonController" text="Buscar" />
+   </children>
+</Pane>

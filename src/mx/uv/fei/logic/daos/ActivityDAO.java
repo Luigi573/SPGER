@@ -6,7 +6,7 @@ import mx.uv.fei.dataaccess.DataBaseManager;
 import mx.uv.fei.logic.daosinterfaces.IActivityDAO;
 import mx.uv.fei.logic.domain.Activity;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
-import mx.uv.fei.logic.exceptions.DataWritingException;
+import mx.uv.fei.logic.exceptions.DataInsertionException;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,7 +20,7 @@ public class ActivityDAO implements IActivityDAO{
     }
     
     @Override
-    public int addActivity(Activity activity) throws DataWritingException{
+    public int addActivity(Activity activity) throws DataInsertionException{
         int result = 0;
         PreparedStatement statement;
         ResultSet resultSet;
@@ -36,7 +36,7 @@ public class ActivityDAO implements IActivityDAO{
             
             result = statement.executeUpdate();
         }catch(SQLException exception){
-            throw new DataWritingException("Failed to add activity, please verify your internet connnection");
+            throw new DataInsertionException("Failed to add activity, please verify your internet connnection");
             //throw new DataWritingException(exception.getMessage());
         }finally{
             dataBaseManager.closeConnection();

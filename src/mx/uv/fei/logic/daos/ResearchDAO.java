@@ -43,7 +43,6 @@ public class ResearchDAO implements IResearchDAO{
         }
 
         return researches;
-        //throw new UnsupportedOperationException("Unimplemented method 'getResearchFromDatabase'");
     }
 
     @Override

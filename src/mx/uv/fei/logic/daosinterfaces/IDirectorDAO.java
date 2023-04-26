@@ -1,13 +1,10 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
- */
 package mx.uv.fei.logic.daosinterfaces;
 
-/**
- *
- * @author lisre
- */
+import java.util.ArrayList;
+
+import mx.uv.fei.logic.domain.Director;
+
 public interface IDirectorDAO {
-    
+    public void addDirectorToDatabase(Director director);
+    public ArrayList<Director> getDirectorsFromDatabase();
 }

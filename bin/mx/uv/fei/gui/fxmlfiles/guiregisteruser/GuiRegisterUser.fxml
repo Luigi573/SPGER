@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="321.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.uv.fei.gui.javafiles.guiregisterusercontrollers.GuiRegisterUserController">
+   <children>
+      <Text layoutX="291.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Registrar Usuario">
+         <font>
+            <Font size="25.0" />
+         </font>
+      </Text>
+      <Text layoutX="14.0" layoutY="96.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nombre(s):">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Text>
+      <TextField fx:id="namesTextField" layoutX="101.0" layoutY="79.0" prefHeight="24.0" prefWidth="262.0" />
+      <Text layoutX="14.0" layoutY="136.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Apellido Paterno:">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Text>
+      <Text layoutX="14.0" layoutY="176.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Apellido Materno:">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Text>
+      <Text layoutX="14.0" layoutY="216.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Correo Electronico:">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Text>
+      <TextField fx:id="firstSurnameTextField" layoutX="146.0" layoutY="119.0" prefHeight="24.0" prefWidth="217.0" />
+      <TextField fx:id="secondSurnameTextField" layoutX="150.0" layoutY="159.0" prefHeight="24.0" prefWidth="211.0" />
+      <TextField fx:id="emailTextField" layoutX="164.0" layoutY="199.0" prefHeight="17.0" prefWidth="199.0" />
+      <Text layoutX="400.0" layoutY="96.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Correo Alterno:">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Text>
+      <Text layoutX="400.0" layoutY="137.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Numero de Telefono:">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Text>
+      <Text layoutX="400.0" layoutY="177.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tipo:">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Text>
+      <Text layoutX="400.0" layoutY="216.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Estatus:">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Text>
+      <TextField fx:id="alternateEmailTextField" layoutX="524.0" layoutY="79.0" prefHeight="24.0" prefWidth="262.0" />
+      <TextField fx:id="telephoneNumberTextField" layoutX="566.0" layoutY="120.0" prefHeight="24.0" prefWidth="217.0" />
+      <ChoiceBox fx:id="typeChoiceBox" layoutX="449.0" layoutY="160.0" prefHeight="24.0" prefWidth="333.0" />
+      <ChoiceBox fx:id="statusChoiceBox" layoutX="467.0" layoutY="199.0" prefHeight="24.0" prefWidth="315.0" />
+      <Button fx:id="registerButton" layoutX="336.0" layoutY="255.0" mnemonicParsing="false" onAction="#registerButtonController" prefHeight="48.0" prefWidth="128.0" text="Registrar" />
+   </children>
+</Pane>
