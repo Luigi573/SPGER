@@ -100,6 +100,29 @@ public class KGALDAO implements IKGALDAO {
     }
 
     @Override
+    public ArrayList<KGAL> getKGALListByDescription(String description) throws DataRetrievalException {
+        String query = "select * from LGAC where descripcion like %?%";
+        ArrayList<KGAL> kgalList = new ArrayList();
+        try {
+            dataBaseManager = new DataBaseManager();
+            Connection connection = dataBaseManager.getConnection();
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, description);
+            ResultSet rs = statement.executeQuery();
+            while(rs.next()) {
+                KGAL kgal = new KGAL();
+                kgal.setKgalID(rs.getInt("IdLGAC"));
+                kgal.setDescription(rs.getString("descripcion"));
+                
+                kgalList.add(kgal);
+            }
+            return kgalList;            
+        } catch (SQLException sql) {
+            throw new DataRetrievalException("Failed to retrieve the specified KGAL. Please try again later");
+        }
+    }
+    
+    @Override
     public int updateKGALDescription(int kgalID, String description) throws DataRetrievalException {
         int result;
         String query = "update LGAC set descripcion=? where IdLGAC=?";
