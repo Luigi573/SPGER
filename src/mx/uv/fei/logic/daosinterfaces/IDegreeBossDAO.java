@@ -7,4 +7,5 @@ import mx.uv.fei.logic.domain.DegreeBoss;
 public interface IDegreeBossDAO {
     public void addDegreeBossToDatabase(DegreeBoss degreeBoss);
     public ArrayList<DegreeBoss> getDegreeBossesFromDatabase();
+    public DegreeBoss getDegreeBossFromDatabase(String degreeBossName);
 }

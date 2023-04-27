@@ -7,4 +7,5 @@ import mx.uv.fei.logic.domain.AcademicBodyHead;
 public interface IAcademicBodyHeadDAO {
     public void addAcademicBodyHeadToDatabase(AcademicBodyHead academicBodyHead);
     public ArrayList<AcademicBodyHead> getAcademicBodyHeadsFromDatabase();
+    public AcademicBodyHead getAcademicBodyHeadFromDatabase(String academicBodyHeadName);
 }

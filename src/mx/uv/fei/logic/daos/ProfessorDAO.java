@@ -1,5 +1,6 @@
 package mx.uv.fei.logic.daos;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -43,6 +44,35 @@ public class ProfessorDAO implements IProfessorDAO{
         }
 
         return professors;
+    }
+
+    @Override
+    public Professor getProfessorFromDatabase(String professorName) {
+        Professor professor = new Professor();
+
+        try {
+            DataBaseManager dataBaseManager = new DataBaseManager();
+            String query = "SELECT * FROM Usuarios U INNER JOIN Profesores P ON U.IdUsuario = P.IdUsuario WHERE U.Nombre = ?";
+            PreparedStatement preparedStatement = dataBaseManager.getConnection().prepareStatement(query);
+            preparedStatement.setString(1, professorName);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()){
+                professor.setName(resultSet.getString("nombre"));
+                professor.setFirstSurname(resultSet.getString("apellidoPaterno"));
+                professor.setSecondSurname(resultSet.getString("apellidoMaterno"));
+                professor.setEmailAddress(resultSet.getString("correo"));
+                professor.setPassword(resultSet.getString("contraseña"));
+                professor.setAlternateEmail(resultSet.getString("correoAlterno"));
+                professor.setPersonalNumber(resultSet.getString("NúmeroDePersonal"));
+            }
+
+            resultSet.close();
+            dataBaseManager.getConnection().close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return professor;
     }
     
 }

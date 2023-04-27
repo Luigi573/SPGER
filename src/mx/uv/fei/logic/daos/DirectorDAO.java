@@ -1,5 +1,6 @@
 package mx.uv.fei.logic.daos;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -43,6 +44,35 @@ public class DirectorDAO implements IDirectorDAO{
         }
 
         return directors;
+    }
+
+    @Override
+    public Director getDirectorFromDatabase(String directorName){
+        Director director = new Director();
+
+        try {
+            DataBaseManager dataBaseManager = new DataBaseManager();
+            String query = "SELECT * FROM Usuarios U INNER JOIN Profesores P ON U.IdUsuario = P.IdUsuario INNER JOIN Directores D ON P.IdProfesor = D.IdProfesor WHERE U.Nombre = ?";
+            PreparedStatement preparedStatement = dataBaseManager.getConnection().prepareStatement(query);
+            preparedStatement.setString(1, directorName);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()){
+                director.setName(resultSet.getString("nombre"));
+                director.setFirstSurname(resultSet.getString("apellidoPaterno"));
+                director.setSecondSurname(resultSet.getString("apellidoMaterno"));
+                director.setEmailAddress(resultSet.getString("correo"));
+                director.setPassword(resultSet.getString("contraseña"));
+                director.setAlternateEmail(resultSet.getString("correoAlterno"));
+                director.setPersonalNumber(resultSet.getString("NúmeroDePersonal"));
+            }
+
+            resultSet.close();
+            dataBaseManager.getConnection().close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return director;
     }
     
 }

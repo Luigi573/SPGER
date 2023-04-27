@@ -7,4 +7,5 @@ import mx.uv.fei.logic.domain.Director;
 public interface IDirectorDAO {
     public void addDirectorToDatabase(Director director);
     public ArrayList<Director> getDirectorsFromDatabase();
+    public Director getDirectorFromDatabase(String directorName);
 }

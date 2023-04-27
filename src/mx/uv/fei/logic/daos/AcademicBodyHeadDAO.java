@@ -1,5 +1,6 @@
 package mx.uv.fei.logic.daos;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -43,6 +44,35 @@ public class AcademicBodyHeadDAO implements IAcademicBodyHeadDAO{
         }
 
         return academicBodyHeads;
+    }
+
+    @Override
+    public AcademicBodyHead getAcademicBodyHeadFromDatabase(String academicBodyHeadName) {
+        AcademicBodyHead academicBodyHead = new AcademicBodyHead();
+
+        try {
+            DataBaseManager dataBaseManager = new DataBaseManager();
+            String query = "SELECT * FROM Usuarios U INNER JOIN Profesores P ON U.IdUsuario = P.IdUsuario INNER JOIN ResponsablesCA RCA ON P.IdProfesor = RCA.IdProfesor WHERE U.Nombre = ?";
+            PreparedStatement preparedStatement = dataBaseManager.getConnection().prepareStatement(query);
+            preparedStatement.setString(1, academicBodyHeadName);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()){
+                academicBodyHead.setName(resultSet.getString("nombre"));
+                academicBodyHead.setFirstSurname(resultSet.getString("apellidoPaterno"));
+                academicBodyHead.setSecondSurname(resultSet.getString("apellidoMaterno"));
+                academicBodyHead.setEmailAddress(resultSet.getString("correo"));
+                academicBodyHead.setPassword(resultSet.getString("contraseña"));
+                academicBodyHead.setAlternateEmail(resultSet.getString("correoAlterno"));
+                academicBodyHead.setPersonalNumber(resultSet.getString("NúmeroDePersonal"));
+            }
+            
+            resultSet.close();
+            dataBaseManager.getConnection().close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return academicBodyHead;
     }
     
 }

@@ -7,4 +7,5 @@ import mx.uv.fei.logic.domain.Professor;
 public interface IProfessorDAO {
     public void addProfessorToDatabase(Professor professor);
     public ArrayList<Professor> getProfessorsFromDatabase();
+    public Professor getProfessorFromDatabase(String professorName);
 }

@@ -5,7 +5,6 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
@@ -63,27 +62,11 @@
       </HBox>
       <ScrollPane layoutX="20.0" layoutY="159.0" prefHeight="352.0" prefWidth="371.0">
          <content>
-            <VBox fx:id="usersVBox" prefHeight="88.0" prefWidth="369.0">
-               <children>
-                  <Button mnemonicParsing="false" prefHeight="180.0" prefWidth="369.0">
-                     <graphic>
-                        <VBox prefHeight="200.0" prefWidth="100.0">
-                           <children>
-                              <Label prefHeight="29.0" prefWidth="52.0" text="Nombre" />
-                              <Label prefHeight="29.0" prefWidth="57.0" text="Estatus: " />
-                              <Label prefHeight="29.0" prefWidth="37.0" text="Tipo: " />
-                           </children>
-                        </VBox>
-                     </graphic>
-                  </Button>
-               </children>
-            </VBox>
+            <VBox fx:id="usersVBox" prefHeight="88.0" prefWidth="369.0" />
          </content>
       </ScrollPane>
-      <ScrollPane layoutX="428.0" layoutY="159.0" prefHeight="352.0" prefWidth="371.0" />
-      <Text layoutX="470.0" layoutY="145.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Mostrar Solo Usuarios Activos:" />
+      <ScrollPane fx:id="userInformationScrollPane" layoutX="428.0" layoutY="159.0" prefHeight="352.0" prefWidth="371.0" />
       <Button fx:id="registerUserButton" layoutX="548.0" layoutY="96.0" mnemonicParsing="false" onAction="#registerUserButtonController" prefHeight="24.0" prefWidth="131.0" text="Registrar Usuario" />
-      <ToggleButton fx:id="onlyShowActiveUsersButton" layoutX="677.0" layoutY="128.0" mnemonicParsing="false" onAction="#onlyShowActiveUsersButtonController" prefHeight="24.0" prefWidth="81.0" text="Si" />
       <ChoiceBox fx:id="orderByChoiceBox" layoutX="134.0" layoutY="128.0" prefHeight="24.0" prefWidth="156.0" />
       <Button fx:id="orderByButton" layoutX="300.0" layoutY="128.0" mnemonicParsing="false" onAction="#orderByButtonController" text="Ordenar" />
       <Text layoutX="40.0" layoutY="145.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ordenar por:" />

@@ -27,13 +27,18 @@ public class ModifyUserInformationController {
     private TextField secondSurnameTextField;
 
     @FXML
-    private ComboBox<?> statusComboBox;
+    private ComboBox<String> statusComboBox;
 
     @FXML
     private TextField telephoneNumberTextField;
 
     @FXML
-    private ComboBox<?> typeComboBox;
+    private ComboBox<String> typeComboBox;
+
+    @FXML
+    void initialize(){
+        
+    }
 
     @FXML
     void modifyButtonController(ActionEvent event) {
