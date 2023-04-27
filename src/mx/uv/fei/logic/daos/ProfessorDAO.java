@@ -46,6 +46,38 @@ public class ProfessorDAO implements IProfessorDAO{
         return professors;
     }
 
+
+    @Override
+    public ArrayList<Professor> getSpecifiedProfessorsFromDatabase(String professorName) {
+        ArrayList<Professor> professors = new ArrayList<>();
+        
+        try {
+            DataBaseManager dataBaseManager = new DataBaseManager();
+            String query = "SELECT * FROM Usuarios U INNER JOIN Profesores P ON U.IdUsuario = P.IdUsuario WHERE U.Nombre LIKE ?";
+            PreparedStatement preparedStatement = dataBaseManager.getConnection().prepareStatement(query);
+            preparedStatement.setString(1, professorName + '%');
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()) {
+                Professor professor = new Professor();
+                professor.setName(resultSet.getString("nombre"));
+                professor.setFirstSurname(resultSet.getString("apellidoPaterno"));
+                professor.setSecondSurname(resultSet.getString("apellidoMaterno"));
+                professor.setEmailAddress(resultSet.getString("correo"));
+                professor.setPassword(resultSet.getString("contraseña"));
+                professor.setAlternateEmail(resultSet.getString("correoAlterno"));
+                professor.setPersonalNumber(resultSet.getString("NúmeroDePersonal"));
+                professors.add(professor);
+            }
+            resultSet.close();
+            dataBaseManager.getConnection().close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return professors;
+    }
+
     @Override
     public Professor getProfessorFromDatabase(String professorName) {
         Professor professor = new Professor();

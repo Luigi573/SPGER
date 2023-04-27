@@ -47,6 +47,36 @@ public class DirectorDAO implements IDirectorDAO{
     }
 
     @Override
+    public ArrayList<Director> getSpecifiedDirectorsFromDatabase(String directorName) {
+        ArrayList<Director> directors = new ArrayList<>();
+
+        try {
+            DataBaseManager dataBaseManager = new DataBaseManager();
+            String query = "SELECT * FROM Usuarios U INNER JOIN Profesores P ON U.IdUsuario = P.IdUsuario INNER JOIN Directores D ON P.IdProfesor = D.IdProfesor WHERE U.Nombre LIKE ?";
+            PreparedStatement preparedStatement = dataBaseManager.getConnection().prepareStatement(query);
+            preparedStatement.setString(1, directorName + '%');
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()) {
+                Director director = new Director();
+                director.setName(resultSet.getString("nombre"));
+                director.setFirstSurname(resultSet.getString("apellidoPaterno"));
+                director.setSecondSurname(resultSet.getString("apellidoMaterno"));
+                director.setEmailAddress(resultSet.getString("correo"));
+                director.setPassword(resultSet.getString("contraseña"));
+                director.setAlternateEmail(resultSet.getString("correoAlterno"));
+                director.setPersonalNumber(resultSet.getString("NúmeroDePersonal"));
+                directors.add(director);
+            }
+            resultSet.close();
+            dataBaseManager.getConnection().close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return directors;
+    }
+
+    @Override
     public Director getDirectorFromDatabase(String directorName){
         Director director = new Director();
 

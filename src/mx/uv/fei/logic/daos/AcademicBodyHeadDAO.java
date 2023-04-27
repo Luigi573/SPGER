@@ -47,6 +47,36 @@ public class AcademicBodyHeadDAO implements IAcademicBodyHeadDAO{
     }
 
     @Override
+    public ArrayList<AcademicBodyHead> getSpecifiedAcademicBodyHeadsFromDatabase(String academicBodyHeadName) {
+        ArrayList<AcademicBodyHead> academicBodyHeads = new ArrayList<>();
+
+        try {
+            DataBaseManager dataBaseManager = new DataBaseManager();
+            String query = "SELECT * FROM Usuarios U INNER JOIN Profesores P ON U.IdUsuario = P.IdUsuario INNER JOIN ResponsablesCA RCA ON P.IdProfesor = RCA.IdProfesor WHERE U.Nombre LIKE ?";
+            PreparedStatement preparedStatement = dataBaseManager.getConnection().prepareStatement(query);
+            preparedStatement.setString(1, academicBodyHeadName + '%');
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()) {
+                AcademicBodyHead academicBodyHead = new AcademicBodyHead();
+                academicBodyHead.setName(resultSet.getString("nombre"));
+                academicBodyHead.setFirstSurname(resultSet.getString("apellidoPaterno"));
+                academicBodyHead.setSecondSurname(resultSet.getString("apellidoMaterno"));
+                academicBodyHead.setEmailAddress(resultSet.getString("correo"));
+                academicBodyHead.setPassword(resultSet.getString("contraseña"));
+                academicBodyHead.setAlternateEmail(resultSet.getString("correoAlterno"));
+                academicBodyHead.setPersonalNumber(resultSet.getString("NúmeroDePersonal"));
+                academicBodyHeads.add(academicBodyHead);
+            }
+            resultSet.close();
+            dataBaseManager.getConnection().close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return academicBodyHeads;
+    }
+
+    @Override
     public AcademicBodyHead getAcademicBodyHeadFromDatabase(String academicBodyHeadName) {
         AcademicBodyHead academicBodyHead = new AcademicBodyHead();
 

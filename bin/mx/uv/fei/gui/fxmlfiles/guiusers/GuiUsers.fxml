@@ -71,7 +71,7 @@
       <Button fx:id="orderByButton" layoutX="300.0" layoutY="128.0" mnemonicParsing="false" onAction="#orderByButtonController" text="Ordenar" />
       <Text layoutX="40.0" layoutY="145.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ordenar por:" />
       <Text layoutX="25.0" layoutY="112.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Buscar por nombre:" />
-      <TextField layoutX="158.0" layoutY="96.0" prefHeight="24.0" prefWidth="162.0" />
+      <TextField fx:id="searchByNameTextField" layoutX="158.0" layoutY="96.0" prefHeight="24.0" prefWidth="162.0" />
       <Button fx:id="searchByNameButton" layoutX="328.0" layoutY="95.0" mnemonicParsing="false" onAction="#searchByNameButtonController" text="Buscar" />
    </children>
 </Pane>

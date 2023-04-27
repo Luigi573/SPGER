@@ -2,7 +2,6 @@ package mx.uv.fei.gui.javafiles.guiuserscontrollers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
@@ -39,10 +38,7 @@ public class UserInformationController {
 
     @FXML
     void editButtonController(ActionEvent event) {
-        FXMLLoader userInformationControllerLoader = new FXMLLoader(
-            getClass().getResource("/mx/uv/fei/gui/fxmlfiles/guiusers/ModifyUserInformation.fxml")
-        );
-        
+        this.guiUsersController.openModifyUserPane(this);
     }
 
     public String getAlternateEmail() {

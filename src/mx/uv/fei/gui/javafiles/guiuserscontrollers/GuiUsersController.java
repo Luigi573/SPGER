@@ -2,18 +2,23 @@ package mx.uv.fei.gui.javafiles.guiuserscontrollers;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -45,6 +50,9 @@ public class GuiUsersController {
 
     @FXML
     private Button searchByNameButton;
+
+    @FXML
+    private TextField searchByNameTextField;
 
     @FXML
     private ImageView spgerLogo;
@@ -86,26 +94,31 @@ public class GuiUsersController {
         this.professorButtonMaker(professors);
         this.studentButtonMaker(students);
 
-        this.orderByChoiceBox.getItems().add("Nada");
         this.orderByChoiceBox.getItems().add("Nombre");
         this.orderByChoiceBox.getItems().add("Tipo de Usuario");
         this.orderByChoiceBox.getItems().add("Estatus");
-        this.orderByChoiceBox.setValue("Nada");
+        this.orderByChoiceBox.setValue("Nombre");
         
     }
 
     @FXML
     void orderByButtonController(ActionEvent event) {
         switch(this.orderByChoiceBox.getValue()){
-            case "Nada":{
-                break;
-            }
-            
-            case "Nombre":{
+            case "Nombre": {
+                //ObservableList<Node> observableList = ((VBox)this.usersVBox).getChildren();
+                ArrayList<String> userNames = new ArrayList<>();
+                for(Node button : ((VBox)this.usersVBox).getChildren()) {
+                    Node vbox = ((Button)button).getClip();
+                    Node label = ((VBox)vbox).getChildren().get(0);
+                    userNames.add(((Label)label).getText());
+                }
+                
+                Collections.sort(userNames);
+                System.out.println(userNames.get(0));
                 break;
             }
 
-            case "Tipo de Usuario":{
+            case "Tipo de Usuario": {
                 break;
             }
 
@@ -135,7 +148,23 @@ public class GuiUsersController {
 
     @FXML
     void searchByNameButtonController(ActionEvent event) {
+        this.usersVBox.getChildren().removeAll(this.usersVBox.getChildren());
+        StudentDAO studentDAO = new StudentDAO();
+        ProfessorDAO professorDAO = new ProfessorDAO();
+        DirectorDAO directorDAO = new DirectorDAO();
+        AcademicBodyHeadDAO academicBodyHeadDAO = new AcademicBodyHeadDAO();
+        DegreeBossDAO degreeBossDAO = new DegreeBossDAO();
+        ArrayList<Student> students = studentDAO.getSpecifiedStudentsFromDatabase(this.searchByNameTextField.getText());
+        ArrayList<Professor> professors = professorDAO.getSpecifiedProfessorsFromDatabase(this.searchByNameTextField.getText());
+        ArrayList<Director> directors = directorDAO.getSpecifiedDirectorsFromDatabase(this.searchByNameTextField.getText());
+        ArrayList<AcademicBodyHead> academicBodyHeads = academicBodyHeadDAO.getSpecifiedAcademicBodyHeadsFromDatabase(this.searchByNameTextField.getText());
+        ArrayList<DegreeBoss> degreeBosses = degreeBossDAO.getSpecifiedDegreeBossesFromDatabase(this.searchByNameTextField.getText());
 
+        this.directorButtonMaker(directors);
+        this.academicBodyHeadButtonMaker(academicBodyHeads);
+        this.degreeBossButtonMaker(degreeBosses);
+        this.professorButtonMaker(professors);
+        this.studentButtonMaker(students);
     }
 
     private void studentButtonMaker(ArrayList<Student> students){
@@ -381,6 +410,31 @@ public class GuiUsersController {
             //userInformationController.setStatus(student.getStatus());
             userInformationController.setGuiUsersController(this);
             this.userInformationScrollPane.setContent(userInformationVBox);
+            
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    //This method only should be used by the UserInformationController Class.
+    void openModifyUserPane(UserInformationController userInformationController){
+        FXMLLoader modifyUserInformationControllerLoader = new FXMLLoader(
+            getClass().getResource("/mx/uv/fei/gui/fxmlfiles/guiusers/ModifyUserInformation.fxml")
+        );
+
+        try {
+            VBox modifyUserInformationVBox = modifyUserInformationControllerLoader.load();
+            ModifyUserInformationController modifyUserInformationController = modifyUserInformationControllerLoader.getController();
+            modifyUserInformationController.setNames(userInformationController.getNames());
+            modifyUserInformationController.setFirstSurname(userInformationController.getFirstSurname());
+            modifyUserInformationController.setSecondSurname(userInformationController.getSecondSurname());
+            modifyUserInformationController.setEmail(userInformationController.getEmail());
+            modifyUserInformationController.setAlternateEmail(userInformationController.getAlternateEmail());
+            modifyUserInformationController.setTelephoneNumber(userInformationController.getTelephoneNumber());
+            modifyUserInformationController.setType(userInformationController.getType());
+            modifyUserInformationController.setStatus(userInformationController.getStatus());
+            modifyUserInformationController.setGuiUsersController(this);
+            this.userInformationScrollPane.setContent(modifyUserInformationVBox);
             
         } catch (IOException e){
             e.printStackTrace();
