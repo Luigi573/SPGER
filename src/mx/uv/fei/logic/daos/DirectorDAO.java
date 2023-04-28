@@ -18,6 +18,12 @@ public class DirectorDAO implements IDirectorDAO{
     }
 
     @Override
+    public void modifyDirectorDataFromDatabase(Director director) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'modifyDirectorDataFromDatabase'");
+    }
+
+    @Override
     public ArrayList<Director> getDirectorsFromDatabase() {
         ArrayList<Director> directors = new ArrayList<>();
 
@@ -103,6 +109,28 @@ public class DirectorDAO implements IDirectorDAO{
         }
 
         return director;
+    }
+
+    public boolean theDirectorIsAlreadyRegisted(Director director) {
+        try {
+            DataBaseManager dataBaseManager = new DataBaseManager();
+            Statement statement = dataBaseManager.getConnection().createStatement();
+            String query = "SELECT NúmeroDePersonal FROM Profesores";
+            ResultSet resultSet = statement.executeQuery(query);
+            while(resultSet.next()) {
+                if(resultSet.getString("NúmeroDePersonal").equals(director.getPersonalNumber())) {
+                    resultSet.close();
+                    dataBaseManager.getConnection().close();
+                    return true;
+                }
+            }
+            resultSet.close();
+            dataBaseManager.getConnection().close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false;
     }
     
 }

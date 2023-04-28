@@ -18,6 +18,12 @@ public class DegreeBossDAO implements IDegreeBossDAO{
     }
 
     @Override
+    public void modifyDegreeBossDataFromDatabase(DegreeBoss degreeBoss) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'modifyDegreeBossDataFromDatabase'");
+    }
+
+    @Override
     public ArrayList<DegreeBoss> getDegreeBossesFromDatabase() {
         ArrayList<DegreeBoss> degreeBosses = new ArrayList<>();
 
@@ -103,6 +109,28 @@ public class DegreeBossDAO implements IDegreeBossDAO{
         }
 
         return degreeBoss;
+    }
+
+    public boolean theAcademicBodyHeadIsAlreadyRegisted(DegreeBoss degreeBoss) {
+        try {
+            DataBaseManager dataBaseManager = new DataBaseManager();
+            Statement statement = dataBaseManager.getConnection().createStatement();
+            String query = "SELECT NúmeroDePersonal FROM Profesores";
+            ResultSet resultSet = statement.executeQuery(query);
+            while(resultSet.next()) {
+                if(resultSet.getString("NúmeroDePersonal").equals(degreeBoss.getPersonalNumber())) {
+                    resultSet.close();
+                    dataBaseManager.getConnection().close();
+                    return true;
+                }
+            }
+            resultSet.close();
+            dataBaseManager.getConnection().close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false;
     }
     
 }

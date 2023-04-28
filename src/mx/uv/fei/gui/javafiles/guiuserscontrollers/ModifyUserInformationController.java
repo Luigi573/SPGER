@@ -4,7 +4,11 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
+import mx.uv.fei.logic.daos.StudentDAO;
+import mx.uv.fei.logic.domain.Student;
 
 public class ModifyUserInformationController {
 
@@ -17,7 +21,19 @@ public class ModifyUserInformationController {
     private TextField emailTextField;
 
     @FXML
+    private Text errorMessageText;
+
+    @FXML
+    private Button exitButton;
+
+    @FXML
     private TextField firstSurnameTextField;
+
+    @FXML
+    private Label matricleOrPersonalNumberText;
+
+    @FXML
+    private TextField matricleOrPersonalNumberTextField;
 
     @FXML
     private Button modifyButton;
@@ -43,8 +59,49 @@ public class ModifyUserInformationController {
     }
 
     @FXML
-    void modifyButtonController(ActionEvent event) {
+    void exitButtonController(ActionEvent event) {
+        this.guiUsersController.openPaneWithUserInformation(getFirstSurname(), getAlternateEmail(), getStatus());
+    }
 
+    @FXML
+    void modifyButtonController(ActionEvent event) {
+        if(!this.namesTextField.getText().trim().isEmpty() &&
+           !this.firstSurnameTextField.getText().trim().isEmpty() &&
+           !this.secondSurnameTextField.getText().trim().isEmpty() &&
+           !this.emailTextField.getText().trim().isEmpty() &&
+           !this.alternateEmailTextField.getText().trim().isEmpty() &&
+           !this.telephoneNumberTextField.getText().trim().isEmpty() &&
+           !this.matricleOrPersonalNumberTextField.getText().trim().isEmpty()) {
+            switch(this.typeComboBox.getValue()){
+                case "Director": {
+                    this.registerDirector();
+                    break;
+                }
+    
+                case "Miembro de Cuerpo Académico": {
+                    this.registerAcademicBodyHead();
+                    break;
+                }
+    
+                case "Jefe de Carrera": {
+                    this.registerDegreeBoss();
+                    break;
+                }
+    
+                case "Profesor": {
+                    this.registerProfessor();
+                    break;
+                }
+    
+                case "Estudiante": {
+                    this.modifyStudent();
+                    break;
+                }
+            }
+        } else {
+            this.errorMessageText.setText("Faltan campos por llenar");
+            this.errorMessageText.setVisible(true);
+        }
     }
 
     public String getAlternateEmail() {
@@ -113,6 +170,24 @@ public class ModifyUserInformationController {
 
     public void setGuiUsersController(GuiUsersController guiUsersController){
         this.guiUsersController = guiUsersController;
+    }
+
+    private void modifyStudent(){
+        StudentDAO studentDAO = new StudentDAO();
+        Student student = new Student();
+        student.setName(this.namesTextField.getText());
+        student.setFirstSurname(this.firstSurnameTextField.getText());
+        student.setSecondSurname(this.secondSurnameTextField.getText());
+        student.setEmailAddress(this.emailTextField.getText());
+        student.setAlternateEmail(this.alternateEmailTextField.getText());
+        student.setPhoneNumber(this.telephoneNumberTextField.getText());
+        student.setMatricle(this.matricleOrPersonalNumberTextField.getText());
+        if(studentDAO.theStudentIsAlreadyRegisted(student)){
+            this.errorMessageText.setText("El usuario ya está registrado en el sistema");
+            this.errorMessageText.setVisible(true);
+            return;
+        }
+        studentDAO.modifyStudentDataFromDatabase(student);
     }
 
 }

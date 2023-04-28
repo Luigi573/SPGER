@@ -1,10 +1,14 @@
 package mx.uv.fei.gui.javafiles.guiregisterusercontrollers;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
 import mx.uv.fei.logic.daos.AcademicBodyHeadDAO;
 import mx.uv.fei.logic.daos.DegreeBossDAO;
 import mx.uv.fei.logic.daos.DirectorDAO;
@@ -25,7 +29,16 @@ public class GuiRegisterUserController {
     private TextField emailTextField;
 
     @FXML
+    private Text errorMessajeText;
+
+    @FXML
     private TextField firstSurnameTextField;
+
+    @FXML
+    private Text matricleOrPersonalNumberText;
+
+    @FXML
+    private TextField matricleOrPersonalNumberTextField;
 
     @FXML
     private TextField namesTextField;
@@ -35,9 +48,6 @@ public class GuiRegisterUserController {
 
     @FXML
     private TextField secondSurnameTextField;
-
-    @FXML
-    private ChoiceBox<String> statusChoiceBox;
 
     @FXML
     private TextField telephoneNumberTextField;
@@ -53,11 +63,6 @@ public class GuiRegisterUserController {
         this.typeChoiceBox.getItems().add("Miembro de Cuerpo Académico");
         this.typeChoiceBox.getItems().add("Jefe de Carrera");
         this.typeChoiceBox.setValue("Estudiante");
-
-        this.statusChoiceBox.getItems().add("Activo");
-        this.statusChoiceBox.getItems().add("Egresado");
-        this.statusChoiceBox.getItems().add("Inactivo");
-        this.statusChoiceBox.setValue("Activo");
     }
 
     @FXML
@@ -67,35 +72,46 @@ public class GuiRegisterUserController {
            !this.secondSurnameTextField.getText().trim().isEmpty() &&
            !this.emailTextField.getText().trim().isEmpty() &&
            !this.alternateEmailTextField.getText().trim().isEmpty() &&
-           !this.telephoneNumberTextField.getText().trim().isEmpty()){
-            switch(this.typeChoiceBox.getValue()){
-                case "Director": {
-                    this.registerDirector();
-                    break;
+           !this.telephoneNumberTextField.getText().trim().isEmpty() &&
+           !this.matricleOrPersonalNumberTextField.getText().trim().isEmpty()) {
+
+            if(allTextFieldsContainsCorrectValues()){
+                this.errorMessajeText.setVisible(false);
+                switch(this.typeChoiceBox.getValue()){
+                    case "Director": {
+                        this.registerDirector();
+                        break;
+                    }
+        
+                    case "Miembro de Cuerpo Académico": {
+                        this.registerAcademicBodyHead();
+                        break;
+                    }
+        
+                    case "Jefe de Carrera": {
+                        this.registerDegreeBoss();
+                        break;
+                    }
+        
+                    case "Profesor": {
+                        this.registerProfessor();
+                        break;
+                    }
+        
+                    case "Estudiante": {
+                        this.registerStudent();
+                        break;
+                    }
                 }
-    
-                case "Miembro de Cuerpo Académico": {
-                    this.registerAcademicBodyHead();
-                    break;
-                }
-    
-                case "Jefe de Carrera": {
-                    this.registerDegreeBoss();
-                    break;
-                }
-    
-                case "Profesor": {
-                    this.registerProfessor();
-                    break;
-                }
-    
-                case "Estudiante": {
-                    this.registerStudent();
-                    break;
-                }
+
+            } else {
+                this.errorMessajeText.setText("Algunos campos contienen datos inválidos");
+                this.errorMessajeText.setVisible(true);
             }
+
         } else {
-            System.out.println("Está vacío");
+            this.errorMessajeText.setText("Faltan campos por llenar");
+            this.errorMessajeText.setVisible(true);
         }
     }
 
@@ -108,7 +124,12 @@ public class GuiRegisterUserController {
         director.setEmailAddress(this.emailTextField.getText());
         director.setAlternateEmail(this.alternateEmailTextField.getText());
         director.setPhoneNumber(this.telephoneNumberTextField.getText());
-        //director.setStatus(this.statusChoiceBox.getValue());
+        director.setPersonalNumber(this.matricleOrPersonalNumberTextField.getText());
+        if(directorDAO.theDirectorIsAlreadyRegisted(director)){
+            this.errorMessajeText.setText("El usuario ya está registrado en el sistema");
+            this.errorMessajeText.setVisible(true);
+            return;
+        }
         directorDAO.addDirectorToDatabase(director);
     }
 
@@ -121,7 +142,12 @@ public class GuiRegisterUserController {
         academicBodyHead.setEmailAddress(this.emailTextField.getText());
         academicBodyHead.setAlternateEmail(this.alternateEmailTextField.getText());
         academicBodyHead.setPhoneNumber(this.telephoneNumberTextField.getText());
-        //academicBodyHead.setStatus(this.statusChoiceBox.getValue());
+        academicBodyHead.setPersonalNumber(this.matricleOrPersonalNumberTextField.getText());
+        if(academicBodyHeadDAO.theAcademicBodyHeadIsAlreadyRegisted(academicBodyHead)){
+            this.errorMessajeText.setText("El usuario ya está registrado en el sistema");
+            this.errorMessajeText.setVisible(true);
+            return;
+        }
         academicBodyHeadDAO.addAcademicBodyHeadToDatabase(academicBodyHead);
     }
 
@@ -134,7 +160,12 @@ public class GuiRegisterUserController {
         degreeBoss.setEmailAddress(this.emailTextField.getText());
         degreeBoss.setAlternateEmail(this.alternateEmailTextField.getText());
         degreeBoss.setPhoneNumber(this.telephoneNumberTextField.getText());
-        //degreeBoss.setStatus(this.statusChoiceBox.getValue());
+        degreeBoss.setPersonalNumber(this.matricleOrPersonalNumberTextField.getText());
+        if(degreeBossDAO.theDegreeBossIsAlreadyRegisted(degreeBoss)){
+            this.errorMessajeText.setText("El usuario ya está registrado en el sistema");
+            this.errorMessajeText.setVisible(true);
+            return;
+        }
         degreeBossDAO.addDegreeBossToDatabase(degreeBoss);
     }
 
@@ -147,7 +178,12 @@ public class GuiRegisterUserController {
         professor.setEmailAddress(this.emailTextField.getText());
         professor.setAlternateEmail(this.alternateEmailTextField.getText());
         professor.setPhoneNumber(this.telephoneNumberTextField.getText());
-        //professor.setStatus(this.statusChoiceBox.getValue());
+        professor.setPersonalNumber(this.matricleOrPersonalNumberTextField.getText());
+        if(professorDAO.theProfessorIsAlreadyRegisted(professor)){
+            this.errorMessajeText.setText("El usuario ya está registrado en el sistema");
+            this.errorMessajeText.setVisible(true);
+            return;
+        }
         professorDAO.addProfessorToDatabase(professor);
     }
 
@@ -160,8 +196,67 @@ public class GuiRegisterUserController {
         student.setEmailAddress(this.emailTextField.getText());
         student.setAlternateEmail(this.alternateEmailTextField.getText());
         student.setPhoneNumber(this.telephoneNumberTextField.getText());
-        //student.setStatus(this.statusChoiceBox.getValue());
+        student.setMatricle(this.matricleOrPersonalNumberTextField.getText());
+        if(studentDAO.theStudentIsAlreadyRegisted(student)){
+            this.errorMessajeText.setText("El usuario ya está registrado en el sistema");
+            this.errorMessajeText.setVisible(true);
+            return;
+        }
         studentDAO.addStudentToDatabase(student);
+    }
+
+    private boolean allTextFieldsContainsCorrectValues(){
+        Pattern namesPattern = Pattern.compile("^[A-Z][a-z]+$"),
+                firstSurnamePattern = Pattern.compile("^[A-Z][a-z]+$"),
+                secondSurnamePattern = Pattern.compile("^[A-Z][a-z]+$"),
+                emailPattern = Pattern.compile("^(.+)@(\\S+)$"),
+                alternateEmailPattern = Pattern.compile("^(.+)@(\\S+)$"),
+                telephoneNumberPattern = Pattern.compile("^[0-9]{10}$"),
+                matricleOrPersonalNumberPattern = Pattern.compile("");
+    
+        switch(this.typeChoiceBox.getValue()){
+            case "Director": {
+                matricleOrPersonalNumberPattern = Pattern.compile("");
+                break;
+            }
+
+            case "Miembro de Cuerpo Académico": {
+                matricleOrPersonalNumberPattern = Pattern.compile("");
+                break;
+            }
+
+            case "Jefe de Carrera": {
+                matricleOrPersonalNumberPattern = Pattern.compile("");
+                break;
+            }
+
+            case "Profesor": {
+                matricleOrPersonalNumberPattern = Pattern.compile("");
+                break;
+            }
+
+            case "Estudiante": {
+                matricleOrPersonalNumberPattern = Pattern.compile("^[z][S][0-9]{8}$");
+                break;
+            }
+        }
+
+        Matcher namesMatcher = namesPattern.matcher(this.namesTextField.getText()),
+                firstSurnameMatcher = firstSurnamePattern.matcher(this.firstSurnameTextField.getText()),
+                secondSurnameMatcher = secondSurnamePattern.matcher(this.secondSurnameTextField.getText()),
+                emailMatcher = emailPattern.matcher(this.emailTextField.getText()),
+                alternateEmailMatcher = alternateEmailPattern.matcher(this.alternateEmailTextField.getText()),
+                telephoneNumberMatcher = telephoneNumberPattern.matcher(this.telephoneNumberTextField.getText()),
+                matricleOrPersonalNumberMatcher = matricleOrPersonalNumberPattern.matcher(this.matricleOrPersonalNumberTextField.getText());
+
+        if(namesMatcher.find() && firstSurnameMatcher.find() &&
+           secondSurnameMatcher.find() && emailMatcher.find() &&
+           alternateEmailMatcher.find() && telephoneNumberMatcher.find() &&
+           matricleOrPersonalNumberMatcher.find()){
+            return true;
+        }
+
+        return false;
     }
 
 }

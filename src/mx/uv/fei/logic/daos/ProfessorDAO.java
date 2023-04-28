@@ -14,7 +14,52 @@ public class ProfessorDAO implements IProfessorDAO{
 
     @Override
     public void addProfessorToDatabase(Professor professor) {
-        
+        try {
+            DataBaseManager dataBaseManager = new DataBaseManager();
+            String userTablesToConsult = 
+                "nombre, apellidoPaterno, apellidoMaterno, correo, correoAlterno, númeroTeléfono";
+            String wholeQueryToInsertUserData = "INSERT INTO Usuarios (" + userTablesToConsult + ") VALUES (?, ?, ?, ?, ?, ?)";
+            PreparedStatement preparedStatementToInsertUserData = 
+                dataBaseManager.getConnection().prepareStatement(wholeQueryToInsertUserData);
+            preparedStatementToInsertUserData.setString(1, professor.getName());
+            preparedStatementToInsertUserData.setString(2, professor.getFirstSurname());
+            preparedStatementToInsertUserData.setString(3, professor.getSecondSurname());
+            preparedStatementToInsertUserData.setString(4, professor.getEmailAddress());
+            preparedStatementToInsertUserData.setString(5, professor.getAlternateEmail());
+            preparedStatementToInsertUserData.setString(6, professor.getPhoneNumber());
+            preparedStatementToInsertUserData.executeUpdate();
+
+            String queryForAssignUserIdToProfessor =
+                "SELECT IdUsuario FROM Usuarios WHERE Nombre = ?";
+            PreparedStatement preparedStatementForAssignUserIdToProfessor = 
+                dataBaseManager.getConnection().prepareStatement(queryForAssignUserIdToProfessor);
+            preparedStatementForAssignUserIdToProfessor.setString(1, professor.getName());
+            ResultSet resultSet = preparedStatementForAssignUserIdToProfessor.executeQuery();
+            if(resultSet.next()){
+                professor.setIdUser(resultSet.getInt("IdUsuario"));
+            }
+
+            String professorTablesToConsult = "NúmeroDePersonal, IdUsuario";
+            String wholeQueryToInsertProfessorData = 
+                "INSERT INTO Profesores (" + professorTablesToConsult + ") VALUES (?, ?)";
+            PreparedStatement preparedStatementToInsertProfessorData = 
+                dataBaseManager.getConnection().prepareStatement(wholeQueryToInsertProfessorData);
+            preparedStatementToInsertProfessorData.setString(1, professor.getPersonalNumber());
+            preparedStatementToInsertProfessorData.setInt(2, professor.getIdUser());
+            preparedStatementToInsertProfessorData.executeUpdate();
+
+            preparedStatementToInsertProfessorData.close();
+            dataBaseManager.getConnection().close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void modifyProfessorDataFromDatabase(Professor professor) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'modifyProfessorDataFromDatabase'");
     }
 
     @Override
@@ -105,6 +150,28 @@ public class ProfessorDAO implements IProfessorDAO{
         }
 
         return professor;
+    }
+
+    public boolean theProfessorIsAlreadyRegisted(Professor professor) {
+        try {
+            DataBaseManager dataBaseManager = new DataBaseManager();
+            Statement statement = dataBaseManager.getConnection().createStatement();
+            String query = "SELECT NúmeroDePersonal FROM Profesores";
+            ResultSet resultSet = statement.executeQuery(query);
+            while(resultSet.next()) {
+                if(resultSet.getString("NúmeroDePersonal").equals(professor.getPersonalNumber())) {
+                    resultSet.close();
+                    dataBaseManager.getConnection().close();
+                    return true;
+                }
+            }
+            resultSet.close();
+            dataBaseManager.getConnection().close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false;
     }
     
 }

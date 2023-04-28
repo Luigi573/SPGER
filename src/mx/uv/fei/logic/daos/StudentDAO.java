@@ -16,25 +16,64 @@ public class StudentDAO implements IStudentDAO{
     public void addStudentToDatabase(Student student) {
         try {
             DataBaseManager dataBaseManager = new DataBaseManager();
-            String tablesToConsult = 
-            "nombre, apellidoPaterno, apellidoMaterno, correo, contraseña, correoAlterno";
-            String wholeQuery = "INSERT INTO Anteproyectos (" + tablesToConsult + ") VALUES (?, ?, ?, ?, ?, ?)";
-            PreparedStatement preparedStatement = dataBaseManager.getConnection().prepareStatement(wholeQuery);
-            preparedStatement.setString(1, student.getName());
-            preparedStatement.setString(2, student.getFirstSurname());
-            preparedStatement.setString(3, student.getSecondSurname());
-            preparedStatement.setString(4, student.getEmailAddress());
-            preparedStatement.setString(5, student.getPassword());
-            preparedStatement.setString(6, student.getAlternateEmail());
-            preparedStatement.setString(7, student.getStartDate());
-            preparedStatement.setString(8, student.getFinishDate());
-            preparedStatement.setString(9, student.getWaitedResults());
-            preparedStatement.setString(10, student.getNote());
-            preparedStatement.executeUpdate();
-            preparedStatement.close();
+            String userTablesToConsult = 
+                "nombre, apellidoPaterno, apellidoMaterno, correo, correoAlterno, númeroTeléfono";
+            String wholeQueryToInsertUserData = "INSERT INTO Usuarios (" + userTablesToConsult + ") VALUES (?, ?, ?, ?, ?, ?)";
+            PreparedStatement preparedStatementToInsertUserData = 
+                dataBaseManager.getConnection().prepareStatement(wholeQueryToInsertUserData);
+            preparedStatementToInsertUserData.setString(1, student.getName());
+            preparedStatementToInsertUserData.setString(2, student.getFirstSurname());
+            preparedStatementToInsertUserData.setString(3, student.getSecondSurname());
+            preparedStatementToInsertUserData.setString(4, student.getEmailAddress());
+            preparedStatementToInsertUserData.setString(5, student.getAlternateEmail());
+            preparedStatementToInsertUserData.setString(6, student.getPhoneNumber());
+            preparedStatementToInsertUserData.executeUpdate();
+
+            String queryForAssignUserIdToStudent =
+                "SELECT IdUsuario FROM Usuarios WHERE Nombre = ?";
+            PreparedStatement preparedStatementForAssignUserIdToStudent = 
+                dataBaseManager.getConnection().prepareStatement(queryForAssignUserIdToStudent);
+            preparedStatementForAssignUserIdToStudent.setString(1, student.getName());
+            ResultSet resultSet = preparedStatementForAssignUserIdToStudent.executeQuery();
+            if(resultSet.next()){
+                student.setIdUser(resultSet.getInt("IdUsuario"));
+            }
+
+            String studentTablesToConsult = "Matrícula, IdUsuario";
+            String wholeQueryToInsertStudentData = 
+                "INSERT INTO Estudiantes (" + studentTablesToConsult + ") VALUES (?, ?)";
+            PreparedStatement preparedStatementToInsertStudentData = 
+                dataBaseManager.getConnection().prepareStatement(wholeQueryToInsertStudentData);
+            preparedStatementToInsertStudentData.setString(1, student.getMatricle());
+            preparedStatementToInsertStudentData.setInt(2, student.getIdUser());
+            preparedStatementToInsertStudentData.executeUpdate();
+
+            preparedStatementToInsertStudentData.close();
             dataBaseManager.getConnection().close();
 
         } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    @Override
+    public void modifyStudentDataFromDatabase(Student student) {
+        try {
+            DataBaseManager dataBaseManager = new DataBaseManager();
+            String query = "UPDATE Usuarios SET " + "nombre = ? " + 
+                           "apellidoPaterno = ? " + "apellidoMaterno = ? " +
+                           "correo = ? " + "correoAlterno = ? " +
+                           "númeroTeléfono = ? " +
+                           "WHERE nombre = ?";
+            PreparedStatement preparedStatement = dataBaseManager.getConnection().prepareStatement(query);
+            preparedStatement.setString(0, student.getName());
+            preparedStatement.setString(1, student.getFirstSurname());
+            preparedStatement.setString(2, student.getSecondSurname());
+            preparedStatement.setString(3, student.getEmailAddress());
+            preparedStatement.setString(4, student.getAlternateEmail());
+            preparedStatement.setString(5, student.getPhoneNumber());
+            preparedStatement.executeUpdate();
+        } catch(SQLException e){
             e.printStackTrace();
         }
     }
@@ -99,7 +138,7 @@ public class StudentDAO implements IStudentDAO{
     }
 
     @Override
-    public Student getStudentFromDatabase(String studentName){
+    public Student getStudentFromDatabase(String studentName) {
         Student student = new Student();
 
         try {
@@ -126,6 +165,28 @@ public class StudentDAO implements IStudentDAO{
         }
 
         return student;
+    }
+
+    public boolean theStudentIsAlreadyRegisted(Student student) {
+        try {
+            DataBaseManager dataBaseManager = new DataBaseManager();
+            Statement statement = dataBaseManager.getConnection().createStatement();
+            String query = "SELECT Matrícula FROM Estudiantes";
+            ResultSet resultSet = statement.executeQuery(query);
+            while(resultSet.next()) {
+                if(resultSet.getString("Matrícula").equals(student.getMatricle())) {
+                    resultSet.close();
+                    dataBaseManager.getConnection().close();
+                    return true;
+                }
+            }
+            resultSet.close();
+            dataBaseManager.getConnection().close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false;
     }
     
 }

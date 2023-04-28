@@ -2,23 +2,17 @@ package mx.uv.fei.gui.javafiles.guiuserscontrollers;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -32,18 +26,11 @@ import mx.uv.fei.logic.domain.DegreeBoss;
 import mx.uv.fei.logic.domain.Director;
 import mx.uv.fei.logic.domain.Professor;
 import mx.uv.fei.logic.domain.Student;
-import mx.uv.fei.logic.domain.User;
 
 public class GuiUsersController {
 
     @FXML
     private ToggleButton onlyShowActiveUsersButton;
-
-    @FXML
-    private Button orderByButton;
-
-    @FXML
-    private ChoiceBox<String> orderByChoiceBox;
 
     @FXML
     private Button registerUserButton;
@@ -76,7 +63,7 @@ public class GuiUsersController {
     private Text windowText;
 
     @FXML
-    void initialize(){
+    void initialize() {
         StudentDAO studentDAO = new StudentDAO();
         ProfessorDAO professorDAO = new ProfessorDAO();
         DirectorDAO directorDAO = new DirectorDAO();
@@ -93,39 +80,7 @@ public class GuiUsersController {
         this.degreeBossButtonMaker(degreeBosses);
         this.professorButtonMaker(professors);
         this.studentButtonMaker(students);
-
-        this.orderByChoiceBox.getItems().add("Nombre");
-        this.orderByChoiceBox.getItems().add("Tipo de Usuario");
-        this.orderByChoiceBox.getItems().add("Estatus");
-        this.orderByChoiceBox.setValue("Nombre");
         
-    }
-
-    @FXML
-    void orderByButtonController(ActionEvent event) {
-        switch(this.orderByChoiceBox.getValue()){
-            case "Nombre": {
-                //ObservableList<Node> observableList = ((VBox)this.usersVBox).getChildren();
-                ArrayList<String> userNames = new ArrayList<>();
-                for(Node button : ((VBox)this.usersVBox).getChildren()) {
-                    Node vbox = ((Button)button).getClip();
-                    Node label = ((VBox)vbox).getChildren().get(0);
-                    userNames.add(((Label)label).getText());
-                }
-                
-                Collections.sort(userNames);
-                System.out.println(userNames.get(0));
-                break;
-            }
-
-            case "Tipo de Usuario": {
-                break;
-            }
-
-            case "Estatus": {
-                break;
-            }
-        }
     }
 
     @FXML
@@ -258,6 +213,7 @@ public class GuiUsersController {
         }  
     }
 
+    //This method only should be used by the UserController Class.
     void openPaneWithUserInformation(String userName, String userType, String userStatus){
         switch(userType){
             case "Director":{

@@ -4,6 +4,7 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
@@ -12,10 +13,14 @@
    <children>
       <HBox prefHeight="40.0" prefWidth="369.0">
          <children>
-            <Label prefHeight="40.0" prefWidth="24.0" />
-            <Label prefHeight="40.0" prefWidth="253.0" textAlignment="CENTER">
+            <Label prefHeight="40.0" prefWidth="17.0" />
+            <Label prefHeight="40.0" prefWidth="101.0">
                <graphic>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Modificar Datos de Usuario" textAlignment="CENTER" wrappingWidth="260.7294921875" />
+                  <Button fx:id="exitButton" mnemonicParsing="false" onAction="#exitButtonController" prefHeight="24.0" prefWidth="81.0" text="Salir" />
+               </graphic></Label>
+            <Label prefHeight="40.0" prefWidth="180.0" textAlignment="CENTER">
+               <graphic>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Modificar Datos de Usuario" textAlignment="CENTER" wrappingWidth="183.7294921875" />
                </graphic>
             </Label>
             <Label prefHeight="40.0" prefWidth="103.0">
@@ -70,6 +75,13 @@
       <HBox prefHeight="25.0" prefWidth="369.0">
          <children>
             <Label prefHeight="25.0" prefWidth="10.0" />
+            <Label fx:id="matricleOrPersonalNumberText" prefHeight="25.0" prefWidth="107.0" text="N° de Personal:" />
+            <TextField fx:id="matricleOrPersonalNumberTextField" prefHeight="25.0" prefWidth="245.0" />
+         </children>
+      </HBox>
+      <HBox prefHeight="25.0" prefWidth="369.0">
+         <children>
+            <Label prefHeight="25.0" prefWidth="10.0" />
             <Label prefHeight="25.0" prefWidth="38.0" text="Tipo:" />
             <ComboBox fx:id="typeComboBox" prefHeight="25.0" prefWidth="314.0" />
          </children>
@@ -81,5 +93,10 @@
             <ComboBox fx:id="statusComboBox" prefHeight="25.0" prefWidth="297.0" />
          </children>
       </HBox>
+      <AnchorPane prefHeight="85.0" prefWidth="369.0">
+         <children>
+            <Text fx:id="errorMessageText" fill="RED" layoutX="93.0" layoutY="48.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Faltan Campos por Llenar" visible="false" wrappingWidth="184.0" />
+         </children>
+      </AnchorPane>
    </children>
 </VBox>
