@@ -24,7 +24,7 @@ public class KGALListController {
     private Parent root;
 
     @FXML 
-    private TextField tfDescription;
+    private TextField tfSearch;
     
     @FXML
     private VBox vBoxKGALList;
@@ -59,7 +59,34 @@ public class KGALListController {
     }   
     
     public void searchKGALByDescription (ActionEvent event) {
-        System.out.println("hola");
+        vBoxKGALList.getChildren().clear();
+        KGALDAO kgalDAO = new KGALDAO();
+        vBoxKGALList.setSpacing(0);
+        ArrayList<KGAL> kgalList;
+        String description;
+        description = tfSearch.getText();
+
+        
+        try {
+             kgalList = kgalDAO.getKGALListByDescription(description);
+            for (KGAL kgal: kgalList) {
+                try {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/KGALListElement.fxml"));
+                    Pane pane = loader.load();
+                    KGALListElementController controller = (KGALListElementController)loader.getController();
+                    controller.setLabelText(kgal);
+                    
+                    vBoxKGALList.getChildren().add(pane);
+                } catch (IOException | IllegalStateException exception) {
+                    System.out.println("Error");
+                    System.out.println(exception.getMessage());
+                    exception.printStackTrace();
+                }
+            }
+            
+        } catch (DataRetrievalException exception) {
+            System.out.println(exception.getMessage());
+        }
     }
            
     public void switchToCreateNewKGAL(ActionEvent event) throws IOException {
@@ -77,4 +104,5 @@ public class KGALListController {
         stage.setScene(scene);
         stage.show();
     }
+   
 }

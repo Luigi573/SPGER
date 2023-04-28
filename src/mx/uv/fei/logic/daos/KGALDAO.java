@@ -94,20 +94,20 @@ public class KGALDAO implements IKGALDAO {
                 System.out.println("We couldn't find a KAGL that matches the given description");
             }
             return kgal;            
-        } catch (SQLException sql) {
-            throw new DataRetrievalException("Failed to retrieve the specified KGAL. Please try again later");
+        } catch (SQLException sql) {           
+            throw new DataRetrievalException("Failed to retrieve the specified KGAL List. Please try again later");
         }
     }
 
     @Override
     public ArrayList<KGAL> getKGALListByDescription(String description) throws DataRetrievalException {
-        String query = "select * from LGAC where descripcion like %?%";
+        String query = "select * from LGAC where descripcion like ?";
         ArrayList<KGAL> kgalList = new ArrayList();
         try {
             dataBaseManager = new DataBaseManager();
             Connection connection = dataBaseManager.getConnection();
             PreparedStatement statement = connection.prepareStatement(query);
-            statement.setString(1, description);
+            statement.setString(1, "%" + description + "%");
             ResultSet rs = statement.executeQuery();
             while(rs.next()) {
                 KGAL kgal = new KGAL();
@@ -118,6 +118,7 @@ public class KGALDAO implements IKGALDAO {
             }
             return kgalList;            
         } catch (SQLException sql) {
+            System.out.println(sql.getMessage());
             throw new DataRetrievalException("Failed to retrieve the specified KGAL. Please try again later");
         }
     }

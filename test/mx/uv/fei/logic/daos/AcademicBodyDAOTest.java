@@ -4,31 +4,31 @@ import java.util.ArrayList;
 import mx.uv.fei.logic.domain.AcademicBody;
 import mx.uv.fei.logic.exceptions.DataInsertionException;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
 
 public class AcademicBodyDAOTest {
     
     public AcademicBodyDAOTest() {
     }
     
-    @BeforeAll
+    @BeforeClass
     public static void setUpClass() {
     }
     
-    @AfterAll
+    @AfterClass
     public static void tearDownClass() {
     }
     
-    @BeforeEach
+    @Before
     public void setUp() {
     }
     
-    @AfterEach
+    @After
     public void tearDown() {
     }
 
