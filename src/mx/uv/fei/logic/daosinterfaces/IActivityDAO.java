@@ -9,4 +9,5 @@ import mx.uv.fei.logic.exceptions.DataWritingException;
 public interface IActivityDAO {
     public int addActivity(Activity activity) throws DataWritingException;
     public ArrayList<Activity> getActivityList() throws DataRetrievalException;
+    public int modifyActivity(int oldActivityId, Activity newActivity) throws DataWritingException;
 }
