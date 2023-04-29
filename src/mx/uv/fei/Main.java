@@ -28,10 +28,7 @@ public class Main extends Application{
     @Override
     public void start(Stage arg0) throws Exception {
         Parent guiUsuarios;
-        //Path path = Paths.get("/home/luisalonso/Documentos/SPGER/src/mx/uv/fei/gui/fxmlfiles/guiresearchreport/GuiResearchReport.fxml");
-        //Path path = Paths.get("src/mx/uv/fei/gui/fxmlfiles/GuiReporteAnteproyecto.fxml");
         FXMLLoader loader = new FXMLLoader(
-            //getClass().getResource(path.toAbsolutePath().toString())
             getClass().getResource("gui/fxmlfiles/guiusers/GuiUsers.fxml")
             //getClass().getResource("gui/fxmlfiles/guiresearchreport/GuiResearchReport.fxml")
         );

@@ -30,10 +30,17 @@ public class ProfessorDAO implements IProfessorDAO{
             preparedStatementToInsertUserData.executeUpdate();
 
             String queryForAssignUserIdToProfessor =
-                "SELECT IdUsuario FROM Usuarios WHERE Nombre = ?";
+                "SELECT IdUsuario FROM Usuarios WHERE nombre = ? && " +
+                "apellidoPaterno = ? && apellidoMaterno = ? && correo = ? && " +
+                "correoAlterno = ? && númeroTeléfono = ?";
             PreparedStatement preparedStatementForAssignUserIdToProfessor = 
                 dataBaseManager.getConnection().prepareStatement(queryForAssignUserIdToProfessor);
             preparedStatementForAssignUserIdToProfessor.setString(1, professor.getName());
+            preparedStatementForAssignUserIdToProfessor.setString(2, professor.getFirstSurname());
+            preparedStatementForAssignUserIdToProfessor.setString(3, professor.getSecondSurname());
+            preparedStatementForAssignUserIdToProfessor.setString(4, professor.getEmailAddress());
+            preparedStatementForAssignUserIdToProfessor.setString(5, professor.getAlternateEmail());
+            preparedStatementForAssignUserIdToProfessor.setString(6, professor.getPhoneNumber());
             ResultSet resultSet = preparedStatementForAssignUserIdToProfessor.executeQuery();
             if(resultSet.next()){
                 professor.setIdUser(resultSet.getInt("IdUsuario"));
@@ -57,9 +64,31 @@ public class ProfessorDAO implements IProfessorDAO{
     }
 
     @Override
-    public void modifyProfessorDataFromDatabase(Professor professor) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'modifyProfessorDataFromDatabase'");
+    public void modifyProfessorDataFromDatabase(Professor newProfessorData, ArrayList<String> originalProfessorData) {
+        try {
+            DataBaseManager dataBaseManager = new DataBaseManager();
+            String queryForUpdateUserData = "UPDATE Usuarios SET nombre = ?, " + 
+                           "apellidoPaterno = ?, apellidoMaterno = ?, correo = ?, " + 
+                           "correoAlterno = ?, númeroTeléfono = ? " +
+                           "WHERE nombre = ? && apellidoPaterno = ? && apellidoMaterno = ? && " + 
+                           "correo = ? && correoAlterno = ? && númeroTeléfono = ?";
+            PreparedStatement preparedStatement = dataBaseManager.getConnection().prepareStatement(queryForUpdateUserData);
+            preparedStatement.setString(1, newProfessorData.getName());
+            preparedStatement.setString(2, newProfessorData.getFirstSurname());
+            preparedStatement.setString(3, newProfessorData.getSecondSurname());
+            preparedStatement.setString(4, newProfessorData.getEmailAddress());
+            preparedStatement.setString(5, newProfessorData.getAlternateEmail());
+            preparedStatement.setString(6, newProfessorData.getPhoneNumber());
+            preparedStatement.setString(7, originalProfessorData.get(0));
+            preparedStatement.setString(8, originalProfessorData.get(1));
+            preparedStatement.setString(9, originalProfessorData.get(2));
+            preparedStatement.setString(10, originalProfessorData.get(3));
+            preparedStatement.setString(11, originalProfessorData.get(4));
+            preparedStatement.setString(12, originalProfessorData.get(5));
+            preparedStatement.executeUpdate();
+        } catch(SQLException e){
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -79,6 +108,7 @@ public class ProfessorDAO implements IProfessorDAO{
                 professor.setEmailAddress(resultSet.getString("correo"));
                 professor.setPassword(resultSet.getString("contraseña"));
                 professor.setAlternateEmail(resultSet.getString("correoAlterno"));
+                professor.setPhoneNumber(resultSet.getString("númeroTeléfono"));
                 professor.setPersonalNumber(resultSet.getString("NúmeroDePersonal"));
                 professors.add(professor);
             }
@@ -111,6 +141,7 @@ public class ProfessorDAO implements IProfessorDAO{
                 professor.setEmailAddress(resultSet.getString("correo"));
                 professor.setPassword(resultSet.getString("contraseña"));
                 professor.setAlternateEmail(resultSet.getString("correoAlterno"));
+                professor.setPhoneNumber(resultSet.getString("númeroTeléfono"));
                 professor.setPersonalNumber(resultSet.getString("NúmeroDePersonal"));
                 professors.add(professor);
             }
@@ -140,6 +171,7 @@ public class ProfessorDAO implements IProfessorDAO{
                 professor.setEmailAddress(resultSet.getString("correo"));
                 professor.setPassword(resultSet.getString("contraseña"));
                 professor.setAlternateEmail(resultSet.getString("correoAlterno"));
+                professor.setPhoneNumber(resultSet.getString("númeroTeléfono"));
                 professor.setPersonalNumber(resultSet.getString("NúmeroDePersonal"));
             }
 
@@ -156,10 +188,18 @@ public class ProfessorDAO implements IProfessorDAO{
         try {
             DataBaseManager dataBaseManager = new DataBaseManager();
             Statement statement = dataBaseManager.getConnection().createStatement();
-            String query = "SELECT NúmeroDePersonal FROM Profesores";
+            String query = "SELECT U.nombre, U.apellidoPaterno, U.apellidoMaterno, U.correo, " +
+                           "U.correoAlterno, U.númeroTeléfono, P.NúmeroDePersonal FROM Usuarios U " + 
+                           "INNER JOIN Profesores P ON U.IdUsuario = P.IdUsuario";
             ResultSet resultSet = statement.executeQuery(query);
             while(resultSet.next()) {
-                if(resultSet.getString("NúmeroDePersonal").equals(professor.getPersonalNumber())) {
+                if( (resultSet.getString("nombre").equals(professor.getName()) &&
+                   resultSet.getString("apellidoPaterno").equals(professor.getFirstSurname()) &&
+                   resultSet.getString("apellidoMaterno").equals(professor.getSecondSurname()) &&
+                   resultSet.getString("correo").equals(professor.getEmailAddress()) &&
+                   resultSet.getString("correoAlterno").equals(professor.getAlternateEmail()) &&
+                   resultSet.getString("númeroTeléfono").equals(professor.getPhoneNumber()) ) ||
+                   resultSet.getString("NúmeroDePersonal").equals(professor.getPersonalNumber())) {
                     resultSet.close();
                     dataBaseManager.getConnection().close();
                     return true;

@@ -26,6 +26,7 @@ import mx.uv.fei.logic.domain.DegreeBoss;
 import mx.uv.fei.logic.domain.Director;
 import mx.uv.fei.logic.domain.Professor;
 import mx.uv.fei.logic.domain.Student;
+import mx.uv.fei.logic.domain.User;
 
 public class GuiUsersController {
 
@@ -216,35 +217,35 @@ public class GuiUsersController {
     //This method only should be used by the UserController Class.
     void openPaneWithUserInformation(String userName, String userType, String userStatus){
         switch(userType){
-            case "Director":{
+            case "Director": {
                 DirectorDAO directorDAO = new DirectorDAO();
                 Director director = directorDAO.getDirectorFromDatabase(userName);
                 openPaneWithDirectorInformation(director);
                 break;
             }
 
-            case "Miembro de Cuerpo Académico":{
+            case "Miembro de Cuerpo Académico": {
                 AcademicBodyHeadDAO academicBodyHeadDAO = new AcademicBodyHeadDAO();
                 AcademicBodyHead academicBodyHead = academicBodyHeadDAO.getAcademicBodyHeadFromDatabase(userName);
                 openPaneWithAcademicBodyHeadInformation(academicBodyHead);
                 break;
             }
 
-            case "Jefe de Carrera":{
+            case "Jefe de Carrera": {
                 DegreeBossDAO degreeBossDAO = new DegreeBossDAO();
                 DegreeBoss degreeBoss = degreeBossDAO.getDegreeBossFromDatabase(userName);
                 openPaneWithDegreeBossInformation(degreeBoss);
                 break;
             }
 
-            case "Profesor":{
+            case "Profesor": {
                 ProfessorDAO professorDAO = new ProfessorDAO();
                 Professor professor = professorDAO.getProfessorFromDatabase(userName);
                 openPaneWithProfessorInformation(professor);
                 break;
             }
 
-            case "Estudiante":{
+            case "Estudiante": {
                 StudentDAO studentDAO = new StudentDAO();
                 Student student = studentDAO.getStudentFromDatabase(userName);
                 openPaneWithStudentInformation(student);
@@ -253,21 +254,22 @@ public class GuiUsersController {
         }
     }
 
-    private void openPaneWithDirectorInformation(Director director){
+    private void openPaneWithDirectorInformation(User user){
         FXMLLoader userInformationControllerLoader = new FXMLLoader(
             getClass().getResource("/mx/uv/fei/gui/fxmlfiles/guiusers/UserInformation.fxml")
         );
         try {
             VBox userInformationVBox = userInformationControllerLoader.load();
             UserInformationController userInformationController = userInformationControllerLoader.getController();
-            userInformationController.setNames(director.getName());
-            userInformationController.setFirstSurname(director.getFirstSurname());
-            userInformationController.setSecondSurname(director.getSecondSurname());
-            userInformationController.setEmail(director.getEmailAddress());
-            userInformationController.setAlternateEmail(director.getAlternateEmail());
-            userInformationController.setTelephoneNumber(director.getPhoneNumber());
-            userInformationController.setType("Director");
-            //userInformationController.setStatus(director.getStatus());
+            userInformationController.setNames(((Director)user).getName());
+            userInformationController.setFirstSurname(((Director)user).getFirstSurname());
+            userInformationController.setSecondSurname(((Director)user).getSecondSurname());
+            userInformationController.setEmail(((Director)user).getEmailAddress());
+            userInformationController.setAlternateEmail(((Director)user).getAlternateEmail());
+            userInformationController.setTelephoneNumber(((Director)user).getPhoneNumber());
+            userInformationController.setUserType("");
+            //userInformationController.setStatus(((Director)user).getStatus());
+            userInformationController.setMatricleOrPersonalNumber(((Director)user).getPersonalNumber());
             userInformationController.setGuiUsersController(this);
             this.userInformationScrollPane.setContent(userInformationVBox);
             
@@ -275,6 +277,30 @@ public class GuiUsersController {
             e.printStackTrace();
         }
     }
+
+    //private void openPaneWithDirectorInformation(Director director){
+    //    FXMLLoader userInformationControllerLoader = new FXMLLoader(
+    //        getClass().getResource("/mx/uv/fei/gui/fxmlfiles/guiusers/UserInformation.fxml")
+    //    );
+    //    try {
+    //        VBox userInformationVBox = userInformationControllerLoader.load();
+    //        UserInformationController userInformationController = userInformationControllerLoader.getController();
+    //        userInformationController.setNames(director.getName());
+    //        userInformationController.setFirstSurname(director.getFirstSurname());
+    //        userInformationController.setSecondSurname(director.getSecondSurname());
+    //        userInformationController.setEmail(director.getEmailAddress());
+    //        userInformationController.setAlternateEmail(director.getAlternateEmail());
+    //        userInformationController.setTelephoneNumber(director.getPhoneNumber());
+    //        userInformationController.setUserType("Director");
+    //        //userInformationController.setStatus(director.getStatus());
+    //        userInformationController.setMatricleOrPersonalNumber(director.getPersonalNumber());
+    //        userInformationController.setGuiUsersController(this);
+    //        this.userInformationScrollPane.setContent(userInformationVBox);
+    //        
+    //    } catch (IOException e){
+    //        e.printStackTrace();
+    //    }
+    //}
 
     private void openPaneWithAcademicBodyHeadInformation(AcademicBodyHead academicBodyHead){
         FXMLLoader userInformationControllerLoader = new FXMLLoader(
@@ -290,8 +316,9 @@ public class GuiUsersController {
             userInformationController.setEmail(academicBodyHead.getEmailAddress());
             userInformationController.setAlternateEmail(academicBodyHead.getAlternateEmail());
             userInformationController.setTelephoneNumber(academicBodyHead.getPhoneNumber());
-            userInformationController.setType("Miembro de Cuerpo Académico");
+            userInformationController.setUserType("Miembro de Cuerpo Académico");
             //userInformationController.setStatus(academicBodyHead.getStatus());
+            userInformationController.setMatricleOrPersonalNumber(academicBodyHead.getPersonalNumber());
             userInformationController.setGuiUsersController(this);
             this.userInformationScrollPane.setContent(userInformationVBox);
             
@@ -314,8 +341,9 @@ public class GuiUsersController {
             userInformationController.setEmail(degreeBoss.getEmailAddress());
             userInformationController.setAlternateEmail(degreeBoss.getAlternateEmail());
             userInformationController.setTelephoneNumber(degreeBoss.getPhoneNumber());
-            userInformationController.setType("Jefe de Carrera");
+            userInformationController.setUserType("Jefe de Carrera");
             //userInformationController.setStatus(degreeBoss.getStatus());
+            userInformationController.setMatricleOrPersonalNumber(degreeBoss.getPersonalNumber());
             userInformationController.setGuiUsersController(this);
             this.userInformationScrollPane.setContent(userInformationVBox);
             
@@ -338,8 +366,9 @@ public class GuiUsersController {
             userInformationController.setEmail(professor.getEmailAddress());
             userInformationController.setAlternateEmail(professor.getAlternateEmail());
             userInformationController.setTelephoneNumber(professor.getPhoneNumber());
-            userInformationController.setType("Profesor");
+            userInformationController.setUserType("Profesor");
             //userInformationController.setStatus(professor.getStatus());
+            userInformationController.setMatricleOrPersonalNumber(professor.getPersonalNumber());
             userInformationController.setGuiUsersController(this);
             this.userInformationScrollPane.setContent(userInformationVBox);
             
@@ -362,8 +391,9 @@ public class GuiUsersController {
             userInformationController.setEmail(student.getEmailAddress());
             userInformationController.setAlternateEmail(student.getAlternateEmail());
             userInformationController.setTelephoneNumber(student.getPhoneNumber());
-            userInformationController.setType("Estudiante");
+            userInformationController.setUserType("Estudiante");
             //userInformationController.setStatus(student.getStatus());
+            userInformationController.setMatricleOrPersonalNumber(student.getMatricle());
             userInformationController.setGuiUsersController(this);
             this.userInformationScrollPane.setContent(userInformationVBox);
             
@@ -387,9 +417,10 @@ public class GuiUsersController {
             modifyUserInformationController.setEmail(userInformationController.getEmail());
             modifyUserInformationController.setAlternateEmail(userInformationController.getAlternateEmail());
             modifyUserInformationController.setTelephoneNumber(userInformationController.getTelephoneNumber());
-            modifyUserInformationController.setType(userInformationController.getType());
+            modifyUserInformationController.setMatricleOrPersonalNumber(userInformationController.getMatricleOrPersonalNumber());
             modifyUserInformationController.setStatus(userInformationController.getStatus());
             modifyUserInformationController.setGuiUsersController(this);
+            modifyUserInformationController.setUserInformationController(userInformationController);
             this.userInformationScrollPane.setContent(modifyUserInformationVBox);
             
         } catch (IOException e){

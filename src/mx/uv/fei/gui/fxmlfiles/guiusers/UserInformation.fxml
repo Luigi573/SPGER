@@ -68,15 +68,22 @@
       <HBox prefHeight="25.0" prefWidth="369.0">
          <children>
             <Label prefHeight="25.0" prefWidth="10.0" />
-            <Label prefHeight="25.0" prefWidth="35.0" text="Tipo:" />
-            <Label fx:id="typeLabel" prefHeight="25.0" prefWidth="324.0" text="Label" />
+            <Label fx:id="matricleOrPersonalNumberText" prefHeight="25.0" prefWidth="108.0" text="N° de Personal: " />
+            <Label fx:id="matricleOrPersonalNumberLabel" prefHeight="25.0" prefWidth="250.0" text="Label" />
          </children>
       </HBox>
       <HBox prefHeight="25.0" prefWidth="369.0">
          <children>
             <Label prefHeight="25.0" prefWidth="10.0" />
-            <Label prefHeight="25.0" prefWidth="55.0" text="Estatus:" />
-            <Label fx:id="statusLabel" prefHeight="25.0" prefWidth="304.0" text="Label" />
+            <Label prefHeight="25.0" prefWidth="63.0" text="Estatus:" />
+            <Label fx:id="statusLabel" prefHeight="25.0" prefWidth="298.0" text="Label" />
+         </children>
+      </HBox>
+      <HBox prefHeight="25.0" prefWidth="369.0">
+         <children>
+            <Label prefHeight="25.0" prefWidth="10.0" />
+            <Label prefHeight="25.0" prefWidth="115.0" text="Tipo de Usuario:" />
+            <Label fx:id="userTypeLabel" prefHeight="25.0" prefWidth="242.0" text="Label" />
          </children>
       </HBox>
    </children>

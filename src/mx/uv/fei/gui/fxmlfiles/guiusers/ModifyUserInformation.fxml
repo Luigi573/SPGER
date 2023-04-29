@@ -82,13 +82,6 @@
       <HBox prefHeight="25.0" prefWidth="369.0">
          <children>
             <Label prefHeight="25.0" prefWidth="10.0" />
-            <Label prefHeight="25.0" prefWidth="38.0" text="Tipo:" />
-            <ComboBox fx:id="typeComboBox" prefHeight="25.0" prefWidth="314.0" />
-         </children>
-      </HBox>
-      <HBox prefHeight="25.0" prefWidth="369.0">
-         <children>
-            <Label prefHeight="25.0" prefWidth="10.0" />
             <Label prefHeight="25.0" prefWidth="55.0" text="Estatus:" />
             <ComboBox fx:id="statusComboBox" prefHeight="25.0" prefWidth="297.0" />
          </children>

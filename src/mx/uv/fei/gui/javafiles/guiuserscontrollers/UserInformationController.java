@@ -20,6 +20,12 @@ public class UserInformationController {
     private Label firstSurnameLabel;
 
     @FXML
+    private Label matricleOrPersonalNumberLabel;
+
+    @FXML
+    private Label matricleOrPersonalNumberText;
+
+    @FXML
     private Label namesLabel;
 
     @FXML
@@ -32,7 +38,7 @@ public class UserInformationController {
     private Label telephoneNumberLabel;
 
     @FXML
-    private Label typeLabel;
+    private Label userTypeLabel;
 
     private GuiUsersController guiUsersController;
 
@@ -97,12 +103,20 @@ public class UserInformationController {
         this.telephoneNumberLabel.setText(telephoneNumber);
     }
 
-    public String getType() {
-        return this.typeLabel.getText();
+    public String getUserType() {
+        return this.userTypeLabel.getText();
     }
 
-    public void setType(String type) {
-        this.typeLabel.setText(type);
+    public void setUserType(String userType) {
+        this.userTypeLabel.setText(userType);
+    }
+
+    public String getMatricleOrPersonalNumber() {
+        return this.matricleOrPersonalNumberLabel.getText();
+    }
+
+    public void setMatricleOrPersonalNumber(String type) {
+        this.matricleOrPersonalNumberLabel.setText(type);
     }
 
     public void setGuiUsersController(GuiUsersController guiUsersController){
