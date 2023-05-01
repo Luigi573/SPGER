@@ -66,13 +66,15 @@ public class ProfessorDAO implements IProfessorDAO{
     @Override
     public void modifyProfessorDataFromDatabase(Professor newProfessorData, ArrayList<String> originalProfessorData) {
         try {
+            newProfessorData.setIdUser(this.getIdUserFromProfessor(originalProfessorData));
             DataBaseManager dataBaseManager = new DataBaseManager();
             String queryForUpdateUserData = "UPDATE Usuarios SET nombre = ?, " + 
                            "apellidoPaterno = ?, apellidoMaterno = ?, correo = ?, " + 
                            "correoAlterno = ?, númeroTeléfono = ? " +
                            "WHERE nombre = ? && apellidoPaterno = ? && apellidoMaterno = ? && " + 
                            "correo = ? && correoAlterno = ? && númeroTeléfono = ?";
-            PreparedStatement preparedStatement = dataBaseManager.getConnection().prepareStatement(queryForUpdateUserData);
+            PreparedStatement preparedStatement = 
+                dataBaseManager.getConnection().prepareStatement(queryForUpdateUserData);
             preparedStatement.setString(1, newProfessorData.getName());
             preparedStatement.setString(2, newProfessorData.getFirstSurname());
             preparedStatement.setString(3, newProfessorData.getSecondSurname());
@@ -86,6 +88,15 @@ public class ProfessorDAO implements IProfessorDAO{
             preparedStatement.setString(11, originalProfessorData.get(4));
             preparedStatement.setString(12, originalProfessorData.get(5));
             preparedStatement.executeUpdate();
+
+            String queryForUpdateProfessorData = "UPDATE Profesores SET NúmeroDePersonal = ? " + 
+                           "WHERE IdUsuario = ?";
+            
+            PreparedStatement preparedStatementForUpdateProfessorData = 
+                dataBaseManager.getConnection().prepareStatement(queryForUpdateProfessorData);
+            preparedStatementForUpdateProfessorData.setString(1, newProfessorData.getPersonalNumber());
+            preparedStatementForUpdateProfessorData.setInt(2, newProfessorData.getIdUser());
+            preparedStatementForUpdateProfessorData.executeUpdate();
         } catch(SQLException e){
             e.printStackTrace();
         }
@@ -212,6 +223,38 @@ public class ProfessorDAO implements IProfessorDAO{
         }
 
         return false;
+    }
+
+    private int getIdUserFromProfessor(ArrayList<String> originalProfessorData){
+        int idUser = 0;
+
+        try {
+            DataBaseManager dataBaseManager = new DataBaseManager();
+            String query = "SELECT U.IdUsuario FROM Usuarios U INNER JOIN Profesores P ON " + 
+                           "U.IdUsuario = P.IdUsuario WHERE U.nombre = ? && " +
+                           "U.apellidoPaterno = ? && U.apellidoMaterno = ? && U.correo = ? && " +
+                           "U.correoAlterno = ? && U.númeroTeléfono = ? && P.NúmeroDePersonal = ?";
+            PreparedStatement preparedStatement = dataBaseManager.getConnection().prepareStatement(query);
+            preparedStatement.setString(1, originalProfessorData.get(0));
+            preparedStatement.setString(2, originalProfessorData.get(1));
+            preparedStatement.setString(3, originalProfessorData.get(2));
+            preparedStatement.setString(4, originalProfessorData.get(3));
+            preparedStatement.setString(5, originalProfessorData.get(4));
+            preparedStatement.setString(6, originalProfessorData.get(5));
+            preparedStatement.setString(7, originalProfessorData.get(6));
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()) {
+                idUser = resultSet.getInt("IdUsuario");
+            }
+            
+            resultSet.close();
+            dataBaseManager.getConnection().close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return idUser;
     }
     
 }

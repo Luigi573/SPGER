@@ -201,7 +201,8 @@ public class ModifyUserInformationController {
             return;
         }
         studentDAO.modifyStudentDataFromDatabase(student, this.getAllLabelsDataFromUserInformationPane());
-        this.errorMessageText.setVisible(false);
+        this.errorMessageText.setText("Usuario registrado exitosamente");
+        this.errorMessageText.setVisible(true);
     }
 
     private void modifyProfessor(){
@@ -220,7 +221,8 @@ public class ModifyUserInformationController {
             return;
         }
         professorDAO.modifyProfessorDataFromDatabase(professor, this.getAllLabelsDataFromUserInformationPane());
-        this.errorMessageText.setVisible(false);
+        this.errorMessageText.setText("Usuario registrado exitosamente");
+        this.errorMessageText.setVisible(true);
     }
 
     private void modifyDirector(){
@@ -239,7 +241,8 @@ public class ModifyUserInformationController {
             return;
         }
         directorDAO.modifyDirectorDataFromDatabase(director, this.getAllLabelsDataFromUserInformationPane());
-        this.errorMessageText.setVisible(false);
+        this.errorMessageText.setText("Usuario registrado exitosamente");
+        this.errorMessageText.setVisible(true);
     }
 
     private void modifyAcademicBodyHead(){
@@ -258,7 +261,8 @@ public class ModifyUserInformationController {
             return;
         }
         academicBodyHeadDAO.modifyAcademicBodyHeadDataFromDatabase(academicBodyHead, this.getAllLabelsDataFromUserInformationPane());
-        this.errorMessageText.setVisible(false);
+        this.errorMessageText.setText("Usuario registrado exitosamente");
+        this.errorMessageText.setVisible(true);
     }
 
     private void modifyDegreeBoss(){
@@ -277,7 +281,8 @@ public class ModifyUserInformationController {
             return;
         }
         degreeBossDAO.modifyDegreeBossDataFromDatabase(degreeBoss, this.getAllLabelsDataFromUserInformationPane());
-        this.errorMessageText.setVisible(false);
+        this.errorMessageText.setText("Usuario registrado exitosamente");
+        this.errorMessageText.setVisible(true);
     }
 
     private ArrayList<String> getAllLabelsDataFromUserInformationPane(){

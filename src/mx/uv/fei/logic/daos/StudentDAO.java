@@ -229,10 +229,6 @@ public class StudentDAO implements IStudentDAO{
     private int getIdUserFromStudent(ArrayList<String> originalStudentData){
         int idUser = 0;
 
-        for(String s : originalStudentData){
-            System.out.println(s);
-        }
-
         try {
             DataBaseManager dataBaseManager = new DataBaseManager();
             String query = "SELECT U.IdUsuario FROM Usuarios U INNER JOIN Estudiantes E ON " + 

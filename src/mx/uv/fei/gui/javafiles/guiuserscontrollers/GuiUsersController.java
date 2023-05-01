@@ -254,22 +254,22 @@ public class GuiUsersController {
         }
     }
 
-    private void openPaneWithDirectorInformation(User user){
+    private void openPaneWithDirectorInformation(Director director){
         FXMLLoader userInformationControllerLoader = new FXMLLoader(
             getClass().getResource("/mx/uv/fei/gui/fxmlfiles/guiusers/UserInformation.fxml")
         );
         try {
             VBox userInformationVBox = userInformationControllerLoader.load();
             UserInformationController userInformationController = userInformationControllerLoader.getController();
-            userInformationController.setNames(((Director)user).getName());
-            userInformationController.setFirstSurname(((Director)user).getFirstSurname());
-            userInformationController.setSecondSurname(((Director)user).getSecondSurname());
-            userInformationController.setEmail(((Director)user).getEmailAddress());
-            userInformationController.setAlternateEmail(((Director)user).getAlternateEmail());
-            userInformationController.setTelephoneNumber(((Director)user).getPhoneNumber());
-            userInformationController.setUserType("");
-            //userInformationController.setStatus(((Director)user).getStatus());
-            userInformationController.setMatricleOrPersonalNumber(((Director)user).getPersonalNumber());
+            userInformationController.setNames(director.getName());
+            userInformationController.setFirstSurname(director.getFirstSurname());
+            userInformationController.setSecondSurname(director.getSecondSurname());
+            userInformationController.setEmail(director.getEmailAddress());
+            userInformationController.setAlternateEmail(director.getAlternateEmail());
+            userInformationController.setTelephoneNumber(director.getPhoneNumber());
+            userInformationController.setUserType("Director");
+            //userInformationController.setStatus(director.getStatus());
+            userInformationController.setMatricleOrPersonalNumber(director.getPersonalNumber());
             userInformationController.setGuiUsersController(this);
             this.userInformationScrollPane.setContent(userInformationVBox);
             
@@ -277,30 +277,6 @@ public class GuiUsersController {
             e.printStackTrace();
         }
     }
-
-    //private void openPaneWithDirectorInformation(Director director){
-    //    FXMLLoader userInformationControllerLoader = new FXMLLoader(
-    //        getClass().getResource("/mx/uv/fei/gui/fxmlfiles/guiusers/UserInformation.fxml")
-    //    );
-    //    try {
-    //        VBox userInformationVBox = userInformationControllerLoader.load();
-    //        UserInformationController userInformationController = userInformationControllerLoader.getController();
-    //        userInformationController.setNames(director.getName());
-    //        userInformationController.setFirstSurname(director.getFirstSurname());
-    //        userInformationController.setSecondSurname(director.getSecondSurname());
-    //        userInformationController.setEmail(director.getEmailAddress());
-    //        userInformationController.setAlternateEmail(director.getAlternateEmail());
-    //        userInformationController.setTelephoneNumber(director.getPhoneNumber());
-    //        userInformationController.setUserType("Director");
-    //        //userInformationController.setStatus(director.getStatus());
-    //        userInformationController.setMatricleOrPersonalNumber(director.getPersonalNumber());
-    //        userInformationController.setGuiUsersController(this);
-    //        this.userInformationScrollPane.setContent(userInformationVBox);
-    //        
-    //    } catch (IOException e){
-    //        e.printStackTrace();
-    //    }
-    //}
 
     private void openPaneWithAcademicBodyHeadInformation(AcademicBodyHead academicBodyHead){
         FXMLLoader userInformationControllerLoader = new FXMLLoader(
