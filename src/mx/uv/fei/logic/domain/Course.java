@@ -3,12 +3,14 @@ package mx.uv.fei.logic.domain;
 public class Course {
     private int nrc;
     private int idScholarPeriod;
-    private String name;
+    private String eeName;
     private String section;
     private int block;
+    private int personalNumber;
+    private String status;
 
     public int getNrc() {
-        return nrc;
+        return this.nrc;
     }
 
     public void setNrc(int nrc) {
@@ -23,16 +25,16 @@ public class Course {
         this.idScholarPeriod = idScholarPeriod;
     }
 
-    public String getName() {
-        return name;
+    public String getEEName() {
+        return this.eeName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setEEName(String eeName) {
+        this.eeName = eeName;
     }
 
     public String getSection() {
-        return section;
+        return this.section;
     }
 
     public void setSection(String section) {
@@ -40,11 +42,27 @@ public class Course {
     }
 
     public int getBlock() {
-        return block;
+        return this.block;
     }
 
     public void setBlock(int block) {
         this.block = block;
+    }
+
+    public int getPersonalNumber() {
+        return this.personalNumber;
+    }
+
+    public void setPersonalNumber(int personalNumber) {
+        this.personalNumber = personalNumber;
+    }
+
+    public String getStatus() {
+        return this.status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
     
 }

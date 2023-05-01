@@ -8,7 +8,6 @@ import mx.uv.fei.dataaccess.DataBaseManager;
 import mx.uv.fei.logic.daosinterfaces.IActivityDAO;
 import mx.uv.fei.logic.domain.Activity;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
-import mx.uv.fei.logic.exceptions.DataWritingException;
 
 public class ActivityDAO implements IActivityDAO{
     private DataBaseManager dataBaseManager;
@@ -18,7 +17,7 @@ public class ActivityDAO implements IActivityDAO{
     }
     
     @Override
-    public int addActivity(Activity activity) throws DataWritingException{
+    public int addActivity(Activity activity) throws DataInsertionException{
         int result = 0;
         PreparedStatement statement;
         String query = "INSERT INTO Actividades(título, descripción, fechaInicio, fechaFin) VALUES (?,?,?,?)";
@@ -32,7 +31,7 @@ public class ActivityDAO implements IActivityDAO{
             
             result = statement.executeUpdate();
         }catch(SQLException exception){
-            throw new DataWritingException("Error al agregar actividad. Verifique su conexion e intentelo de nuevo");
+            throw new DataInsertionException("Failed to add activity, please verify your internet connnection");
         }finally{
             dataBaseManager.closeConnection();
         }

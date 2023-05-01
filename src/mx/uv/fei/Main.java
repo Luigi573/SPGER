@@ -27,19 +27,15 @@ public class Main extends Application{
 
     @Override
     public void start(Stage arg0) throws Exception {
-        //ResearchReport rr = new ResearchReport();
-        //rr.generateResearchReport();
-        ResearchesReportDAO rrd = new ResearchesReportDAO();
-        Parent guiReporteAnteproyecto;
-        Path path = Paths.get("/home/luisalonso/Documentos/SPGER/src/mx/uv/fei/gui/fxmlfiles/guiresearchreport/GuiResearchReport.fxml");
-        //Path path = Paths.get("src/mx/uv/fei/gui/fxmlfiles/GuiReporteAnteproyecto.fxml");
+        Parent guiUsuarios;
         FXMLLoader loader = new FXMLLoader(
-            //getClass().getResource(path.toAbsolutePath().toString())
-            getClass().getResource("gui/fxmlfiles/guiresearchreport/GuiResearchReport.fxml")
+            getClass().getResource("gui/fxmlfiles/guicourses/GuiCourses.fxml")
+            //getClass().getResource("gui/fxmlfiles/guiusers/GuiUsers.fxml")
+            //getClass().getResource("gui/fxmlfiles/guiresearchreport/GuiResearchReport.fxml")
         );
-        guiReporteAnteproyecto = loader.load();
+        guiUsuarios = loader.load();
         
-        Scene scene = new Scene(guiReporteAnteproyecto);
+        Scene scene = new Scene(guiUsuarios);
         Stage stage = new Stage();
         
         stage.setTitle("SPGER");

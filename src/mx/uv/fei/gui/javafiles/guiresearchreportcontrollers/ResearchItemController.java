@@ -48,4 +48,4 @@ public class ResearchItemController {
             this.guiResearchReportController = guiResearchReportController;
     }
 
-}
+} 

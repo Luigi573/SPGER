@@ -1,7 +1,7 @@
 package mx.uv.fei.logic.exceptions;
 
-public class DataWritingException extends Exception {
-    public DataWritingException(String message){
+public class DataInsertionException extends Exception {
+    public DataInsertionException(String message){
         super(message);
     }
 }
