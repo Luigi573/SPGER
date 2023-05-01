@@ -29,7 +29,8 @@ public class Main extends Application{
     public void start(Stage arg0) throws Exception {
         Parent guiUsuarios;
         FXMLLoader loader = new FXMLLoader(
-            getClass().getResource("gui/fxmlfiles/guiusers/GuiUsers.fxml")
+            getClass().getResource("gui/fxmlfiles/guicourses/GuiCourses.fxml")
+            //getClass().getResource("gui/fxmlfiles/guiusers/GuiUsers.fxml")
             //getClass().getResource("gui/fxmlfiles/guiresearchreport/GuiResearchReport.fxml")
         );
         guiUsuarios = loader.load();
