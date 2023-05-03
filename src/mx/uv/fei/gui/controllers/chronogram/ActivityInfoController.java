@@ -1,4 +1,4 @@
-package mx.uv.fei.gui;
+package mx.uv.fei.gui.controllers.chronogram;
 
 import java.io.IOException;
 import javafx.event.ActionEvent;
@@ -13,6 +13,7 @@ import javafx.scene.control.Label;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
+import mx.uv.fei.gui.controllers.chronogram.ModifyActivityController;
 import mx.uv.fei.logic.domain.Activity;
 
 public class ActivityInfoController{

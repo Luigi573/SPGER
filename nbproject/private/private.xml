@@ -12,16 +12,23 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Jesús%20Manuel/Desktop/SPGER/src/mx/uv/fei/gui/KGALListElementController.java</file>
-            <file>file:/C:/Users/Jesús%20Manuel/Desktop/SPGER/src/mx/uv/fei/gui/UpdateKGALController.java</file>
-            <file>file:/C:/Users/Jesús%20Manuel/Desktop/SPGER/src/mx/uv/fei/gui/KGALListController.java</file>
+            <file>file:/C:/Users/Jesús%20Manuel/Desktop/SPGER/src/mx/uv/fei/gui/fxcontrollers/manageKGAL/KGALListElementController.java</file>
+            <file>file:/C:/Users/Jesús%20Manuel/Desktop/SPGER/src/mx/uv/fei/gui/controllers/chronogram/ModifyActivityController.java</file>
+            <file>file:/C:/Users/Jesús%20Manuel/Desktop/SPGER/src/mx/uv/fei/gui/fxml/manageKGAL/UpdateKGAL.fxml</file>
+            <file>file:/C:/Users/Jesús%20Manuel/Desktop/SPGER/src/mx/uv/fei/gui/controllers/chronogram/CreateActivityController.java</file>
             <file>file:/C:/Users/Jesús%20Manuel/Desktop/SPGER/src/mx/uv/fei/logic/daos/KGALDAO.java</file>
-            <file>file:/C:/Users/Jesús%20Manuel/Desktop/SPGER/test/mx/uv/fei/logic/daos/AcademicBodyDAOTest.java</file>
-            <file>file:/C:/Users/Jesús%20Manuel/Desktop/SPGER/src/mx/uv/fei/gui/KGALListElement.fxml</file>
             <file>file:/C:/Users/Jesús%20Manuel/Desktop/SPGER/src/mx/uv/fei/Main.java</file>
+            <file>file:/C:/Users/Jesús%20Manuel/Desktop/SPGER/src/mx/uv/fei/gui/fxml/manageKGAL/KGALListElement.fxml</file>
             <file>file:/C:/Users/Jesús%20Manuel/Desktop/SPGER/test/mx/uv/fei/logic/daos/AdvanceDAOTest.java</file>
-            <file>file:/C:/Users/Jesús%20Manuel/Desktop/SPGER/test/mx/uv/fei/logic/daos/KGALDAOTest.java</file>
+            <file>file:/C:/Users/Jesús%20Manuel/Desktop/SPGER/src/mx/uv/fei/gui/fxcontrollers/manageKGAL/CreateNewKGALController.java</file>
             <file>file:/C:/Users/Jesús%20Manuel/Desktop/SPGER/src/mx/uv/fei/dataaccess/DataBaseManager.java</file>
+            <file>file:/C:/Users/Jesús%20Manuel/Desktop/SPGER/src/mx/uv/fei/gui/fxcontrollers/manageKGAL/KGALListController.java</file>
+            <file>file:/C:/Users/Jesús%20Manuel/Desktop/SPGER/src/mx/uv/fei/gui/fxml/manageKGAL/createNewKGAL.fxml</file>
+            <file>file:/C:/Users/Jesús%20Manuel/Desktop/SPGER/src/mx/uv/fei/gui/javafiles/guiresearchreportcontrollers/GuiResearchReportController.java</file>
+            <file>file:/C:/Users/Jesús%20Manuel/Desktop/SPGER/src/mx/uv/fei/gui/fxcontrollers/manageKGAL/UpdateKGALController.java</file>
+            <file>file:/C:/Users/Jesús%20Manuel/Desktop/SPGER/test/mx/uv/fei/logic/daos/AcademicBodyDAOTest.java</file>
+            <file>file:/C:/Users/Jesús%20Manuel/Desktop/SPGER/test/mx/uv/fei/logic/daos/KGALDAOTest.java</file>
+            <file>file:/C:/Users/Jesús%20Manuel/Desktop/SPGER/src/mx/uv/fei/gui/fxml/manageKGAL/KGALList.fxml</file>
         </group>
     </open-files>
 </project-private>
