@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import mx.uv.fei.logic.daos.KGALDAO;
@@ -23,21 +24,32 @@ public class CreateNewKGALController {
     private TextField tfDescription;
 
     @FXML
-    void createNewKGAL(ActionEvent event) {
+    public void createNewKGAL(ActionEvent event) {
         String newKGALDescription = tfDescription.getText();
+        int result = 0;
         KGALDAO kgalDAO = new KGALDAO();
         KGAL newKgal = new KGAL();
         newKgal.setDescription(newKGALDescription);
         try {
-            kgalDAO.addKGAL(newKgal);
+            result = kgalDAO.addKGAL(newKgal);
+            System.out.println(result);
         } catch (DataInsertionException die) {
-            System.out.println(die.getMessage());
+            Alert errorMessage = new Alert(Alert.AlertType.ERROR);
+            errorMessage.setHeaderText("Error al insertar datos");
+            errorMessage.setContentText(die.getMessage());
+            errorMessage.showAndWait();
+        }
+        if(result == 1) {
+            Alert successMessage = new Alert(Alert.AlertType.CONFIRMATION);
+            successMessage.setHeaderText("Operación exitosa");
+            successMessage.setContentText("Se ha guardado la nueva LGAC correctamente.");
+            successMessage.showAndWait();
         }
         tfDescription.clear();
     }
 
     @FXML
-    void switchToKGALList(ActionEvent event) {
+    public void switchToKGALListScene(ActionEvent event) {
         try {
             root = FXMLLoader.load(getClass().getResource("/mx/uv/fei/gui/KGALList.fxml"));
             stage = (Stage)((Node)event.getSource()).getScene().getWindow();
@@ -45,7 +57,10 @@ public class CreateNewKGALController {
             stage.setScene(scene);
             stage.show();
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            Alert errorMessage = new Alert(Alert.AlertType.ERROR);
+            errorMessage.setHeaderText("Error al mostrar la información");
+            errorMessage.setContentText(e.getMessage());
+            errorMessage.showAndWait();
         }
     }
 

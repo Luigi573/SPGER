@@ -17,6 +17,6 @@
       </Text>
       <Label layoutX="125.0" layoutY="179.0" text="Descripción:" />
       <Button layoutX="508.0" layoutY="345.0" mnemonicParsing="false" onAction="#createNewKGAL" text="Guardar" />
-      <Button layoutX="420.0" layoutY="345.0" mnemonicParsing="false" onAction="#switchToKGALList" text="Cancelar" />
+      <Button layoutX="420.0" layoutY="345.0" mnemonicParsing="false" onAction="#switchToKGALListScene" text="Cancelar" />
    </children>
 </AnchorPane>

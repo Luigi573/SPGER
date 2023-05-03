@@ -7,8 +7,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/19" fx:controller="mx.uv.fei.gui.UpdateKGALController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.uv.fei.gui.UpdateKGALController">
    <children>
       <Text layoutX="163.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Modificar Descripción de LGAC">
          <font>
@@ -18,8 +17,8 @@
       <TextField id="tfDescription" fx:id="tfDescription" layoutX="205.0" layoutY="217.0" prefHeight="25.0" prefWidth="272.0" promptText="max. 40 caracteres" />
       <Label layoutX="81.0" layoutY="221.0" text="Nueva Descripción:" />
       <Label layoutX="168.0" layoutY="153.0" text="ID:" />
-      <TextField id="tfDescription" fx:id="tfID" layoutX="205.0" layoutY="149.0" prefHeight="25.0" prefWidth="272.0" promptText="ID del LGAC que se desea modificar..." />
       <Button fx:id="btnSave" layoutX="518.0" layoutY="355.0" mnemonicParsing="false" onAction="#updateKGALDescription" text="Guardar" />
-      <Button fx:id="btnCancel" layoutX="430.0" layoutY="355.0" mnemonicParsing="false" onAction="#switchToKGALList" text="Cancelar" />
+      <Button fx:id="btnCancel" layoutX="430.0" layoutY="355.0" mnemonicParsing="false" onAction="#switchToKGALListScene" text="Cancelar" />
+      <Label fx:id="lID" layoutX="205.0" layoutY="153.0" text="ID del LGAC" />
    </children>
 </AnchorPane>

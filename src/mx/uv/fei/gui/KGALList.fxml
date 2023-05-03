@@ -10,8 +10,8 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.uv.fei.gui.KGALListController">
    <children>
-      <Button fx:id="btnNewKGAL" layoutX="449.0" layoutY="351.0" mnemonicParsing="false" onAction="#switchToCreateNewKGAL" text="Crear nueva LGAC" />
-      <Button fx:id="btnCancel" layoutX="364.0" layoutY="351.0" mnemonicParsing="false" onAction="#exitKGALList" text="Regresar" />
+      <Button fx:id="btnNewKGAL" layoutX="449.0" layoutY="351.0" mnemonicParsing="false" onAction="#switchToCreateNewKGALScene" text="Crear nueva LGAC" />
+      <Button fx:id="btnCancel" layoutX="364.0" layoutY="351.0" mnemonicParsing="false" onAction="#exitKGALListScene" text="Regresar" />
       <Text layoutX="118.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Administrar Líneas de Generación y Administración de Conocimiento" textAlignment="CENTER" wrappingWidth="363.3359375">
          <font>
             <Font size="20.0" />

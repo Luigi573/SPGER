@@ -26,7 +26,7 @@ public class KGALDAO implements IKGALDAO {
             statement.setString(1, kgal.getDescription());
             result = statement.executeUpdate();
         } catch (SQLException e) {
-            throw new DataInsertionException("New Knowledge Generation and Application Line data could not be saved to the Database. Please try again later");
+            throw new DataInsertionException("La información de la nueva LGAC no pudo ser guardada en la Base de Datos. Por favor intente de nuevo más tarde.");
         }
         return result;
     }
@@ -49,7 +49,7 @@ public class KGALDAO implements IKGALDAO {
                 kgalList.add(kgal);
             }
         } catch (SQLException sql) {
-            throw new DataRetrievalException("Failed to retrieve KGAL information. Please try again later");
+            throw new DataRetrievalException("No fue posible recuperar la información de la LGAC. Por favor intente de nuevo más tarde.");
         }
         
         return kgalList;
@@ -69,11 +69,11 @@ public class KGALDAO implements IKGALDAO {
                 kgal.setKgalID(rs.getInt("IdLGAC"));
                 kgal.setDescription(rs.getString("descripcion"));
             } else {
-                System.out.println("We couldn't find a KAGL that matches the given ID");
+                System.out.println("No encontramos ninguna LGAC que coincida con el ID proporcionado.");
             }
             return kgal;            
         } catch (SQLException sql) {
-            throw new DataRetrievalException("Failed to retrieve the specified KGAL. Please try again later");
+            throw new DataRetrievalException("No fue posible recuperar la información de la LGAC especificada. Por favor intente de nuevo más tarde.");
         }
     }
 
@@ -85,17 +85,18 @@ public class KGALDAO implements IKGALDAO {
             Connection connection = dataBaseManager.getConnection();
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, description);
-            ResultSet rs = statement.executeQuery();
             KGAL kgal = new KGAL();
+            
+            ResultSet rs = statement.executeQuery();
             if(rs.next()) {
                 kgal.setKgalID(rs.getInt("IdLGAC"));
                 kgal.setDescription(rs.getString("descripcion"));
             } else {
-                System.out.println("We couldn't find a KAGL that matches the given description");
+                System.out.println("No encontramos ninguna LGAC que coincida con la descripción dada.");
             }
             return kgal;            
         } catch (SQLException sql) {           
-            throw new DataRetrievalException("Failed to retrieve the specified KGAL List. Please try again later");
+            throw new DataRetrievalException("No fue posible recuperar la lista de LGAC. Por favor intente de nuevo más tarde.");
         }
     }
 
@@ -108,6 +109,7 @@ public class KGALDAO implements IKGALDAO {
             Connection connection = dataBaseManager.getConnection();
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, "%" + description + "%");
+            
             ResultSet rs = statement.executeQuery();
             while(rs.next()) {
                 KGAL kgal = new KGAL();
@@ -118,8 +120,7 @@ public class KGALDAO implements IKGALDAO {
             }
             return kgalList;            
         } catch (SQLException sql) {
-            System.out.println(sql.getMessage());
-            throw new DataRetrievalException("Failed to retrieve the specified KGAL. Please try again later");
+            throw new DataRetrievalException("No fue posible recuperar la LGAC especificada. Por favor intente de nuevo más tarde.");
         }
     }
     
@@ -135,8 +136,7 @@ public class KGALDAO implements IKGALDAO {
             statement.setInt(2, kgalID);
             result = statement.executeUpdate();
         } catch (SQLException sql) {
-            System.out.println(sql.getMessage());
-            throw new DataRetrievalException("New KGAL description could not be saved. Please try again later.");
+            throw new DataRetrievalException("La nueva descripción de la LGAC no pudo ser guardada. Por favor intente de nuevo más tarde.");
         }
         return result;
     }
