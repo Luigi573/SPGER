@@ -1,19 +1,27 @@
+
 package mx.uv.fei.logic.domain;
 
-import java.text.SimpleDateFormat;
 import java.sql.Date;
 
 public class Activity {
-    String title;
-    String description;
-    Date startDate;
-    Date dueDate;
-    
+    private int id;
+    private String title;
+    private String description;
+    private Date startDate;
+    private Date dueDate;
+   
+    public Activity(){
+        id = 0;
+    }
     public Activity(String title, String description, Date startDate, Date dueDate){
+        this();
         this.title = title;
         this.description = description;
         this.startDate = startDate;
         this.dueDate = dueDate;
+    }
+    public void setId(int id){
+        this.id = id;
     }
     public void setTitle(String title){
         this.title = title;
@@ -27,6 +35,9 @@ public class Activity {
     public void setDueDate(Date dueDate){
         this.dueDate = dueDate;
     }
+    public int getId(){
+        return id;
+    }
     public String getTitle(){
         return title;
     }
@@ -38,5 +49,9 @@ public class Activity {
     }
     public Date getDueDate(){
         return dueDate;
+    }
+    @Override
+    public String toString(){
+        return "Title: " + title + "\nDescription: " + description + "\nStartDate: " + startDate + "\nDueDate: " + dueDate;
     }
 }

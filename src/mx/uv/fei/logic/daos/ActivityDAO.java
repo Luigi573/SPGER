@@ -1,15 +1,15 @@
 package mx.uv.fei.logic.daos;
 
 import java.util.ArrayList;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import mx.uv.fei.dataaccess.DataBaseManager;
 import mx.uv.fei.logic.daosinterfaces.IActivityDAO;
 import mx.uv.fei.logic.domain.Activity;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
 import mx.uv.fei.logic.exceptions.DataInsertionException;
 import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 public class ActivityDAO implements IActivityDAO {
     private DataBaseManager dataBaseManager;
@@ -22,12 +22,10 @@ public class ActivityDAO implements IActivityDAO {
     public int addActivity(Activity activity) throws DataInsertionException{
         int result = 0;
         PreparedStatement statement;
-        ResultSet resultSet;
-        String query = "INSERT INTO Actividades(título, descripción, fechaCreación, fechaVencimiento) VALUES (?,?,?,?)";
+        String query = "INSERT INTO Actividades(título, descripción, fechaInicio, fechaFin) VALUES (?,?,?,?)";
         
         try{
             statement = dataBaseManager.getConnection().prepareStatement(query);
-            
             statement.setString(1, activity.getTitle());
             statement.setString(2, activity.getDescription());
             statement.setDate(3, activity.getStartDate());
@@ -36,43 +34,84 @@ public class ActivityDAO implements IActivityDAO {
             result = statement.executeUpdate();
         }catch(SQLException exception){
             throw new DataInsertionException("Failed to add activity, please verify your internet connnection");
-            //throw new DataWritingException(exception.getMessage());
         }finally{
             dataBaseManager.closeConnection();
         }
+        
         return result;
     }
 
     @Override
     public ArrayList<Activity> getActivityList() throws DataRetrievalException{
         ArrayList<Activity> activityList = new ArrayList();
-        String title, description;
-        Date startDate, dueDate;
         PreparedStatement statement;
-        String query = "SELECT * FROM Actividades";
+        String query = "SELECT * FROM Actividades ORDER BY fechaFin, fechaInicio, título ASC";
         
         try{
             statement = dataBaseManager.getConnection().prepareStatement(query);
             ResultSet resultSet = statement.executeQuery();
             
             while(resultSet.next()){
-                title = resultSet.getString("título");
-                description = resultSet.getString("descripción");
-                startDate = resultSet.getDate("fechaCreación");
-                dueDate = resultSet.getDate("fechaVencimiento");
+                Activity activity = new Activity();
                 
-                activityList.add(new Activity(title, description, startDate, dueDate));
+                activity.setId(resultSet.getInt("IdActividad"));
+                activity.setTitle(resultSet.getString("título"));
+                activity.setDescription(resultSet.getString("descripción"));
+                activity.setStartDate(resultSet.getDate("fechaInicio"));
+                activity.setDueDate(resultSet.getDate("fechaFin"));
+                
+                activityList.add(activity);
             }
-            
         }catch(SQLException exception){
-            throw new DataRetrievalException("Failed to retrieve activity data, please verify your internet connection");
+            throw new DataRetrievalException("Fallo al recuperar la informacion. Verifique su conexion e intentelo de nuevo");
         }finally{
             dataBaseManager.closeConnection();
         }
         
         return activityList;
     }
-    private boolean assertActivity(){
-        return false;
+    @Override
+    public int modifyActivity(int oldActivityId, Activity newActivity) throws DataWritingException{
+        int result = 0;
+        PreparedStatement statement;
+        String query = "UPDATE Actividades SET título = ?, descripción = ?, fechaInicio = ?, fechaFin = ? WHERE IdActividad = ?";
+        
+        try{
+            statement = dataBaseManager.getConnection().prepareStatement(query);
+            statement.setString(1, newActivity.getTitle());
+            statement.setString(2, newActivity.getDescription());
+            statement.setDate(3, newActivity.getStartDate());
+            statement.setDate(4, newActivity.getDueDate());
+            statement.setInt(5, oldActivityId); 
+           
+            result = statement.executeUpdate();
+        }catch(SQLException exception){
+            System.out.println(exception.getMessage());
+            throw new DataWritingException("Error al modificar actividad. Verifique su conexion e intentelo de nuevo");
+        }finally{
+            dataBaseManager.closeConnection();
+        }
+        
+        return result;
+    }
+    public boolean assertActivity(Activity activity){
+        return !isNull(activity) && !isBlank(activity) && isValidDate(activity);
+    }
+    public boolean isBlank(Activity activity){
+        return activity.getTitle().equals("") && activity.getDescription().equals("");
+    }
+    public boolean isNull(Activity activity){
+        if(activity != null){
+            if(activity.getTitle() != null && activity.getDescription() != null){
+                if(activity.getStartDate() != null && activity.getDueDate() != null){
+                    return false;
+                }
+            }
+        }
+        
+        return true;
+    }
+    public boolean isValidDate(Activity activity){
+        return activity.getStartDate().compareTo(activity.getDueDate()) <= 0;
     }
 }

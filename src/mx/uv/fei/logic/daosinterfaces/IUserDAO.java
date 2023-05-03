@@ -6,5 +6,5 @@ import mx.uv.fei.logic.domain.User;
 
 public interface IUserDAO {
     public void addUser(User user);
-    public ArrayList<User> getUserList() throws DataRetrievalException;
+    public ArrayList<User> getAllUsers();
 }
