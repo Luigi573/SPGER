@@ -5,7 +5,7 @@
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.layout.Pane?>
 
-<Pane fx:id="pKGALListElement" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="52.0" prefWidth="510.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.uv.fei.gui.KGALListElementController">
+<Pane fx:id="pKGALListElement" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="52.0" prefWidth="510.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.uv.fei.gui.fxcontrollers.manageKGAL.KGALListElementController">
    <children>
       <Label fx:id="lKGALID" layoutX="14.0" layoutY="18.0" prefHeight="17.0" prefWidth="144.0" text="ID:" />
       <Label fx:id="lKGALDescription" layoutX="86.0" layoutY="18.0" prefHeight="17.0" prefWidth="407.0" text="Descripción:" />

@@ -1,4 +1,4 @@
-package mx.uv.fei.gui;
+package mx.uv.fei.gui.fxcontrollers.manageKGAL;
 
 import java.io.IOException;
 import javafx.event.ActionEvent;
@@ -48,7 +48,7 @@ public class KGALListElementController {
     
     public void switchToUpdateKGALScene(ActionEvent event) {
         try {  
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/UpdateKGAL.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/manageKGAL/UpdateKGAL.fxml"));
             root = loader.load();
             UpdateKGALController controller = (UpdateKGALController)loader.getController();
             controller.setKGAL(kgal);

@@ -1,4 +1,4 @@
-package mx.uv.fei.gui;
+package mx.uv.fei.gui.fxcontrollers.manageKGAL;
 
 import java.io.IOException;
 import javafx.event.ActionEvent;
@@ -51,7 +51,7 @@ public class CreateNewKGALController {
     @FXML
     public void switchToKGALListScene(ActionEvent event) {
         try {
-            root = FXMLLoader.load(getClass().getResource("/mx/uv/fei/gui/KGALList.fxml"));
+            root = FXMLLoader.load(getClass().getResource("/mx/uv/fei/gui/fxml/manageKGAL/KGALList.fxml"));
             stage = (Stage)((Node)event.getSource()).getScene().getWindow();
             scene = new Scene(root);
             stage.setScene(scene);
