@@ -45,5 +45,20 @@ public class Main extends Application{
 
     public static void main (String args[]) {
         launch(args);
-    }
+
+    //@Override
+    //public void start(Stage stage) throws Exception {
+    //    try {
+    //        Parent root = FXMLLoader.load(getClass().getResource("/mx/uv/fei/gui/fxml/manageKGAL/KGALList.fxml"));
+    //        Scene scene = new Scene(root);
+    //        stage.setScene(scene);
+    //        stage.setResizable(false);
+    //        stage.show();
+    //    } catch (IOException e) {
+    //        Alert errorMessage = new Alert(Alert.AlertType.ERROR);
+    //        errorMessage.setHeaderText("Error al mostrar la información");
+    //        errorMessage.setContentText("Ocurrió un error al intentar mostrar el menú principal.");
+    //        errorMessage.showAndWait();
+    //    }
+    //}
 }
