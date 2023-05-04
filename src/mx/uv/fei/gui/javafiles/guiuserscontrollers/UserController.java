@@ -4,7 +4,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import mx.uv.fei.logic.domain.Professor;
 
 public class UserController {
     GuiUsersController guiUsersController;

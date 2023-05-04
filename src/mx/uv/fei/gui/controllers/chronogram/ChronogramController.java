@@ -1,4 +1,4 @@
-package mx.uv.fei.gui;
+package mx.uv.fei.gui.controllers.chronogram;
 
 import java.io.IOException;
 import java.util.ArrayList;

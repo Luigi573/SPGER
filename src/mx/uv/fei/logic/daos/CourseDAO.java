@@ -39,7 +39,7 @@ public class CourseDAO implements ICourseDAO{
     public void modifyCourseDataFromDatabase(Course newCourseData, Course originalCourseData) {
         try {
             DataBaseManager dataBaseManager = new DataBaseManager();
-            String query = "UPDATE Usuarios SET NRC = ?, " + 
+            String query = "UPDATE Cursos SET NRC = ?, " + 
                            "IdPeriodoEscolar = ?, NumPersonal = ?, nombreEE = ?, " + 
                            "sección = ?, bloque = ?, estado = ? " +
                            "WHERE NRC = ? && IdPeriodoEscolar = ? && NumPersonal = ? && " + 
@@ -125,14 +125,14 @@ public class CourseDAO implements ICourseDAO{
     }
 
     @Override
-    public Course getCourseFromDatabase(String courseName) {
+    public Course getCourseFromDatabase(String courseNrc) {
         Course course = new Course();
 
         try {
             DataBaseManager dataBaseManager = new DataBaseManager();
-            String query = "SELECT * FROM Usuarios WHERE NRC = ?";
+            String query = "SELECT * FROM Cursos WHERE NRC = ?";
             PreparedStatement preparedStatement = dataBaseManager.getConnection().prepareStatement(query);
-            preparedStatement.setString(1, courseName);
+            preparedStatement.setString(1, courseNrc);
             ResultSet resultSet = preparedStatement.executeQuery();
             if(resultSet.next()){
                 course.setNrc(resultSet.getInt("NRC"));

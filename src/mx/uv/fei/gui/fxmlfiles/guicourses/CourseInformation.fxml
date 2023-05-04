@@ -47,6 +47,13 @@
       <HBox prefHeight="40.0" prefWidth="369.0">
          <children>
             <Label prefHeight="40.0" prefWidth="10.0" />
+            <Label prefHeight="40.0" prefWidth="55.0" text="Bloque:" />
+            <Label fx:id="blockLabel" prefHeight="40.0" prefWidth="296.0" text="Label" />
+         </children>
+      </HBox>
+      <HBox prefHeight="40.0" prefWidth="369.0">
+         <children>
+            <Label prefHeight="40.0" prefWidth="10.0" />
             <Label prefHeight="40.0" prefWidth="65.0" text="Docente: " />
             <Label fx:id="teacherLabel" prefHeight="40.0" prefWidth="284.0" text="Label" />
          </children>
