@@ -12,9 +12,10 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Jesús%20Manuel/Desktop/SPGER/src/mx/uv/fei/gui/fxmlfiles/guicourses/GuiCourses.fxml</file>
-            <file>file:/C:/Users/Jesús%20Manuel/Desktop/SPGER/src/mx/uv/fei/gui/javafiles/guiregistercoursecontrollers/GuiRegisterCourseController.java</file>
+            <file>file:/C:/Users/Jesús%20Manuel/Desktop/SPGER/src/mx/uv/fei/gui/controllers/chronogram/ChronogramController.java</file>
+            <file>file:/C:/Users/Jesús%20Manuel/Desktop/SPGER/src/mx/uv/fei/logic/daos/KGALDAO.java</file>
             <file>file:/C:/Users/Jesús%20Manuel/Desktop/SPGER/src/mx/uv/fei/Main.java</file>
+            <file>file:/C:/Users/Jesús%20Manuel/Desktop/SPGER/src/mx/uv/fei/gui/fxml/chronogram/Chronogram.fxml</file>
         </group>
     </open-files>
 </project-private>

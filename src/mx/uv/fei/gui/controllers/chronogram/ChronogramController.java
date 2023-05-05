@@ -46,6 +46,7 @@ public class ChronogramController{
                     errorMessage.setHeaderText("Error de carga");
                     errorMessage.setContentText("No se pudo abrir la ventana, verifique que el archivo .fxml esté en su ubicación correcta");
                     errorMessage.showAndWait();
+                    exception.printStackTrace();
                 }
             }
         }catch(DataRetrievalException exception){

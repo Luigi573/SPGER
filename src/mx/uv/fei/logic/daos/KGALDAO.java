@@ -18,7 +18,7 @@ public class KGALDAO implements IKGALDAO {
     @Override
     public int addKGAL(KGAL kgal) throws DataInsertionException {
         int result;
-        String query = "insert into LGAC(descripcion) values(?)";
+        String query = "insert into LGAC(descripción) values(?)";
         try {
             dataBaseManager = new DataBaseManager();
             Connection connection = dataBaseManager.getConnection();
@@ -44,7 +44,7 @@ public class KGALDAO implements IKGALDAO {
             while(rs.next()) {
                 KGAL kgal = new KGAL();
                 kgal.setKgalID(rs.getInt("IdLGAC"));
-                kgal.setDescription(rs.getString("descripcion"));
+                kgal.setDescription(rs.getString("descripción"));
                 
                 kgalList.add(kgal);
             }
@@ -67,7 +67,7 @@ public class KGALDAO implements IKGALDAO {
             KGAL kgal = new KGAL();
             if(rs.next()) {
                 kgal.setKgalID(rs.getInt("IdLGAC"));
-                kgal.setDescription(rs.getString("descripcion"));
+                kgal.setDescription(rs.getString("descripción"));
             } else {
                 System.out.println("No encontramos ninguna LGAC que coincida con el ID proporcionado.");
             }
@@ -79,7 +79,7 @@ public class KGALDAO implements IKGALDAO {
 
     @Override
     public KGAL getKGALByDescription(String description) throws DataRetrievalException {
-        String query = "select * from LGAC where descripcion=?";
+        String query = "select * from LGAC where descripción=?";
         try {
             dataBaseManager = new DataBaseManager();
             Connection connection = dataBaseManager.getConnection();
@@ -90,7 +90,7 @@ public class KGALDAO implements IKGALDAO {
             ResultSet rs = statement.executeQuery();
             if(rs.next()) {
                 kgal.setKgalID(rs.getInt("IdLGAC"));
-                kgal.setDescription(rs.getString("descripcion"));
+                kgal.setDescription(rs.getString("descripción"));
             } else {
                 System.out.println("No encontramos ninguna LGAC que coincida con la descripción dada.");
             }
@@ -102,7 +102,7 @@ public class KGALDAO implements IKGALDAO {
 
     @Override
     public ArrayList<KGAL> getKGALListByDescription(String description) throws DataRetrievalException {
-        String query = "select * from LGAC where descripcion like ?";
+        String query = "select * from LGAC where descripción like ?";
         ArrayList<KGAL> kgalList = new ArrayList();
         try {
             dataBaseManager = new DataBaseManager();
@@ -114,7 +114,7 @@ public class KGALDAO implements IKGALDAO {
             while(rs.next()) {
                 KGAL kgal = new KGAL();
                 kgal.setKgalID(rs.getInt("IdLGAC"));
-                kgal.setDescription(rs.getString("descripcion"));
+                kgal.setDescription(rs.getString("descripción"));
                 
                 kgalList.add(kgal);
             }
@@ -127,7 +127,7 @@ public class KGALDAO implements IKGALDAO {
     @Override
     public int updateKGALDescription(int kgalID, String description) throws DataRetrievalException {
         int result;
-        String query = "update LGAC set descripcion=? where IdLGAC=?";
+        String query = "update LGAC set descripción=? where IdLGAC=?";
         try {
             dataBaseManager = new DataBaseManager();
             Connection connection = dataBaseManager.getConnection();
