@@ -1,11 +1,9 @@
 package mx.uv.fei.logic.domain;
 
-import mx.uv.fei.logic.domain.statuses.StudentStatus;
-
 public class Student extends User{
     private int idStudent;
     private String matricle;
-    private StudentStatus status;
+    private String status;
 
     public int getIdUser() {
         return super.idUser;
@@ -87,11 +85,11 @@ public class Student extends User{
         this.matricle = matricle;
     }
 
-    public StudentStatus getStatus() {
+    public String getStatus() {
         return this.status;
     }
 
-    public void setStatus(StudentStatus status) {
+    public void setStatus(String status) {
         this.status = status;
     }
     

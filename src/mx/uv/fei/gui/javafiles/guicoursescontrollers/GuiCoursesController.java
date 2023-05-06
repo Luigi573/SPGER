@@ -16,8 +16,10 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import mx.uv.fei.logic.daos.CourseDAO;
+import mx.uv.fei.logic.daos.ProfessorDAO;
 import mx.uv.fei.logic.daos.ScholarPeriodDAO;
 import mx.uv.fei.logic.domain.Course;
+import mx.uv.fei.logic.domain.Professor;
 import mx.uv.fei.logic.domain.ScholarPeriod;
 
 public class GuiCoursesController {
@@ -55,11 +57,7 @@ public class GuiCoursesController {
     @FXML
     void initialize() {
         CourseDAO courseDAO = new CourseDAO();
-        ScholarPeriodDAO scholarPeriodDAO = new ScholarPeriodDAO();
-
         ArrayList<Course> courses = courseDAO.getCoursesFromDatabase();
-        ArrayList<ScholarPeriod> scholarPeriods = scholarPeriodDAO.getScholarPeriodsFromDatabase();
-        
         this.courseButtonMaker(courses);
     }
 
@@ -102,7 +100,7 @@ public class GuiCoursesController {
                 CourseController courseController = courseItemControllerLoader.getController();
                 courseController.setEEName(course.getEEName());
                 courseController.setNrc(Integer.toString(course.getNrc()));
-                //courseController.setScholarPeriod();
+                courseController.setScholarPeriod(scholarPeriod.toString());
                 courseController.setGuiCoursesController(this);
                 this.coursesVBox.getChildren().add(courseItemButton);
             }
@@ -115,20 +113,24 @@ public class GuiCoursesController {
     void openPaneWithCourseInformation(String courseNRC){
         CourseDAO courseDAO = new CourseDAO();
         Course course = courseDAO.getCourseFromDatabase(courseNRC);
+        ScholarPeriodDAO scholarPeriodDAO = new ScholarPeriodDAO();
+        ScholarPeriod scholarPeriod = scholarPeriodDAO.getScholarPeriodFromDatabase(course.getIdScholarPeriod());
+        ProfessorDAO professorDAO = new ProfessorDAO();
+        Professor professor = professorDAO.getProfessorFromDatabase(course.getPersonalNumber());
         FXMLLoader courseInformationControllerLoader = new FXMLLoader(
             getClass().getResource("/mx/uv/fei/gui/fxmlfiles/guicourses/CourseInformation.fxml")
         );
         try {
-            VBox CourseInformationVBox = courseInformationControllerLoader.load();
+            VBox courseInformationVBox = courseInformationControllerLoader.load();
             CourseInformationController courseInformationController = courseInformationControllerLoader.getController();
             courseInformationController.setEducativeExperience(course.getEEName());
             courseInformationController.setNrc(Integer.toString(course.getNrc()));
-            courseInformationController.setSection(course.getSection());
+            courseInformationController.setSection(Integer.toString(course.getSection()));
             courseInformationController.setBlock(Integer.toString(course.getBlock()));
-            //courseInformationController.setProfessor(course.getPersonalNumber());
-            //courseInformationController.setScholarPeriod(course.getIdScholarPeriod());
+            courseInformationController.setProfessor(professor.getName());
+            courseInformationController.setScholarPeriod(scholarPeriod.toString());
             courseInformationController.setGuiCoursesController(this);
-            this.courseInformationScrollPane.setContent(CourseInformationVBox);
+            this.courseInformationScrollPane.setContent(courseInformationVBox);
             
         } catch (IOException e){
             e.printStackTrace();
@@ -137,6 +139,12 @@ public class GuiCoursesController {
 
     //This method only should be used by the CourseInformationController Class.
     void openModifyCoursePane(CourseInformationController courseInformationController){
+        CourseDAO courseDAO = new CourseDAO();
+        Course course = courseDAO.getCourseFromDatabase(courseInformationController.getNrc());
+        ScholarPeriodDAO scholarPeriodDAO = new ScholarPeriodDAO();
+        ScholarPeriod scholarPeriod = scholarPeriodDAO.getScholarPeriodFromDatabase(course.getIdScholarPeriod());
+        ProfessorDAO professorDAO = new ProfessorDAO();
+        Professor professor = professorDAO.getProfessorFromDatabase(course.getPersonalNumber());
         FXMLLoader modifyCourseInformationControllerLoader = new FXMLLoader(
             getClass().getResource("/mx/uv/fei/gui/fxmlfiles/guicourses/ModifyCourseInformation.fxml")
         );
@@ -144,12 +152,12 @@ public class GuiCoursesController {
         try {
             VBox modifyCourseInformationVBox = modifyCourseInformationControllerLoader.load();
             ModifyCourseInformationController modifyCourseInformationController = modifyCourseInformationControllerLoader.getController();
-            modifyCourseInformationController.setEducativeExperience(courseInformationController.getEducativeExperience());
-            modifyCourseInformationController.setNrc(courseInformationController.getNrc());
-            modifyCourseInformationController.setSection(courseInformationController.getSection());
-            modifyCourseInformationController.setBlock(courseInformationController.getBlock());
-            modifyCourseInformationController.setProfessor(courseInformationController.getProfessor());
-            modifyCourseInformationController.setScholarPeriod(courseInformationController.getScholarPeriod());
+            modifyCourseInformationController.setEducativeExperience(course.getEEName());
+            modifyCourseInformationController.setNrc(Integer.toString(course.getNrc()));
+            modifyCourseInformationController.setSection(Integer.toString(course.getSection()));
+            modifyCourseInformationController.setBlock(Integer.toString(course.getBlock()));
+            modifyCourseInformationController.setProfessor(professor);
+            modifyCourseInformationController.setScholarPeriod(scholarPeriod);
             modifyCourseInformationController.setGuiCoursesController(this);
             modifyCourseInformationController.setCourseInformationController(courseInformationController);
             this.courseInformationScrollPane.setContent(modifyCourseInformationVBox);

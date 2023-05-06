@@ -16,7 +16,7 @@ public class CourseController {
     private Label nrcLabel;
 
     @FXML
-    private Label statusLabel;
+    private Label scholarPeriodLabel;
 
     @FXML
     private Button userButton;
@@ -50,12 +50,12 @@ public class CourseController {
         this.nrcLabel.setText(nrc);
     }
 
-    public String getStatus() {
-        return this.statusLabel.getText();
+    public String getScholarPeriod() {
+        return this.scholarPeriodLabel.getText();
     }
 
-    public void setStatus(String status) {
-        this.statusLabel.setText(status);;
+    public void setScholarPeriod(String status) {
+        this.scholarPeriodLabel.setText(status);
     }
 
 }

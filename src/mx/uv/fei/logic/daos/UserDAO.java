@@ -17,8 +17,9 @@ public class UserDAO implements IUserDAO{
     }
 
     @Override
-    public User getUser() {
-        
+    public ArrayList<User> getAllUsers() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getAllUsers'");
     }
     
 }

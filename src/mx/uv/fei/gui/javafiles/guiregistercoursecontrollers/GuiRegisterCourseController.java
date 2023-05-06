@@ -64,10 +64,10 @@ public class GuiRegisterCourseController {
             }
             
         });
+        this.professorComboBox.setValue(this.professorComboBox.getItems().get(0));
 
         ScholarPeriodDAO scholarPeriodDAO = new ScholarPeriodDAO();
         this.scholarPeriodComboBox.getItems().addAll(scholarPeriodDAO.getScholarPeriodsFromDatabase());
-        System.out.println(this.scholarPeriodComboBox.getItems().get(0));
         this.scholarPeriodComboBox.setConverter(new StringConverter<ScholarPeriod>() {
             
             @Override
@@ -85,6 +85,7 @@ public class GuiRegisterCourseController {
             }
             
         });
+        this.scholarPeriodComboBox.setValue(this.scholarPeriodComboBox.getItems().get(0));
 
         this.educativeExperienceComboBox.getItems().add("Proyecto Guiado");
         this.educativeExperienceComboBox.getItems().add("Experiencia Recepcional");
@@ -103,26 +104,22 @@ public class GuiRegisterCourseController {
 
             if(allTextFieldsContainsCorrectValues()){
                 this.errorMessajeText.setVisible(false);
-                ProfessorDAO professorDAO = new ProfessorDAO();
-                Professor professor = professorDAO.getProfessorFromDatabase(this.professorComboBox.getValue());
-                ScholarPeriodDAO scholarPeriodDAO = new ScholarPeriodDAO();
-                //ScholarPeriod scholarPeriod = scholarPeriodDAO.getScholarPeriodFromDatabase(this.professorComboBox.getValue());
                 CourseDAO courseDAO = new CourseDAO();
                 Course course = new Course();
-                course.setBlock(Integer.parseInt(this.blockComboBox.getValue()));
                 course.setEEName(this.educativeExperienceComboBox.getValue());
                 course.setNrc(Integer.parseInt(this.nrcTextField.getText()));
-                course.setSection(this.sectionComboBox.getValue());
+                course.setSection(Integer.parseInt(this.sectionComboBox.getValue()));
                 course.setBlock(Integer.parseInt(this.blockComboBox.getValue()));
-                course.setPersonalNumber(Integer.parseInt(professor.getPersonalNumber())); //Pendiente
-                //course.setIdScholarPeriod(scholarPeriod.getIdScholarPeriod()); //Pendiente
+                course.setPersonalNumber(Integer.parseInt(this.professorComboBox.getValue().getPersonalNumber()));
+                course.setIdScholarPeriod(this.scholarPeriodComboBox.getValue().getIdScholarPeriod());
                 if(courseDAO.theCourseIsAlreadyRegisted(course)) {
                     this.errorMessajeText.setText("El curso ya está registrado en el sistema");
                     this.errorMessajeText.setVisible(true);
                     return;
                 }
                 courseDAO.addCourseToDatabase(course);
-
+                this.errorMessajeText.setText("Curso registrado exitosamente");
+                this.errorMessajeText.setVisible(true);
             } else {
                 this.errorMessajeText.setText("Algunos campos contienen datos inválidos");
                 this.errorMessajeText.setVisible(true);

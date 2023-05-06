@@ -79,7 +79,7 @@ public class CourseInformationController {
         return this.scholarPeriodLabel.getText();
     }
 
-    public void setScholarPeriodLabel(String scholarPeriod) {
+    public void setScholarPeriod(String scholarPeriod) {
         this.scholarPeriodLabel.setText(scholarPeriod);
     }
 

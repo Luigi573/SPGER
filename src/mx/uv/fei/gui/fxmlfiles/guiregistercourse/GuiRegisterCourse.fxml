@@ -41,9 +41,9 @@
          </font>
       </Text>
       <Button fx:id="registerButton" layoutX="126.0" layoutY="360.0" mnemonicParsing="false" onAction="#registerButtonController" prefHeight="48.0" prefWidth="128.0" text="Registrar" />
-      <Text fx:id="errorMessajeText" fill="RED" layoutX="18.0" layoutY="336.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER">
+      <Text fx:id="errorMessajeText" fill="RED" layoutX="18.0" layoutY="338.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER">
          <font>
-            <Font size="18.0" />
+            <Font size="15.0" />
          </font>
       </Text>
       <ComboBox fx:id="educativeExperienceComboBox" layoutX="190.0" layoutY="79.0" prefHeight="24.0" prefWidth="172.0" />

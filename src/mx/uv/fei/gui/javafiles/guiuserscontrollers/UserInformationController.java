@@ -4,6 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import mx.uv.fei.logic.domain.User;
 
 public class UserInformationController {
 
@@ -41,6 +42,8 @@ public class UserInformationController {
     private Label userTypeLabel;
 
     private GuiUsersController guiUsersController;
+
+    private UserController userController;
 
     @FXML
     void editButtonController(ActionEvent event) {
@@ -122,6 +125,13 @@ public class UserInformationController {
     public void setGuiUsersController(GuiUsersController guiUsersController){
         this.guiUsersController = guiUsersController;
     }
-    
+
+    public void setMatricleOrPersonalNumberText(){
+        if(this.userTypeLabel.getText() == "Estudiante"){
+            this.matricleOrPersonalNumberText.setText("Matrícula");
+        } else {
+            this.matricleOrPersonalNumberText.setText("Número de Personal");
+        }
+    }
 
 }
