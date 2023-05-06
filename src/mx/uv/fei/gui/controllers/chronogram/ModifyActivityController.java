@@ -2,7 +2,6 @@ package mx.uv.fei.gui.controllers.chronogram;
 
 import java.io.IOException;
 import java.sql.Date;
-import java.time.LocalDate;
 import java.util.Optional;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -22,9 +21,6 @@ import mx.uv.fei.logic.exceptions.DataWritingException;
 
 public class ModifyActivityController{
     private Activity activity;
-    private Parent parent;
-    private Scene scene;
-    private Stage stage;
     
     @FXML
     private DatePicker startDatePicker; 
@@ -83,10 +79,10 @@ public class ModifyActivityController{
     }
     private void returnToChronogram(ActionEvent event){
         try{
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml/chronogram/Chronogram.fxml"));
-            parent = loader.load();
-            stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-            scene = new Scene(parent);
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/Chronogram.fxml"));
+            Parent parent = loader.load();
+            Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+            Scene scene = new Scene(parent);
             stage.setTitle("SPGER");
             stage.setScene(scene);
             stage.show();

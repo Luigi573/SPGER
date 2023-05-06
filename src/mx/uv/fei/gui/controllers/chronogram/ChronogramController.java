@@ -18,7 +18,6 @@ import mx.uv.fei.logic.domain.Activity;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
 
 public class ChronogramController{
-    private ArrayList<Activity> activityList;
     private Stage stage;
     private Scene scene;
     private Parent parent;
@@ -31,11 +30,12 @@ public class ChronogramController{
         ActivityDAO activityDAO = new ActivityDAO();
         
         try{
-            activityList = activityDAO.getActivityList();
+            ArrayList<Activity> activityList = activityDAO.getActivityList();
             
             for(Activity activity : activityList){
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/ChronogramActivityPane.fxml"));
+                
                 try{
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml/chronogram/ChronogramActivityPane.fxml"));
                     Pane activityPane = loader.load();
                     ActivityPaneController controller = (ActivityPaneController)loader.getController();
                     controller.setActivity(activity);
@@ -58,7 +58,7 @@ public class ChronogramController{
     @FXML
     private void createActivity(ActionEvent event){
         try{
-            parent = new FXMLLoader(getClass().getResource("fxml/chronogram/CreateActivity.fxml")).load();
+            parent = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/CreateActivity.fxml")).load();
             stage = (Stage)((Node)event.getSource()).getScene().getWindow();
             scene = new Scene(parent);
             stage.setTitle("SPGER");

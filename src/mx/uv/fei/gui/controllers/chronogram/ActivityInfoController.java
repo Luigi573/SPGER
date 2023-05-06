@@ -8,10 +8,8 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 import mx.uv.fei.logic.domain.Activity;
 
@@ -20,10 +18,7 @@ public class ActivityInfoController{
     private Stage stage;
     private Scene scene;
     private Parent parent;
-    @FXML
-    private Button editButton;
-    @FXML
-    private Button homeButton;
+
     @FXML
     private Label titleLabel;
     @FXML
@@ -31,14 +26,12 @@ public class ActivityInfoController{
     @FXML
     private Label dueDateLabel;
     @FXML
-    private TextFlow descriptionTextFlow;
-    @FXML
     private Text descriptionText;
     
     @FXML
     private void editActivity(ActionEvent event) {
         try{
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml/chronogram/ModifyActivity.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/ModifyActivity.fxml"));
             parent = loader.load();
             ModifyActivityController controller = (ModifyActivityController)loader.getController();
             controller.setAcitivty(activity);
@@ -59,7 +52,7 @@ public class ActivityInfoController{
     @FXML
     private void goHome(ActionEvent event){
         try{
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml/chronogram/Chronogram.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/Chronogram.fxml"));
             parent = loader.load();
             
             stage = (Stage)((Node)event.getSource()).getScene().getWindow();

@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="103.0" prefWidth="476.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.uv.fei.gui.ActivityPaneController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="103.0" prefWidth="476.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.uv.fei.gui.controllers.chronogram.ActivityPaneController">
    <children>
       <Label fx:id="titleLabel" layoutX="8.0" layoutY="1.0" prefHeight="27.0" prefWidth="404.0" text="Actividad: ">
          <font>
