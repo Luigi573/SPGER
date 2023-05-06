@@ -4,46 +4,55 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import mx.uv.fei.logic.domain.Professor;
 
 public class UserController {
     GuiUsersController guiUsersController;
 
     @FXML
-    private Label name;
+    private Label matricleOrPersonalNumberLabel;
 
     @FXML
-    private Label status;
+    private Label matricleOrPersonalNumberText;
 
     @FXML
-    private Label type;
+    private Label nameLabel;
+
+    @FXML
+    private Label typeLabel;
 
     @FXML
     private Button userButton;
 
     @FXML
     void userButtonController(ActionEvent event) {
-        this.guiUsersController.openPaneWithUserInformation(
-            this.name.getText(),
-            this.type.getText(),
-            this.status.getText()
-        );
+        this.guiUsersController.openPaneWithUserInformation(this);
     }
 
-    void setGuiUsersController(GuiUsersController guiUsersController){
+    void setGuiUsersController(GuiUsersController guiUsersController) {
         this.guiUsersController = guiUsersController;
     }
 
-    void setName(String name){
-        this.name.setText(name);
+    void setName(String name) {
+        this.nameLabel.setText(name);
     }
 
-    void setStatus(String status){
-        this.status.setText(status);
+    void setType(String type) {
+        this.typeLabel.setText(type);
     }
 
-    void setType(String type){
-        this.type.setText(type);
+    void setMatricleOrPersonalNumber(String matricleOrPersonalNumber) {
+        this.matricleOrPersonalNumberLabel.setText(matricleOrPersonalNumber);
     }
 
+    void setMatricleOrPersonalNumberText(String matricleOrPersonalNumber) {
+        this.matricleOrPersonalNumberText.setText(matricleOrPersonalNumber);
+    }
+
+    String getType() {
+        return this.typeLabel.getText();
+    }
+
+    String getMatricleOrPersonalNumber() {
+        return this.matricleOrPersonalNumberLabel.getText();
+    }
 }

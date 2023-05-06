@@ -25,7 +25,7 @@ public class CourseDAO implements ICourseDAO{
             preparedStatement.setInt(2, course.getIdScholarPeriod());
             preparedStatement.setInt(3, course.getPersonalNumber());
             preparedStatement.setString(4, course.getEEName());
-            preparedStatement.setString(5, course.getSection());
+            preparedStatement.setInt(5, course.getSection());
             preparedStatement.setInt(6, course.getBlock());
             preparedStatement.setString(7, course.getStatus());
             preparedStatement.executeUpdate();
@@ -39,26 +39,20 @@ public class CourseDAO implements ICourseDAO{
     public void modifyCourseDataFromDatabase(Course newCourseData, Course originalCourseData) {
         try {
             DataBaseManager dataBaseManager = new DataBaseManager();
-            String query = "UPDATE Usuarios SET NRC = ?, " + 
+            String query = "UPDATE Cursos SET NRC = ?, " + 
                            "IdPeriodoEscolar = ?, NumPersonal = ?, nombreEE = ?, " + 
                            "sección = ?, bloque = ?, estado = ? " +
-                           "WHERE NRC = ? && IdPeriodoEscolar = ? && NumPersonal = ? && " + 
-                           "nombreEE = ? && sección = ? && bloque = ? && estado = ?";
+                           "WHERE NRC = ?";
             PreparedStatement preparedStatement = dataBaseManager.getConnection().prepareStatement(query);
             preparedStatement.setInt(1, newCourseData.getNrc());
             preparedStatement.setInt(2, newCourseData.getIdScholarPeriod());
             preparedStatement.setInt(3, newCourseData.getPersonalNumber());
             preparedStatement.setString(4, newCourseData.getEEName());
-            preparedStatement.setString(5, newCourseData.getSection());
+            preparedStatement.setInt(5, newCourseData.getSection());
             preparedStatement.setInt(6, newCourseData.getBlock());
             preparedStatement.setString(7, newCourseData.getStatus());
             preparedStatement.setInt(8, originalCourseData.getNrc());
-            preparedStatement.setInt(9, originalCourseData.getIdScholarPeriod());
-            preparedStatement.setInt(10, originalCourseData.getPersonalNumber());
-            preparedStatement.setString(11, originalCourseData.getEEName());
-            preparedStatement.setString(12, originalCourseData.getSection());
-            preparedStatement.setInt(13, originalCourseData.getBlock());
-            preparedStatement.setString(14, originalCourseData.getStatus());
+            System.out.println(preparedStatement.toString());
             preparedStatement.executeUpdate();
         } catch(SQLException e){
             e.printStackTrace();
@@ -80,7 +74,7 @@ public class CourseDAO implements ICourseDAO{
                 course.setIdScholarPeriod(resultSet.getInt("IdPeriodoEscolar"));
                 course.setPersonalNumber(resultSet.getInt("NumPersonal"));
                 course.setEEName(resultSet.getString("nombreEE"));
-                course.setSection(resultSet.getString("sección"));
+                course.setSection(resultSet.getInt("sección"));
                 course.setBlock(resultSet.getInt("bloque"));
                 course.setStatus(resultSet.getString("estado"));
                 courses.add(course);
@@ -110,7 +104,7 @@ public class CourseDAO implements ICourseDAO{
                 course.setIdScholarPeriod(resultSet.getInt("IdPeriodoEscolar"));
                 course.setPersonalNumber(resultSet.getInt("NumPersonal"));
                 course.setEEName(resultSet.getString("nombreEE"));
-                course.setSection(resultSet.getString("sección"));
+                course.setSection(resultSet.getInt("sección"));
                 course.setBlock(resultSet.getInt("bloque"));
                 course.setStatus(resultSet.getString("estado"));
                 courses.add(course);
@@ -125,21 +119,21 @@ public class CourseDAO implements ICourseDAO{
     }
 
     @Override
-    public Course getCourseFromDatabase(String courseName) {
+    public Course getCourseFromDatabase(String courseNrc) {
         Course course = new Course();
 
         try {
             DataBaseManager dataBaseManager = new DataBaseManager();
-            String query = "SELECT * FROM Usuarios WHERE NRC = ?";
+            String query = "SELECT * FROM Cursos WHERE NRC = ?";
             PreparedStatement preparedStatement = dataBaseManager.getConnection().prepareStatement(query);
-            preparedStatement.setString(1, courseName);
+            preparedStatement.setString(1, courseNrc);
             ResultSet resultSet = preparedStatement.executeQuery();
             if(resultSet.next()){
                 course.setNrc(resultSet.getInt("NRC"));
                 course.setIdScholarPeriod(resultSet.getInt("IdPeriodoEscolar"));
                 course.setPersonalNumber(resultSet.getInt("NumPersonal"));
                 course.setEEName(resultSet.getString("nombreEE"));
-                course.setSection(resultSet.getString("sección"));
+                course.setSection(resultSet.getInt("sección"));
                 course.setBlock(resultSet.getInt("bloque"));
                 course.setStatus(resultSet.getString("estado"));
             }
@@ -157,17 +151,10 @@ public class CourseDAO implements ICourseDAO{
         try {
             DataBaseManager dataBaseManager = new DataBaseManager();
             Statement statement = dataBaseManager.getConnection().createStatement();
-            String query = "SELECT NRC, IdPeriodoEscolar, NumPersonal, nombreEE, " +
-                           "sección, bloque, estado FROM Cursos";
+            String query = "SELECT NRC FROM Cursos";
             ResultSet resultSet = statement.executeQuery(query);
             while(resultSet.next()) {
-                if(resultSet.getInt("NRC") == course.getNrc()){  //|| 
-                   //(resultSet.getInt("IdPeriodoEscolar") == course.getIdScholarPeriod() &&
-                   //resultSet.getInt("NumPersonal") == course.getPersonalNumber() &&
-                   //resultSet.getString("nombreEE").equals(course.getEEName()) &&
-                   //resultSet.getString("sección").equals(course.getSection()) &&
-                   //resultSet.getInt("bloque") == course.getBlock() &&
-                   //resultSet.getString("estado").equals(course.getStatus()) ) ) {
+                if(resultSet.getInt("NRC") == course.getNrc()) { 
                     resultSet.close();
                     dataBaseManager.getConnection().close();
                     return true;

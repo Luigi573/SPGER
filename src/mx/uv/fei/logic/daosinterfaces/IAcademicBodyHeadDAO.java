@@ -9,5 +9,5 @@ public interface IAcademicBodyHeadDAO {
     public void modifyAcademicBodyHeadDataFromDatabase(AcademicBodyHead newAcademicBodyHeadData, ArrayList<String> originalAcademicBodyHeadData);
     public ArrayList<AcademicBodyHead> getAcademicBodyHeadsFromDatabase();
     public ArrayList<AcademicBodyHead> getSpecifiedAcademicBodyHeadsFromDatabase(String academicBodyHeadName);
-    public AcademicBodyHead getAcademicBodyHeadFromDatabase(String academicBodyHeadName);
+    public AcademicBodyHead getAcademicBodyHeadFromDatabase(int personalNumber);
 }

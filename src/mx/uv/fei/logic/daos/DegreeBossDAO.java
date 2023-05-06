@@ -49,7 +49,7 @@ public class DegreeBossDAO implements IDegreeBossDAO{
             }
 
             String wholeQueryToInsertDegreeBossDataToProfessorsColumns = 
-                "INSERT INTO Profesores (NúmeroDePersonal, IdUsuario) VALUES (?, ?)";
+                "INSERT INTO Profesores (NumPersonal, IdUsuario) VALUES (?, ?)";
             PreparedStatement preparedStatementToInsertDegreeBossDataToProfessorsColumns = 
                 dataBaseManager.getConnection().prepareStatement(wholeQueryToInsertDegreeBossDataToProfessorsColumns);
             preparedStatementToInsertDegreeBossDataToProfessorsColumns.setString(1, degreeBoss.getPersonalNumber());
@@ -60,7 +60,7 @@ public class DegreeBossDAO implements IDegreeBossDAO{
                 "SELECT IdProfesor FROM Usuarios U INNER JOIN Profesores P " +
                 "ON U.IdUsuario = P.IdUsuario WHERE nombre = ? && " +
                 "apellidoPaterno = ? && apellidoMaterno = ? && correo = ? && " +
-                "correoAlterno = ? && númeroTeléfono = ? && NúmeroDePersonal = ?";
+                "correoAlterno = ? && númeroTeléfono = ? && NumPersonal = ?";
             PreparedStatement preparedStatementForAssignProfessorIdToDegreeBoss = 
                 dataBaseManager.getConnection().prepareStatement(queryForAssignProfessorIdToDegreeBoss);
             preparedStatementForAssignProfessorIdToDegreeBoss.setString(1, degreeBoss.getName());
@@ -92,7 +92,7 @@ public class DegreeBossDAO implements IDegreeBossDAO{
     }
 
     @Override
-    public void modifyDegreeBossDataFromDatabase(DegreeBoss newDegreeBossData, ArrayList<String> originalDegreeBossData) {
+    public void modifyDegreeBossDataFromDatabase(DegreeBoss newDegreeBossData, DegreeBoss originalDegreeBossData) {
         try {
             DataBaseManager dataBaseManager = new DataBaseManager();
             String queryForUpdateUserData = "UPDATE Usuarios SET nombre = ?, " + 
@@ -107,12 +107,12 @@ public class DegreeBossDAO implements IDegreeBossDAO{
             preparedStatement.setString(4, newDegreeBossData.getEmailAddress());
             preparedStatement.setString(5, newDegreeBossData.getAlternateEmail());
             preparedStatement.setString(6, newDegreeBossData.getPhoneNumber());
-            preparedStatement.setString(7, originalDegreeBossData.get(0));
-            preparedStatement.setString(8, originalDegreeBossData.get(1));
-            preparedStatement.setString(9, originalDegreeBossData.get(2));
-            preparedStatement.setString(10, originalDegreeBossData.get(3));
-            preparedStatement.setString(11, originalDegreeBossData.get(4));
-            preparedStatement.setString(12, originalDegreeBossData.get(5));
+            preparedStatement.setString(7, originalDegreeBossData.getName());
+            preparedStatement.setString(8, originalDegreeBossData.getFirstSurname());
+            preparedStatement.setString(9, originalDegreeBossData.getSecondSurname());
+            preparedStatement.setString(10, originalDegreeBossData.getEmailAddress());
+            preparedStatement.setString(11, originalDegreeBossData.getAlternateEmail());
+            preparedStatement.setString(12, originalDegreeBossData.getPhoneNumber());
             preparedStatement.executeUpdate();
         } catch(SQLException e){
             e.printStackTrace();
@@ -137,7 +137,7 @@ public class DegreeBossDAO implements IDegreeBossDAO{
                 degreeBoss.setPassword(resultSet.getString("contraseña"));
                 degreeBoss.setAlternateEmail(resultSet.getString("correoAlterno"));
                 degreeBoss.setPhoneNumber(resultSet.getString("númeroTeléfono"));
-                degreeBoss.setPersonalNumber(resultSet.getString("NúmeroDePersonal"));
+                degreeBoss.setPersonalNumber(resultSet.getString("NumPersonal"));
                 degreeBosses.add(degreeBoss);
             }
             resultSet.close();
@@ -168,7 +168,7 @@ public class DegreeBossDAO implements IDegreeBossDAO{
                 degreeBoss.setPassword(resultSet.getString("contraseña"));
                 degreeBoss.setAlternateEmail(resultSet.getString("correoAlterno"));
                 degreeBoss.setPhoneNumber(resultSet.getString("númeroTeléfono"));
-                degreeBoss.setPersonalNumber(resultSet.getString("NúmeroDePersonal"));
+                degreeBoss.setPersonalNumber(resultSet.getString("NumPersonal"));
                 degreeBosses.add(degreeBoss);
             }
             resultSet.close();
@@ -181,14 +181,14 @@ public class DegreeBossDAO implements IDegreeBossDAO{
     }
 
     @Override
-    public DegreeBoss getDegreeBossFromDatabase(String degreeBossName) {
+    public DegreeBoss getDegreeBossFromDatabase(int personalNumber) {
         DegreeBoss degreeBoss = new DegreeBoss();
 
         try {
             DataBaseManager dataBaseManager = new DataBaseManager();
-            String query = "SELECT * FROM Usuarios U INNER JOIN Profesores P ON U.IdUsuario = P.IdUsuario INNER JOIN JefesCarrera JC ON P.IdProfesor = JC.IdProfesor WHERE U.Nombre = ?";
+            String query = "SELECT * FROM Usuarios U INNER JOIN Profesores P ON U.IdUsuario = P.IdUsuario INNER JOIN JefesCarrera JC ON P.IdProfesor = JC.IdProfesor WHERE JC.NumPersonal = ?";
             PreparedStatement preparedStatement = dataBaseManager.getConnection().prepareStatement(query);
-            preparedStatement.setString(1, degreeBossName);
+            preparedStatement.setInt(1, personalNumber);
             ResultSet resultSet = preparedStatement.executeQuery();
             if(resultSet.next()) {
                 degreeBoss.setName(resultSet.getString("nombre"));
@@ -198,7 +198,7 @@ public class DegreeBossDAO implements IDegreeBossDAO{
                 degreeBoss.setPassword(resultSet.getString("contraseña"));
                 degreeBoss.setAlternateEmail(resultSet.getString("correoAlterno"));
                 degreeBoss.setPhoneNumber(resultSet.getString("númeroTeléfono"));
-                degreeBoss.setPersonalNumber(resultSet.getString("NúmeroDePersonal"));
+                degreeBoss.setPersonalNumber(resultSet.getString("NumPersonal"));
             }
             
             resultSet.close();
@@ -210,22 +210,14 @@ public class DegreeBossDAO implements IDegreeBossDAO{
         return degreeBoss;
     }
 
-    public boolean theDegreeBossIsAlreadyRegisted(DegreeBoss degreeBoss) {
+    public boolean theDegreeBossIsAlreadyRegisted(int personalNumber) {
         try {
             DataBaseManager dataBaseManager = new DataBaseManager();
             Statement statement = dataBaseManager.getConnection().createStatement();
-            String query = "SELECT U.nombre, U.apellidoPaterno, U.apellidoMaterno, U.correo, " +
-                           "U.correoAlterno, U.númeroTeléfono, P.NúmeroDePersonal FROM Usuarios U " + 
-                           "INNER JOIN Profesores P ON U.IdUsuario = P.IdUsuario";
+            String query = "SELECT NumPersonal FROM Profesores";
             ResultSet resultSet = statement.executeQuery(query);
             while(resultSet.next()) {
-                if( (resultSet.getString("nombre").equals(degreeBoss.getName()) &&
-                   resultSet.getString("apellidoPaterno").equals(degreeBoss.getFirstSurname()) &&
-                   resultSet.getString("apellidoMaterno").equals(degreeBoss.getSecondSurname()) &&
-                   resultSet.getString("correo").equals(degreeBoss.getEmailAddress()) &&
-                   resultSet.getString("correoAlterno").equals(degreeBoss.getAlternateEmail()) &&
-                   resultSet.getString("númeroTeléfono").equals(degreeBoss.getPhoneNumber()) ) ||
-                   resultSet.getString("NúmeroDePersonal").equals(degreeBoss.getPersonalNumber())) {
+                if(resultSet.getInt("NumPersonal") == personalNumber) {
                     resultSet.close();
                     dataBaseManager.getConnection().close();
                     return true;

@@ -49,7 +49,7 @@ public class AcademicBodyHeadDAO implements IAcademicBodyHeadDAO{
             }
 
             String wholeQueryToInsertAcademicBodyHeadDataToProfessorsColumns = 
-                "INSERT INTO Profesores (NúmeroDePersonal, IdUsuario) VALUES (?, ?)";
+                "INSERT INTO Profesores (NumPersonal, IdUsuario) VALUES (?, ?)";
             PreparedStatement preparedStatementToInsertAcademicBodyHeadDataToProfessorsColumns = 
                 dataBaseManager.getConnection().prepareStatement(wholeQueryToInsertAcademicBodyHeadDataToProfessorsColumns);
             preparedStatementToInsertAcademicBodyHeadDataToProfessorsColumns.setString(1, academicBodyHead.getPersonalNumber());
@@ -60,7 +60,7 @@ public class AcademicBodyHeadDAO implements IAcademicBodyHeadDAO{
                 "SELECT IdProfesor FROM Usuarios U INNER JOIN Profesores P " +
                 "ON U.IdUsuario = P.IdUsuario WHERE nombre = ? && " +
                 "apellidoPaterno = ? && apellidoMaterno = ? && correo = ? && " +
-                "correoAlterno = ? && númeroTeléfono = ? && NúmeroDePersonal = ?";
+                "correoAlterno = ? && númeroTeléfono = ? && NumPersonal = ?";
             PreparedStatement preparedStatementForAssignProfessorIdToAcademicBodyHead = 
                 dataBaseManager.getConnection().prepareStatement(queryForAssignProfessorIdToAcademicBodyHead);
             preparedStatementForAssignProfessorIdToAcademicBodyHead.setString(1, academicBodyHead.getName());
@@ -137,7 +137,7 @@ public class AcademicBodyHeadDAO implements IAcademicBodyHeadDAO{
                 academicBodyHead.setPassword(resultSet.getString("contraseña"));
                 academicBodyHead.setAlternateEmail(resultSet.getString("correoAlterno"));
                 academicBodyHead.setPhoneNumber(resultSet.getString("númeroTeléfono"));
-                academicBodyHead.setPersonalNumber(resultSet.getString("NúmeroDePersonal"));
+                academicBodyHead.setPersonalNumber(resultSet.getString("NumPersonal"));
                 academicBodyHeads.add(academicBodyHead);
             }
             resultSet.close();
@@ -168,7 +168,7 @@ public class AcademicBodyHeadDAO implements IAcademicBodyHeadDAO{
                 academicBodyHead.setPassword(resultSet.getString("contraseña"));
                 academicBodyHead.setAlternateEmail(resultSet.getString("correoAlterno"));
                 academicBodyHead.setPhoneNumber(resultSet.getString("númeroTeléfono"));
-                academicBodyHead.setPersonalNumber(resultSet.getString("NúmeroDePersonal"));
+                academicBodyHead.setPersonalNumber(resultSet.getString("NumPersonal"));
                 academicBodyHeads.add(academicBodyHead);
             }
             resultSet.close();
@@ -181,14 +181,14 @@ public class AcademicBodyHeadDAO implements IAcademicBodyHeadDAO{
     }
 
     @Override
-    public AcademicBodyHead getAcademicBodyHeadFromDatabase(String academicBodyHeadName) {
+    public AcademicBodyHead getAcademicBodyHeadFromDatabase(int personalNumber) {
         AcademicBodyHead academicBodyHead = new AcademicBodyHead();
 
         try {
             DataBaseManager dataBaseManager = new DataBaseManager();
-            String query = "SELECT * FROM Usuarios U INNER JOIN Profesores P ON U.IdUsuario = P.IdUsuario INNER JOIN ResponsablesCA RCA ON P.IdProfesor = RCA.IdProfesor WHERE U.Nombre = ?";
+            String query = "SELECT * FROM Usuarios U INNER JOIN Profesores P ON U.IdUsuario = P.IdUsuario INNER JOIN ResponsablesCA RCA ON P.IdProfesor = RCA.IdProfesor WHERE RCA.NumPersonal = ?";
             PreparedStatement preparedStatement = dataBaseManager.getConnection().prepareStatement(query);
-            preparedStatement.setString(1, academicBodyHeadName);
+            preparedStatement.setInt(1, personalNumber);
             ResultSet resultSet = preparedStatement.executeQuery();
             if(resultSet.next()){
                 academicBodyHead.setName(resultSet.getString("nombre"));
@@ -198,7 +198,7 @@ public class AcademicBodyHeadDAO implements IAcademicBodyHeadDAO{
                 academicBodyHead.setPassword(resultSet.getString("contraseña"));
                 academicBodyHead.setAlternateEmail(resultSet.getString("correoAlterno"));
                 academicBodyHead.setPhoneNumber(resultSet.getString("númeroTeléfono"));
-                academicBodyHead.setPersonalNumber(resultSet.getString("NúmeroDePersonal"));
+                academicBodyHead.setPersonalNumber(resultSet.getString("NumPersonal"));
             }
             
             resultSet.close();
@@ -210,22 +210,14 @@ public class AcademicBodyHeadDAO implements IAcademicBodyHeadDAO{
         return academicBodyHead;
     }
 
-    public boolean theAcademicBodyHeadIsAlreadyRegisted(AcademicBodyHead academicBodyHead) {
+    public boolean theAcademicBodyHeadIsAlreadyRegisted(int personalNumber) {
         try {
             DataBaseManager dataBaseManager = new DataBaseManager();
             Statement statement = dataBaseManager.getConnection().createStatement();
-            String query = "SELECT U.nombre, U.apellidoPaterno, U.apellidoMaterno, U.correo, " +
-                           "U.correoAlterno, U.númeroTeléfono, P.NúmeroDePersonal FROM Usuarios U " + 
-                           "INNER JOIN Profesores P ON U.IdUsuario = P.IdUsuario";
+            String query = "SELECT NumPersonal FROM Profesores";
             ResultSet resultSet = statement.executeQuery(query);
             while(resultSet.next()) {
-                if( (resultSet.getString("nombre").equals(academicBodyHead.getName()) &&
-                   resultSet.getString("apellidoPaterno").equals(academicBodyHead.getFirstSurname()) &&
-                   resultSet.getString("apellidoMaterno").equals(academicBodyHead.getSecondSurname()) &&
-                   resultSet.getString("correo").equals(academicBodyHead.getEmailAddress()) &&
-                   resultSet.getString("correoAlterno").equals(academicBodyHead.getAlternateEmail()) &&
-                   resultSet.getString("númeroTeléfono").equals(academicBodyHead.getPhoneNumber()) ) ||
-                   resultSet.getString("NúmeroDePersonal").equals(academicBodyHead.getPersonalNumber())) {
+                if(resultSet.getInt("NumPersonal") == personalNumber) {
                     resultSet.close();
                     dataBaseManager.getConnection().close();
                     return true;

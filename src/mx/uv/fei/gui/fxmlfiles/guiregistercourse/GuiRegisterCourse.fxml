@@ -7,7 +7,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="367.0" prefWidth="380.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.uv.fei.gui.javafiles.guiregistercoursecontrollers.GuiRegisterCourseController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="443.0" prefWidth="380.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.uv.fei.gui.javafiles.guiregistercoursecontrollers.GuiRegisterCourseController">
    <children>
       <Text layoutX="93.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Registrar Curso">
          <font>
@@ -29,26 +29,32 @@
             <Font size="15.0" />
          </font>
       </Text>
-      <Text layoutX="14.0" layoutY="216.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Docente: ">
+      <Text layoutX="14.0" layoutY="252.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Docente: ">
          <font>
             <Font size="15.0" />
          </font>
       </Text>
       <TextField fx:id="nrcTextField" layoutX="54.0" layoutY="118.0" prefHeight="18.0" prefWidth="308.0" />
-      <Text layoutX="14.0" layoutY="255.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Periodo: ">
+      <Text layoutX="13.0" layoutY="289.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Periodo: ">
          <font>
             <Font size="15.0" />
          </font>
       </Text>
-      <Button fx:id="registerButton" layoutX="126.0" layoutY="292.0" mnemonicParsing="false" onAction="#registerButtonController" prefHeight="48.0" prefWidth="128.0" text="Registrar" />
-      <Text fx:id="errorMessajeText" fill="RED" layoutX="31.0" layoutY="288.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" visible="false">
+      <Button fx:id="registerButton" layoutX="126.0" layoutY="360.0" mnemonicParsing="false" onAction="#registerButtonController" prefHeight="48.0" prefWidth="128.0" text="Registrar" />
+      <Text fx:id="errorMessajeText" fill="RED" layoutX="18.0" layoutY="338.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER">
          <font>
-            <Font size="18.0" />
+            <Font size="15.0" />
          </font>
       </Text>
       <ComboBox fx:id="educativeExperienceComboBox" layoutX="190.0" layoutY="79.0" prefHeight="24.0" prefWidth="172.0" />
       <ComboBox fx:id="sectionComboBox" layoutX="82.0" layoutY="159.0" prefHeight="24.0" prefWidth="280.0" />
-      <ComboBox fx:id="teacherComboBox" layoutX="87.0" layoutY="199.0" prefHeight="24.0" prefWidth="274.0" />
-      <ComboBox fx:id="periodComboBox" layoutX="80.0" layoutY="238.0" prefHeight="24.0" prefWidth="281.0" />
+      <ComboBox fx:id="professorComboBox" layoutX="88.0" layoutY="235.0" prefHeight="24.0" prefWidth="274.0" />
+      <ComboBox fx:id="scholarPeriodComboBox" layoutX="81.0" layoutY="272.0" prefHeight="24.0" prefWidth="281.0" />
+      <Text layoutX="14.0" layoutY="215.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Bloque: ">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Text>
+      <ComboBox fx:id="blockComboBox" layoutX="77.0" layoutY="198.0" prefHeight="24.0" prefWidth="285.0" />
    </children>
 </Pane>
