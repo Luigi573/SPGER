@@ -153,7 +153,7 @@ public class GuiUsersController {
                 UserController userController = userItemControllerLoader.getController();
                 userController.setName(professor.getName());
                 userController.setType("Profesor");
-                userController.setMatricleOrPersonalNumber(professor.getPersonalNumber());
+                userController.setMatricleOrPersonalNumber(Integer.toString(professor.getPersonalNumber()));
                 userController.setMatricleOrPersonalNumberText("Número de Personal");
                 userController.setGuiUsersController(this);
                 this.usersVBox.getChildren().add(userItemButton);
@@ -173,7 +173,7 @@ public class GuiUsersController {
                 UserController userController = userItemControllerLoader.getController();
                 userController.setName(director.getName());
                 userController.setType("Director");
-                userController.setMatricleOrPersonalNumber(director.getPersonalNumber());
+                userController.setMatricleOrPersonalNumber(Integer.toString(director.getPersonalNumber()));
                 userController.setMatricleOrPersonalNumberText("Número de Personal");
                 userController.setGuiUsersController(this);
                 this.usersVBox.getChildren().add(userItemButton);
@@ -193,7 +193,7 @@ public class GuiUsersController {
                 UserController userController = userItemControllerLoader.getController();
                 userController.setName(academicBodyHead.getName());
                 userController.setType("Miembro de Cuerpo Académico");
-                userController.setMatricleOrPersonalNumber(academicBodyHead.getPersonalNumber());
+                userController.setMatricleOrPersonalNumber(Integer.toString(academicBodyHead.getPersonalNumber()));
                 userController.setMatricleOrPersonalNumberText("Número de Personal");
                 userController.setGuiUsersController(this);
                 this.usersVBox.getChildren().add(userItemButton);
@@ -213,7 +213,7 @@ public class GuiUsersController {
                 UserController userController = userItemControllerLoader.getController();
                 userController.setName(degreeBoss.getName());
                 userController.setType("Jefe de Carrera");
-                userController.setMatricleOrPersonalNumber(degreeBoss.getPersonalNumber());
+                userController.setMatricleOrPersonalNumber(Integer.toString(degreeBoss.getPersonalNumber()));
                 userController.setMatricleOrPersonalNumberText("Número de Personal");
                 userController.setGuiUsersController(this);
                 this.usersVBox.getChildren().add(userItemButton);
@@ -278,7 +278,7 @@ public class GuiUsersController {
             userInformationController.setTelephoneNumber(director.getPhoneNumber());
             userInformationController.setUserType("Director");
             userInformationController.setStatus(director.getStatus());
-            userInformationController.setMatricleOrPersonalNumber(director.getPersonalNumber());
+            userInformationController.setMatricleOrPersonalNumber(Integer.toString(director.getPersonalNumber()));
             userInformationController.setGuiUsersController(this);
             userInformationController.setMatricleOrPersonalNumberText();
             this.userInformationScrollPane.setContent(userInformationVBox);
@@ -304,7 +304,7 @@ public class GuiUsersController {
             userInformationController.setTelephoneNumber(academicBodyHead.getPhoneNumber());
             userInformationController.setUserType("Miembro de Cuerpo Académico");
             userInformationController.setStatus(academicBodyHead.getStatus());
-            userInformationController.setMatricleOrPersonalNumber(academicBodyHead.getPersonalNumber());
+            userInformationController.setMatricleOrPersonalNumber(Integer.toString(academicBodyHead.getPersonalNumber()));
             userInformationController.setGuiUsersController(this);
             userInformationController.setMatricleOrPersonalNumberText();
             this.userInformationScrollPane.setContent(userInformationVBox);
@@ -330,7 +330,7 @@ public class GuiUsersController {
             userInformationController.setTelephoneNumber(degreeBoss.getPhoneNumber());
             userInformationController.setUserType("Jefe de Carrera");
             userInformationController.setStatus(degreeBoss.getStatus());
-            userInformationController.setMatricleOrPersonalNumber(degreeBoss.getPersonalNumber());
+            userInformationController.setMatricleOrPersonalNumber(Integer.toString(degreeBoss.getPersonalNumber()));
             userInformationController.setGuiUsersController(this);
             userInformationController.setMatricleOrPersonalNumberText();
             this.userInformationScrollPane.setContent(userInformationVBox);
@@ -356,7 +356,7 @@ public class GuiUsersController {
             userInformationController.setTelephoneNumber(professor.getPhoneNumber());
             userInformationController.setUserType("Profesor");
             userInformationController.setStatus(professor.getStatus());
-            userInformationController.setMatricleOrPersonalNumber(professor.getPersonalNumber());
+            userInformationController.setMatricleOrPersonalNumber(Integer.toString(professor.getPersonalNumber()));
             userInformationController.setGuiUsersController(this);
             userInformationController.setMatricleOrPersonalNumberText();
             this.userInformationScrollPane.setContent(userInformationVBox);

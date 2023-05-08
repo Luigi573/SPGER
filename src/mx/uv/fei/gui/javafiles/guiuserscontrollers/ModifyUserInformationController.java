@@ -64,12 +64,35 @@ public class ModifyUserInformationController {
 
     @FXML
     void initialize(){
-        
+        if(this.userInformationController.getUserType().equals("Estudiante")){
+            
+        } else {
+
+        }
+        ProfessorDAO professorDAO = new ProfessorDAO();
+        this.professorComboBox.getItems().addAll(professorDAO.getProfessorsFromDatabase());
+        this.professorComboBox.setConverter(new StringConverter<Professor>() {
+
+            @Override
+            public Professor fromString(String arg0) {
+                return null;
+            }
+
+            @Override
+            public String toString(Professor arg0) {
+                if(arg0 != null){
+                    return arg0.getName();
+                }
+                
+                return null;  
+            }
+            
+        });
     }
 
     @FXML
     void exitButtonController(ActionEvent event) {
-        this.guiUsersController.openPaneWithUserInformation(getFirstSurname(), getAlternateEmail(), getStatus());
+        this.guiUsersController.openPaneWithUserInformation();
     }
 
     @FXML
@@ -187,114 +210,107 @@ public class ModifyUserInformationController {
 
     private void modifyStudent(){
         StudentDAO studentDAO = new StudentDAO();
-        Student student = new Student();
-        student.setName(this.namesTextField.getText());
-        student.setFirstSurname(this.firstSurnameTextField.getText());
-        student.setSecondSurname(this.secondSurnameTextField.getText());
-        student.setEmailAddress(this.emailTextField.getText());
-        student.setAlternateEmail(this.alternateEmailTextField.getText());
-        student.setPhoneNumber(this.telephoneNumberTextField.getText());
-        student.setMatricle(this.matricleOrPersonalNumberTextField.getText());
-        if(studentDAO.theStudentIsAlreadyRegisted(student)){
+        Student newStudentData = new Student();
+        Student originalStudentData = studentDAO.getStudentFromDatabase(this.userInformationController.getMatricleOrPersonalNumber());
+        newStudentData.setName(this.namesTextField.getText());
+        newStudentData.setFirstSurname(this.firstSurnameTextField.getText());
+        newStudentData.setSecondSurname(this.secondSurnameTextField.getText());
+        newStudentData.setEmailAddress(this.emailTextField.getText());
+        newStudentData.setAlternateEmail(this.alternateEmailTextField.getText());
+        newStudentData.setPhoneNumber(this.telephoneNumberTextField.getText());
+        newStudentData.setMatricle(this.matricleOrPersonalNumberTextField.getText());
+        if(studentDAO.theStudentIsAlreadyRegisted(newStudentData.getMatricle())){
             this.errorMessageText.setText("El usuario ya está registrado en el sistema");
             this.errorMessageText.setVisible(true);
             return;
         }
-        studentDAO.modifyStudentDataFromDatabase(student, this.getAllLabelsDataFromUserInformationPane());
-        this.errorMessageText.setText("Usuario registrado exitosamente");
+        studentDAO.modifyStudentDataFromDatabase(newStudentData, originalStudentData);
+        this.errorMessageText.setText("Usuario modificado exitosamente");
         this.errorMessageText.setVisible(true);
     }
 
     private void modifyProfessor(){
         ProfessorDAO professorDAO = new ProfessorDAO();
-        Professor professor = new Professor();
-        professor.setName(this.namesTextField.getText());
-        professor.setFirstSurname(this.firstSurnameTextField.getText());
-        professor.setSecondSurname(this.secondSurnameTextField.getText());
-        professor.setEmailAddress(this.emailTextField.getText());
-        professor.setAlternateEmail(this.alternateEmailTextField.getText());
-        professor.setPhoneNumber(this.telephoneNumberTextField.getText());
-        professor.setPersonalNumber(this.matricleOrPersonalNumberTextField.getText());
-        if(professorDAO.theProfessorIsAlreadyRegisted(professor)){
+        Professor newProfessorData = new Professor();
+        Professor originalProfessorData = professorDAO.getProfessorFromDatabase(Integer.parseInt(userInformationController.getMatricleOrPersonalNumber()));
+        newProfessorData.setName(this.namesTextField.getText());
+        newProfessorData.setFirstSurname(this.firstSurnameTextField.getText());
+        newProfessorData.setSecondSurname(this.secondSurnameTextField.getText());
+        newProfessorData.setEmailAddress(this.emailTextField.getText());
+        newProfessorData.setAlternateEmail(this.alternateEmailTextField.getText());
+        newProfessorData.setPhoneNumber(this.telephoneNumberTextField.getText());
+        newProfessorData.setPersonalNumber(Integer.parseInt(this.matricleOrPersonalNumberTextField.getText()));
+        if(professorDAO.theProfessorIsAlreadyRegisted(newProfessorData.getPersonalNumber())){
             this.errorMessageText.setText("El usuario ya está registrado en el sistema");
             this.errorMessageText.setVisible(true);
             return;
         }
-        professorDAO.modifyProfessorDataFromDatabase(professor, this.getAllLabelsDataFromUserInformationPane());
-        this.errorMessageText.setText("Usuario registrado exitosamente");
+        professorDAO.modifyProfessorDataFromDatabase(newProfessorData, originalProfessorData);
+        this.errorMessageText.setText("Usuario modificado exitosamente");
         this.errorMessageText.setVisible(true);
     }
 
     private void modifyDirector(){
         DirectorDAO directorDAO = new DirectorDAO();
-        Director director = new Director();
-        director.setName(this.namesTextField.getText());
-        director.setFirstSurname(this.firstSurnameTextField.getText());
-        director.setSecondSurname(this.secondSurnameTextField.getText());
-        director.setEmailAddress(this.emailTextField.getText());
-        director.setAlternateEmail(this.alternateEmailTextField.getText());
-        director.setPhoneNumber(this.telephoneNumberTextField.getText());
-        director.setPersonalNumber(this.matricleOrPersonalNumberTextField.getText());
-        if(directorDAO.theDirectorIsAlreadyRegisted(director)){
+        Director newDirectorData = new Director();
+        Director originalDirectorData = directorDAO.getDirectorFromDatabase(Integer.parseInt(this.userInformationController.getMatricleOrPersonalNumber()));
+        newDirectorData.setName(this.namesTextField.getText());
+        newDirectorData.setFirstSurname(this.firstSurnameTextField.getText());
+        newDirectorData.setSecondSurname(this.secondSurnameTextField.getText());
+        newDirectorData.setEmailAddress(this.emailTextField.getText());
+        newDirectorData.setAlternateEmail(this.alternateEmailTextField.getText());
+        newDirectorData.setPhoneNumber(this.telephoneNumberTextField.getText());
+        newDirectorData.setPersonalNumber(Integer.parseInt(this.matricleOrPersonalNumberTextField.getText()));
+        if(directorDAO.theDirectorIsAlreadyRegisted(newDirectorData.getPersonalNumber())){
             this.errorMessageText.setText("El usuario ya está registrado en el sistema");
             this.errorMessageText.setVisible(true);
             return;
         }
-        directorDAO.modifyDirectorDataFromDatabase(director, this.getAllLabelsDataFromUserInformationPane());
-        this.errorMessageText.setText("Usuario registrado exitosamente");
+        directorDAO.modifyDirectorDataFromDatabase(newDirectorData, originalDirectorData);
+        this.errorMessageText.setText("Usuario modificado exitosamente");
         this.errorMessageText.setVisible(true);
     }
 
     private void modifyAcademicBodyHead(){
         AcademicBodyHeadDAO academicBodyHeadDAO = new AcademicBodyHeadDAO();
-        AcademicBodyHead academicBodyHead = new AcademicBodyHead();
-        academicBodyHead.setName(this.namesTextField.getText());
-        academicBodyHead.setFirstSurname(this.firstSurnameTextField.getText());
-        academicBodyHead.setSecondSurname(this.secondSurnameTextField.getText());
-        academicBodyHead.setEmailAddress(this.emailTextField.getText());
-        academicBodyHead.setAlternateEmail(this.alternateEmailTextField.getText());
-        academicBodyHead.setPhoneNumber(this.telephoneNumberTextField.getText());
-        academicBodyHead.setPersonalNumber(this.matricleOrPersonalNumberTextField.getText());
-        if(academicBodyHeadDAO.theAcademicBodyHeadIsAlreadyRegisted(academicBodyHead)){
+        AcademicBodyHead newAcademicBodyHeadData = new AcademicBodyHead();
+        AcademicBodyHead originalAcademicBodyHeadData = academicBodyHeadDAO.getAcademicBodyHeadFromDatabase(Integer.parseInt(this.userInformationController.getMatricleOrPersonalNumber()));
+        newAcademicBodyHeadData.setName(this.namesTextField.getText());
+        newAcademicBodyHeadData.setFirstSurname(this.firstSurnameTextField.getText());
+        newAcademicBodyHeadData.setSecondSurname(this.secondSurnameTextField.getText());
+        newAcademicBodyHeadData.setEmailAddress(this.emailTextField.getText());
+        newAcademicBodyHeadData.setAlternateEmail(this.alternateEmailTextField.getText());
+        newAcademicBodyHeadData.setPhoneNumber(this.telephoneNumberTextField.getText());
+        newAcademicBodyHeadData.setPersonalNumber(Integer.parseInt(this.matricleOrPersonalNumberTextField.getText()));
+        if(academicBodyHeadDAO.theAcademicBodyHeadIsAlreadyRegisted(newAcademicBodyHeadData.getPersonalNumber())){
             this.errorMessageText.setText("El usuario ya está registrado en el sistema");
             this.errorMessageText.setVisible(true);
             return;
         }
-        academicBodyHeadDAO.modifyAcademicBodyHeadDataFromDatabase(academicBodyHead, this.getAllLabelsDataFromUserInformationPane());
-        this.errorMessageText.setText("Usuario registrado exitosamente");
+        academicBodyHeadDAO.modifyAcademicBodyHeadDataFromDatabase(newAcademicBodyHeadData, originalAcademicBodyHeadData);
+        this.errorMessageText.setText("Usuario modificado exitosamente");
         this.errorMessageText.setVisible(true);
     }
 
     private void modifyDegreeBoss(){
         DegreeBossDAO degreeBossDAO = new DegreeBossDAO();
-        DegreeBoss degreeBoss = new DegreeBoss();
-        degreeBoss.setName(this.namesTextField.getText());
-        degreeBoss.setFirstSurname(this.firstSurnameTextField.getText());
-        degreeBoss.setSecondSurname(this.secondSurnameTextField.getText());
-        degreeBoss.setEmailAddress(this.emailTextField.getText());
-        degreeBoss.setAlternateEmail(this.alternateEmailTextField.getText());
-        degreeBoss.setPhoneNumber(this.telephoneNumberTextField.getText());
-        degreeBoss.setPersonalNumber(this.matricleOrPersonalNumberTextField.getText());
-        if(degreeBossDAO.theDegreeBossIsAlreadyRegisted(degreeBoss)){
+        DegreeBoss newDegreeBossData = new DegreeBoss();
+        DegreeBoss originalDegreeBossData = degreeBossDAO.getDegreeBossFromDatabase(Integer.parseInt(this.userInformationController.getMatricleOrPersonalNumber()));
+        newDegreeBossData.setName(this.namesTextField.getText());
+        newDegreeBossData.setFirstSurname(this.firstSurnameTextField.getText());
+        newDegreeBossData.setSecondSurname(this.secondSurnameTextField.getText());
+        newDegreeBossData.setEmailAddress(this.emailTextField.getText());
+        newDegreeBossData.setAlternateEmail(this.alternateEmailTextField.getText());
+        newDegreeBossData.setPhoneNumber(this.telephoneNumberTextField.getText());
+        newDegreeBossData.setPersonalNumber(Integer.parseInt(this.matricleOrPersonalNumberTextField.getText()));
+        if(degreeBossDAO.theDegreeBossIsAlreadyRegisted(newDegreeBossData.getPersonalNumber())){
             this.errorMessageText.setText("El usuario ya está registrado en el sistema");
             this.errorMessageText.setVisible(true);
             return;
         }
-        degreeBossDAO.modifyDegreeBossDataFromDatabase(degreeBoss, this.getAllLabelsDataFromUserInformationPane());
-        this.errorMessageText.setText("Usuario registrado exitosamente");
+        degreeBossDAO.modifyDegreeBossDataFromDatabase(newDegreeBossData, originalDegreeBossData);
+        this.errorMessageText.setText("Usuario modificado exitosamente");
         this.errorMessageText.setVisible(true);
-    }
-
-    private ArrayList<String> getAllLabelsDataFromUserInformationPane(){
-        ArrayList<String> textFieldsData = new ArrayList<>();
-        textFieldsData.add(this.userInformationController.getNames());
-        textFieldsData.add(this.userInformationController.getFirstSurname());
-        textFieldsData.add(this.userInformationController.getSecondSurname());
-        textFieldsData.add(this.userInformationController.getEmail());
-        textFieldsData.add(this.userInformationController.getAlternateEmail());
-        textFieldsData.add(this.userInformationController.getTelephoneNumber());
-        textFieldsData.add(this.userInformationController.getMatricleOrPersonalNumber());
-        return textFieldsData;
     }
 
 }

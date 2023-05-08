@@ -194,7 +194,7 @@ public class ModifyCourseInformationController {
                 newCourseData.setNrc(Integer.parseInt(this.nrcTextField.getText()));
                 newCourseData.setSection(Integer.parseInt(this.sectionComboBox.getValue()));
                 newCourseData.setBlock(Integer.parseInt(this.blockComboBox.getValue()));
-                newCourseData.setPersonalNumber(Integer.parseInt(this.professorComboBox.getValue().getPersonalNumber()));
+                newCourseData.setPersonalNumber(this.professorComboBox.getValue().getPersonalNumber());
                 newCourseData.setIdScholarPeriod(this.scholarPeriodComboBox.getValue().getIdScholarPeriod());
                 if(courseDAO.theCourseIsAlreadyRegisted(newCourseData)) {
                     this.errorMessageText.setText("El curso ya está registrado en el sistema");

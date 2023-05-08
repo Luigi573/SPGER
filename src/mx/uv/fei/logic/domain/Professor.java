@@ -1,23 +1,14 @@
 package mx.uv.fei.logic.domain;
 
 public class Professor extends User{
-    protected int idProfessor;
-    protected String personalNumber;
+    protected int personalNumber;
     protected String status;
 
-    public int getIdProfessor() {
-        return this.idProfessor;
-    }
-
-    public void setIdProfessor(int idProfessor) {
-        this.idProfessor = idProfessor;
-    }
-
-    public String getPersonalNumber() {
+    public int getPersonalNumber() {
         return this.personalNumber;
     }
 
-    public void setPersonalNumber(String personalNumber) {
+    public void setPersonalNumber(int personalNumber) {
         this.personalNumber = personalNumber;
     }
 

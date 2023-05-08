@@ -19,6 +19,8 @@ import mx.uv.fei.logic.domain.DegreeBoss;
 import mx.uv.fei.logic.domain.Director;
 import mx.uv.fei.logic.domain.Professor;
 import mx.uv.fei.logic.domain.Student;
+import mx.uv.fei.logic.domain.statuses.ProfessorStatus;
+import mx.uv.fei.logic.domain.statuses.StudentStatus;
 
 public class GuiRegisterUserController {
 
@@ -143,7 +145,8 @@ public class GuiRegisterUserController {
         director.setEmailAddress(this.emailTextField.getText());
         director.setAlternateEmail(this.alternateEmailTextField.getText());
         director.setPhoneNumber(this.telephoneNumberTextField.getText());
-        director.setPersonalNumber(this.matricleOrPersonalNumberTextField.getText());
+        director.setStatus(ProfessorStatus.Activo.name());
+        director.setPersonalNumber(Integer.parseInt(this.matricleOrPersonalNumberTextField.getText()));
         directorDAO.addDirectorToDatabase(director);
     }
 
@@ -161,7 +164,8 @@ public class GuiRegisterUserController {
         academicBodyHead.setEmailAddress(this.emailTextField.getText());
         academicBodyHead.setAlternateEmail(this.alternateEmailTextField.getText());
         academicBodyHead.setPhoneNumber(this.telephoneNumberTextField.getText());
-        academicBodyHead.setPersonalNumber(this.matricleOrPersonalNumberTextField.getText());
+        academicBodyHead.setStatus(ProfessorStatus.Activo.name());
+        academicBodyHead.setPersonalNumber(Integer.parseInt(this.matricleOrPersonalNumberTextField.getText()));
         academicBodyHeadDAO.addAcademicBodyHeadToDatabase(academicBodyHead);
     }
 
@@ -179,7 +183,8 @@ public class GuiRegisterUserController {
         degreeBoss.setEmailAddress(this.emailTextField.getText());
         degreeBoss.setAlternateEmail(this.alternateEmailTextField.getText());
         degreeBoss.setPhoneNumber(this.telephoneNumberTextField.getText());
-        degreeBoss.setPersonalNumber(this.matricleOrPersonalNumberTextField.getText());
+        degreeBoss.setStatus(ProfessorStatus.Activo.name());
+        degreeBoss.setPersonalNumber(Integer.parseInt(this.matricleOrPersonalNumberTextField.getText()));
         degreeBossDAO.addDegreeBossToDatabase(degreeBoss);
     }
 
@@ -197,7 +202,8 @@ public class GuiRegisterUserController {
         professor.setEmailAddress(this.emailTextField.getText());
         professor.setAlternateEmail(this.alternateEmailTextField.getText());
         professor.setPhoneNumber(this.telephoneNumberTextField.getText());
-        professor.setPersonalNumber(this.matricleOrPersonalNumberTextField.getText());
+        professor.setStatus(ProfessorStatus.Activo.name());
+        professor.setPersonalNumber(Integer.parseInt(this.matricleOrPersonalNumberTextField.getText()));
         professorDAO.addProfessorToDatabase(professor);
     }
 
@@ -215,6 +221,7 @@ public class GuiRegisterUserController {
         student.setEmailAddress(this.emailTextField.getText());
         student.setAlternateEmail(this.alternateEmailTextField.getText());
         student.setPhoneNumber(this.telephoneNumberTextField.getText());
+        student.setStatus(StudentStatus.Activo.name());
         student.setMatricle(this.matricleOrPersonalNumberTextField.getText());
         studentDAO.addStudentToDatabase(student);
     }
