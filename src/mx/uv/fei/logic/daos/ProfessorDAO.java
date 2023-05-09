@@ -10,7 +10,7 @@ import mx.uv.fei.dataaccess.DataBaseManager;
 import mx.uv.fei.logic.daosinterfaces.IProfessorDAO;
 import mx.uv.fei.logic.domain.Professor;
 
-public class ProfessorDAO implements IProfessorDAO{
+public class ProfessorDAO implements IProfessorDAO {
 
     @Override
     public void addProfessorToDatabase(Professor professor) {

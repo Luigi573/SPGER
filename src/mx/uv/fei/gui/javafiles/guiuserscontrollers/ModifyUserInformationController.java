@@ -9,6 +9,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
+import javafx.util.StringConverter;
 import mx.uv.fei.logic.daos.AcademicBodyHeadDAO;
 import mx.uv.fei.logic.daos.DegreeBossDAO;
 import mx.uv.fei.logic.daos.DirectorDAO;
@@ -19,6 +20,8 @@ import mx.uv.fei.logic.domain.DegreeBoss;
 import mx.uv.fei.logic.domain.Director;
 import mx.uv.fei.logic.domain.Professor;
 import mx.uv.fei.logic.domain.Student;
+import mx.uv.fei.logic.domain.statuses.ProfessorStatus;
+import mx.uv.fei.logic.domain.statuses.StudentStatus;
 
 public class ModifyUserInformationController {
 
@@ -65,29 +68,34 @@ public class ModifyUserInformationController {
     @FXML
     void initialize(){
         if(this.userInformationController.getUserType().equals("Estudiante")){
-            
+            this.statusComboBox.getItems().addAll(StudentStatus.Activo.name());
+            this.statusComboBox.getItems().addAll(StudentStatus.Baja.name());
+            this.statusComboBox.getItems().addAll(StudentStatus.Disponible.name());
+            this.statusComboBox.getItems().addAll(StudentStatus.Graduado.name());
         } else {
-
+            this.statusComboBox.getItems().addAll(ProfessorStatus.Activo.name());
+            this.statusComboBox.getItems().addAll(ProfessorStatus.Inactivo.name());
         }
-        ProfessorDAO professorDAO = new ProfessorDAO();
-        this.professorComboBox.getItems().addAll(professorDAO.getProfessorsFromDatabase());
-        this.professorComboBox.setConverter(new StringConverter<Professor>() {
 
-            @Override
-            public Professor fromString(String arg0) {
-                return null;
-            }
-
-            @Override
-            public String toString(Professor arg0) {
-                if(arg0 != null){
-                    return arg0.getName();
-                }
-                
-                return null;  
-            }
-            
-        });
+        this.statusComboBox.setValue(this.userInformationController.getStatus());
+        //this.statusComboBox.getItems().add(StudentStatus.Activo);
+        //this.statusComboBox.setConverter(new StringConverter<StudentStatus>() {
+//
+        //    @Override
+        //    public Professor fromString(String arg0) {
+        //        return null;
+        //    }
+//
+        //    @Override
+        //    public String toString(Professor arg0) {
+        //        if(arg0 != null){
+        //            return arg0.getName();
+        //        }
+        //        
+        //        return null;  
+        //    }
+        //    
+        //});
     }
 
     @FXML
@@ -130,6 +138,8 @@ public class ModifyUserInformationController {
                     break;
                 }
             }
+
+            this.exitButton.setVisible(false);
         } else {
             this.errorMessageText.setText("Faltan campos por llenar");
             this.errorMessageText.setVisible(true);
