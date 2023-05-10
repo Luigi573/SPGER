@@ -125,7 +125,6 @@ public class StudentDAO implements IStudentDAO{
                 student.setPassword(resultSet.getString("contraseña"));
                 student.setAlternateEmail(resultSet.getString("correoAlterno"));
                 student.setPhoneNumber(resultSet.getString("númeroTeléfono"));
-                student.setStatus(resultSet.getString("estado"));
                 student.setMatricle(resultSet.getString("Matrícula"));
                 students.add(student);
             }
@@ -138,38 +137,33 @@ public class StudentDAO implements IStudentDAO{
         return students;
     }
 
-    @Override
-    public ArrayList<Student> getSpecifiedStudentsFromDatabase(String studentName) {
-        ArrayList<Student> students = new ArrayList<>();
-        
-        try {
-            DataBaseManager dataBaseManager = new DataBaseManager();
-            String query = "SELECT * FROM Usuarios U INNER JOIN Estudiantes E " + 
-                           "ON U.IdUsuario = E.IdUsuario WHERE U.Nombre LIKE ?";
-            PreparedStatement preparedStatement = dataBaseManager.getConnection().prepareStatement(query);
-            preparedStatement.setString(1, studentName + '%');
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while(resultSet.next()) {
-                Student student = new Student();
-                student.setName(resultSet.getString("nombre"));
-                student.setFirstSurname(resultSet.getString("apellidoPaterno"));
-                student.setSecondSurname(resultSet.getString("apellidoMaterno"));
-                student.setEmailAddress(resultSet.getString("correo"));
-                student.setPassword(resultSet.getString("contraseña"));
-                student.setAlternateEmail(resultSet.getString("correoAlterno"));
-                student.setPhoneNumber(resultSet.getString("númeroTeléfono"));
-                student.setStatus(resultSet.getString("estado"));
-                student.setMatricle(resultSet.getString("Matrícula"));
-                students.add(student);
-            }
-            resultSet.close();
-            dataBaseManager.getConnection().close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return students;
-    }
+    //@Override
+    //public ArrayList<Student> getStudentList() throws DataRetrievalException {
+    //    ArrayList<Student> studentList = new ArrayList<>();
+    //    PreparedStatement statement;
+    //    String query = "SELECT e.Matrícula, u.nombre, u.apellidoPaterno, u.apellidoMaterno FROM Estudiantes e "
+    //            + "INNER JOIN Usuarios u ON e.IdUsuario = u.IdUsuario";
+    //    
+    //    try{
+    //        statement = dataBaseManager.getConnection().prepareStatement(query);
+    //        ResultSet resultSet = statement.executeQuery();
+    //        
+    //        while(resultSet.next()){
+    //            Student student = new Student();
+    //            
+    //            student.setMatricle(resultSet.getString("e.Matrícula"));
+    //            student.setName(resultSet.getString("u.nombre"));
+    //            student.setFirstSurname(resultSet.getString("u.apellidoPaterno"));
+    //            student.setSecondSurname(resultSet.getString("u.apellidoMaterno"));
+    //            
+    //            studentList.add(student);
+    //        }
+    //    }catch(SQLException exception){
+    //        throw new DataRetrievalException("Error al recuperar estudiantes. VErifique su conexión e inténtelo de nuevo");
+    //    }
+    //    
+    //    return studentList;
+    //}
 
     @Override
     public ArrayList<Student> getActiveStudentsFromDatabase() {
@@ -204,13 +198,13 @@ public class StudentDAO implements IStudentDAO{
     }
 
     @Override
-    public ArrayList<Student> getSpecifiedActiveStudentsFromDatabase(String studentName) {
+    public ArrayList<Student> getSpecifiedStudentsFromDatabase(String studentName) {
         ArrayList<Student> students = new ArrayList<>();
         
         try {
             DataBaseManager dataBaseManager = new DataBaseManager();
             String query = "SELECT * FROM Usuarios U INNER JOIN Estudiantes E " + 
-                           "ON U.IdUsuario = E.IdUsuario WHERE U.Nombre LIKE ? && U.estado = 'Activo'";
+                           "ON U.IdUsuario = E.IdUsuario WHERE U.Nombre LIKE ?";
             PreparedStatement preparedStatement = dataBaseManager.getConnection().prepareStatement(query);
             preparedStatement.setString(1, studentName + '%');
             ResultSet resultSet = preparedStatement.executeQuery();
