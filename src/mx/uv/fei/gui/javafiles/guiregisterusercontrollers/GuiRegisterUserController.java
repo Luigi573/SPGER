@@ -9,6 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
+import mx.uv.fei.gui.javafiles.guiuserscontrollers.GuiUsersController;
 import mx.uv.fei.logic.daos.AcademicBodyHeadDAO;
 import mx.uv.fei.logic.daos.DegreeBossDAO;
 import mx.uv.fei.logic.daos.DirectorDAO;
@@ -23,6 +24,8 @@ import mx.uv.fei.logic.domain.statuses.ProfessorStatus;
 import mx.uv.fei.logic.domain.statuses.StudentStatus;
 
 public class GuiRegisterUserController {
+
+    private GuiUsersController guiUsersController;
 
     @FXML
     private TextField alternateEmailTextField;
@@ -106,6 +109,7 @@ public class GuiRegisterUserController {
                         break;
                     }
                 }
+                this.guiUsersController.refreshUserList();
 
             } else {
                 this.errorMessajeText.setText("Algunos campos contienen datos inválidos");
@@ -224,6 +228,14 @@ public class GuiRegisterUserController {
         student.setStatus(StudentStatus.Activo.name());
         student.setMatricle(this.matricleOrPersonalNumberTextField.getText());
         studentDAO.addStudentToDatabase(student);
+    }
+
+    public GuiUsersController getGuiUsersController() {
+        return this.guiUsersController;
+    }
+
+    public void setGuiUsersController(GuiUsersController guiUsersController) {
+        this.guiUsersController = guiUsersController;
     }
 
     private boolean allTextFieldsContainsCorrectValues(){

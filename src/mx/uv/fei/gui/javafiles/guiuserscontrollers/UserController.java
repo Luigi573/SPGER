@@ -25,7 +25,10 @@ public class UserController {
 
     @FXML
     void userButtonController(ActionEvent event) {
-        this.guiUsersController.openPaneWithUserInformation(this);
+        this.guiUsersController.openPaneWithUserInformation(
+            this.matricleOrPersonalNumberLabel.getText(), 
+            this.typeLabel.getText()
+        );
     }
 
     void setGuiUsersController(GuiUsersController guiUsersController) {

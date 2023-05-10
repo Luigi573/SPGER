@@ -19,7 +19,7 @@ public class AcademicBodyHeadDAO implements IAcademicBodyHeadDAO{
             String userColumnsToConsult = 
                 "nombre, apellidoPaterno, apellidoMaterno, correo, correoAlterno, númeroTeléfono, estado";
             String wholeQueryToInsertAcademicBodyHeadDataToUserColumns = 
-                "INSERT INTO Usuarios (" + userColumnsToConsult + ") VALUES (?, ?, ?, ?, ?, ?)";
+                "INSERT INTO Usuarios (" + userColumnsToConsult + ") VALUES (?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement preparedStatementToInsertAcademicBodyHeadDataToUserColumns = 
                 dataBaseManager.getConnection().prepareStatement(wholeQueryToInsertAcademicBodyHeadDataToUserColumns);
             preparedStatementToInsertAcademicBodyHeadDataToUserColumns.setString(1, academicBodyHead.getName());
@@ -102,7 +102,7 @@ public class AcademicBodyHeadDAO implements IAcademicBodyHeadDAO{
                            "apellidoPaterno = ?, apellidoMaterno = ?, correo = ?, " + 
                            "correoAlterno = ?, númeroTeléfono = ? && estado = ? " +
                            "WHERE nombre = ? && apellidoPaterno = ? && apellidoMaterno = ? && " + 
-                           "correo = ? && correoAlterno = ? && estado = ? && númeroTeléfono = ?";
+                           "correo = ? && correoAlterno = ? && númeroTeléfono = ? && estado = ?";
             PreparedStatement preparedStatement = dataBaseManager.getConnection().prepareStatement(queryForUpdateUserData);
             preparedStatement.setString(1, newAcademicBodyHeadData.getName());
             preparedStatement.setString(2, newAcademicBodyHeadData.getFirstSurname());
@@ -117,8 +117,27 @@ public class AcademicBodyHeadDAO implements IAcademicBodyHeadDAO{
             preparedStatement.setString(11, originalAcademicBodyHeadData.getEmailAddress());
             preparedStatement.setString(12, originalAcademicBodyHeadData.getAlternateEmail());
             preparedStatement.setString(13, originalAcademicBodyHeadData.getPhoneNumber());
+            preparedStatement.setString(14, originalAcademicBodyHeadData.getStatus());
             preparedStatement.executeUpdate();
-        } catch(SQLException e){
+
+            String queryForUpdateProfessorData = "UPDATE Profesores SET NumPersonal = ? " + 
+                           "WHERE IdUsuario = ?";
+            
+            PreparedStatement preparedStatementForUpdateProfessorData = 
+                dataBaseManager.getConnection().prepareStatement(queryForUpdateProfessorData);
+            preparedStatementForUpdateProfessorData.setInt(1, newAcademicBodyHeadData.getPersonalNumber());
+            preparedStatementForUpdateProfessorData.setInt(2, newAcademicBodyHeadData.getIdUser());
+            preparedStatementForUpdateProfessorData.executeUpdate();
+
+            String queryForUpdateAcademicBodyHeadData = "UPDATE ResponsablesCA SET NumPersonal = ? " + 
+                           "WHERE NumPersonal = ?";
+            
+            PreparedStatement preparedStatementForUpdateAcademicBodyHeadData = 
+                dataBaseManager.getConnection().prepareStatement(queryForUpdateAcademicBodyHeadData);
+            preparedStatementForUpdateAcademicBodyHeadData.setInt(1, newAcademicBodyHeadData.getPersonalNumber());
+            preparedStatementForUpdateAcademicBodyHeadData.setInt(2, originalAcademicBodyHeadData.getPersonalNumber());
+            preparedStatementForUpdateAcademicBodyHeadData.executeUpdate();
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
@@ -141,6 +160,7 @@ public class AcademicBodyHeadDAO implements IAcademicBodyHeadDAO{
                 academicBodyHead.setPassword(resultSet.getString("contraseña"));
                 academicBodyHead.setAlternateEmail(resultSet.getString("correoAlterno"));
                 academicBodyHead.setPhoneNumber(resultSet.getString("númeroTeléfono"));
+                academicBodyHead.setStatus(resultSet.getString("estado"));
                 academicBodyHead.setPersonalNumber(resultSet.getInt("NumPersonal"));
                 academicBodyHeads.add(academicBodyHead);
             }
@@ -172,6 +192,7 @@ public class AcademicBodyHeadDAO implements IAcademicBodyHeadDAO{
                 academicBodyHead.setPassword(resultSet.getString("contraseña"));
                 academicBodyHead.setAlternateEmail(resultSet.getString("correoAlterno"));
                 academicBodyHead.setPhoneNumber(resultSet.getString("númeroTeléfono"));
+                academicBodyHead.setStatus(resultSet.getString("estado"));
                 academicBodyHead.setPersonalNumber(resultSet.getInt("NumPersonal"));
                 academicBodyHeads.add(academicBodyHead);
             }
@@ -202,6 +223,7 @@ public class AcademicBodyHeadDAO implements IAcademicBodyHeadDAO{
                 academicBodyHead.setPassword(resultSet.getString("contraseña"));
                 academicBodyHead.setAlternateEmail(resultSet.getString("correoAlterno"));
                 academicBodyHead.setPhoneNumber(resultSet.getString("númeroTeléfono"));
+                academicBodyHead.setStatus(resultSet.getString("estado"));
                 academicBodyHead.setPersonalNumber(resultSet.getInt("NumPersonal"));
             }
             

@@ -1,6 +1,7 @@
 package mx.uv.fei.gui.javafiles.guiuserscontrollers;
 
-import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -9,7 +10,6 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
-import javafx.util.StringConverter;
 import mx.uv.fei.logic.daos.AcademicBodyHeadDAO;
 import mx.uv.fei.logic.daos.DegreeBossDAO;
 import mx.uv.fei.logic.daos.DirectorDAO;
@@ -66,41 +66,11 @@ public class ModifyUserInformationController {
     private TextField telephoneNumberTextField;
 
     @FXML
-    void initialize(){
-        if(this.userInformationController.getUserType().equals("Estudiante")){
-            this.statusComboBox.getItems().addAll(StudentStatus.Activo.name());
-            this.statusComboBox.getItems().addAll(StudentStatus.Baja.name());
-            this.statusComboBox.getItems().addAll(StudentStatus.Disponible.name());
-            this.statusComboBox.getItems().addAll(StudentStatus.Graduado.name());
-        } else {
-            this.statusComboBox.getItems().addAll(ProfessorStatus.Activo.name());
-            this.statusComboBox.getItems().addAll(ProfessorStatus.Inactivo.name());
-        }
-
-        this.statusComboBox.setValue(this.userInformationController.getStatus());
-        //this.statusComboBox.getItems().add(StudentStatus.Activo);
-        //this.statusComboBox.setConverter(new StringConverter<StudentStatus>() {
-//
-        //    @Override
-        //    public Professor fromString(String arg0) {
-        //        return null;
-        //    }
-//
-        //    @Override
-        //    public String toString(Professor arg0) {
-        //        if(arg0 != null){
-        //            return arg0.getName();
-        //        }
-        //        
-        //        return null;  
-        //    }
-        //    
-        //});
-    }
-
-    @FXML
     void exitButtonController(ActionEvent event) {
-        this.guiUsersController.openPaneWithUserInformation();
+        this.guiUsersController.openPaneWithUserInformation(
+            this.userInformationController.getMatricleOrPersonalNumber(), 
+            this.userInformationController.getUserType()
+        );
     }
 
     @FXML
@@ -112,34 +82,39 @@ public class ModifyUserInformationController {
            !this.alternateEmailTextField.getText().trim().isEmpty() &&
            !this.telephoneNumberTextField.getText().trim().isEmpty() &&
            !this.matricleOrPersonalNumberTextField.getText().trim().isEmpty()) {
-            switch(this.userInformationController.getUserType()){
-                case "Director": {
-                    this.modifyDirector();
-                    break;
+
+            if(allTextFieldsContainsCorrectValues()) {
+                switch(this.userInformationController.getUserType()) {
+                    case "Director": {
+                        this.modifyDirector();
+                        break;
+                    }
+                
+                    case "Miembro de Cuerpo Académico": {
+                        this.modifyAcademicBodyHead();
+                        break;
+                    }
+                
+                    case "Jefe de Carrera": {
+                        this.modifyDegreeBoss();
+                        break;
+                    }
+                
+                    case "Profesor": {
+                        this.modifyProfessor();
+                        break;
+                    }
+                
+                    case "Estudiante": {
+                        this.modifyStudent();
+                        break;
+                    }
                 }
-    
-                case "Miembro de Cuerpo Académico": {
-                    this.modifyAcademicBodyHead();
-                    break;
-                }
-    
-                case "Jefe de Carrera": {
-                    this.modifyDegreeBoss();
-                    break;
-                }
-    
-                case "Profesor": {
-                    this.modifyProfessor();
-                    break;
-                }
-    
-                case "Estudiante": {
-                    this.modifyStudent();
-                    break;
-                }
+            } else {
+                this.errorMessageText.setText("Algunos campos contienen datos inválidos");
+                this.errorMessageText.setVisible(true);
             }
 
-            this.exitButton.setVisible(false);
         } else {
             this.errorMessageText.setText("Faltan campos por llenar");
             this.errorMessageText.setVisible(true);
@@ -218,7 +193,7 @@ public class ModifyUserInformationController {
         this.userInformationController = userInformationController;
     }
 
-    private void modifyStudent(){
+    private void modifyStudent() {
         StudentDAO studentDAO = new StudentDAO();
         Student newStudentData = new Student();
         Student originalStudentData = studentDAO.getStudentFromDatabase(this.userInformationController.getMatricleOrPersonalNumber());
@@ -237,9 +212,12 @@ public class ModifyUserInformationController {
         studentDAO.modifyStudentDataFromDatabase(newStudentData, originalStudentData);
         this.errorMessageText.setText("Usuario modificado exitosamente");
         this.errorMessageText.setVisible(true);
+        this.exitButton.setVisible(false);
+        this.modifyButton.setVisible(false);
+        this.guiUsersController.refreshUserList();
     }
 
-    private void modifyProfessor(){
+    private void modifyProfessor() {
         ProfessorDAO professorDAO = new ProfessorDAO();
         Professor newProfessorData = new Professor();
         Professor originalProfessorData = professorDAO.getProfessorFromDatabase(Integer.parseInt(userInformationController.getMatricleOrPersonalNumber()));
@@ -258,9 +236,12 @@ public class ModifyUserInformationController {
         professorDAO.modifyProfessorDataFromDatabase(newProfessorData, originalProfessorData);
         this.errorMessageText.setText("Usuario modificado exitosamente");
         this.errorMessageText.setVisible(true);
+        this.exitButton.setVisible(false);
+        this.modifyButton.setVisible(false);
+        this.guiUsersController.refreshUserList();
     }
 
-    private void modifyDirector(){
+    private void modifyDirector() {
         DirectorDAO directorDAO = new DirectorDAO();
         Director newDirectorData = new Director();
         Director originalDirectorData = directorDAO.getDirectorFromDatabase(Integer.parseInt(this.userInformationController.getMatricleOrPersonalNumber()));
@@ -279,9 +260,12 @@ public class ModifyUserInformationController {
         directorDAO.modifyDirectorDataFromDatabase(newDirectorData, originalDirectorData);
         this.errorMessageText.setText("Usuario modificado exitosamente");
         this.errorMessageText.setVisible(true);
+        this.exitButton.setVisible(false);
+        this.modifyButton.setVisible(false);
+        this.guiUsersController.refreshUserList();
     }
 
-    private void modifyAcademicBodyHead(){
+    private void modifyAcademicBodyHead() {
         AcademicBodyHeadDAO academicBodyHeadDAO = new AcademicBodyHeadDAO();
         AcademicBodyHead newAcademicBodyHeadData = new AcademicBodyHead();
         AcademicBodyHead originalAcademicBodyHeadData = academicBodyHeadDAO.getAcademicBodyHeadFromDatabase(Integer.parseInt(this.userInformationController.getMatricleOrPersonalNumber()));
@@ -300,9 +284,12 @@ public class ModifyUserInformationController {
         academicBodyHeadDAO.modifyAcademicBodyHeadDataFromDatabase(newAcademicBodyHeadData, originalAcademicBodyHeadData);
         this.errorMessageText.setText("Usuario modificado exitosamente");
         this.errorMessageText.setVisible(true);
+        this.exitButton.setVisible(false);
+        this.modifyButton.setVisible(false);
+        this.guiUsersController.refreshUserList();
     }
 
-    private void modifyDegreeBoss(){
+    private void modifyDegreeBoss() {
         DegreeBossDAO degreeBossDAO = new DegreeBossDAO();
         DegreeBoss newDegreeBossData = new DegreeBoss();
         DegreeBoss originalDegreeBossData = degreeBossDAO.getDegreeBossFromDatabase(Integer.parseInt(this.userInformationController.getMatricleOrPersonalNumber()));
@@ -321,6 +308,77 @@ public class ModifyUserInformationController {
         degreeBossDAO.modifyDegreeBossDataFromDatabase(newDegreeBossData, originalDegreeBossData);
         this.errorMessageText.setText("Usuario modificado exitosamente");
         this.errorMessageText.setVisible(true);
+        this.exitButton.setVisible(false);
+        this.modifyButton.setVisible(false);
+        this.guiUsersController.refreshUserList();
+    }
+
+    public void setStatusesToStatusComboBox() {
+        if(this.userInformationController.getUserType().equals("Estudiante")){
+            this.statusComboBox.getItems().addAll(StudentStatus.Activo.name());
+            this.statusComboBox.getItems().addAll(StudentStatus.Baja.name());
+            this.statusComboBox.getItems().addAll(StudentStatus.Disponible.name());
+            this.statusComboBox.getItems().addAll(StudentStatus.Graduado.name());
+        } else {
+            this.statusComboBox.getItems().addAll(ProfessorStatus.Activo.name());
+            this.statusComboBox.getItems().addAll(ProfessorStatus.Inactivo.name());
+        }
+
+        this.statusComboBox.setValue(this.userInformationController.getStatus());
+    }
+
+    private boolean allTextFieldsContainsCorrectValues() {
+        Pattern namesPattern = Pattern.compile("^[A-Z][a-z]+$"),
+                firstSurnamePattern = Pattern.compile("^[A-Z][a-z]+$"),
+                secondSurnamePattern = Pattern.compile("^[A-Z][a-z]+$"),
+                emailPattern = Pattern.compile("^(.+)@(\\S+)$"),
+                alternateEmailPattern = Pattern.compile("^(.+)@(\\S+)$"),
+                telephoneNumberPattern = Pattern.compile("^[0-9]{10}$"),
+                matricleOrPersonalNumberPattern = Pattern.compile("");
+    
+        switch(this.userInformationController.getUserType()){
+            case "Director": {
+                matricleOrPersonalNumberPattern = Pattern.compile("^[0-9]{9}$");
+                break;
+            }
+
+            case "Miembro de Cuerpo Académico": {
+                matricleOrPersonalNumberPattern = Pattern.compile("^[0-9]{9}$");
+                break;
+            }
+
+            case "Jefe de Carrera": {
+                matricleOrPersonalNumberPattern = Pattern.compile("^[0-9]{9}$");
+                break;
+            }
+
+            case "Profesor": {
+                matricleOrPersonalNumberPattern = Pattern.compile("^[0-9]{9}$");
+                break;
+            }
+
+            case "Estudiante": {
+                matricleOrPersonalNumberPattern = Pattern.compile("^[z][S][0-9]{8}$");
+                break;
+            }
+        }
+
+        Matcher namesMatcher = namesPattern.matcher(this.namesTextField.getText()),
+                firstSurnameMatcher = firstSurnamePattern.matcher(this.firstSurnameTextField.getText()),
+                secondSurnameMatcher = secondSurnamePattern.matcher(this.secondSurnameTextField.getText()),
+                emailMatcher = emailPattern.matcher(this.emailTextField.getText()),
+                alternateEmailMatcher = alternateEmailPattern.matcher(this.alternateEmailTextField.getText()),
+                telephoneNumberMatcher = telephoneNumberPattern.matcher(this.telephoneNumberTextField.getText()),
+                matricleOrPersonalNumberMatcher = matricleOrPersonalNumberPattern.matcher(this.matricleOrPersonalNumberTextField.getText());
+
+        if(namesMatcher.find() && firstSurnameMatcher.find() &&
+           secondSurnameMatcher.find() && emailMatcher.find() &&
+           alternateEmailMatcher.find() && telephoneNumberMatcher.find() &&
+           matricleOrPersonalNumberMatcher.find()){
+            return true;
+        }
+
+        return false;
     }
 
 }

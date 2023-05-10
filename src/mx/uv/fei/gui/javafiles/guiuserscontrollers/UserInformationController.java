@@ -4,7 +4,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import mx.uv.fei.logic.domain.User;
 
 public class UserInformationController {
 
@@ -124,6 +123,14 @@ public class UserInformationController {
 
     public void setGuiUsersController(GuiUsersController guiUsersController){
         this.guiUsersController = guiUsersController;
+    }
+
+    public UserController getUserController() {
+        return userController;
+    }
+
+    public void setUserController(UserController userController) {
+        this.userController = userController;
     }
 
     public void setMatricleOrPersonalNumberText(){

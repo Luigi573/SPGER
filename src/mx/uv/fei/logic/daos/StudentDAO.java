@@ -17,8 +17,8 @@ public class StudentDAO implements IStudentDAO{
         try {
             DataBaseManager dataBaseManager = new DataBaseManager();
             String userTablesToConsult = 
-                "nombre, apellidoPaterno, apellidoMaterno, correo, correoAlterno, númeroTeléfono";
-            String wholeQueryToInsertUserData = "INSERT INTO Usuarios (" + userTablesToConsult + ") VALUES (?, ?, ?, ?, ?, ?)";
+                "nombre, apellidoPaterno, apellidoMaterno, correo, correoAlterno, númeroTeléfono, estado";
+            String wholeQueryToInsertUserData = "INSERT INTO Usuarios (" + userTablesToConsult + ") VALUES (?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement preparedStatementToInsertUserData = 
                 dataBaseManager.getConnection().prepareStatement(wholeQueryToInsertUserData);
             preparedStatementToInsertUserData.setString(1, student.getName());
@@ -27,12 +27,13 @@ public class StudentDAO implements IStudentDAO{
             preparedStatementToInsertUserData.setString(4, student.getEmailAddress());
             preparedStatementToInsertUserData.setString(5, student.getAlternateEmail());
             preparedStatementToInsertUserData.setString(6, student.getPhoneNumber());
+            preparedStatementToInsertUserData.setString(7, student.getStatus());
             preparedStatementToInsertUserData.executeUpdate();
 
             String queryForAssignUserIdToStudent =
                 "SELECT IdUsuario FROM Usuarios WHERE nombre = ? && " +
                 "apellidoPaterno = ? && apellidoMaterno = ? && correo = ? && " +
-                "correoAlterno = ? && númeroTeléfono = ?";
+                "correoAlterno = ? && númeroTeléfono = ? && estado = ?";
             PreparedStatement preparedStatementForAssignUserIdToStudent = 
                 dataBaseManager.getConnection().prepareStatement(queryForAssignUserIdToStudent);
             preparedStatementForAssignUserIdToStudent.setString(1, student.getName());
@@ -41,6 +42,7 @@ public class StudentDAO implements IStudentDAO{
             preparedStatementForAssignUserIdToStudent.setString(4, student.getEmailAddress());
             preparedStatementForAssignUserIdToStudent.setString(5, student.getAlternateEmail());
             preparedStatementForAssignUserIdToStudent.setString(6, student.getPhoneNumber());
+            preparedStatementForAssignUserIdToStudent.setString(7, student.getStatus());
             ResultSet resultSet = preparedStatementForAssignUserIdToStudent.executeQuery();
             if(resultSet.next()){
                 student.setIdUser(resultSet.getInt("IdUsuario"));
@@ -70,9 +72,9 @@ public class StudentDAO implements IStudentDAO{
             DataBaseManager dataBaseManager = new DataBaseManager();
             String queryForUpdateUserData = "UPDATE Usuarios SET nombre = ?, " + 
                            "apellidoPaterno = ?, apellidoMaterno = ?, correo = ?, " + 
-                           "correoAlterno = ?, númeroTeléfono = ? " +
+                           "correoAlterno = ?, númeroTeléfono = ? && estado = ? " +
                            "WHERE nombre = ? && apellidoPaterno = ? && apellidoMaterno = ? && " + 
-                           "correo = ? && correoAlterno = ? && númeroTeléfono = ?";
+                           "correo = ? && correoAlterno = ? && númeroTeléfono = ? && estado = ?";
             PreparedStatement preparedStatementForUpdateUserData = 
                 dataBaseManager.getConnection().prepareStatement(queryForUpdateUserData);
             preparedStatementForUpdateUserData.setString(1, newStudentData.getName());
@@ -81,12 +83,14 @@ public class StudentDAO implements IStudentDAO{
             preparedStatementForUpdateUserData.setString(4, newStudentData.getEmailAddress());
             preparedStatementForUpdateUserData.setString(5, newStudentData.getAlternateEmail());
             preparedStatementForUpdateUserData.setString(6, newStudentData.getPhoneNumber());
-            preparedStatementForUpdateUserData.setString(7, originalStudentData.getName());
-            preparedStatementForUpdateUserData.setString(8, originalStudentData.getFirstSurname());
-            preparedStatementForUpdateUserData.setString(9, originalStudentData.getSecondSurname());
-            preparedStatementForUpdateUserData.setString(10, originalStudentData.getEmailAddress());
-            preparedStatementForUpdateUserData.setString(11, originalStudentData.getAlternateEmail());
-            preparedStatementForUpdateUserData.setString(12, originalStudentData.getPhoneNumber());
+            preparedStatementForUpdateUserData.setString(7, newStudentData.getStatus());
+            preparedStatementForUpdateUserData.setString(8, originalStudentData.getName());
+            preparedStatementForUpdateUserData.setString(9, originalStudentData.getFirstSurname());
+            preparedStatementForUpdateUserData.setString(10, originalStudentData.getSecondSurname());
+            preparedStatementForUpdateUserData.setString(11, originalStudentData.getEmailAddress());
+            preparedStatementForUpdateUserData.setString(12, originalStudentData.getAlternateEmail());
+            preparedStatementForUpdateUserData.setString(13, originalStudentData.getPhoneNumber());
+            preparedStatementForUpdateUserData.setString(14, originalStudentData.getStatus());
             preparedStatementForUpdateUserData.executeUpdate();
 
             String queryForUpdateStudentData = "UPDATE Estudiantes SET Matrícula = ? " + 
@@ -120,6 +124,7 @@ public class StudentDAO implements IStudentDAO{
                 student.setPassword(resultSet.getString("contraseña"));
                 student.setAlternateEmail(resultSet.getString("correoAlterno"));
                 student.setPhoneNumber(resultSet.getString("númeroTeléfono"));
+                student.setStatus(resultSet.getString("estado"));
                 student.setMatricle(resultSet.getString("Matrícula"));
                 students.add(student);
             }
@@ -152,6 +157,7 @@ public class StudentDAO implements IStudentDAO{
                 student.setPassword(resultSet.getString("contraseña"));
                 student.setAlternateEmail(resultSet.getString("correoAlterno"));
                 student.setPhoneNumber(resultSet.getString("númeroTeléfono"));
+                student.setStatus(resultSet.getString("estado"));
                 student.setMatricle(resultSet.getString("Matrícula"));
                 students.add(student);
             }
@@ -184,6 +190,7 @@ public class StudentDAO implements IStudentDAO{
                 student.setPassword(resultSet.getString("contraseña"));
                 student.setAlternateEmail(resultSet.getString("correoAlterno"));
                 student.setPhoneNumber(resultSet.getString("númeroTeléfono"));
+                student.setStatus(resultSet.getString("estado"));
                 student.setMatricle(resultSet.getString("Matrícula"));
             }
             
@@ -226,7 +233,7 @@ public class StudentDAO implements IStudentDAO{
             String query = "SELECT U.IdUsuario FROM Usuarios U INNER JOIN Estudiantes E ON " + 
                            "U.IdUsuario = E.IdUsuario WHERE U.nombre = ? && " +
                            "U.apellidoPaterno = ? && U.apellidoMaterno = ? && U.correo = ? && " +
-                           "U.correoAlterno = ? && U.númeroTeléfono = ? && E.Matrícula = ?";
+                           "U.correoAlterno = ? && U.númeroTeléfono = ? && U.estado = ? && E.Matrícula = ?";
             PreparedStatement preparedStatement = dataBaseManager.getConnection().prepareStatement(query);
             preparedStatement.setString(1, originalStudentData.getName());
             preparedStatement.setString(2, originalStudentData.getFirstSurname());
@@ -234,7 +241,8 @@ public class StudentDAO implements IStudentDAO{
             preparedStatement.setString(4, originalStudentData.getEmailAddress());
             preparedStatement.setString(5, originalStudentData.getAlternateEmail());
             preparedStatement.setString(6, originalStudentData.getPhoneNumber());
-            preparedStatement.setString(7, originalStudentData.getMatricle());
+            preparedStatement.setString(7, originalStudentData.getStatus());
+            preparedStatement.setString(8, originalStudentData.getMatricle());
 
             ResultSet resultSet = preparedStatement.executeQuery();
             if(resultSet.next()) {

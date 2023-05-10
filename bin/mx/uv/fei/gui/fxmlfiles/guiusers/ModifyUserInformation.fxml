@@ -5,6 +5,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
@@ -85,5 +86,10 @@
             <ComboBox fx:id="statusComboBox" prefHeight="25.0" prefWidth="297.0" />
          </children>
       </HBox>
+      <Pane prefHeight="23.0" prefWidth="369.0">
+         <children>
+            <Text fx:id="errorMessageText" fill="RED" layoutX="62.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Error" visible="false" wrappingWidth="245.0" />
+         </children>
+      </Pane>
    </children>
 </VBox>
