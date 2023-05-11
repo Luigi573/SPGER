@@ -1,13 +1,23 @@
 package mx.uv.fei.gui.javafiles.guicoursescontrollers;
 
+import java.io.IOException;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.stage.Stage;
+import mx.uv.fei.gui.javafiles.guiuserscoursecontrollers.GuiUsersCourseController;
 
 public class CourseInformationController {
 
     private GuiCoursesController guiCoursesController;
+
+    @FXML
+    private Button adminUsersButton;
 
     @FXML
     private Label blockLabel;
@@ -29,6 +39,27 @@ public class CourseInformationController {
 
     @FXML
     private Label sectionLabel;
+
+    @FXML
+    void adminUsersButtonController(ActionEvent event) {
+        Parent guiUsersCourse;
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                getClass().getResource("/mx/uv/fei/gui/fxmlfiles/guiuserscourse/GuiUsersCourse.fxml")
+            );
+            guiUsersCourse = loader.load();
+            GuiUsersCourseController guiUsersCourseController = loader.getController();
+            guiUsersCourseController.setCourseInformationController(this);
+            guiUsersCourseController.refreshUsers();
+            Scene scene = new Scene(guiUsersCourse);
+            Stage stage = new Stage();
+            stage.setTitle("Administrar Usuarios");
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }   
+    }
 
     @FXML
     void editButtonController(ActionEvent event) {

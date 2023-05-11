@@ -1,4 +1,4 @@
-package mx.uv.fei.gui.javafiles.guiuserscourse;
+package mx.uv.fei.gui.javafiles.guiuserscoursecontrollers;
 
 import javafx.fxml.FXML;
 import javafx.scene.layout.HBox;

@@ -110,7 +110,7 @@ public class GuiCoursesController {
     }
 
     //This method only should be used by the CourseController Class.
-    void openPaneWithCourseInformation(String courseNRC){
+    void openPaneWithCourseInformation(String courseNRC) {
         CourseDAO courseDAO = new CourseDAO();
         Course course = courseDAO.getCourseFromDatabase(courseNRC);
         ScholarPeriodDAO scholarPeriodDAO = new ScholarPeriodDAO();

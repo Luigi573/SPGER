@@ -110,7 +110,7 @@ public class GuiRegisterCourseController {
                 course.setNrc(Integer.parseInt(this.nrcTextField.getText()));
                 course.setSection(Integer.parseInt(this.sectionComboBox.getValue()));
                 course.setBlock(Integer.parseInt(this.blockComboBox.getValue()));
-                course.setPersonalNumber(Integer.parseInt(this.professorComboBox.getValue().getPersonalNumber()));
+                course.setPersonalNumber(this.professorComboBox.getValue().getPersonalNumber());
                 course.setIdScholarPeriod(this.scholarPeriodComboBox.getValue().getIdScholarPeriod());
                 if(courseDAO.theCourseIsAlreadyRegisted(course)) {
                     this.errorMessajeText.setText("El curso ya está registrado en el sistema");

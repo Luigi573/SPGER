@@ -31,8 +31,8 @@ public class Main extends Application{
         FXMLLoader loader = new FXMLLoader(
             //getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/Chronogram.fxml") tha xavier gui
             //getClass().getResource("gui/fxmlfiles/guiuserscourse/GuiUsersCourse.fxml")
-            //getClass().getResource("gui/fxmlfiles/guicourses/GuiCourses.fxml")
-            getClass().getResource("gui/fxmlfiles/guiusers/GuiUsers.fxml")
+            getClass().getResource("gui/fxmlfiles/guicourses/GuiCourses.fxml")
+            //getClass().getResource("gui/fxmlfiles/guiusers/GuiUsers.fxml")
             //getClass().getResource("gui/fxmlfiles/guiresearchreport/GuiResearchReport.fxml")
         );
         guiUsuarios = loader.load();

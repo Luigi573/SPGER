@@ -2,4 +2,5 @@
 
 <?import javafx.scene.layout.HBox?>
 
-<HBox fx:id="studentsHbox" prefHeight="105.0" prefWidth="772.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.uv.fei.gui.javafiles.guiuserscourse.StudentsHBoxController" />
+
+<HBox fx:id="studentsHbox" prefHeight="105.0" prefWidth="772.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.uv.fei.gui.javafiles.guiuserscoursecontrollers.StudentsHBoxController" />
