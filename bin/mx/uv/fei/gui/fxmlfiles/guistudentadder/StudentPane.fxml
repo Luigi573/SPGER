@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.layout.Pane?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="52.0" prefWidth="405.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.uv.fei.gui.javafiles.guistudentaddercontrollers.StudentPaneController">
+   <children>
+      <Label layoutX="6.0" layoutY="8.0" text="Estudiante: " />
+      <Label fx:id="studentNameLabel" layoutX="82.0" layoutY="8.0" prefHeight="16.0" prefWidth="288.0" text="Label" />
+      <Label layoutX="6.0" layoutY="30.0" text="Matricula:" />
+      <Label fx:id="matricleLabel" layoutX="73.0" layoutY="30.0" prefHeight="16.0" prefWidth="296.0" text="Label" />
+      <RadioButton fx:id="selectStudentRadioButton" layoutX="377.0" layoutY="17.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="19.0" />
+   </children>
+</Pane>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="530.0" prefWidth="820.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <ScrollPane layoutX="17.0" layoutY="122.0" prefHeight="388.0" prefWidth="788.0">
+         <content>
+            <VBox prefHeight="386.0" prefWidth="772.0">
+               <children>
+                  <HBox prefHeight="34.0" prefWidth="772.0">
+                     <children>
+                        <Label prefHeight="16.0" prefWidth="16.0" />
+                        <Label prefHeight="40.0" prefWidth="90.0" text="Profe: ">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
+                  <HBox fx:id="professorsHBox" prefHeight="105.0" prefWidth="772.0" />
+                  <HBox prefHeight="34.0" prefWidth="772.0">
+                     <children>
+                        <Label prefHeight="16.0" prefWidth="16.0" />
+                        <Label prefHeight="34.0" prefWidth="134.0" text="Estudiantes: ">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
+                  <VBox fx:id="studentsVbox" prefHeight="105.0" prefWidth="772.0" />
+                  <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="55.0" prefWidth="772.0">
+                     <children>
+                        <Button fx:id="addButton" layoutX="340.0" layoutY="8.0" mnemonicParsing="false" onAction="#addButtonController" prefHeight="40.0" prefWidth="93.0" text="Agregar" />
+                     </children>
+                  </Pane>
+               </children>
+            </VBox>
+         </content>
+      </ScrollPane>
+   </children>
+</Pane>
