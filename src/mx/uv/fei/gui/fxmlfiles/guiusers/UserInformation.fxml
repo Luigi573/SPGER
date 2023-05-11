@@ -25,65 +25,65 @@
       </HBox>
       <HBox prefHeight="25.0" prefWidth="369.0">
          <children>
-            <Label prefHeight="40.0" prefWidth="30.0" />
-            <Label prefHeight="25.0" prefWidth="99.0" text="Nombre(s):" />
-            <Label fx:id="namesLabel" prefHeight="25.0" prefWidth="306.0" text="Label" />
-         </children>
-      </HBox>
-      <HBox prefHeight="25.0" prefWidth="369.0">
-         <children>
-            <Label prefHeight="25.0" prefWidth="51.0" />
-            <Label prefHeight="25.0" prefWidth="158.0" text="Apellido Paterno:" />
-            <Label fx:id="firstSurnameLabel" prefHeight="25.0" prefWidth="286.0" text="Label" />
+            <Label prefHeight="25.0" prefWidth="10.0" />
+            <Label prefHeight="25.0" prefWidth="78.0" text="Nombre(s):" />
+            <Label fx:id="namesLabel" prefHeight="25.0" prefWidth="275.0" text="Label" />
          </children>
       </HBox>
       <HBox prefHeight="25.0" prefWidth="369.0">
          <children>
             <Label prefHeight="25.0" prefWidth="10.0" />
-            <Label prefHeight="25.0" prefWidth="117.0" text="Apellido Materno:" />
-            <Label fx:id="secondSurnameLabel" prefHeight="25.0" prefWidth="243.0" text="Label" />
+            <Label prefHeight="25.0" prefWidth="116.0" text="Apellido Paterno:" />
+            <Label fx:id="firstSurnameLabel" prefHeight="25.0" prefWidth="238.0" text="Label" />
          </children>
       </HBox>
       <HBox prefHeight="25.0" prefWidth="369.0">
          <children>
             <Label prefHeight="25.0" prefWidth="10.0" />
-            <Label prefHeight="25.0" prefWidth="127.0" text="Correo Electronico:" />
-            <Label fx:id="emailLabel" prefHeight="25.0" prefWidth="232.0" text="Label" />
+            <Label prefHeight="25.0" prefWidth="120.0" text="Apellido Materno:" />
+            <Label fx:id="secondSurnameLabel" prefHeight="25.0" prefWidth="234.0" text="Label" />
+         </children>
+      </HBox>
+      <HBox prefHeight="25.0" prefWidth="369.0">
+         <children>
+            <Label prefHeight="25.0" prefWidth="10.0" />
+            <Label prefHeight="25.0" prefWidth="130.0" text="Correo Electronico:" />
+            <Label fx:id="emailLabel" prefHeight="25.0" prefWidth="224.0" text="Label" />
          </children>
       </HBox>
       <HBox prefHeight="25.0" prefWidth="261.0">
          <children>
             <Label prefHeight="25.0" prefWidth="10.0" />
-            <Label prefHeight="25.0" prefWidth="102.0" text="Correo Alterno:" />
-            <Label fx:id="alternateEmailLabel" prefHeight="25.0" prefWidth="257.0" text="Label" />
+            <Label prefHeight="25.0" prefWidth="105.0" text="Correo Alterno:" />
+            <Label fx:id="alternateEmailLabel" prefHeight="25.0" prefWidth="249.0" text="Label" />
          </children>
       </HBox>
       <HBox prefHeight="25.0" prefWidth="369.0">
          <children>
             <Label prefHeight="25.0" prefWidth="10.0" />
-            <Label prefHeight="25.0" prefWidth="140.0" text="Numero de Telefono:" />
-            <Label fx:id="telephoneNumberLabel" prefHeight="25.0" prefWidth="219.0" text="Label" />
+            <Label prefHeight="25.0" prefWidth="143.0" text="Numero de Telefono:" />
+            <Label fx:id="telephoneNumberLabel" prefHeight="25.0" prefWidth="211.0" text="Label" />
          </children>
       </HBox>
       <HBox prefHeight="25.0" prefWidth="369.0">
          <children>
             <Label prefHeight="25.0" prefWidth="10.0" />
-            <Label fx:id="matricleOrPersonalNumberText" prefHeight="25.0" prefWidth="108.0" text="N° de Personal: " />
-            <Label fx:id="matricleOrPersonalNumberLabel" prefHeight="25.0" prefWidth="250.0" text="Label" />
+            <Label fx:id="matricleOrPersonalNumberText" prefHeight="25.0" prefWidth="141.0" text="Numero de Personal: " />
+            <Label fx:id="matricleOrPersonalNumberLabel" prefHeight="25.0" prefWidth="213.0" text="Label" />
          </children>
       </HBox>
       <HBox prefHeight="25.0" prefWidth="369.0">
          <children>
             <Label prefHeight="25.0" prefWidth="10.0" />
-            <Label prefHeight="25.0" prefWidth="63.0" text="Estatus:" />
-            <Label fx:id="statusLabel" prefHeight="25.0" prefWidth="298.0" text="Label" />
+            <Label prefHeight="25.0" prefWidth="58.0" text="Estatus:" />
+            <Label fx:id="statusLabel" prefHeight="25.0" prefWidth="296.0" text="Label" />
          </children>
       </HBox>
       <HBox prefHeight="25.0" prefWidth="369.0">
          <children>
             <Label prefHeight="25.0" prefWidth="10.0" />
-            <Label prefHeight="25.0" prefWidth="115.0" text="Tipo de Usuario:" />
-            <Label fx:id="userTypeLabel" prefHeight="25.0" prefWidth="242.0" text="Label" />
+            <Label prefHeight="25.0" prefWidth="111.0" text="Tipo de Usuario:" />
+            <Label fx:id="userTypeLabel" prefHeight="25.0" prefWidth="243.0" text="Label" />
          </children>
       </HBox>
    </children>

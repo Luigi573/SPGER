@@ -203,8 +203,9 @@ public class ModifyUserInformationController {
         newStudentData.setEmailAddress(this.emailTextField.getText());
         newStudentData.setAlternateEmail(this.alternateEmailTextField.getText());
         newStudentData.setPhoneNumber(this.telephoneNumberTextField.getText());
+        newStudentData.setStatus(this.statusComboBox.getValue());
         newStudentData.setMatricle(this.matricleOrPersonalNumberTextField.getText());
-        if(studentDAO.theStudentIsAlreadyRegisted(newStudentData.getMatricle())){
+        if(studentDAO.theStudentIsAlreadyRegisted(newStudentData)){
             this.errorMessageText.setText("El usuario ya está registrado en el sistema");
             this.errorMessageText.setVisible(true);
             return;
@@ -227,8 +228,9 @@ public class ModifyUserInformationController {
         newProfessorData.setEmailAddress(this.emailTextField.getText());
         newProfessorData.setAlternateEmail(this.alternateEmailTextField.getText());
         newProfessorData.setPhoneNumber(this.telephoneNumberTextField.getText());
+        newProfessorData.setStatus(this.statusComboBox.getValue());
         newProfessorData.setPersonalNumber(Integer.parseInt(this.matricleOrPersonalNumberTextField.getText()));
-        if(professorDAO.theProfessorIsAlreadyRegisted(newProfessorData.getPersonalNumber())){
+        if(professorDAO.theProfessorIsAlreadyRegisted(newProfessorData)){
             this.errorMessageText.setText("El usuario ya está registrado en el sistema");
             this.errorMessageText.setVisible(true);
             return;
@@ -251,8 +253,9 @@ public class ModifyUserInformationController {
         newDirectorData.setEmailAddress(this.emailTextField.getText());
         newDirectorData.setAlternateEmail(this.alternateEmailTextField.getText());
         newDirectorData.setPhoneNumber(this.telephoneNumberTextField.getText());
+        newDirectorData.setStatus(this.statusComboBox.getValue());
         newDirectorData.setPersonalNumber(Integer.parseInt(this.matricleOrPersonalNumberTextField.getText()));
-        if(directorDAO.theDirectorIsAlreadyRegisted(newDirectorData.getPersonalNumber())){
+        if(directorDAO.theDirectorIsAlreadyRegisted(newDirectorData)){
             this.errorMessageText.setText("El usuario ya está registrado en el sistema");
             this.errorMessageText.setVisible(true);
             return;
@@ -275,8 +278,9 @@ public class ModifyUserInformationController {
         newAcademicBodyHeadData.setEmailAddress(this.emailTextField.getText());
         newAcademicBodyHeadData.setAlternateEmail(this.alternateEmailTextField.getText());
         newAcademicBodyHeadData.setPhoneNumber(this.telephoneNumberTextField.getText());
+        newAcademicBodyHeadData.setStatus(this.statusComboBox.getValue());
         newAcademicBodyHeadData.setPersonalNumber(Integer.parseInt(this.matricleOrPersonalNumberTextField.getText()));
-        if(academicBodyHeadDAO.theAcademicBodyHeadIsAlreadyRegisted(newAcademicBodyHeadData.getPersonalNumber())){
+        if(academicBodyHeadDAO.theAcademicBodyHeadIsAlreadyRegisted(newAcademicBodyHeadData)){
             this.errorMessageText.setText("El usuario ya está registrado en el sistema");
             this.errorMessageText.setVisible(true);
             return;
@@ -299,8 +303,9 @@ public class ModifyUserInformationController {
         newDegreeBossData.setEmailAddress(this.emailTextField.getText());
         newDegreeBossData.setAlternateEmail(this.alternateEmailTextField.getText());
         newDegreeBossData.setPhoneNumber(this.telephoneNumberTextField.getText());
+        newDegreeBossData.setStatus(this.statusComboBox.getValue());
         newDegreeBossData.setPersonalNumber(Integer.parseInt(this.matricleOrPersonalNumberTextField.getText()));
-        if(degreeBossDAO.theDegreeBossIsAlreadyRegisted(newDegreeBossData.getPersonalNumber())){
+        if(degreeBossDAO.theDegreeBossIsAlreadyRegisted(newDegreeBossData)){
             this.errorMessageText.setText("El usuario ya está registrado en el sistema");
             this.errorMessageText.setVisible(true);
             return;
@@ -379,6 +384,18 @@ public class ModifyUserInformationController {
         }
 
         return false;
+    }
+
+    public void setMatricleOrPersonalNumberText() {
+        if(this.userInformationController.getUserType().equals("Estudiante")) {
+            this.matricleOrPersonalNumberText.setText("Matrícula: ");
+            this.matricleOrPersonalNumberText.setPrefWidth(70);
+            this.matricleOrPersonalNumberTextField.setPrefWidth(282);
+        } else {
+            this.matricleOrPersonalNumberText.setText("N° de Personal: ");
+            this.matricleOrPersonalNumberText.setPrefWidth(107);
+            this.matricleOrPersonalNumberTextField.setPrefWidth(245);
+        }
     }
 
 }

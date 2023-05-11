@@ -72,7 +72,7 @@ public class ProfessorDAO implements IProfessorDAO {
             DataBaseManager dataBaseManager = new DataBaseManager();
             String queryForUpdateUserData = "UPDATE Usuarios SET nombre = ?, " + 
                            "apellidoPaterno = ?, apellidoMaterno = ?, correo = ?, " + 
-                           "correoAlterno = ?, númeroTeléfono = ? && estado = ? " +
+                           "correoAlterno = ?, númeroTeléfono = ?, estado = ? " +
                            "WHERE nombre = ? && apellidoPaterno = ? && apellidoMaterno = ? && " + 
                            "correo = ? && correoAlterno = ? && númeroTeléfono = ? && estado = ?";
             PreparedStatement preparedStatement = 
@@ -201,14 +201,24 @@ public class ProfessorDAO implements IProfessorDAO {
         return professor;
     }
 
-    public boolean theProfessorIsAlreadyRegisted(int personalNumber) {
+    public boolean theProfessorIsAlreadyRegisted(Professor professor) {
         try {
             DataBaseManager dataBaseManager = new DataBaseManager();
             Statement statement = dataBaseManager.getConnection().createStatement();
-            String query = "SELECT NumPersonal FROM Profesores";
+            String query = "SELECT U.nombre, U.apellidoPaterno, U.apellidoMaterno, U.correo, " +
+                           "U.correoAlterno, U.númeroTeléfono, U.estado, P.NumPersonal FROM Usuarios U " + 
+                           "INNER JOIN Profesores P ON U.IdUsuario = P.IdUsuario";
             ResultSet resultSet = statement.executeQuery(query);
             while(resultSet.next()) {
-                if(resultSet.getInt("NumPersonal") == personalNumber) {
+                if( (resultSet.getString("nombre").equals(professor.getName()) &&
+                   resultSet.getString("apellidoPaterno").equals(professor.getFirstSurname()) &&
+                   resultSet.getString("apellidoMaterno").equals(professor.getSecondSurname()) &&
+                   resultSet.getString("correo").equals(professor.getEmailAddress()) &&
+                   resultSet.getString("correoAlterno").equals(professor.getAlternateEmail()) &&
+                   resultSet.getString("númeroTeléfono").equals(professor.getPhoneNumber()) &&
+                   resultSet.getString("estado").equals(professor.getStatus()) &&
+                   resultSet.getInt("NumPersonal") == professor.getPersonalNumber()) ||
+                   resultSet.getInt("NumPersonal") == professor.getPersonalNumber()) {
                     resultSet.close();
                     dataBaseManager.getConnection().close();
                     return true;

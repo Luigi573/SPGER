@@ -415,6 +415,7 @@ public class GuiUsersController {
             modifyUserInformationController.setGuiUsersController(this);
             modifyUserInformationController.setUserInformationController(userInformationController);
             modifyUserInformationController.setStatusesToStatusComboBox();
+            modifyUserInformationController.setMatricleOrPersonalNumberText();
             this.userInformationScrollPane.setContent(modifyUserInformationVBox);
             
         } catch (IOException e){

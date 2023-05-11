@@ -100,7 +100,7 @@ public class AcademicBodyHeadDAO implements IAcademicBodyHeadDAO{
             DataBaseManager dataBaseManager = new DataBaseManager();
             String queryForUpdateUserData = "UPDATE Usuarios SET nombre = ?, " + 
                            "apellidoPaterno = ?, apellidoMaterno = ?, correo = ?, " + 
-                           "correoAlterno = ?, númeroTeléfono = ? && estado = ? " +
+                           "correoAlterno = ?, númeroTeléfono = ?, estado = ? " +
                            "WHERE nombre = ? && apellidoPaterno = ? && apellidoMaterno = ? && " + 
                            "correo = ? && correoAlterno = ? && númeroTeléfono = ? && estado = ?";
             PreparedStatement preparedStatement = dataBaseManager.getConnection().prepareStatement(queryForUpdateUserData);
@@ -236,14 +236,25 @@ public class AcademicBodyHeadDAO implements IAcademicBodyHeadDAO{
         return academicBodyHead;
     }
 
-    public boolean theAcademicBodyHeadIsAlreadyRegisted(int personalNumber) {
+    public boolean theAcademicBodyHeadIsAlreadyRegisted(AcademicBodyHead academicBodyHead) {
         try {
             DataBaseManager dataBaseManager = new DataBaseManager();
             Statement statement = dataBaseManager.getConnection().createStatement();
-            String query = "SELECT NumPersonal FROM Profesores";
+            String query = "SELECT U.nombre, U.apellidoPaterno, U.apellidoMaterno, U.correo, " +
+                           "U.correoAlterno, U.númeroTeléfono, U.estado, P.NumPersonal FROM Usuarios U " + 
+                           "INNER JOIN Profesores P ON U.IdUsuario = P.IdUsuario INNER JOIN ResponsablesCA RCA " +
+                           "ON P.NumPersonal = RCA.NumPersonal";
             ResultSet resultSet = statement.executeQuery(query);
             while(resultSet.next()) {
-                if(resultSet.getInt("NumPersonal") == personalNumber) {
+                if( (resultSet.getString("nombre").equals(academicBodyHead.getName()) &&
+                   resultSet.getString("apellidoPaterno").equals(academicBodyHead.getFirstSurname()) &&
+                   resultSet.getString("apellidoMaterno").equals(academicBodyHead.getSecondSurname()) &&
+                   resultSet.getString("correo").equals(academicBodyHead.getEmailAddress()) &&
+                   resultSet.getString("correoAlterno").equals(academicBodyHead.getAlternateEmail()) &&
+                   resultSet.getString("númeroTeléfono").equals(academicBodyHead.getPhoneNumber()) &&
+                   resultSet.getString("estado").equals(academicBodyHead.getStatus()) &&
+                   resultSet.getInt("NumPersonal") == academicBodyHead.getPersonalNumber()) ||
+                   resultSet.getInt("NumPersonal") == academicBodyHead.getPersonalNumber()) {
                     resultSet.close();
                     dataBaseManager.getConnection().close();
                     return true;

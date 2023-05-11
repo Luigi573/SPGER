@@ -100,7 +100,7 @@ public class DegreeBossDAO implements IDegreeBossDAO {
             DataBaseManager dataBaseManager = new DataBaseManager();
             String queryForUpdateUserData = "UPDATE Usuarios SET nombre = ?, " + 
                            "apellidoPaterno = ?, apellidoMaterno = ?, correo = ?, " + 
-                           "correoAlterno = ?, númeroTeléfono = ? && estado = ? " +
+                           "correoAlterno = ?, númeroTeléfono = ?, estado = ? " +
                            "WHERE nombre = ? && apellidoPaterno = ? && apellidoMaterno = ? && " + 
                            "correo = ? && correoAlterno = ? && númeroTeléfono = ? && estado = ?";
             PreparedStatement preparedStatement = dataBaseManager.getConnection().prepareStatement(queryForUpdateUserData);
@@ -236,14 +236,25 @@ public class DegreeBossDAO implements IDegreeBossDAO {
         return degreeBoss;
     }
 
-    public boolean theDegreeBossIsAlreadyRegisted(int personalNumber) {
+    public boolean theDegreeBossIsAlreadyRegisted(DegreeBoss degreeBoss) {
         try {
             DataBaseManager dataBaseManager = new DataBaseManager();
             Statement statement = dataBaseManager.getConnection().createStatement();
-            String query = "SELECT NumPersonal FROM Profesores";
+            String query = "SELECT U.nombre, U.apellidoPaterno, U.apellidoMaterno, U.correo, " +
+                           "U.correoAlterno, U.númeroTeléfono, U.estado, P.NumPersonal FROM Usuarios U " + 
+                           "INNER JOIN Profesores P ON U.IdUsuario = P.IdUsuario INNER JOIN JefesCarrera JC " +
+                           "ON P.NumPersonal = JC.NumPersonal";
             ResultSet resultSet = statement.executeQuery(query);
             while(resultSet.next()) {
-                if(resultSet.getInt("NumPersonal") == personalNumber) {
+                if( (resultSet.getString("nombre").equals(degreeBoss.getName()) &&
+                   resultSet.getString("apellidoPaterno").equals(degreeBoss.getFirstSurname()) &&
+                   resultSet.getString("apellidoMaterno").equals(degreeBoss.getSecondSurname()) &&
+                   resultSet.getString("correo").equals(degreeBoss.getEmailAddress()) &&
+                   resultSet.getString("correoAlterno").equals(degreeBoss.getAlternateEmail()) &&
+                   resultSet.getString("númeroTeléfono").equals(degreeBoss.getPhoneNumber()) &&
+                   resultSet.getString("estado").equals(degreeBoss.getStatus()) &&
+                   resultSet.getInt("NumPersonal") == degreeBoss.getPersonalNumber()) ||
+                   resultSet.getInt("NumPersonal") == degreeBoss.getPersonalNumber()) {
                     resultSet.close();
                     dataBaseManager.getConnection().close();
                     return true;

@@ -100,7 +100,7 @@ public class DirectorDAO implements IDirectorDAO{
             DataBaseManager dataBaseManager = new DataBaseManager();
             String queryForUpdateUserData = "UPDATE Usuarios SET nombre = ?, " + 
                            "apellidoPaterno = ?, apellidoMaterno = ?, correo = ?, " + 
-                           "correoAlterno = ?, númeroTeléfono = ? && estado = ? " +
+                           "correoAlterno = ?, númeroTeléfono = ?, estado = ? " +
                            "WHERE nombre = ? && apellidoPaterno = ? && apellidoMaterno = ? && " + 
                            "correo = ? && correoAlterno = ? && númeroTeléfono = ? && estado = ?";
             PreparedStatement preparedStatement = dataBaseManager.getConnection().prepareStatement(queryForUpdateUserData);
@@ -236,14 +236,25 @@ public class DirectorDAO implements IDirectorDAO{
         return director;
     }
 
-    public boolean theDirectorIsAlreadyRegisted(int personalNumber) {
+    public boolean theDirectorIsAlreadyRegisted(Director director) {
         try {
             DataBaseManager dataBaseManager = new DataBaseManager();
             Statement statement = dataBaseManager.getConnection().createStatement();
-            String query = "SELECT NumPersonal FROM Profesores";
+            String query = "SELECT U.nombre, U.apellidoPaterno, U.apellidoMaterno, U.correo, " +
+                           "U.correoAlterno, U.númeroTeléfono, U.estado, P.NumPersonal FROM Usuarios U " + 
+                           "INNER JOIN Profesores P ON U.IdUsuario = P.IdUsuario INNER JOIN Directores D " +
+                           "ON P.NumPersonal = D.NumPersonal";
             ResultSet resultSet = statement.executeQuery(query);
             while(resultSet.next()) {
-                if(resultSet.getInt("NumPersonal") == personalNumber) {
+                if( (resultSet.getString("nombre").equals(director.getName()) &&
+                   resultSet.getString("apellidoPaterno").equals(director.getFirstSurname()) &&
+                   resultSet.getString("apellidoMaterno").equals(director.getSecondSurname()) &&
+                   resultSet.getString("correo").equals(director.getEmailAddress()) &&
+                   resultSet.getString("correoAlterno").equals(director.getAlternateEmail()) &&
+                   resultSet.getString("númeroTeléfono").equals(director.getPhoneNumber()) &&
+                   resultSet.getString("estado").equals(director.getStatus()) &&
+                   resultSet.getInt("NumPersonal") == director.getPersonalNumber()) ||
+                   resultSet.getInt("NumPersonal") == director.getPersonalNumber()) {
                     resultSet.close();
                     dataBaseManager.getConnection().close();
                     return true;

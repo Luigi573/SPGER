@@ -135,9 +135,13 @@ public class UserInformationController {
 
     public void setMatricleOrPersonalNumberText(){
         if(this.userTypeLabel.getText() == "Estudiante"){
-            this.matricleOrPersonalNumberText.setText("Matrícula");
+            this.matricleOrPersonalNumberText.setText("Matrícula: ");
+            this.matricleOrPersonalNumberText.setMaxWidth(71);
+            this.matricleOrPersonalNumberLabel.setPrefWidth(282);
         } else {
-            this.matricleOrPersonalNumberText.setText("Número de Personal");
+            this.matricleOrPersonalNumberText.setText("Número de Personal: ");
+            this.matricleOrPersonalNumberText.setMaxWidth(141);
+            this.matricleOrPersonalNumberLabel.setPrefWidth(213);
         }
     }
 

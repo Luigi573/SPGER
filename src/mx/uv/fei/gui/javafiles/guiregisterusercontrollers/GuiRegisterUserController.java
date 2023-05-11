@@ -125,23 +125,18 @@ public class GuiRegisterUserController {
     @FXML
     void typeComboBoxController(ActionEvent event) {
         if(this.typeComboBox.getValue().equals("Estudiante")){
-            this.matricleOrPersonalNumberText.setText("Matrícula");
-            //Adjust textfield size
-            //this.matricleOrPersonalNumberTextField.se
+            this.matricleOrPersonalNumberText.setText("Matrícula: ");
+            this.matricleOrPersonalNumberTextField.setPrefWidth(303);
+            this.matricleOrPersonalNumberTextField.setLayoutX(479);
         } else {
-            this.matricleOrPersonalNumberText.setText("Número de Personal");
-            //Adjust textfield size
-            //this.matricleOrPersonalNumberTextField.
+            this.matricleOrPersonalNumberText.setText("Número de Personal: ");
+            this.matricleOrPersonalNumberTextField.setPrefWidth(221);
+            this.matricleOrPersonalNumberTextField.setLayoutX(561);
         }
     }
 
     private void registerDirector() {
         DirectorDAO directorDAO = new DirectorDAO();
-        if(directorDAO.theDirectorIsAlreadyRegisted(Integer.parseInt(this.matricleOrPersonalNumberTextField.getText()))) {
-            this.errorMessajeText.setText("El usuario ya está registrado en el sistema");
-            this.errorMessajeText.setVisible(true);
-            return;
-        }
         Director director = new Director();
         director.setName(this.namesTextField.getText());
         director.setFirstSurname(this.firstSurnameTextField.getText());
@@ -151,16 +146,16 @@ public class GuiRegisterUserController {
         director.setPhoneNumber(this.telephoneNumberTextField.getText());
         director.setStatus(ProfessorStatus.Activo.name());
         director.setPersonalNumber(Integer.parseInt(this.matricleOrPersonalNumberTextField.getText()));
+        if(directorDAO.theDirectorIsAlreadyRegisted(director)) {
+            this.errorMessajeText.setText("El usuario ya está registrado en el sistema");
+            this.errorMessajeText.setVisible(true);
+            return;
+        }
         directorDAO.addDirectorToDatabase(director);
     }
 
     private void registerAcademicBodyHead() {
         AcademicBodyHeadDAO academicBodyHeadDAO = new AcademicBodyHeadDAO();
-        if(academicBodyHeadDAO.theAcademicBodyHeadIsAlreadyRegisted(Integer.parseInt(this.matricleOrPersonalNumberTextField.getText()))){
-            this.errorMessajeText.setText("El usuario ya está registrado en el sistema");
-            this.errorMessajeText.setVisible(true);
-            return;
-        }
         AcademicBodyHead academicBodyHead = new AcademicBodyHead();
         academicBodyHead.setName(this.namesTextField.getText());
         academicBodyHead.setFirstSurname(this.firstSurnameTextField.getText());
@@ -170,16 +165,16 @@ public class GuiRegisterUserController {
         academicBodyHead.setPhoneNumber(this.telephoneNumberTextField.getText());
         academicBodyHead.setStatus(ProfessorStatus.Activo.name());
         academicBodyHead.setPersonalNumber(Integer.parseInt(this.matricleOrPersonalNumberTextField.getText()));
+        if(academicBodyHeadDAO.theAcademicBodyHeadIsAlreadyRegisted(academicBodyHead)) {
+            this.errorMessajeText.setText("El usuario ya está registrado en el sistema");
+            this.errorMessajeText.setVisible(true);
+            return;
+        }
         academicBodyHeadDAO.addAcademicBodyHeadToDatabase(academicBodyHead);
     }
 
     private void registerDegreeBoss(){
         DegreeBossDAO degreeBossDAO = new DegreeBossDAO();
-        if(degreeBossDAO.theDegreeBossIsAlreadyRegisted(Integer.parseInt(this.matricleOrPersonalNumberTextField.getText()))){
-            this.errorMessajeText.setText("El usuario ya está registrado en el sistema");
-            this.errorMessajeText.setVisible(true);
-            return;
-        }
         DegreeBoss degreeBoss = new DegreeBoss();
         degreeBoss.setName(this.namesTextField.getText());
         degreeBoss.setFirstSurname(this.firstSurnameTextField.getText());
@@ -189,16 +184,16 @@ public class GuiRegisterUserController {
         degreeBoss.setPhoneNumber(this.telephoneNumberTextField.getText());
         degreeBoss.setStatus(ProfessorStatus.Activo.name());
         degreeBoss.setPersonalNumber(Integer.parseInt(this.matricleOrPersonalNumberTextField.getText()));
+        if(degreeBossDAO.theDegreeBossIsAlreadyRegisted(degreeBoss)){
+            this.errorMessajeText.setText("El usuario ya está registrado en el sistema");
+            this.errorMessajeText.setVisible(true);
+            return;
+        }
         degreeBossDAO.addDegreeBossToDatabase(degreeBoss);
     }
 
     private void registerProfessor(){
         ProfessorDAO professorDAO = new ProfessorDAO();
-        if(professorDAO.theProfessorIsAlreadyRegisted(Integer.parseInt(this.matricleOrPersonalNumberTextField.getText()))){
-            this.errorMessajeText.setText("El usuario ya está registrado en el sistema");
-            this.errorMessajeText.setVisible(true);
-            return;
-        }
         Professor professor = new Professor();
         professor.setName(this.namesTextField.getText());
         professor.setFirstSurname(this.firstSurnameTextField.getText());
@@ -208,16 +203,16 @@ public class GuiRegisterUserController {
         professor.setPhoneNumber(this.telephoneNumberTextField.getText());
         professor.setStatus(ProfessorStatus.Activo.name());
         professor.setPersonalNumber(Integer.parseInt(this.matricleOrPersonalNumberTextField.getText()));
+        if(professorDAO.theProfessorIsAlreadyRegisted(professor)) {
+            this.errorMessajeText.setText("El usuario ya está registrado en el sistema");
+            this.errorMessajeText.setVisible(true);
+            return;
+        }
         professorDAO.addProfessorToDatabase(professor);
     }
 
     private void registerStudent(){
         StudentDAO studentDAO = new StudentDAO();
-        if(studentDAO.theStudentIsAlreadyRegisted(this.matricleOrPersonalNumberTextField.getText())){
-            this.errorMessajeText.setText("El usuario ya está registrado en el sistema");
-            this.errorMessajeText.setVisible(true);
-            return;
-        }
         Student student = new Student();
         student.setName(this.namesTextField.getText());
         student.setFirstSurname(this.firstSurnameTextField.getText());
@@ -227,6 +222,11 @@ public class GuiRegisterUserController {
         student.setPhoneNumber(this.telephoneNumberTextField.getText());
         student.setStatus(StudentStatus.Activo.name());
         student.setMatricle(this.matricleOrPersonalNumberTextField.getText());
+        if(studentDAO.theStudentIsAlreadyRegisted(student)) {
+            this.errorMessajeText.setText("El usuario ya está registrado en el sistema");
+            this.errorMessajeText.setVisible(true);
+            return;
+        }
         studentDAO.addStudentToDatabase(student);
     }
 

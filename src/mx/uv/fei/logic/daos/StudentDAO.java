@@ -72,7 +72,7 @@ public class StudentDAO implements IStudentDAO{
             DataBaseManager dataBaseManager = new DataBaseManager();
             String queryForUpdateUserData = "UPDATE Usuarios SET nombre = ?, " + 
                            "apellidoPaterno = ?, apellidoMaterno = ?, correo = ?, " + 
-                           "correoAlterno = ?, númeroTeléfono = ? && estado = ? " +
+                           "correoAlterno = ?, númeroTeléfono = ?, estado = ? " +
                            "WHERE nombre = ? && apellidoPaterno = ? && apellidoMaterno = ? && " + 
                            "correo = ? && correoAlterno = ? && númeroTeléfono = ? && estado = ?";
             PreparedStatement preparedStatementForUpdateUserData = 
@@ -92,6 +92,7 @@ public class StudentDAO implements IStudentDAO{
             preparedStatementForUpdateUserData.setString(13, originalStudentData.getPhoneNumber());
             preparedStatementForUpdateUserData.setString(14, originalStudentData.getStatus());
             preparedStatementForUpdateUserData.executeUpdate();
+            System.out.println(preparedStatementForUpdateUserData.toString());
 
             String queryForUpdateStudentData = "UPDATE Estudiantes SET Matrícula = ? " + 
                            "WHERE IdUsuario = ?";
@@ -203,14 +204,24 @@ public class StudentDAO implements IStudentDAO{
         return student;
     }
 
-    public boolean theStudentIsAlreadyRegisted(String matricle) {
+    public boolean theStudentIsAlreadyRegisted(Student student) {
         try {
             DataBaseManager dataBaseManager = new DataBaseManager();
             Statement statement = dataBaseManager.getConnection().createStatement();
-            String query = "SELECT Matrícula FROM Estudiantes";
+            String query = "SELECT U.nombre, U.apellidoPaterno, U.apellidoMaterno, U.correo, " +
+                           "U.correoAlterno, U.númeroTeléfono, U.estado, E.Matrícula FROM Usuarios U " + 
+                           "INNER JOIN Estudiantes E ON U.IdUsuario = E.IdUsuario";
             ResultSet resultSet = statement.executeQuery(query);
             while(resultSet.next()) {
-                if(resultSet.getString("Matrícula").equals(matricle)) {
+                if( (resultSet.getString("nombre").equals(student.getName()) &&
+                   resultSet.getString("apellidoPaterno").equals(student.getFirstSurname()) &&
+                   resultSet.getString("apellidoMaterno").equals(student.getSecondSurname()) &&
+                   resultSet.getString("correo").equals(student.getEmailAddress()) &&
+                   resultSet.getString("correoAlterno").equals(student.getAlternateEmail()) &&
+                   resultSet.getString("númeroTeléfono").equals(student.getPhoneNumber()) &&
+                   resultSet.getString("estado").equals(student.getStatus()) &&
+                   resultSet.getString("Matrícula").equals(student.getMatricle())) ||
+                   resultSet.getString("Matrícula").equals(student.getMatricle())) {
                     resultSet.close();
                     dataBaseManager.getConnection().close();
                     return true;
