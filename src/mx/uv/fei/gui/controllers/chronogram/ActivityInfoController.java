@@ -10,12 +10,10 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 import javafx.stage.FileChooser;
 import mx.uv.fei.gui.controllers.chronogram.ModifyActivityController;
@@ -28,6 +26,7 @@ public class ActivityInfoController{
     private Stage stage;
     private Scene scene;
     private Parent parent;
+
     private ArrayList<File> filesList;
     
     @FXML
@@ -133,17 +132,9 @@ public class ActivityInfoController{
                     result = fileDAO.addFile(file.getPath());
                     if (result == 1) {
                         successfulSaves = successfulSaves + 1;
-//                        Alert errorMessage = new Alert(Alert.AlertType.CONFIRMATION);
-//                        errorMessage.setHeaderText("Operación exitosa");
-//                        errorMessage.setContentText("El archivo se guardó correctamente");
-//                        errorMessage.showAndWait();
                     }
                 } catch (DataInsertionException die) {
                     failedSaves.add(file.getName());
-//                    Alert errorMessage = new Alert(Alert.AlertType.ERROR);
-//                    errorMessage.setHeaderText("Error al guardar archivo");
-//                    errorMessage.setContentText(die.getMessage());
-//                    errorMessage.showAndWait();
                 }
             }
         }

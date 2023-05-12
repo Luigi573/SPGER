@@ -1,3 +1,4 @@
+
 package mx.uv.fei.logic.daosinterfaces;
 
 import java.util.ArrayList;
@@ -11,3 +12,4 @@ public interface IActivityDAO {
     public ArrayList<Activity> getActivityList() throws DataRetrievalException;
     public int modifyActivity(int oldActivityId, Activity newActivity) throws DataInsertionException;
 }
+

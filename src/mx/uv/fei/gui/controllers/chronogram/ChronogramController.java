@@ -18,7 +18,6 @@ import mx.uv.fei.logic.domain.Activity;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
 
 public class ChronogramController{
-    private ArrayList<Activity> activityList;
     private Stage stage;
     private Scene scene;
     private Parent parent;
@@ -31,9 +30,9 @@ public class ChronogramController{
         ActivityDAO activityDAO = new ActivityDAO();
         
         try{
-            activityList = activityDAO.getActivityList();
+            ArrayList<Activity> activityList = activityDAO.getActivityList();
             
-            for(Activity activity : activityList){
+            for(Activity activity : activityList){               
                 try{
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/ChronogramActivityPane.fxml"));
                     Pane activityPane = loader.load();

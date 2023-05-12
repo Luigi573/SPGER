@@ -26,7 +26,7 @@ public class ModifyActivityController{
     private Parent parent;
     private Scene scene;
     private Stage stage;
-    
+  
     @FXML
     private DatePicker startDatePicker; 
     @FXML
@@ -88,6 +88,7 @@ public class ModifyActivityController{
             parent = loader.load();
             stage = (Stage)((Node)event.getSource()).getScene().getWindow();
             scene = new Scene(parent);
+          
             stage.setTitle("SPGER");
             stage.setScene(scene);
             stage.show();

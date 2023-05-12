@@ -36,7 +36,7 @@
             <Label prefHeight="40.0" prefWidth="155.0" text="Experiencia Educativa: " />
             <AnchorPane prefHeight="200.0" prefWidth="200.0">
                <children>
-                  <ComboBox fx:id="educativeExperinceComboBox" layoutY="8.0" prefHeight="24.0" prefWidth="193.0" />
+                  <ComboBox fx:id="educativeExperienceComboBox" layoutY="8.0" prefHeight="24.0" prefWidth="193.0" />
                </children>
             </AnchorPane>
          </children>
@@ -47,7 +47,7 @@
             <Label prefHeight="40.0" prefWidth="40.0" text="NRC: " />
             <AnchorPane prefHeight="40.0" prefWidth="308.0">
                <children>
-                  <TextField fx:id="nrcTextField" layoutY="8.0" prefHeight="25.0" prefWidth="308.0" />
+                  <TextField fx:id="nrcTextField" layoutY="8.0" prefHeight="25.0" prefWidth="309.0" />
                </children>
             </AnchorPane>
          </children>
@@ -58,7 +58,18 @@
             <Label prefHeight="40.0" prefWidth="62.0" text="Seccion: " />
             <AnchorPane prefHeight="40.0" prefWidth="285.0">
                <children>
-                  <ComboBox fx:id="sectionComboBox" layoutX="2.0" layoutY="8.0" prefHeight="24.0" prefWidth="282.0" />
+                  <ComboBox fx:id="sectionComboBox" layoutX="2.0" layoutY="8.0" prefHeight="24.0" prefWidth="285.0" />
+               </children>
+            </AnchorPane>
+         </children>
+      </HBox>
+      <HBox prefHeight="40.0" prefWidth="369.0">
+         <children>
+            <Label prefHeight="25.0" prefWidth="11.0" />
+            <Label prefHeight="38.0" prefWidth="56.0" text="Bloque: " />
+            <AnchorPane prefHeight="40.0" prefWidth="285.0">
+               <children>
+                  <ComboBox fx:id="blockComboBox" layoutX="2.0" layoutY="8.0" prefHeight="24.0" prefWidth="291.0" />
                </children>
             </AnchorPane>
          </children>
@@ -69,7 +80,7 @@
             <Label prefHeight="40.0" prefWidth="65.0" text="Docente: " />
             <AnchorPane prefHeight="200.0" prefWidth="200.0">
                <children>
-                  <ComboBox fx:id="teacherComboBox" layoutY="8.0" prefHeight="24.0" prefWidth="283.0" />
+                  <ComboBox fx:id="professorComboBox" layoutY="8.0" prefHeight="24.0" prefWidth="285.0" />
                </children>
             </AnchorPane>
          </children>
@@ -80,7 +91,7 @@
             <Label prefHeight="40.0" prefWidth="61.0" text="Periodo: " />
             <AnchorPane prefHeight="200.0" prefWidth="200.0">
                <children>
-                  <ComboBox fx:id="periodComboBox" layoutY="8.0" prefHeight="24.0" prefWidth="286.0" />
+                  <ComboBox fx:id="scholarPeriodComboBox" layoutY="8.0" prefHeight="24.0" prefWidth="289.0" />
                </children>
             </AnchorPane>
          </children>

@@ -44,7 +44,7 @@
                            <content>
                               <TextFlow fx:id="descriptionTextFlow" lineSpacing="1.0" prefHeight="207.0" prefWidth="453.0">
                                  <children>
-                                    <Text fx:id="descriptionText" strokeType="OUTSIDE" strokeWidth="0.0" text="sd" wrappingWidth="314.158203125" />
+                                    <Text fx:id="descriptionText" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="314.158203125" />
                                  </children></TextFlow>
                            </content>
                         </ScrollPane>

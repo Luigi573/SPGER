@@ -4,7 +4,7 @@ public class Course {
     private int nrc;
     private int idScholarPeriod;
     private String eeName;
-    private String section;
+    private int section;
     private int block;
     private int personalNumber;
     private String status;
@@ -33,11 +33,11 @@ public class Course {
         this.eeName = eeName;
     }
 
-    public String getSection() {
+    public int getSection() {
         return this.section;
     }
 
-    public void setSection(String section) {
+    public void setSection(int section) {
         this.section = section;
     }
 
