@@ -32,10 +32,9 @@ public class ChronogramController{
         try{
             ArrayList<Activity> activityList = activityDAO.getActivityList();
             
-            for(Activity activity : activityList){
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/ChronogramActivityPane.fxml"));
-                
+            for(Activity activity : activityList){               
                 try{
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/ChronogramActivityPane.fxml"));
                     Pane activityPane = loader.load();
                     ActivityPaneController controller = (ActivityPaneController)loader.getController();
                     controller.setActivity(activity);
@@ -46,6 +45,7 @@ public class ChronogramController{
                     errorMessage.setHeaderText("Error de carga");
                     errorMessage.setContentText("No se pudo abrir la ventana, verifique que el archivo .fxml esté en su ubicación correcta");
                     errorMessage.showAndWait();
+                    exception.printStackTrace();
                 }
             }
         }catch(DataRetrievalException exception){
@@ -53,6 +53,7 @@ public class ChronogramController{
             errorMessage.setHeaderText("Error de conexión");
             errorMessage.setContentText("Favor de verificar su conexión a internet e inténtelo de nuevo");
             errorMessage.showAndWait();
+            exception.printStackTrace();
         }
     }
     @FXML

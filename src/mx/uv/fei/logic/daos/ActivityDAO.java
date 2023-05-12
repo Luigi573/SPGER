@@ -8,8 +8,10 @@ import mx.uv.fei.dataaccess.DataBaseManager;
 import mx.uv.fei.logic.daosinterfaces.IActivityDAO;
 import mx.uv.fei.logic.domain.Activity;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
+import mx.uv.fei.logic.exceptions.DataInsertionException;
+import java.sql.Date;
 
-public class ActivityDAO implements IActivityDAO{
+public class ActivityDAO implements IActivityDAO {
     private DataBaseManager dataBaseManager;
     
     public ActivityDAO(){
@@ -61,7 +63,7 @@ public class ActivityDAO implements IActivityDAO{
                 activityList.add(activity);
             }
         }catch(SQLException exception){
-            throw new DataRetrievalException("Fallo al recuperar la informacion. Verifique su conexion e intentelo de nuevo");
+            throw new DataRetrievalException("Fallo al recuperar la informacion. Verifique su conexión e inténtelo de nuevo");
         }finally{
             dataBaseManager.closeConnection();
         }
@@ -69,7 +71,7 @@ public class ActivityDAO implements IActivityDAO{
         return activityList;
     }
     @Override
-    public int modifyActivity(int oldActivityId, Activity newActivity) throws DataWritingException{
+    public int modifyActivity(int oldActivityId, Activity newActivity) throws DataInsertionException{
         int result = 0;
         PreparedStatement statement;
         String query = "UPDATE Actividades SET título = ?, descripción = ?, fechaInicio = ?, fechaFin = ? WHERE IdActividad = ?";
@@ -85,7 +87,7 @@ public class ActivityDAO implements IActivityDAO{
             result = statement.executeUpdate();
         }catch(SQLException exception){
             System.out.println(exception.getMessage());
-            throw new DataWritingException("Error al modificar actividad. Verifique su conexion e intentelo de nuevo");
+            throw new DataInsertionException("Error al modificar actividad. Verifique su conexion e intentelo de nuevo");
         }finally{
             dataBaseManager.closeConnection();
         }

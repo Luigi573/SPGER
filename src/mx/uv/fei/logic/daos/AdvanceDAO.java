@@ -25,7 +25,7 @@ public class AdvanceDAO implements IAdvanceDAO{
         int result;
         String query = "insert into Avances(Matrícula, IdDirector, título, comentario) values(?, ?, ?, ?)";
         try {
-            DataBaseManager dataBaseManager = new DataBaseManager();
+            dataBaseManager = new DataBaseManager();
             Connection connection = dataBaseManager.getConnection();
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, advance.getStudentID());
@@ -55,7 +55,7 @@ public class AdvanceDAO implements IAdvanceDAO{
                 advance.setStudentID(rs.getString("Matrícula"));
                 advance.setDirectorID(rs.getInt("IdDirector"));
                 advance.setTitle(rs.getString("título"));
-                advance.setComment(rs.getString("comentario"));
+                advance.setComments(rs.getString("comentario"));
                 
                advancesList.add(advance);
             }

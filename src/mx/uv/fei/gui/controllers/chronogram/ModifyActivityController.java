@@ -3,6 +3,8 @@ package mx.uv.fei.gui.controllers.chronogram;
 import java.io.IOException;
 import java.sql.Date;
 import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,11 +19,14 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import mx.uv.fei.logic.daos.ActivityDAO;
 import mx.uv.fei.logic.domain.Activity;
-import mx.uv.fei.logic.exceptions.DataWritingException;
+import mx.uv.fei.logic.exceptions.DataInsertionException;
 
 public class ModifyActivityController{
     private Activity activity;
-    
+    private Parent parent;
+    private Scene scene;
+    private Stage stage;
+  
     @FXML
     private DatePicker startDatePicker; 
     @FXML
@@ -52,7 +57,7 @@ public class ModifyActivityController{
                     if(activityDAO.modifyActivity(activity.getId(), newActivity) > 0){
                         returnToChronogram(event);
                     }
-                }catch(DataWritingException exception){
+                }catch(DataInsertionException exception){
                     Alert errorMessage = new Alert(Alert.AlertType.ERROR);
                     errorMessage.setHeaderText("Error de conexión");
                     errorMessage.setContentText("Favor de verificar su conexión a internet e inténtelo de nuevo");
@@ -80,9 +85,10 @@ public class ModifyActivityController{
     private void returnToChronogram(ActionEvent event){
         try{
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/Chronogram.fxml"));
-            Parent parent = loader.load();
-            Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-            Scene scene = new Scene(parent);
+            parent = loader.load();
+            stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+            scene = new Scene(parent);
+          
             stage.setTitle("SPGER");
             stage.setScene(scene);
             stage.show();

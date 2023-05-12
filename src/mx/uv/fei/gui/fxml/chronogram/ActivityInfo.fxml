@@ -6,7 +6,6 @@
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
@@ -62,32 +61,36 @@
                               <Font size="24.0" />
                            </font>
                         </Label>
-                        <Label layoutY="97.0" prefHeight="35.0" prefWidth="354.0" text="Entregas de avance:">
-                           <font>
-                              <Font size="24.0" />
-                           </font>
-                        </Label>
-                        <ScrollPane layoutX="-1.0" layoutY="132.0" prefHeight="111.0" prefWidth="441.0">
+                        <ScrollPane hbarPolicy="NEVER" layoutX="-1.0" layoutY="132.0" prefHeight="111.0" prefWidth="441.0">
                            <content>
-                              <VBox prefHeight="106.0" prefWidth="439.0">
-                                 <children>
-                                    <HBox prefHeight="106.0" prefWidth="439.0" />
-                                 </children>
-                              </VBox>
+                              <VBox fx:id="vBoxActivityFileList" prefHeight="106.0" prefWidth="439.0" />
                            </content>
                         </ScrollPane>
                         <Pane layoutX="7.0" layoutY="40.0" prefHeight="54.0" prefWidth="434.0">
                            <children>
                               <Label layoutX="59.0" layoutY="19.0" prefHeight="17.0" prefWidth="213.0" text="Seleccione un archivo de su dispositivo" />
                               <Label alignment="CENTER" layoutY="4.0" prefHeight="47.0" prefWidth="44.0" text="Icon" />
-                              <Button layoutX="287.0" layoutY="15.0" mnemonicParsing="false" text="Cargar" />
-                              <Button layoutX="351.0" layoutY="15.0" mnemonicParsing="false" text="Descargar" />
+                              <Button fx:id="uploadFile" layoutX="382.0" layoutY="15.0" mnemonicParsing="false" onAction="#uploadFileForDelivery" text="Cargar" />
                            </children>
                         </Pane>
-                        <Button layoutX="347.0" layoutY="252.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="82.0" text="Entregar" />
+                        <Button fx:id="deliverActivity" layoutX="358.0" layoutY="252.0" mnemonicParsing="false" onAction="#deliverActivity" prefHeight="30.0" prefWidth="82.0" text="Entregar" />
+                        <Button fx:id="removeFiles" layoutX="238.0" layoutY="255.0" mnemonicParsing="false" onAction="#removeFiles" text="Quitar Archivos" />
                      </children></AnchorPane>
             </content>
           </Tab>
+            <Tab text="Advances">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Label prefHeight="35.0" prefWidth="354.0" text="Entregas de avance:">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+              </content>
+            </Tab>
         </tabs>
       </TabPane>
       <Pane layoutX="4.0" prefHeight="54.0" prefWidth="593.0">
