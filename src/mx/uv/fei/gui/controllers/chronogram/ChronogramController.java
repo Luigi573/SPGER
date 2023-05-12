@@ -35,7 +35,7 @@ public class ChronogramController{
             
             for(Activity activity : activityList){
                 try{
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml/chronogram/ChronogramActivityPane.fxml"));
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/ChronogramActivityPane.fxml"));
                     Pane activityPane = loader.load();
                     ActivityPaneController controller = (ActivityPaneController)loader.getController();
                     controller.setActivity(activity);
@@ -54,12 +54,13 @@ public class ChronogramController{
             errorMessage.setHeaderText("Error de conexión");
             errorMessage.setContentText("Favor de verificar su conexión a internet e inténtelo de nuevo");
             errorMessage.showAndWait();
+            exception.printStackTrace();
         }
     }
     @FXML
     private void createActivity(ActionEvent event){
         try{
-            parent = new FXMLLoader(getClass().getResource("fxml/chronogram/CreateActivity.fxml")).load();
+            parent = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/CreateActivity.fxml")).load();
             stage = (Stage)((Node)event.getSource()).getScene().getWindow();
             scene = new Scene(parent);
             stage.setTitle("SPGER");

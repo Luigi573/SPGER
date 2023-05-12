@@ -27,7 +27,7 @@ public class ActivityPaneController{
     @FXML
     private void viewActivity(ActionEvent event){
         try{
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml/chronogram/ActivityInfo.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/ActivityInfo.fxml"));
             parent = loader.load();
             ActivityInfoController controller = (ActivityInfoController)loader.getController();
             controller.setActivity(activity);

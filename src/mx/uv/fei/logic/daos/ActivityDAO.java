@@ -63,7 +63,7 @@ public class ActivityDAO implements IActivityDAO {
                 activityList.add(activity);
             }
         }catch(SQLException exception){
-            throw new DataRetrievalException("Fallo al recuperar la informacion. Verifique su conexion e intentelo de nuevo");
+            throw new DataRetrievalException("Fallo al recuperar la informacion. Verifique su conexión e inténtelo de nuevo");
         }finally{
             dataBaseManager.closeConnection();
         }

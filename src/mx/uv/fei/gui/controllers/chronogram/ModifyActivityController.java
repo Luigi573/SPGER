@@ -84,7 +84,7 @@ public class ModifyActivityController{
     }
     private void returnToChronogram(ActionEvent event){
         try{
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml/chronogram/Chronogram.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/Chronogram.fxml"));
             parent = loader.load();
             stage = (Stage)((Node)event.getSource()).getScene().getWindow();
             scene = new Scene(parent);
