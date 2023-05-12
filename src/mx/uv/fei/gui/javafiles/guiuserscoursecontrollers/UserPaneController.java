@@ -4,6 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import mx.uv.fei.logic.daos.StudentsCoursesDAO;
 
 public class UserPaneController {
 
@@ -20,7 +21,13 @@ public class UserPaneController {
     
     @FXML
     void deleteButtonController(ActionEvent event) {
-        
+        StudentsCoursesDAO studentsCoursesDAO = new StudentsCoursesDAO();
+        studentsCoursesDAO.removeStudentCourseFromDatabase(
+            this.matricleOrPersonalNumberLabel.getText(),
+            this.guiUsersCourseController.getCourseInformationController().getNrc()
+        );
+
+        this.guiUsersCourseController.refreshUsers();
     }
     
     public String getMatricleOrPersonalNumber() {

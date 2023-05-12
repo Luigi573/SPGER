@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import mx.uv.fei.dataaccess.DataBaseManager;
 import mx.uv.fei.logic.daosinterfaces.IStudentsCoursesDAO;
 
-public class StudentsCoursesDAO implements IStudentsCoursesDAO{
+public class StudentsCoursesDAOTest implements IStudentsCoursesDAO{
 
     @Override
     public void addStudentCourseToDatabase(String studentMatricle, String courseNRC) {

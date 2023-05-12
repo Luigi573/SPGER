@@ -5,6 +5,7 @@ import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -47,12 +48,15 @@ public class CourseInformationController {
             FXMLLoader loader = new FXMLLoader(
                 getClass().getResource("/mx/uv/fei/gui/fxmlfiles/guiuserscourse/GuiUsersCourse.fxml")
             );
-            guiUsersCourse = loader.load();
-            GuiUsersCourseController guiUsersCourseController = loader.getController();
+
+            GuiUsersCourseController guiUsersCourseController = new GuiUsersCourseController();
             guiUsersCourseController.setCourseInformationController(this);
-            guiUsersCourseController.refreshUsers();
+
+            loader.setController(guiUsersCourseController);
+            guiUsersCourse = loader.load();
+
+            Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
             Scene scene = new Scene(guiUsersCourse);
-            Stage stage = new Stage();
             stage.setTitle("Administrar Usuarios");
             stage.setScene(scene);
             stage.show();

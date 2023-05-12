@@ -1,10 +1,9 @@
 package mx.uv.fei.logic.daosinterfaces;
 
-import mx.uv.fei.logic.domain.Course;
-import mx.uv.fei.logic.domain.Student;
+import java.util.ArrayList;
 
 public interface IStudentsCoursesDAO {
-    public void addStudentCourseToDatabase(Student student, Course course);
-    public void getStudentCourseToDatabase(Student student, Course course);
-    public void removeStudentCourseFromDatabase(Student student, Course course);
+    public void addStudentCourseToDatabase(String studentMatricle, String courseNRC);
+    public ArrayList<String> getStudentsMatriclesByCourseNRCFromDatabase(String courseNRC);
+    public void removeStudentCourseFromDatabase(String studentMatricle, String courseNRC);
 }

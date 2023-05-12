@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<VBox prefHeight="448.0" prefWidth="407.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.uv.fei.gui.javafiles.guistudentaddercontrollers.GuiStudentAdderController">
+<VBox prefHeight="448.0" prefWidth="407.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <HBox prefHeight="40.0" prefWidth="369.0">
          <children>

@@ -3,16 +3,21 @@ package mx.uv.fei.gui.javafiles.guistudentaddercontrollers;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import mx.uv.fei.gui.javafiles.guiuserscoursecontrollers.GuiUsersCourseController;
 import mx.uv.fei.logic.daos.StudentDAO;
+import mx.uv.fei.logic.daos.StudentsCoursesDAO;
 import mx.uv.fei.logic.domain.Student;
 
 public class GuiStudentAdderController {
@@ -35,16 +40,24 @@ public class GuiStudentAdderController {
     void initialize() {
         StudentDAO studentDAO = new StudentDAO();
         ArrayList<Student> students = studentDAO.getActiveStudentsFromDatabase();
-        FXMLLoader studentPaneControllerLoader = new FXMLLoader(
-            getClass().getResource("/mx/uv/fei/gui/fxmlfiles/guistudentadder/StudentPane.fxml")
-        );
         try {
             for(Student student : students) {
-                Pane studentPane = studentPaneControllerLoader.load();
-                StudentPaneController studentPaneController = studentPaneControllerLoader.getController();
-                studentPaneController.setStudentName(student.getName());
-                studentPaneController.setMatricle(student.getMatricle());
-                this.studentsVBox.getChildren().add(studentPane);
+                for(Node hbox : this.guiUsersCourseController.getStudentsVbox().getChildren()) {
+                    for(Node studentPane : ((HBox)hbox).getChildren()) {
+                        Node studentMatricleLabel = ((Pane)studentPane).getChildren().get(1);
+                        if(((Label)studentMatricleLabel).getText().equals(student.getMatricle()) ) {
+                            continue;
+                        }
+                        FXMLLoader studentPaneControllerLoader = new FXMLLoader(
+                            getClass().getResource("/mx/uv/fei/gui/fxmlfiles/guistudentadder/StudentPane.fxml")
+                        );
+                        Pane studentPaneToAdd = studentPaneControllerLoader.load();
+                        StudentPaneController studentPaneController = studentPaneControllerLoader.getController();
+                        studentPaneController.setStudentName(student.getName());
+                        studentPaneController.setMatricle(student.getMatricle());
+                        this.studentsVBox.getChildren().add(studentPaneToAdd);
+                    }
+                }
             }
             
         } catch (IOException e){
@@ -54,9 +67,18 @@ public class GuiStudentAdderController {
 
     @FXML
     void addStudentsButtonController(ActionEvent event) {
-        for(Node studentPane : this.studentsVBox.getChildren()){
-            //TODO : add students to studentcourse
+        StudentsCoursesDAO studentCoursesDAO = new StudentsCoursesDAO();
+
+        for(Node studentPane : this.studentsVBox.getChildren()) {
+            if( ((RadioButton)((Pane)studentPane).getChildren().get(4)).isSelected() ) {
+                studentCoursesDAO.addStudentCourseToDatabase(
+                    ((Label)((Pane)studentPane).getChildren().get(3)).getText(), 
+                    this.guiUsersCourseController.getCourseInformationController().getNrc()
+                );
+            }
         }
+
+        this.guiUsersCourseController.refreshUsers();
     }
 
     //Pendiente, no funciona
