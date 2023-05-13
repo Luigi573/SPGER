@@ -1,78 +1,57 @@
 package mx.uv.fei.logic.daos;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 
-import mx.uv.fei.dataaccess.DataBaseManager;
-import mx.uv.fei.logic.daosinterfaces.ICourseDAO;
 import mx.uv.fei.logic.domain.Course;
 
 public class CourseDAOTest{
     
     @Test
     public void addCourseToDatabaseTest() {
-        try {
-            Course course = new Course();
-            course.setNrc(0);
-            course.setIdScholarPeriod(0);
-            course.setPersonalNumber(0);
-            course.setEEName("Test");
-            course.setSection(0);
-            course.setBlock(0);
-            course.setStatus("Activo");
+        CourseDAO courseDAO = new CourseDAO();
+        Course expectedCourse = new Course();
+        expectedCourse.setNrc(46853);
+        expectedCourse.setIdScholarPeriod(1);
+        expectedCourse.setPersonalNumber(123456789);
+        expectedCourse.setEEName("Proyecto Guiado");
+        expectedCourse.setSection(7);
+        expectedCourse.setBlock(1);
+        expectedCourse.setStatus("Activo");
+        courseDAO.addCourseToDatabase(expectedCourse);
 
-            DataBaseManager dataBaseManager = new DataBaseManager();
-            String columnNames = 
-                "NRC, IdPeriodoEscolar, NumPersonal, nombreEE, sección, bloque, estado";
-            String wholeQuery = 
-                "INSERT INTO Cursos (" + columnNames + ") VALUES (?, ?, ?, ?, ?, ?, ?)";
-            PreparedStatement preparedStatement = dataBaseManager.getConnection().prepareStatement(wholeQuery);
-            preparedStatement.setInt(1, course.getNrc());
-            preparedStatement.setInt(2, course.getIdScholarPeriod());
-            preparedStatement.setInt(3, course.getPersonalNumber());
-            preparedStatement.setString(4, course.getEEName());
-            preparedStatement.setInt(5, course.getSection());
-            preparedStatement.setInt(6, course.getBlock());
-            preparedStatement.setString(7, course.getStatus());
-            
-            String expectedQueryColumnNames = 
-                "NRC, IdPeriodoEscolar, NumPersonal, nombreEE, sección, bloque, estado";                
-            String expectedQuery = "INSERT INTO Cursos (" + expectedQueryColumnNames + ")" + 
-                                    "VALUES (0, 0, 0, 'Test', 0, 0, 'Activo')";;
-            Assertions.assertEquals(expectedQuery, preparedStatement.toString());
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        Course actualCourse = courseDAO.getCourseFromDatabase(Integer.toString(expectedCourse.getNrc()));             
+        Assertions.assertEquals(expectedCourse.getNrc(), actualCourse.getNrc());
+        Assertions.assertEquals(expectedCourse.getIdScholarPeriod(), actualCourse.getIdScholarPeriod());
+        Assertions.assertEquals(expectedCourse.getPersonalNumber(), actualCourse.getPersonalNumber());
+        Assertions.assertEquals(expectedCourse.getEEName(), actualCourse.getEEName());
+        Assertions.assertEquals(expectedCourse.getSection(), actualCourse.getSection());
+        Assertions.assertEquals(expectedCourse.getBlock(), actualCourse.getBlock());
+        Assertions.assertEquals(expectedCourse.getStatus(), actualCourse.getStatus());
     }
 
     @Test
     public void modifyCourseDataFromDatabaseTest() {
-        //try {
-        //    DataBaseManager dataBaseManager = new DataBaseManager();
-        //    String query = "UPDATE Cursos SET NRC = ?, " + 
-        //                   "IdPeriodoEscolar = ?, NumPersonal = ?, nombreEE = ?, " + 
-        //                   "sección = ?, bloque = ?, estado = ? " +
-        //                   "WHERE NRC = ?";
-        //    PreparedStatement preparedStatement = dataBaseManager.getConnection().prepareStatement(query);
-        //    preparedStatement.setInt(1, newCourseData.getNrc());
-        //    preparedStatement.setInt(2, newCourseData.getIdScholarPeriod());
-        //    preparedStatement.setInt(3, newCourseData.getPersonalNumber());
-        //    preparedStatement.setString(4, newCourseData.getEEName());
-        //    preparedStatement.setInt(5, newCourseData.getSection());
-        //    preparedStatement.setInt(6, newCourseData.getBlock());
-        //    preparedStatement.setString(7, newCourseData.getStatus());
-        //    preparedStatement.setInt(8, originalCourseData.getNrc());
-        //    System.out.println(preparedStatement.toString());
-        //    preparedStatement.executeUpdate();
-        //} catch(SQLException e){
-        //    e.printStackTrace();
-        //}
+        CourseDAO courseDAO = new CourseDAO();
+        Course originalCourse = courseDAO.getCourseFromDatabase("46853");
+        Course expectedCourse = new Course();
+        expectedCourse.setNrc(46854);
+        expectedCourse.setIdScholarPeriod(2);
+        expectedCourse.setPersonalNumber(123456780);
+        expectedCourse.setEEName("Experiencia Recepcional");
+        expectedCourse.setSection(8);
+        expectedCourse.setBlock(2);
+        expectedCourse.setStatus("Inactivo");
+        courseDAO.modifyCourseDataFromDatabase(expectedCourse, originalCourse);
+
+        Course actualCourse = courseDAO.getCourseFromDatabase(Integer.toString(expectedCourse.getNrc()));             
+        Assertions.assertEquals(expectedCourse.getNrc(), actualCourse.getNrc());
+        Assertions.assertEquals(expectedCourse.getIdScholarPeriod(), actualCourse.getIdScholarPeriod());
+        Assertions.assertEquals(expectedCourse.getPersonalNumber(), actualCourse.getPersonalNumber());
+        Assertions.assertEquals(expectedCourse.getEEName(), actualCourse.getEEName());
+        Assertions.assertEquals(expectedCourse.getSection(), actualCourse.getSection());
+        Assertions.assertEquals(expectedCourse.getBlock(), actualCourse.getBlock());
+        Assertions.assertEquals(expectedCourse.getStatus(), actualCourse.getStatus());
     }
 
     @Test
@@ -137,22 +116,27 @@ public class CourseDAOTest{
 
     @Test
     public void getCourseFromDatabaseTest() {
-        try {
-            Course course = new Course();
-            course.setNrc(0);
-            DataBaseManager dataBaseManager = new DataBaseManager();
-            String query = "SELECT * FROM Cursos WHERE NRC = ?";
-            PreparedStatement preparedStatement;
-            preparedStatement = dataBaseManager.getConnection().prepareStatement(query);
-            preparedStatement.setInt(1, course.getNrc());
-            
-            String expectedQuery = "SELECT * FROM Cursos WHERE NRC = 0";
-            Assertions.assertEquals(expectedQuery, preparedStatement.toString());
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        CourseDAO courseDAO = new CourseDAO();
+        Course expectedCourse = new Course();
+        expectedCourse.setNrc(46854);
+        expectedCourse.setIdScholarPeriod(1);
+        expectedCourse.setPersonalNumber(123456789);
+        expectedCourse.setEEName("Proyecto Guiado");
+        expectedCourse.setSection(7);
+        expectedCourse.setBlock(1);
+        expectedCourse.setStatus("Activo");
+
+        Course actualCourse = courseDAO.getCourseFromDatabase(Integer.toString(expectedCourse.getNrc()));             
+        Assertions.assertEquals(expectedCourse.getNrc(), actualCourse.getNrc());
+        Assertions.assertEquals(expectedCourse.getIdScholarPeriod(), actualCourse.getIdScholarPeriod());
+        Assertions.assertEquals(expectedCourse.getPersonalNumber(), actualCourse.getPersonalNumber());
+        Assertions.assertEquals(expectedCourse.getEEName(), actualCourse.getEEName());
+        Assertions.assertEquals(expectedCourse.getSection(), actualCourse.getSection());
+        Assertions.assertEquals(expectedCourse.getBlock(), actualCourse.getBlock());
+        Assertions.assertEquals(expectedCourse.getStatus(), actualCourse.getStatus());
     }
 
+    @Test
     public void theCourseIsAlreadyRegistedTest() {
         //try {
         //    DataBaseManager dataBaseManager = new DataBaseManager();
