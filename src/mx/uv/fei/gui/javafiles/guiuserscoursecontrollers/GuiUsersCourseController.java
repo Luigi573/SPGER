@@ -95,13 +95,12 @@ public class GuiUsersCourseController {
          
         try {
             FXMLLoader userPaneControllerLoader = new FXMLLoader(
-                getClass().getResource("/mx/uv/fei/gui/fxmlfiles/guiuserscourse/UserPane.fxml")
+                getClass().getResource("/mx/uv/fei/gui/fxmlfiles/guiuserscourse/ProfessorPane.fxml")
             );
             Pane professorPane = userPaneControllerLoader.load();
-            UserPaneController userPaneController = userPaneControllerLoader.getController();
-            userPaneController.setName(professor.getName());
-            userPaneController.setMatricleOrPersonalNumber(Integer.toString(professor.getPersonalNumber()));
-            userPaneController.setGuiUsersCourseController(this);
+            ProfessorPaneController professorPaneController = userPaneControllerLoader.getController();
+            professorPaneController.setName(professor.getName());
+            professorPaneController.setPersonalNumber(Integer.toString(professor.getPersonalNumber()));
             this.professorsHBox.getChildren().add(professorPane);
             
 
@@ -111,9 +110,8 @@ public class GuiUsersCourseController {
     }
 
     private void refreshStudents() {
-        for(int i = 0; i < this.studentsVbox.getChildren().size() - 1;  i++){
-            this.studentsVbox.getChildren().remove(i);
-        }
+        this.studentsVbox.getChildren().clear();
+        this.students = 0;
 
         StudentsCoursesDAO studentCoursesDAO = new StudentsCoursesDAO();
         StudentDAO studentDAO = new StudentDAO();

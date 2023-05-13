@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<VBox prefHeight="448.0" prefWidth="407.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<VBox prefHeight="498.0" prefWidth="407.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <HBox prefHeight="40.0" prefWidth="369.0">
          <children>
@@ -33,6 +33,11 @@
          <content>
             <VBox fx:id="studentsVBox" prefHeight="52.0" prefWidth="405.0" />
          </content></ScrollPane>
+      <Pane prefHeight="50.0" prefWidth="407.0">
+         <children>
+            <Text fx:id="sucessText" layoutX="102.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Estudiante Agregado Con Exito" textAlignment="CENTER" visible="false" />
+         </children>
+      </Pane>
       <Pane prefHeight="61.0" prefWidth="407.0">
          <children>
             <Button fx:id="addStudentsButton" layoutX="163.0" layoutY="11.0" mnemonicParsing="false" onAction="#addStudentsButtonController" prefHeight="40.0" prefWidth="82.0" text="Agregar" />
