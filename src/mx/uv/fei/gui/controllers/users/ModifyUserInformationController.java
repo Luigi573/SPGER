@@ -21,47 +21,33 @@ import mx.uv.fei.logic.domain.Professor;
 import mx.uv.fei.logic.domain.Student;
 
 public class ModifyUserInformationController {
-
     private GuiUsersController guiUsersController;
-
     private UserInformationController userInformationController;
 
     @FXML
     private TextField alternateEmailTextField;
-
     @FXML
     private TextField emailTextField;
-
     @FXML
     private Text errorMessageText;
-
     @FXML
     private Button exitButton;
-
     @FXML
     private TextField firstSurnameTextField;
-
     @FXML
     private Label matricleOrPersonalNumberText;
-
     @FXML
     private TextField matricleOrPersonalNumberTextField;
-
     @FXML
     private Button modifyButton;
-
     @FXML
     private TextField namesTextField;
-
     @FXML
     private TextField secondSurnameTextField;
-
     @FXML
     private ComboBox<String> statusComboBox;
-
     @FXML
     private TextField telephoneNumberTextField;
-
     @FXML
     void initialize(){
         
@@ -69,9 +55,9 @@ public class ModifyUserInformationController {
 
     @FXML
     void exitButtonController(ActionEvent event) {
-        this.guiUsersController.openPaneWithUserInformation(getFirstSurname(), getAlternateEmail(), getStatus());
+        //this.guiUsersController.openPaneWithUserInformation(getFirstSurname(), getAlternateEmail(), getStatus());
     }
-
+/*
     @FXML
     void modifyButtonController(ActionEvent event) {
         if(!this.namesTextField.getText().trim().isEmpty() &&
@@ -112,7 +98,7 @@ public class ModifyUserInformationController {
             this.errorMessageText.setVisible(true);
         }
     }
-
+*/
     public String getAlternateEmail() {
         return this.alternateEmailTextField.getText();
     }
@@ -195,16 +181,16 @@ public class ModifyUserInformationController {
         student.setAlternateEmail(this.alternateEmailTextField.getText());
         student.setPhoneNumber(this.telephoneNumberTextField.getText());
         student.setMatricle(this.matricleOrPersonalNumberTextField.getText());
-        if(studentDAO.theStudentIsAlreadyRegisted(student)){
+        //if(studentDAO.theStudentIsAlreadyRegisted(student)){
             this.errorMessageText.setText("El usuario ya está registrado en el sistema");
             this.errorMessageText.setVisible(true);
             return;
         }
-        studentDAO.modifyStudentDataFromDatabase(student, this.getAllLabelsDataFromUserInformationPane());
-        this.errorMessageText.setText("Usuario registrado exitosamente");
-        this.errorMessageText.setVisible(true);
-    }
-
+        //studentDAO.modifyStudentDataFromDatabase(student, this.getAllLabelsDataFromUserInformationPane());
+        //this.errorMessageText.setText("Usuario registrado exitosamente");
+        //this.errorMessageText.setVisible(true);
+    
+/*
     private void modifyProfessor(){
         ProfessorDAO professorDAO = new ProfessorDAO();
         Professor professor = new Professor();
@@ -296,5 +282,5 @@ public class ModifyUserInformationController {
         textFieldsData.add(this.userInformationController.getMatriculeOrPersonalNumber());
         return textFieldsData;
     }
-
+*/
 }
