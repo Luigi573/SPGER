@@ -39,7 +39,7 @@ public class CreateNewKGALController {
             errorMessage.setContentText(die.getMessage());
             errorMessage.showAndWait();
         }
-        if(result == 1) {
+        if(result > 0) {
             Alert successMessage = new Alert(Alert.AlertType.CONFIRMATION);
             successMessage.setHeaderText("Operación exitosa");
             successMessage.setContentText("Se ha guardado la nueva LGAC correctamente.");

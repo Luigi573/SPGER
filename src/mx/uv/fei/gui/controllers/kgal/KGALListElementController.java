@@ -15,7 +15,6 @@ import javafx.stage.Stage;
 import mx.uv.fei.logic.domain.KGAL;
 
 public class KGALListElementController {
-
     private KGAL kgal;
     
     private Stage stage;
@@ -24,13 +23,10 @@ public class KGALListElementController {
     
     @FXML
     private Button btnUpdate;
-    
     @FXML
     private Label lKGALDescription;
-
     @FXML
-    private Label lKGALID;
-            
+    private Label lKGALID;     
     @FXML
     private Pane pKGALListElement;
     

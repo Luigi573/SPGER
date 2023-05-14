@@ -26,13 +26,10 @@ public class UpdateKGALController {
 
     @FXML
     private Button btnCancel;
-
     @FXML
     private Button btnSave;
-
     @FXML
     private TextField tfDescription;
-
     @FXML
     private Label lID;
 
@@ -53,7 +50,7 @@ public class UpdateKGALController {
             errorMessage.setContentText(dre.getMessage());
             errorMessage.showAndWait();
         }
-        if(result == 1) {
+        if(result > 0) {
             Alert successMessage = new Alert(Alert.AlertType.CONFIRMATION);
             successMessage.setHeaderText("Operación exitosa");
             successMessage.setContentText("Se ha guardado la nueva Descripción de la LGAC correctamente.");
