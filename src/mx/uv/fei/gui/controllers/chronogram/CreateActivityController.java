@@ -15,9 +15,10 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import mx.uv.fei.logic.daos.ActivityDAO;
 import mx.uv.fei.logic.domain.Activity;
-import mx.uv.fei.logic.exceptions.DataInsertionException;
+import mx.uv.fei.logic.exceptions.DataWritingException;
 
 public class CreateActivityController{
+    private int researchId;
     private Parent parent;
     private Scene scene;
     private Stage stage;
@@ -38,10 +39,11 @@ public class CreateActivityController{
             Date dueDate = Date.valueOf(dueDatePicker.getValue());
             
             Activity activity = new Activity();
-            activity.setTitle(activityTitleTextField.getText());
-            activity.setDescription(activityDescriptionTextArea.getText());
+            activity.setTitle(activityTitleTextField.getText().trim());
+            activity.setDescription(activityDescriptionTextArea.getText().trim());
             activity.setStartDate(startDate);
             activity.setDueDate(dueDate);
+            activity.setResearchId(researchId);
         
             ActivityDAO activityDAO = new ActivityDAO();
         
@@ -55,7 +57,7 @@ public class CreateActivityController{
                     
                         returnToChronogram(event);
                     }
-                }catch(DataInsertionException exception){
+                }catch(DataWritingException exception){
                     Alert errorMessage = new Alert(Alert.AlertType.ERROR);
                     errorMessage.setHeaderText("Error de conexión");
                     errorMessage.setContentText("Favor de verificar su conexión a internet e inténtelo de nuevo");
@@ -90,5 +92,8 @@ public class CreateActivityController{
             errorMessage.setContentText("Hubo un error al cargar el cronograma, archivo no encontrado");
             errorMessage.showAndWait();
         }
+    }
+    public void setResearchId(int researchId){
+        this.researchId = researchId;
     }
 }

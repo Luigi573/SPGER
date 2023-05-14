@@ -28,7 +28,7 @@ public class AdvanceDAO implements IAdvanceDAO{
             dataBaseManager = new DataBaseManager();
             Connection connection = dataBaseManager.getConnection();
             PreparedStatement statement = connection.prepareStatement(query);
-            statement.setString(1, advance.getStudentID());
+            statement.setString(1, advance.getMatricule());
             statement.setInt(2, advance.getDirectorID());
             statement.setString(3, advance.getTitle());
             statement.setString(4, advance.getComments());
@@ -52,7 +52,7 @@ public class AdvanceDAO implements IAdvanceDAO{
             while(rs.next()) {
                 Advance advance = new Advance();
                 advance.setAdvanceID(rs.getInt("IdAvances"));
-                advance.setStudentID(rs.getString("Matrícula"));
+                advance.setMatricle(rs.getString("Matrícula"));
                 advance.setDirectorID(rs.getInt("IdDirector"));
                 advance.setTitle(rs.getString("título"));
                 advance.setComments(rs.getString("comentario"));

@@ -22,12 +22,13 @@
             <Font size="20.0" />
          </font>
       </Label>
-      <Button fx:id="homeButton" layoutX="7.0" mnemonicParsing="false" onAction="#goHome" prefHeight="54.0" prefWidth="59.0" text="Home" />
+
+      <Button fx:id="homeButton" layoutX="7.0" layoutY="5.0" mnemonicParsing="false" onAction="#goHome" prefHeight="54.0" prefWidth="59.0" text="Home" />
       <Label alignment="CENTER_RIGHT" layoutX="394.0" layoutY="17.0" prefHeight="25.0" prefWidth="127.0" text="[Nombre]">
          <font>
             <Font size="16.0" />
          </font>
       </Label>
-      <Button fx:id="profileButton" layoutX="527.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="59.0" text="ProfPic" />
+      <Button fx:id="profileButton" layoutX="534.0" layoutY="5.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="59.0" text="ProfPic" />
    </children>
 </Pane>

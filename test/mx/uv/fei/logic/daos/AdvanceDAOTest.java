@@ -47,7 +47,7 @@ public class AdvanceDAOTest {
     public void testAddAdvance() throws DataInsertionException {
         System.out.println("addAdvance");
         Advance advance = new Advance();
-        advance.setStudentID("zs21013873");
+        advance.setMatricle("zs21013873");
         advance.setDirectorID(5);
         advance.setTitle("Avance de prueba unitaria");
         advance.setComments("Este avance es una prueba");
@@ -68,8 +68,8 @@ public class AdvanceDAOTest {
         Advance advance2 = new Advance();
         advance1.setAdvanceID(7);
         advance2.setAdvanceID(8);
-        advance1.setStudentID("zs21013873");
-        advance2.setStudentID("zs21013873");
+        advance1.setMatricle("zs21013873");
+        advance2.setMatricle("zs21013873");
         advance1.setDirectorID(5);
         advance2.setDirectorID(5);
         advance1.setTitle("Avance de prueba unitaria");
@@ -102,7 +102,7 @@ public class AdvanceDAOTest {
         AdvanceDAO instance = new AdvanceDAO();
         Advance advance1 = new Advance();
         advance1.setAdvanceID(8);
-        advance1.setStudentID("zs21013873");
+        advance1.setMatricle("zs21013873");
         advance1.setDirectorID(5);
         advance1.setTitle("Avance de prueba unitaria num2");
         advance1.setComments("Este avance también es una prueba");

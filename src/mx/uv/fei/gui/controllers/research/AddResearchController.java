@@ -24,14 +24,18 @@ import mx.uv.fei.logic.exceptions.DataRetrievalException;
 import mx.uv.fei.logic.exceptions.DataWritingException;
 
 public class AddResearchController{
+    private ArrayList<ComboBox> directorComboBoxes;
+    
     @FXML
     private TextField titleTextField;
     @FXML
     private ComboBox<KGAL> KGALComboBox;
     @FXML
-    private ComboBox<Director> directorComboBox;
+    private ComboBox<Director> director1ComboBox;
     @FXML
-    private TextField codirectorTextField;
+    private ComboBox<Director> director2ComboBox;
+    @FXML
+    private ComboBox<Director> director3ComboBox;
     @FXML
     private ComboBox<Student> studentComboBox;
     @FXML
@@ -58,7 +62,15 @@ public class AddResearchController{
             ArrayList<KGAL> KGALList = kgalDAO.getKGALList();
             ArrayList<Student> studentList = studentDAO.getStudentList();
             
-            directorComboBox.setItems(FXCollections.observableArrayList(directorList));
+            directorComboBoxes = new ArrayList();
+            directorComboBoxes.add(director1ComboBox);
+            directorComboBoxes.add(director2ComboBox);
+            directorComboBoxes.add(director3ComboBox);
+            
+            for(ComboBox<Director> directorComboBox : directorComboBoxes){
+                directorComboBox.setItems(FXCollections.observableArrayList(directorList));
+            }
+            
             KGALComboBox.setItems(FXCollections.observableArrayList(KGALList));
             studentComboBox.setItems(FXCollections.observableArrayList(studentList));
         }catch(DataRetrievalException exception){
@@ -77,8 +89,10 @@ public class AddResearchController{
             research.setStartDate(Date.valueOf(startDatePicker.getValue()));
             research.setDueDate(Date.valueOf(dueDatePicker.getValue()));
             
-            if(directorComboBox.getValue() != null){
-                research.setDirector(directorComboBox.getValue());
+            for(ComboBox<Director> directorComboBox : directorComboBoxes){
+                if(directorComboBox.getValue() != null){
+                    research.addDirector(directorComboBox.getValue());
+                }
             }
             
             if(studentComboBox.getValue() != null){
@@ -90,7 +104,6 @@ public class AddResearchController{
             }
             
             research.setTitle(titleTextField.getText().trim());
-            research.setCodirector(codirectorTextField.getText().trim());
             research.setDescription(descriptionTextArea.getText().trim());
             research.setRequirements(requirementsTextArea.getText().trim());
             research.setSuggestedBibliography(suggestedBibliographyTextArea.getText().trim());

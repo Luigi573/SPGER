@@ -17,7 +17,7 @@
       <Pane layoutY="70.0" prefHeight="330.0" prefWidth="54.0" />
       <TabPane layoutX="89.0" layoutY="76.0" prefHeight="310.0" prefWidth="457.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
-          <Tab text="Info">
+          <Tab text="Información">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="281.0" prefWidth="424.0">
                      <children>
@@ -52,33 +52,34 @@
                   </AnchorPane>
             </content>
           </Tab>
-          <Tab text="Delivery">
+          <Tab text="Entrega">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <Label prefHeight="35.0" prefWidth="429.0" text="Actividad: [Titulo]">
+                        <Label prefHeight="35.0" prefWidth="448.0" text="Actividad: [Titulo]">
                            <font>
                               <Font size="24.0" />
                            </font>
                         </Label>
-                        <ScrollPane hbarPolicy="NEVER" layoutX="-1.0" layoutY="132.0" prefHeight="111.0" prefWidth="441.0">
+                        <ScrollPane hbarPolicy="NEVER" layoutX="4.0" layoutY="94.0" prefHeight="148.0" prefWidth="450.0">
                            <content>
-                              <VBox fx:id="vBoxActivityFileList" prefHeight="106.0" prefWidth="439.0" />
+                              <VBox prefHeight="144.0" prefWidth="448.0" />
                            </content>
                         </ScrollPane>
-                        <Pane layoutX="7.0" layoutY="40.0" prefHeight="54.0" prefWidth="434.0">
+                        <Pane layoutX="12.0" layoutY="35.0" prefHeight="54.0" prefWidth="434.0">
                            <children>
                               <Label layoutX="59.0" layoutY="19.0" prefHeight="17.0" prefWidth="213.0" text="Seleccione un archivo de su dispositivo" />
                               <Label alignment="CENTER" layoutY="4.0" prefHeight="47.0" prefWidth="44.0" text="Icon" />
-                              <Button fx:id="uploadFile" layoutX="382.0" layoutY="15.0" mnemonicParsing="false" onAction="#uploadFileForDelivery" text="Cargar" />
+                              <Button fx:id="uploadFile" layoutX="272.0" layoutY="15.0" mnemonicParsing="false" onAction="#uploadFileForDelivery" text="Cargar" />
                            </children>
                         </Pane>
                         <Button fx:id="deliverActivity" layoutX="358.0" layoutY="252.0" mnemonicParsing="false" onAction="#deliverActivity" prefHeight="30.0" prefWidth="82.0" text="Entregar" />
-                        <Button fx:id="removeFiles" layoutX="238.0" layoutY="255.0" mnemonicParsing="false" onAction="#removeFiles" text="Quitar Archivos" />
+                        <Button fx:id="commentButton" layoutX="313.0" layoutY="250.0" mnemonicParsing="false" onAction="#feedback" prefHeight="30.0" prefWidth="130.0" text="Retroalimentar" />
+                        <Button fx:id="removeFiles" layoutX="14.0" layoutY="253.0" mnemonicParsing="false" onAction="#removeFiles" text="Quitar Archivos" />
                      </children></AnchorPane>
             </content>
-          </Tab>
-            <Tab text="Advances">
+          </Tab>        
+            <Tab text="Avances">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
@@ -119,5 +120,7 @@
             <Button layoutX="527.0" layoutY="2.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="59.0" text="ProfPic" />
          </children>
       </Pane>
+      <Pane fx:id="headerPane" layoutX="-3.0" prefHeight="63.0" prefWidth="600.0" />
+      <ScrollPane layoutX="-248.0" layoutY="-147.0" prefHeight="200.0" prefWidth="200.0" />
    </children>
 </Pane>

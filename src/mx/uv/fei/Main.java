@@ -14,7 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 import mx.uv.fei.dataaccess.DataBaseManager;
-import mx.uv.fei.gui.javafiles.guiresearchreportcontrollers.GuiResearchReportController;
+import mx.uv.fei.gui.controllers.reports.GuiResearchReportController;
 import mx.uv.fei.logic.exceptions.DataInsertionException;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
 import mx.uv.fei.logic.daos.AcademicBodyDAO;

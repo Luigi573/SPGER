@@ -10,16 +10,18 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane prefHeight="664.0" prefWidth="596.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.uv.fei.gui.controllers.research.AddResearchController">
+
+<Pane prefHeight="641.0" prefWidth="655.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.uv.fei.gui.controllers.research.AddResearchController">
    <children>
       <Label layoutX="150.0" layoutY="14.0" text="Registrar anteproyecto">
          <font>
             <Font name="System Bold" size="28.0" />
          </font>
       </Label>
-      <Pane layoutX="37.0" layoutY="64.0" prefHeight="583.0" prefWidth="542.0">
+
+      <Pane layoutX="37.0" layoutY="64.0" prefHeight="560.0" prefWidth="542.0">
          <children>
-            <Label layoutX="23.0" layoutY="23.0" text="Título:">
+            <Label layoutX="23.0" layoutY="23.0" text="Título:*">
                <font>
                   <Font size="14.0" />
                </font>
@@ -36,31 +38,28 @@
                   <Font size="14.0" />
                </font>
             </Label>
-            <ComboBox fx:id="directorComboBox" layoutX="109.0" layoutY="90.0" prefHeight="25.0" prefWidth="179.0" promptText="--Seleccionar director--" />
-            <Label layoutX="30.0" layoutY="130.0" text="(Opcional)">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Label>
-            <TextField fx:id="codirectorTextField" layoutX="109.0" layoutY="128.0" prefHeight="25.0" prefWidth="179.0" />
+            <ComboBox fx:id="director1ComboBox" layoutX="106.0" layoutY="90.0" prefHeight="25.0" prefWidth="186.0" promptText="--Seleccionar director--" />
+            <ComboBox fx:id="director2ComboBox" layoutX="106.0" layoutY="128.0" prefHeight="25.0" prefWidth="186.0" promptText="--Seleccionar codirector--" />
+            <ComboBox fx:id="director3ComboBox" layoutX="298.0" layoutY="128.0" prefHeight="25.0" prefWidth="221.0" promptText="--Seleccionar codirector--" />
             <Label layoutX="23.0" layoutY="164.0" text="Asignado a:">
                <font>
                   <Font size="14.0" />
                </font>
             </Label>
-            <ComboBox fx:id="studentComboBox" layoutX="109.0" layoutY="162.0" prefHeight="25.0" prefWidth="179.0" promptText="--Seleccionar estudiante--" />
-            <Label layoutX="302.0" layoutY="25.0" text="Fecha de inicio:">
+            <ComboBox fx:id="studentComboBox" layoutX="106.0" layoutY="162.0" prefHeight="25.0" prefWidth="186.0" promptText="--Seleccionar estudiante--" />
+            <Label layoutX="302.0" layoutY="25.0" text="Fecha de inicio:*">
                <font>
                   <Font size="14.0" />
                </font>
             </Label>
             <DatePicker fx:id="startDatePicker" layoutX="408.0" layoutY="21.0" prefHeight="25.0" prefWidth="112.0" />
-            <Label layoutX="302.0" layoutY="57.0" text="Fecha fin:">
+            <Label layoutX="302.0" layoutY="57.0" text="Fecha fin:*">
                <font>
                   <Font size="14.0" />
                </font>
             </Label>
             <DatePicker fx:id="dueDatePicker" layoutX="408.0" layoutY="54.0" prefHeight="25.0" prefWidth="112.0" />
+            
             <ScrollPane hbarPolicy="NEVER" layoutX="23.0" layoutY="234.0" prefHeight="116.0" prefWidth="246.0">
                <content>
                   <TextArea fx:id="descriptionTextArea" prefHeight="114.0" prefWidth="245.0" wrapText="true" />
@@ -81,11 +80,16 @@
                   <TextArea fx:id="expectedResultTextArea" prefHeight="114.0" prefWidth="244.0" wrapText="true" />
                </content>
             </ScrollPane>
-            <Button fx:id="addButton" layoutX="175.0" layoutY="531.0" mnemonicParsing="false" onAction="#addResearch" text="Registrar anteproyecto">
+            <Button fx:id="addButton" layoutX="175.0" layoutY="513.0" mnemonicParsing="false" onAction="#addResearch" text="Registrar anteproyecto">
                <font>
                   <Font size="17.0" />
                </font>
             </Button>
+            <Label layoutX="412.0" layoutY="529.0" text="*Obligatorio">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
             <Label alignment="CENTER" layoutX="84.0" layoutY="207.0" prefHeight="17.0" prefWidth="125.0" text="Descripción">
                <font>
                   <Font name="System Bold" size="18.0" />

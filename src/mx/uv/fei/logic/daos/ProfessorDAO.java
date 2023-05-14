@@ -43,16 +43,15 @@ public class ProfessorDAO implements IProfessorDAO{
             preparedStatementForAssignUserIdToProfessor.setString(6, professor.getPhoneNumber());
             ResultSet resultSet = preparedStatementForAssignUserIdToProfessor.executeQuery();
             if(resultSet.next()){
-                professor.setIdUser(resultSet.getInt("IdUsuario"));
+                professor.setUserId(resultSet.getInt("IdUsuario"));
             }
 
-            String professorTablesToConsult = "NumPersonal, IdUsuario";
             String wholeQueryToInsertProfessorData = 
-                "INSERT INTO Profesores (" + professorTablesToConsult + ") VALUES (?, ?)";
+                "INSERT INTO Profesores (NumPersonal, IdUsuario) VALUES (?, ?)";
             PreparedStatement preparedStatementToInsertProfessorData = 
                 dataBaseManager.getConnection().prepareStatement(wholeQueryToInsertProfessorData);
-            preparedStatementToInsertProfessorData.setString(1, professor.getPersonalNumber());
-            preparedStatementToInsertProfessorData.setInt(2, professor.getIdUser());
+            preparedStatementToInsertProfessorData.setInt(1, professor.getStaffNumber());
+            preparedStatementToInsertProfessorData.setInt(2, professor.getUserId());
             preparedStatementToInsertProfessorData.executeUpdate();
 
             preparedStatementToInsertProfessorData.close();
@@ -66,7 +65,7 @@ public class ProfessorDAO implements IProfessorDAO{
     @Override
     public void modifyProfessorDataFromDatabase(Professor newProfessorData, Professor originalProfessorData) {
         try {
-            newProfessorData.setIdUser(this.getIdUserFromProfessor(originalProfessorData));
+            newProfessorData.setUserId(this.getUserIdFromProfessor(originalProfessorData));
             DataBaseManager dataBaseManager = new DataBaseManager();
             String queryForUpdateUserData = "UPDATE Usuarios SET nombre = ?, " + 
                            "apellidoPaterno = ?, apellidoMaterno = ?, correo = ?, " + 
@@ -94,8 +93,8 @@ public class ProfessorDAO implements IProfessorDAO{
             
             PreparedStatement preparedStatementForUpdateProfessorData = 
                 dataBaseManager.getConnection().prepareStatement(queryForUpdateProfessorData);
-            preparedStatementForUpdateProfessorData.setString(1, newProfessorData.getPersonalNumber());
-            preparedStatementForUpdateProfessorData.setInt(2, newProfessorData.getIdUser());
+            preparedStatementForUpdateProfessorData.setInt(1, newProfessorData.getStaffNumber());
+            preparedStatementForUpdateProfessorData.setInt(2, newProfessorData.getUserId());
             preparedStatementForUpdateProfessorData.executeUpdate();
         } catch(SQLException e){
             e.printStackTrace();
@@ -120,7 +119,7 @@ public class ProfessorDAO implements IProfessorDAO{
                 professor.setPassword(resultSet.getString("contraseña"));
                 professor.setAlternateEmail(resultSet.getString("correoAlterno"));
                 professor.setPhoneNumber(resultSet.getString("númeroTeléfono"));
-                professor.setPersonalNumber(resultSet.getString("NumPersonal"));
+                professor.setStaffNumber(resultSet.getInt("NumPersonal"));
                 professors.add(professor);
             }
             resultSet.close();
@@ -153,7 +152,7 @@ public class ProfessorDAO implements IProfessorDAO{
                 professor.setPassword(resultSet.getString("contraseña"));
                 professor.setAlternateEmail(resultSet.getString("correoAlterno"));
                 professor.setPhoneNumber(resultSet.getString("númeroTeléfono"));
-                professor.setPersonalNumber(resultSet.getString("NumPersonal"));
+                professor.setStaffNumber(resultSet.getInt("NumPersonal"));
                 professors.add(professor);
             }
             resultSet.close();
@@ -183,7 +182,7 @@ public class ProfessorDAO implements IProfessorDAO{
                 professor.setPassword(resultSet.getString("contraseña"));
                 professor.setAlternateEmail(resultSet.getString("correoAlterno"));
                 professor.setPhoneNumber(resultSet.getString("númeroTeléfono"));
-                professor.setPersonalNumber(resultSet.getString("NumPersonal"));
+                professor.setStaffNumber(resultSet.getInt("NumPersonal"));
             }
 
             resultSet.close();
@@ -216,7 +215,7 @@ public class ProfessorDAO implements IProfessorDAO{
                 //   resultSet.getString("correo").equals(professor.getEmailAddress()) &&
                 //   resultSet.getString("correoAlterno").equals(professor.getAlternateEmail()) &&
                 //   resultSet.getString("númeroTeléfono").equals(professor.getPhoneNumber()) ) ||
-                //   resultSet.getString("NumPersonal").equals(professor.getPersonalNumber())) {
+                //   resultSet.getString("NumPersonal").equals(professor.getStaffNumber())) {
                 //    resultSet.close();
                 //    dataBaseManager.getConnection().close();
                 //    return true;
@@ -231,8 +230,8 @@ public class ProfessorDAO implements IProfessorDAO{
         return false;
     }
 
-    private int getIdUserFromProfessor(Professor originalProfessorData){
-        int idUser = 0;
+    private int getUserIdFromProfessor(Professor originalProfessorData){
+        int UserId = 0;
 
         try {
             DataBaseManager dataBaseManager = new DataBaseManager();
@@ -247,11 +246,11 @@ public class ProfessorDAO implements IProfessorDAO{
             preparedStatement.setString(4, originalProfessorData.getEmailAddress());
             preparedStatement.setString(5, originalProfessorData.getAlternateEmail());
             preparedStatement.setString(6, originalProfessorData.getPhoneNumber());
-            preparedStatement.setString(7, originalProfessorData.getPersonalNumber());
+            preparedStatement.setInt(7, originalProfessorData.getStaffNumber());
 
             ResultSet resultSet = preparedStatement.executeQuery();
             if(resultSet.next()) {
-                idUser = resultSet.getInt("IdUsuario");
+                UserId = resultSet.getInt("IdUsuario");
             }
             
             resultSet.close();
@@ -260,7 +259,7 @@ public class ProfessorDAO implements IProfessorDAO{
             e.printStackTrace();
         }
 
-        return idUser;
+        return UserId;
     }
     
 }

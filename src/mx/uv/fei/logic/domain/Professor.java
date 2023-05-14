@@ -1,32 +1,25 @@
 package mx.uv.fei.logic.domain;
 
+import mx.uv.fei.logic.domain.statuses.ProfessorStatus;
+
 public class Professor extends User{
-    protected int idProfessor;
-    protected String personalNumber;
-    protected String status;
-
-    public int getIdProfessor() {
-        return this.idProfessor;
+    int staffNumber;
+    ProfessorStatus status;
+    
+    public void setStaffNumber(int staffNumber){
+        this.staffNumber = staffNumber;
     }
 
-    public void setIdProfessor(int idProfessor) {
-        this.idProfessor = idProfessor;
+    public int getStaffNumber(){
+        return staffNumber;
     }
-
-    public String getPersonalNumber() {
-        return this.personalNumber;
-    }
-
-    public void setPersonalNumber(String personalNumber) {
-        this.personalNumber = personalNumber;
-    }
-
-    public String getStatus(){
-        return this.status;
-    }
-
-    public void setStatus(String status){
+    
+    public void setStatus(ProfessorStatus status){
         this.status = status;
+    }
+
+    public ProfessorStatus getStatus(){
+        return this.status;
     }
 
 }

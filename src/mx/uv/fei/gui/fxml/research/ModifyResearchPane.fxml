@@ -10,63 +10,68 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane prefHeight="656.0" prefWidth="289.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.uv.fei.gui.controllers.research.ModifyResearchPaneController">
+<Pane prefHeight="1018.0" prefWidth="289.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.uv.fei.gui.controllers.research.ModifyResearchPaneController">
    <children>
-      <Button fx:id="cancelButton" layoutX="7.0" layoutY="10.0" mnemonicParsing="false" onAction="#cancelChanges" text="Cancelar" />
-      <TextField fx:id="titleTextField" layoutX="77.0" layoutY="10.0" prefHeight="25.0" prefWidth="133.0" text="Título" />
-      <Button fx:id="saveButton" layoutX="215.0" layoutY="10.0" mnemonicParsing="false" onAction="#saveChanges" text="Guardar" />
+      <Label layoutX="4.0" layoutY="8.0" prefHeight="17.0" prefWidth="6.0" text="*">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <TextField fx:id="titleTextField" layoutX="11.0" layoutY="10.0" prefHeight="25.0" prefWidth="266.0" text="Título" />
       <Label layoutX="7.0" layoutY="57.0" prefHeight="17.0" prefWidth="71.0" text="LGAC: " />
       <ComboBox fx:id="KGALComboBox" layoutX="80.0" layoutY="53.0" prefHeight="25.0" prefWidth="200.0" promptText="--Seleccionar LGAC--" />
       <Label layoutX="7.0" layoutY="89.0" prefHeight="17.0" prefWidth="71.0" text="Director(es):" />
-      <ComboBox fx:id="directorComboBox" layoutX="80.0" layoutY="85.0" prefHeight="25.0" prefWidth="200.0" promptText="--Seleccionar director--" />
-      <Label layoutX="11.0" layoutY="120.0" text="Codirector:*" />
-      <TextField fx:id="codirectorTextField" layoutX="80.0" layoutY="116.0" prefHeight="25.0" prefWidth="200.0" />
-      <Label layoutX="9.0" layoutY="152.0" prefHeight="17.0" prefWidth="119.0" text="Asignado a:" />
-      <ComboBox fx:id="studentComboBox" layoutX="80.0" layoutY="148.0" prefHeight="25.0" prefWidth="200.0" promptText="--Seleccionar estudiante--" />
-      <Label layoutX="8.0" layoutY="191.0" prefHeight="17.0" prefWidth="87.0" text="Fecha de inicio: " />
-      <DatePicker fx:id="startDatePicker" editable="false" layoutX="103.0" layoutY="187.0" />
-      <Label layoutX="8.0" layoutY="225.0" prefHeight="17.0" prefWidth="87.0" text="Fecha fin:" />
-      <DatePicker fx:id="dueDatePicker" editable="false" layoutX="103.0" layoutY="221.0" />
-      <ScrollPane hbarPolicy="NEVER" layoutX="2.0" layoutY="279.0" prefHeight="142.0" prefWidth="133.0">
-         <content>
-            <TextArea fx:id="descriptionTextArea" prefHeight="139.0" prefWidth="132.0" wrapText="true" />
-         </content>
-      </ScrollPane>
-      <ScrollPane hbarPolicy="NEVER" layoutX="149.0" layoutY="279.0" prefHeight="142.0" prefWidth="133.0">
-         <content>
-            <TextArea fx:id="requirementsTextArea" prefHeight="140.0" prefWidth="131.0" wrapText="true" />
-         </content>
-      </ScrollPane>
-      <ScrollPane hbarPolicy="NEVER" layoutX="149.0" layoutY="483.0" prefHeight="142.0" prefWidth="133.0">
-         <content>
-            <TextArea fx:id="suggestedBibliographyTextArea" prefHeight="139.0" prefWidth="133.0" wrapText="true" />
-         </content>
-      </ScrollPane>
-      <ScrollPane hbarPolicy="NEVER" layoutX="3.0" layoutY="483.0" prefHeight="142.0" prefWidth="133.0">
-         <content>
-            <TextArea fx:id="expectedResultTextArea" prefHeight="139.0" prefWidth="132.0" wrapText="true" />
-         </content>
-      </ScrollPane>
-      <Label layoutX="118.0" layoutY="634.0" text="*Opcional" />
-      <Label alignment="CENTER" layoutX="157.0" layoutY="428.0" prefHeight="55.0" prefWidth="118.0" text="Bibliografía recomendada" wrapText="true">
+      <ComboBox fx:id="director1ComboBox" layoutX="80.0" layoutY="85.0" prefHeight="25.0" prefWidth="200.0" promptText="--Seleccionar director--" />
+      <ComboBox fx:id="director2ComboBox" layoutX="80.0" layoutY="122.0" prefHeight="25.0" prefWidth="200.0" promptText="--Seleccionar codirector--" />
+      <ComboBox fx:id="director3ComboBox" layoutX="80.0" layoutY="155.0" prefHeight="25.0" prefWidth="200.0" promptText="--Seleccionar codirector--" />
+      <Label layoutX="4.0" layoutY="191.0" prefHeight="17.0" prefWidth="119.0" text="Asignado a:" />
+      <ComboBox fx:id="studentComboBox" layoutX="80.0" layoutY="187.0" prefHeight="25.0" prefWidth="200.0" promptText="--Seleccionar estudiante--" />
+      <Label layoutX="8.0" layoutY="230.0" prefHeight="17.0" prefWidth="87.0" text="Fecha de inicio: " />
+      <DatePicker fx:id="startDatePicker" editable="false" layoutX="101.0" layoutY="226.0" />
+      <Label layoutX="8.0" layoutY="266.0" prefHeight="17.0" prefWidth="87.0" text="Fecha fin:" />
+      <DatePicker fx:id="dueDatePicker" editable="false" layoutX="101.0" layoutY="262.0" />
+      <Label alignment="CENTER" layoutX="87.0" layoutY="299.0" prefHeight="17.0" prefWidth="125.0" text="Descripción">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-      <Label alignment="CENTER" layoutX="23.0" layoutY="428.0" prefHeight="55.0" prefWidth="94.0" text="Resultados esperados" wrapText="true">
+      <ScrollPane hbarPolicy="NEVER" layoutY="326.0" prefHeight="142.0" prefWidth="289.0">
+         <content>
+            <TextArea fx:id="descriptionTextArea" prefHeight="140.0" prefWidth="290.0" wrapText="true" />
+         </content>
+      </ScrollPane>
+      <Label alignment="CENTER" layoutX="87.0" layoutY="468.0" prefHeight="17.0" prefWidth="125.0" text="Requisitos">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-      <Label alignment="CENTER" layoutX="153.0" layoutY="252.0" prefHeight="17.0" prefWidth="125.0" text="Requisitos">
+      <ScrollPane hbarPolicy="NEVER" layoutX="-1.0" layoutY="495.0" prefHeight="142.0" prefWidth="289.0">
+         <content>
+            <TextArea fx:id="requirementsTextArea" prefHeight="140.0" prefWidth="288.0" wrapText="true" />
+         </content>
+      </ScrollPane>
+      <Label alignment="CENTER" layoutX="11.0" layoutY="637.0" prefHeight="4.0" prefWidth="277.0" text="Bibliografía recomendada" wrapText="true">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-      <Label alignment="CENTER" layoutX="6.0" layoutY="252.0" prefHeight="17.0" prefWidth="125.0" text="Descripción">
+      <ScrollPane hbarPolicy="NEVER" layoutX="-1.0" layoutY="664.0" prefHeight="142.0" prefWidth="289.0">
+         <content>
+            <TextArea fx:id="suggestedBibliographyTextArea" prefHeight="139.0" prefWidth="289.0" wrapText="true" />
+         </content>
+      </ScrollPane>
+      <Label alignment="CENTER" layoutX="38.0" layoutY="806.0" prefHeight="27.0" prefWidth="213.0" text="Resultados esperados" wrapText="true">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
+      <ScrollPane hbarPolicy="NEVER" layoutX="-1.0" layoutY="833.0" prefHeight="142.0" prefWidth="289.0">
+         <content>
+            <TextArea fx:id="expectedResultTextArea" prefHeight="139.0" prefWidth="288.0" wrapText="true" />
+         </content>
+      </ScrollPane>
+      <Button fx:id="cancelButton" layoutX="21.0" layoutY="984.0" mnemonicParsing="false" onAction="#cancelChanges" text="Cancelar" />
+      <Label layoutX="117.0" layoutY="988.0" text="*Obligatorio" />
+      <Button fx:id="saveButton" layoutX="199.0" layoutY="984.0" mnemonicParsing="false" onAction="#saveChanges" text="Guardar" />
    </children>
 </Pane>

@@ -9,17 +9,21 @@ import java.util.ArrayList;
 import mx.uv.fei.dataaccess.DataBaseManager;
 import mx.uv.fei.logic.daosinterfaces.IDirectorDAO;
 import mx.uv.fei.logic.domain.Director;
+import mx.uv.fei.logic.exceptions.DataRetrievalException;
 
 public class DirectorDAO implements IDirectorDAO{
+    private final DataBaseManager dataBaseManager;
+    
+    public DirectorDAO(){
+        dataBaseManager = new DataBaseManager();
+    }
 
     @Override
     public void addDirectorToDatabase(Director director) {
         try {
-            DataBaseManager dataBaseManager = new DataBaseManager();
-            String userColumnsToConsult = 
-                "nombre, apellidoPaterno, apellidoMaterno, correo, correoAlterno, númeroTeléfono";
             String wholeQueryToInsertDirectorDataToUserColumns = 
-                "INSERT INTO Usuarios (" + userColumnsToConsult + ") VALUES (?, ?, ?, ?, ?, ?)";
+                "INSERT INTO Usuarios (nombre, apellidoPaterno, apellidoMaterno, correo, correoAlterno, númeroTeléfono) VALUES (?, ?, ?, ?, ?, ?)";
+            
             PreparedStatement preparedStatementToInsertDirectorDataToUserColumns = 
                 dataBaseManager.getConnection().prepareStatement(wholeQueryToInsertDirectorDataToUserColumns);
             preparedStatementToInsertDirectorDataToUserColumns.setString(1, director.getName());
@@ -45,19 +49,19 @@ public class DirectorDAO implements IDirectorDAO{
             ResultSet resultSetForAssignUserIdToDirector = 
                 preparedStatementForAssignUserIdToDirector.executeQuery();
             if(resultSetForAssignUserIdToDirector.next()){
-                director.setIdUser(resultSetForAssignUserIdToDirector.getInt("IdUsuario"));
+                director.setUserId(resultSetForAssignUserIdToDirector.getInt("IdUsuario"));
             }
 
             String wholeQueryToInsertDirectorDataToProfessorsColumns = 
                 "INSERT INTO Profesores (NumPersonal, IdUsuario) VALUES (?, ?)";
             PreparedStatement preparedStatementToInsertDirectorDataToProfessorsColumns = 
                 dataBaseManager.getConnection().prepareStatement(wholeQueryToInsertDirectorDataToProfessorsColumns);
-            preparedStatementToInsertDirectorDataToProfessorsColumns.setString(1, director.getPersonalNumber());
-            preparedStatementToInsertDirectorDataToProfessorsColumns.setInt(2, director.getIdUser());
+            preparedStatementToInsertDirectorDataToProfessorsColumns.setInt(1, director.getStaffNumber());
+            preparedStatementToInsertDirectorDataToProfessorsColumns.setInt(2, director.getUserId());
             preparedStatementToInsertDirectorDataToProfessorsColumns.executeUpdate();
 
             String queryForAssignProfessorIdToDirector =
-                "SELECT IdProfesor FROM Usuarios U INNER JOIN Profesores P " +
+                "SELECT NumPersonal FROM Usuarios U INNER JOIN Profesores P " +
                 "ON U.IdUsuario = P.IdUsuario WHERE nombre = ? && " +
                 "apellidoPaterno = ? && apellidoMaterno = ? && correo = ? && " +
                 "correoAlterno = ? && númeroTeléfono = ? && NumPersonal = ?";
@@ -69,18 +73,20 @@ public class DirectorDAO implements IDirectorDAO{
             preparedStatementForAssignProfessorIdToDirector.setString(4, director.getEmailAddress());
             preparedStatementForAssignProfessorIdToDirector.setString(5, director.getAlternateEmail());
             preparedStatementForAssignProfessorIdToDirector.setString(6, director.getPhoneNumber());
-            preparedStatementForAssignProfessorIdToDirector.setString(7, director.getPersonalNumber());
+            preparedStatementForAssignProfessorIdToDirector.setInt(7, director.getStaffNumber());
+            
             ResultSet resultSetForAssignProfessorIdToDirector = 
                 preparedStatementForAssignProfessorIdToDirector.executeQuery();
             if(resultSetForAssignProfessorIdToDirector.next()){
-                director.setIdProfessor(resultSetForAssignProfessorIdToDirector.getInt("IdProfesor"));
+                director.setStaffNumber(resultSetForAssignProfessorIdToDirector.getInt("NumPersonal"));
             }
 
             String queryToInsertDirectorDataToDirectorColumns = 
-                "INSERT INTO Directores (IdProfesor) VALUES (?)";
+                "INSERT INTO Directores (NumPersonal) VALUES (?)";
+            
             PreparedStatement preparedStatementToInsertDirectorDataToDirectorColumns = 
                 dataBaseManager.getConnection().prepareStatement(queryToInsertDirectorDataToDirectorColumns);
-            preparedStatementToInsertDirectorDataToDirectorColumns.setInt(1, director.getIdProfessor());
+            preparedStatementToInsertDirectorDataToDirectorColumns.setInt(1, director.getStaffNumber());
             preparedStatementToInsertDirectorDataToDirectorColumns.executeUpdate();
 
             preparedStatementToInsertDirectorDataToDirectorColumns.close();
@@ -118,7 +124,36 @@ public class DirectorDAO implements IDirectorDAO{
             e.printStackTrace();
         }
     }
-
+    
+    @Override
+    public ArrayList<Director> getDirectorList() throws DataRetrievalException{
+        ArrayList<Director> directorList = new ArrayList();
+        PreparedStatement statement;
+        String query = "SELECT d.IdDirector, p.NumPersonal, u.nombre, u.apellidoPaterno, u.apellidoMaterno FROM Directores d "
+                + "INNER JOIN Profesores p ON d.NumPersonal = p.NumPersonal INNER JOIN Usuarios u ON u.IdUsuario = p.IdUsuario";
+        
+        try{
+            statement = dataBaseManager.getConnection().prepareStatement(query);
+            ResultSet resultSet = statement.executeQuery();
+            
+            while(resultSet.next()){
+                Director director = new Director();
+                
+                director.setDirectorId(resultSet.getInt("d.IdDirector"));
+                director.setStaffNumber(resultSet.getInt("p.NumPersonal"));
+                director.setName(resultSet.getString("u.nombre"));
+                director.setFirstSurname(resultSet.getString("u.apellidoPaterno"));
+                director.setSecondSurname(resultSet.getString("u.apellidoMaterno"));
+                
+                directorList.add(director);
+            }
+        }catch(SQLException exception){
+            throw new DataRetrievalException("Error al recuperar la información. Verifique su conexión e intentelo de nuevo");
+        }
+        
+        return directorList;
+    }
+    
     @Override
     public ArrayList<Director> getDirectorsFromDatabase() {
         ArrayList<Director> directors = new ArrayList<>();
@@ -126,7 +161,7 @@ public class DirectorDAO implements IDirectorDAO{
         try {
             DataBaseManager dataBaseManager = new DataBaseManager();
             Statement statement = dataBaseManager.getConnection().createStatement();
-            String query = "SELECT * FROM Usuarios U INNER JOIN Profesores P ON U.IdUsuario = P.IdUsuario INNER JOIN Directores D ON P.IdProfesor = D.IdProfesor";
+            String query = "SELECT * FROM Usuarios U INNER JOIN Profesores P ON U.IdUsuario = P.IdUsuario INNER JOIN Directores D ON P.NumPersonal = D.NumPersonal";
             ResultSet resultSet = statement.executeQuery(query);
             while(resultSet.next()) {
                 Director director = new Director();
@@ -137,7 +172,7 @@ public class DirectorDAO implements IDirectorDAO{
                 director.setPassword(resultSet.getString("contraseña"));
                 director.setAlternateEmail(resultSet.getString("correoAlterno"));
                 director.setPhoneNumber(resultSet.getString("númeroTeléfono"));
-                director.setPersonalNumber(resultSet.getString("NumPersonal"));
+                director.setStaffNumber(resultSet.getInt("NumPersonal"));
                 directors.add(director);
             }
             resultSet.close();
@@ -155,7 +190,7 @@ public class DirectorDAO implements IDirectorDAO{
 
         try {
             DataBaseManager dataBaseManager = new DataBaseManager();
-            String query = "SELECT * FROM Usuarios U INNER JOIN Profesores P ON U.IdUsuario = P.IdUsuario INNER JOIN Directores D ON P.IdProfesor = D.IdProfesor WHERE U.Nombre LIKE ?";
+            String query = "SELECT * FROM Usuarios U INNER JOIN Profesores P ON U.IdUsuario = P.IdUsuario INNER JOIN Directores D ON P.NumPersonal = D.NumPersonal WHERE U.Nombre LIKE ?";
             PreparedStatement preparedStatement = dataBaseManager.getConnection().prepareStatement(query);
             preparedStatement.setString(1, directorName + '%');
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -168,7 +203,7 @@ public class DirectorDAO implements IDirectorDAO{
                 director.setPassword(resultSet.getString("contraseña"));
                 director.setAlternateEmail(resultSet.getString("correoAlterno"));
                 director.setPhoneNumber(resultSet.getString("númeroTeléfono"));
-                director.setPersonalNumber(resultSet.getString("NumPersonal"));
+                director.setStaffNumber(resultSet.getInt("NumPersonal"));
                 directors.add(director);
             }
             resultSet.close();
@@ -186,7 +221,7 @@ public class DirectorDAO implements IDirectorDAO{
 
         try {
             DataBaseManager dataBaseManager = new DataBaseManager();
-            String query = "SELECT * FROM Usuarios U INNER JOIN Profesores P ON U.IdUsuario = P.IdUsuario INNER JOIN Directores D ON P.IdProfesor = D.IdProfesor WHERE D.NumPersonal = ?";
+            String query = "SELECT * FROM Usuarios U INNER JOIN Profesores P ON U.IdUsuario = P.IdUsuario INNER JOIN Directores D ON P.NumPersonal = D.NumPersonal WHERE D.NumPersonal = ?";
             PreparedStatement preparedStatement = dataBaseManager.getConnection().prepareStatement(query);
             preparedStatement.setInt(1, personalNumber);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -198,7 +233,7 @@ public class DirectorDAO implements IDirectorDAO{
                 director.setPassword(resultSet.getString("contraseña"));
                 director.setAlternateEmail(resultSet.getString("correoAlterno"));
                 director.setPhoneNumber(resultSet.getString("númeroTeléfono"));
-                director.setPersonalNumber(resultSet.getString("NumPersonal"));
+                director.setStaffNumber(resultSet.getInt("NumPersonal"));
             }
 
             resultSet.close();
@@ -219,23 +254,13 @@ public class DirectorDAO implements IDirectorDAO{
             //               "U.correoAlterno, U.númeroTeléfono, P.NumPersonal FROM Usuarios U " + 
             //               "INNER JOIN Profesores P ON U.IdUsuario = P.IdUsuario";
             ResultSet resultSet = statement.executeQuery(query);
+            
             while(resultSet.next()) {
                 if(resultSet.getInt("NumPersonal") == personalNumber) {
                     resultSet.close();
                     dataBaseManager.getConnection().close();
                     return true;
                 }
-                //if( (resultSet.getString("nombre").equals(director.getName()) &&
-                //   resultSet.getString("apellidoPaterno").equals(director.getFirstSurname()) &&
-                //   resultSet.getString("apellidoMaterno").equals(director.getSecondSurname()) &&
-                //   resultSet.getString("correo").equals(director.getEmailAddress()) &&
-                //   resultSet.getString("correoAlterno").equals(director.getAlternateEmail()) &&
-                //   resultSet.getString("númeroTeléfono").equals(director.getPhoneNumber())) ||
-                //   resultSet.getString("NumPersonal").equals(director.getPersonalNumber())) {
-                //    resultSet.close();
-                //    dataBaseManager.getConnection().close();
-                //    return true;
-                //}
             }
             resultSet.close();
             dataBaseManager.getConnection().close();

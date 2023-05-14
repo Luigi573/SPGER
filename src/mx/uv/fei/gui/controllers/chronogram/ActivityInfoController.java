@@ -23,16 +23,9 @@ import mx.uv.fei.logic.daos.FileDAO;
 
 public class ActivityInfoController{
     private Activity activity;
-    private Stage stage;
-    private Scene scene;
-    private Parent parent;
 
     private ArrayList<File> filesList;
     
-    @FXML
-    private Button editButton;
-    @FXML
-    private Button homeButton;
     @FXML
     private Label titleLabel;
     @FXML
@@ -40,27 +33,27 @@ public class ActivityInfoController{
     @FXML
     private Label dueDateLabel;
     @FXML
-    private VBox vBoxActivityFileList;
+    private Pane headerPane;
     @FXML
-    private TextFlow descriptionTextFlow;
+    private VBox vBoxActivityFileList;
     @FXML
     private Text descriptionText;
     
     @FXML
     public void initialize() {
         this.filesList = new ArrayList();
+        loadHeader();
     }
-    
     @FXML
     private void editActivity(ActionEvent event) {
         try{
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/ModifyActivity.fxml"));
-            parent = loader.load();
+            Parent parent = loader.load();
             ModifyActivityController controller = (ModifyActivityController)loader.getController();
             controller.setAcitivty(activity);
             
-            stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-            scene = new Scene(parent);
+            Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+            Scene scene = new Scene(parent);
             stage.setTitle("SPGER");
             stage.setScene(scene);
             stage.show();
@@ -75,10 +68,10 @@ public class ActivityInfoController{
     private void goHome(ActionEvent event){
         try{
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/Chronogram.fxml"));
-            parent = loader.load();
+            Parent parent = loader.load();
             
-            stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-            scene = new Scene(parent);
+            Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+            Scene scene = new Scene(parent);
             stage.setTitle("SPGER");
             stage.setScene(scene);
             stage.show();
@@ -89,19 +82,12 @@ public class ActivityInfoController{
             errorMessage.showAndWait();
         }
     }
-    public void setActivity(Activity activity){
-        this.activity = activity;
-        titleLabel.setText(activity.getTitle());
-        startDateLabel.setText("Fecha inicio: " + activity.getStartDate());
-        dueDateLabel.setText("Fecha fin: " + activity.getDueDate());
-        descriptionText.setText(activity.getDescription());
-    }
     
     @FXML
     public void uploadFileForDelivery(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Seleccione el archivo a entregar");
-        File file = fileChooser.showOpenDialog(stage);
+        File file = fileChooser.showOpenDialog((Stage)((Node)event.getSource()).getScene().getWindow());
         
         if (file != null) {
             try {
@@ -150,9 +136,52 @@ public class ActivityInfoController{
             errorMessage.showAndWait();
         }
     }
-    
+    @FXML
     public void removeFiles(ActionEvent event) {
         vBoxActivityFileList.getChildren().clear();
         filesList.clear();
+    }
+    
+    @FXML
+    private void feedback(ActionEvent event){
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/FeedbackPopUp.fxml"));
+        
+        try{
+            Parent parent = loader.load();
+            FeedbackPopUpController controller = (FeedbackPopUpController)loader.getController();
+            controller.setActivity(activity);
+            
+            Scene scene = new Scene(parent);
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.setResizable(false);
+            
+            stage.showAndWait();
+        }catch(IOException exception){
+            Alert errorMessage = new Alert(Alert.AlertType.ERROR);
+            errorMessage.setContentText("Error al cargar, faltan archivos");
+            errorMessage.showAndWait();
+        }
+    }
+    
+    private void loadHeader(){
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/HeaderPane.fxml"));
+        
+        try{
+            Pane header = loader.load();
+            headerPane.getChildren().add(header);
+            
+        }catch(IOException exception){
+            Alert errorMessage = new Alert(Alert.AlertType.ERROR);
+            errorMessage.setContentText("Error al cargar, faltan archivos");
+            errorMessage.showAndWait();
+        }
+    }
+    public void setActivity(Activity activity){
+        this.activity = activity;
+        titleLabel.setText(activity.getTitle());
+        startDateLabel.setText("Fecha inicio: " + activity.getStartDate());
+        dueDateLabel.setText("Fecha fin: " + activity.getDueDate());
+        descriptionText.setText(activity.getDescription());
     }
 }

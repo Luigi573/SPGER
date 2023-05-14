@@ -23,7 +23,7 @@ public class CourseDAO implements ICourseDAO{
                 dataBaseManager.getConnection().prepareStatement(wholeQuery);
             preparedStatement.setInt(1, course.getNrc());
             preparedStatement.setInt(2, course.getIdScholarPeriod());
-            preparedStatement.setInt(3, course.getPersonalNumber());
+            preparedStatement.setInt(3, course.getStaffNumber());
             preparedStatement.setString(4, course.getEEName());
             preparedStatement.setInt(5, course.getSection());
             preparedStatement.setInt(6, course.getBlock());
@@ -46,7 +46,7 @@ public class CourseDAO implements ICourseDAO{
             PreparedStatement preparedStatement = dataBaseManager.getConnection().prepareStatement(query);
             preparedStatement.setInt(1, newCourseData.getNrc());
             preparedStatement.setInt(2, newCourseData.getIdScholarPeriod());
-            preparedStatement.setInt(3, newCourseData.getPersonalNumber());
+            preparedStatement.setInt(3, newCourseData.getStaffNumber());
             preparedStatement.setString(4, newCourseData.getEEName());
             preparedStatement.setInt(5, newCourseData.getSection());
             preparedStatement.setInt(6, newCourseData.getBlock());
@@ -72,7 +72,7 @@ public class CourseDAO implements ICourseDAO{
                 Course course = new Course();
                 course.setNrc(resultSet.getInt("NRC"));
                 course.setIdScholarPeriod(resultSet.getInt("IdPeriodoEscolar"));
-                course.setPersonalNumber(resultSet.getInt("NumPersonal"));
+                course.setStaffNumber(resultSet.getInt("NumPersonal"));
                 course.setEEName(resultSet.getString("nombreEE"));
                 course.setSection(resultSet.getInt("sección"));
                 course.setBlock(resultSet.getInt("bloque"));
@@ -102,7 +102,7 @@ public class CourseDAO implements ICourseDAO{
                 Course course = new Course();
                 course.setNrc(resultSet.getInt("NRC"));
                 course.setIdScholarPeriod(resultSet.getInt("IdPeriodoEscolar"));
-                course.setPersonalNumber(resultSet.getInt("NumPersonal"));
+                course.setStaffNumber(resultSet.getInt("NumPersonal"));
                 course.setEEName(resultSet.getString("nombreEE"));
                 course.setSection(resultSet.getInt("sección"));
                 course.setBlock(resultSet.getInt("bloque"));
@@ -131,7 +131,7 @@ public class CourseDAO implements ICourseDAO{
             if(resultSet.next()){
                 course.setNrc(resultSet.getInt("NRC"));
                 course.setIdScholarPeriod(resultSet.getInt("IdPeriodoEscolar"));
-                course.setPersonalNumber(resultSet.getInt("NumPersonal"));
+                course.setStaffNumber(resultSet.getInt("NumPersonal"));
                 course.setEEName(resultSet.getString("nombreEE"));
                 course.setSection(resultSet.getInt("sección"));
                 course.setBlock(resultSet.getInt("bloque"));

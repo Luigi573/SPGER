@@ -21,7 +21,7 @@ public class Advance {
         this.advanceID = advanceID;
     }
     
-    public void setStudentID(String studentID) {
+    public void setMatricle(String studentID) {
         this.studentID = studentID;
     }
     
@@ -41,7 +41,7 @@ public class Advance {
         return this.advanceID;
     }
     
-    public String getStudentID() {
+    public String getMatricule() {
         return this.studentID;
     }
     
@@ -63,7 +63,7 @@ public class Advance {
             return false;
         }
             Advance advance = (Advance) o;
-            return (this.studentID == advance.getStudentID()) && (this.directorID == advance.getDirectorID() && (this.title.equals(advance.getTitle())) && (this.comments.equals(advance.getComments())));
+            return (this.studentID == advance.getMatricule()) && (this.directorID == advance.getDirectorID() && (this.title.equals(advance.getTitle())) && (this.comments.equals(advance.getComments())));
     }
 
     @Override

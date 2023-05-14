@@ -32,42 +32,8 @@ public class ResearchManagerController{
 
     @FXML
     private void initialize() {
-        ResearchDAO researchDAO = new ResearchDAO();
-        
-        try{
-            researchList = researchDAO.getResearchProjectList();
-            
-            for(ResearchProject research : researchList){
-                try{
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/research/ResearchVBoxPane.fxml"));
-                    Pane pane = loader.load();
-                    ResearchVBoxPaneController controller = loader.getController();
-                    controller.setResearchProject(research);
-                    controller.setContainer(researchInfoScrollPane);
-                    
-                    researchVBox.getChildren().add(pane);
-                }catch(IOException exception){
-                    Alert errorMessage = new Alert(AlertType.ERROR);
-                    errorMessage.setContentText("Error al cargar, faltan archivos");
-                    errorMessage.showAndWait();
-                }
-            }
-        }catch(DataRetrievalException exception){
-            Alert errorMessage = new Alert(AlertType.ERROR);
-            errorMessage.setContentText("Error al cargar las actividades, verifique su conexión a internet y actualice este apartado");
-            errorMessage.showAndWait();
-        }
-
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/HeaderPane.fxml"));
-        try{
-            Pane header = loader.load();
-            headerPane.getChildren().add(header);
-            
-        }catch(IOException exception){
-            Alert errorMessage = new Alert(Alert.AlertType.ERROR);
-            errorMessage.setContentText("Error al cargar, faltan archivos");
-            errorMessage.showAndWait();
-        }
+        loadHeader();
+        loadResearch();
     }
     @FXML
     void addResearch(ActionEvent event) {
@@ -88,15 +54,55 @@ public class ResearchManagerController{
         }
     }
     @FXML
-    void goToReports(ActionEvent event) {
+    private void goToReports(ActionEvent event) {
         
     }
     @FXML
-    void searchResearch(ActionEvent event) {
+    private void searchResearch(ActionEvent event) {
         
     }
     @FXML
-    void showValidated(ActionEvent event) {
+    private void showValidated(ActionEvent event) {
         
+    }
+    private void loadHeader(){
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/HeaderPane.fxml"));
+        
+        try{
+            Pane header = loader.load();
+            headerPane.getChildren().add(header);
+            
+        }catch(IOException exception){
+            Alert errorMessage = new Alert(Alert.AlertType.ERROR);
+            errorMessage.setContentText("Error al cargar, faltan archivos");
+            errorMessage.showAndWait();
+        }
+    }
+    private void loadResearch(){
+        ResearchDAO researchDAO = new ResearchDAO();
+        
+        try{
+            researchList = researchDAO.getResearchProjectList();
+            
+            for(ResearchProject research : researchList){
+                try{
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/research/ResearchVBoxPane.fxml"));
+                    Pane pane = loader.load();
+                    ResearchVBoxPaneController controller = (ResearchVBoxPaneController)loader.getController();
+                    controller.setResearchProject(research);
+                    controller.setContainer(researchInfoScrollPane);
+                    
+                    researchVBox.getChildren().add(pane);
+                }catch(IOException exception){
+                    Alert errorMessage = new Alert(AlertType.ERROR);
+                    errorMessage.setContentText("Error al cargar, faltan archivos");
+                    errorMessage.showAndWait();
+                }
+            }
+        }catch(DataRetrievalException exception){
+            Alert errorMessage = new Alert(AlertType.ERROR);
+            errorMessage.setContentText("Error al cargar anteproyectos, verifique su conexión a internet y actualice este apartado");
+            errorMessage.showAndWait();
+        }
     }
 }

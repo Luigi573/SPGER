@@ -11,15 +11,17 @@ import mx.uv.fei.logic.daosinterfaces.IAcademicBodyHeadDAO;
 import mx.uv.fei.logic.domain.AcademicBodyHead;
 
 public class AcademicBodyHeadDAO implements IAcademicBodyHeadDAO{
-
+    private DataBaseManager dataBaseManager;
+    
+    public AcademicBodyHeadDAO(){
+        dataBaseManager = new DataBaseManager();
+    }
+    
     @Override
     public void addAcademicBodyHeadToDatabase(AcademicBodyHead academicBodyHead) {
         try {
-            DataBaseManager dataBaseManager = new DataBaseManager();
-            String userColumnsToConsult = 
-                "nombre, apellidoPaterno, apellidoMaterno, correo, correoAlterno, númeroTeléfono";
             String wholeQueryToInsertAcademicBodyHeadDataToUserColumns = 
-                "INSERT INTO Usuarios (" + userColumnsToConsult + ") VALUES (?, ?, ?, ?, ?, ?)";
+                "INSERT INTO Usuarios (nombre, apellidoPaterno, apellidoMaterno, correo, correoAlterno, númeroTeléfono) VALUES (?, ?, ?, ?, ?, ?)";
             PreparedStatement preparedStatementToInsertAcademicBodyHeadDataToUserColumns = 
                 dataBaseManager.getConnection().prepareStatement(wholeQueryToInsertAcademicBodyHeadDataToUserColumns);
             preparedStatementToInsertAcademicBodyHeadDataToUserColumns.setString(1, academicBodyHead.getName());
@@ -45,19 +47,19 @@ public class AcademicBodyHeadDAO implements IAcademicBodyHeadDAO{
             ResultSet resultSetForAssignUserIdToAcademicBodyHead = 
                 preparedStatementForAssignUserIdToAcademicBodyHead.executeQuery();
             if(resultSetForAssignUserIdToAcademicBodyHead.next()){
-                academicBodyHead.setIdUser(resultSetForAssignUserIdToAcademicBodyHead.getInt("IdUsuario"));
+                academicBodyHead.setUserId(resultSetForAssignUserIdToAcademicBodyHead.getInt("IdUsuario"));
             }
 
             String wholeQueryToInsertAcademicBodyHeadDataToProfessorsColumns = 
                 "INSERT INTO Profesores (NumPersonal, IdUsuario) VALUES (?, ?)";
             PreparedStatement preparedStatementToInsertAcademicBodyHeadDataToProfessorsColumns = 
                 dataBaseManager.getConnection().prepareStatement(wholeQueryToInsertAcademicBodyHeadDataToProfessorsColumns);
-            preparedStatementToInsertAcademicBodyHeadDataToProfessorsColumns.setString(1, academicBodyHead.getPersonalNumber());
-            preparedStatementToInsertAcademicBodyHeadDataToProfessorsColumns.setInt(2, academicBodyHead.getIdUser());
+            preparedStatementToInsertAcademicBodyHeadDataToProfessorsColumns.setInt(1, academicBodyHead.getStaffNumber());
+            preparedStatementToInsertAcademicBodyHeadDataToProfessorsColumns.setInt(2, academicBodyHead.getUserId());
             preparedStatementToInsertAcademicBodyHeadDataToProfessorsColumns.executeUpdate();
 
             String queryForAssignProfessorIdToAcademicBodyHead =
-                "SELECT IdProfesor FROM Usuarios U INNER JOIN Profesores P " +
+                "SELECT NumPersonal FROM Usuarios U INNER JOIN Profesores P " +
                 "ON U.IdUsuario = P.IdUsuario WHERE nombre = ? && " +
                 "apellidoPaterno = ? && apellidoMaterno = ? && correo = ? && " +
                 "correoAlterno = ? && númeroTeléfono = ? && NumPersonal = ?";
@@ -69,18 +71,18 @@ public class AcademicBodyHeadDAO implements IAcademicBodyHeadDAO{
             preparedStatementForAssignProfessorIdToAcademicBodyHead.setString(4, academicBodyHead.getEmailAddress());
             preparedStatementForAssignProfessorIdToAcademicBodyHead.setString(5, academicBodyHead.getAlternateEmail());
             preparedStatementForAssignProfessorIdToAcademicBodyHead.setString(6, academicBodyHead.getPhoneNumber());
-            preparedStatementForAssignProfessorIdToAcademicBodyHead.setString(7, academicBodyHead.getPersonalNumber());
+            preparedStatementForAssignProfessorIdToAcademicBodyHead.setInt(7, academicBodyHead.getStaffNumber());
             ResultSet resultSetForAssignProfessorIdToAcademicBodyHead = 
                 preparedStatementForAssignProfessorIdToAcademicBodyHead.executeQuery();
             if(resultSetForAssignProfessorIdToAcademicBodyHead.next()){
-                academicBodyHead.setIdProfessor(resultSetForAssignProfessorIdToAcademicBodyHead.getInt("IdProfesor"));
+                academicBodyHead.setStaffNumber(resultSetForAssignProfessorIdToAcademicBodyHead.getInt("NumPersonal"));
             }
 
             String queryToInsertAcademicBodyHeadDataToAcademicBodyHeadColumns = 
-                "INSERT INTO ResponsablesCA (IdProfesor) VALUES (?)";
+                "INSERT INTO ResponsablesCA (NumPersonal) VALUES (?)";
             PreparedStatement preparedStatementToInsertAcademicBodyHeadDataToAcademicBodyHeadColumns = 
                 dataBaseManager.getConnection().prepareStatement(queryToInsertAcademicBodyHeadDataToAcademicBodyHeadColumns);
-            preparedStatementToInsertAcademicBodyHeadDataToAcademicBodyHeadColumns.setInt(1, academicBodyHead.getIdProfessor());
+            preparedStatementToInsertAcademicBodyHeadDataToAcademicBodyHeadColumns.setInt(1, academicBodyHead.getStaffNumber());
             preparedStatementToInsertAcademicBodyHeadDataToAcademicBodyHeadColumns.executeUpdate();
 
             preparedStatementToInsertAcademicBodyHeadDataToAcademicBodyHeadColumns.close();
@@ -126,7 +128,7 @@ public class AcademicBodyHeadDAO implements IAcademicBodyHeadDAO{
         try {
             DataBaseManager dataBaseManager = new DataBaseManager();
             Statement statement = dataBaseManager.getConnection().createStatement();
-            String query = "SELECT * FROM Usuarios U INNER JOIN Profesores P ON U.IdUsuario = P.IdUsuario INNER JOIN ResponsablesCA RCA ON P.IdProfesor = RCA.IdProfesor";
+            String query = "SELECT * FROM Usuarios U INNER JOIN Profesores P ON U.IdUsuario = P.IdUsuario INNER JOIN ResponsablesCA RCA ON P.NumPersonal = RCA.NumPersonal";
             ResultSet resultSet = statement.executeQuery(query);
             while(resultSet.next()) {
                 AcademicBodyHead academicBodyHead = new AcademicBodyHead();
@@ -137,7 +139,7 @@ public class AcademicBodyHeadDAO implements IAcademicBodyHeadDAO{
                 academicBodyHead.setPassword(resultSet.getString("contraseña"));
                 academicBodyHead.setAlternateEmail(resultSet.getString("correoAlterno"));
                 academicBodyHead.setPhoneNumber(resultSet.getString("númeroTeléfono"));
-                academicBodyHead.setPersonalNumber(resultSet.getString("NumPersonal"));
+                academicBodyHead.setStaffNumber(resultSet.getInt("NumPersonal"));
                 academicBodyHeads.add(academicBodyHead);
             }
             resultSet.close();
@@ -155,7 +157,7 @@ public class AcademicBodyHeadDAO implements IAcademicBodyHeadDAO{
 
         try {
             DataBaseManager dataBaseManager = new DataBaseManager();
-            String query = "SELECT * FROM Usuarios U INNER JOIN Profesores P ON U.IdUsuario = P.IdUsuario INNER JOIN ResponsablesCA RCA ON P.IdProfesor = RCA.IdProfesor WHERE U.Nombre LIKE ?";
+            String query = "SELECT * FROM Usuarios U INNER JOIN Profesores P ON U.IdUsuario = P.IdUsuario INNER JOIN ResponsablesCA RCA ON P.NumPersonal = RCA.NumPersonal WHERE U.Nombre LIKE ?";
             PreparedStatement preparedStatement = dataBaseManager.getConnection().prepareStatement(query);
             preparedStatement.setString(1, academicBodyHeadName + '%');
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -168,7 +170,7 @@ public class AcademicBodyHeadDAO implements IAcademicBodyHeadDAO{
                 academicBodyHead.setPassword(resultSet.getString("contraseña"));
                 academicBodyHead.setAlternateEmail(resultSet.getString("correoAlterno"));
                 academicBodyHead.setPhoneNumber(resultSet.getString("númeroTeléfono"));
-                academicBodyHead.setPersonalNumber(resultSet.getString("NumPersonal"));
+                academicBodyHead.setStaffNumber(resultSet.getInt("NumPersonal"));
                 academicBodyHeads.add(academicBodyHead);
             }
             resultSet.close();
@@ -186,7 +188,7 @@ public class AcademicBodyHeadDAO implements IAcademicBodyHeadDAO{
 
         try {
             DataBaseManager dataBaseManager = new DataBaseManager();
-            String query = "SELECT * FROM Usuarios U INNER JOIN Profesores P ON U.IdUsuario = P.IdUsuario INNER JOIN ResponsablesCA RCA ON P.IdProfesor = RCA.IdProfesor WHERE RCA.NumPersonal = ?";
+            String query = "SELECT * FROM Usuarios U INNER JOIN Profesores P ON U.IdUsuario = P.IdUsuario INNER JOIN ResponsablesCA RCA ON P.NumPersonal = RCA.NumPersonal WHERE RCA.NumPersonal = ?";
             PreparedStatement preparedStatement = dataBaseManager.getConnection().prepareStatement(query);
             preparedStatement.setInt(1, personalNumber);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -198,7 +200,7 @@ public class AcademicBodyHeadDAO implements IAcademicBodyHeadDAO{
                 academicBodyHead.setPassword(resultSet.getString("contraseña"));
                 academicBodyHead.setAlternateEmail(resultSet.getString("correoAlterno"));
                 academicBodyHead.setPhoneNumber(resultSet.getString("númeroTeléfono"));
-                academicBodyHead.setPersonalNumber(resultSet.getString("NumPersonal"));
+                academicBodyHead.setStaffNumber(resultSet.getInt("NumPersonal"));
             }
             
             resultSet.close();

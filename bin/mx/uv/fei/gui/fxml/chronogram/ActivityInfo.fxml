@@ -6,19 +6,18 @@
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.text.TextFlow?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.uv.fei.gui.ActivityInfoController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.uv.fei.gui.controllers.chronogram.ActivityInfoController">
    <children>
       <Pane layoutY="70.0" prefHeight="330.0" prefWidth="54.0" />
       <TabPane layoutX="89.0" layoutY="76.0" prefHeight="310.0" prefWidth="457.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
-          <Tab text="Info">
+          <Tab text="Información">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="281.0" prefWidth="424.0">
                      <children>
@@ -45,7 +44,11 @@
                            <content>
                               <TextFlow fx:id="descriptionTextFlow" lineSpacing="1.0" prefHeight="207.0" prefWidth="453.0">
                                  <children>
+<<<<<<<< Updated upstream:bin/mx/uv/fei/gui/fxml/chronogram/ActivityInfo.fxml
                                     <Text fx:id="descriptionText" strokeType="OUTSIDE" strokeWidth="0.0" text="sd" wrappingWidth="314.158203125" />
+========
+                                    <Text fx:id="descriptionText" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="314.158203125" />
+>>>>>>>> Stashed changes:src/mx/uv/fei/gui/fxml/chronogram/ActivityInfo.fxml
                                  </children></TextFlow>
                            </content>
                         </ScrollPane>
@@ -53,43 +56,49 @@
                   </AnchorPane>
             </content>
           </Tab>
-          <Tab text="Delivery">
+          <Tab text="Entrega">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <Label prefHeight="35.0" prefWidth="429.0" text="Actividad: [Titulo]">
+                        <Label prefHeight="35.0" prefWidth="448.0" text="Actividad: [Titulo]">
                            <font>
                               <Font size="24.0" />
                            </font>
                         </Label>
-                        <Label layoutY="97.0" prefHeight="35.0" prefWidth="354.0" text="Entregas de avance:">
-                           <font>
-                              <Font size="24.0" />
-                           </font>
-                        </Label>
-                        <ScrollPane layoutX="-1.0" layoutY="132.0" prefHeight="111.0" prefWidth="441.0">
+                        <ScrollPane hbarPolicy="NEVER" layoutX="4.0" layoutY="94.0" prefHeight="148.0" prefWidth="450.0">
                            <content>
-                              <VBox prefHeight="106.0" prefWidth="439.0">
-                                 <children>
-                                    <HBox prefHeight="106.0" prefWidth="439.0" />
-                                 </children>
-                              </VBox>
+                              <VBox prefHeight="144.0" prefWidth="448.0" />
                            </content>
                         </ScrollPane>
-                        <Pane layoutX="7.0" layoutY="40.0" prefHeight="54.0" prefWidth="434.0">
+                        <Pane layoutX="12.0" layoutY="35.0" prefHeight="54.0" prefWidth="434.0">
                            <children>
                               <Label layoutX="59.0" layoutY="19.0" prefHeight="17.0" prefWidth="213.0" text="Seleccione un archivo de su dispositivo" />
                               <Label alignment="CENTER" layoutY="4.0" prefHeight="47.0" prefWidth="44.0" text="Icon" />
-                              <Button layoutX="287.0" layoutY="15.0" mnemonicParsing="false" text="Cargar" />
+                              <Button fx:id="uploadFileButton" layoutX="287.0" layoutY="15.0" mnemonicParsing="false" onAction="#uploadFileForDelivery" text="Cargar" />
                               <Button layoutX="351.0" layoutY="15.0" mnemonicParsing="false" text="Descargar" />
                            </children>
                         </Pane>
-                        <Button layoutX="347.0" layoutY="252.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="82.0" text="Entregar" />
+                        <Button fx:id="turnInButton" layoutX="14.0" layoutY="252.0" mnemonicParsing="false" onAction="#deliverActivity" prefHeight="30.0" prefWidth="100.0" text="Entregar" />
+                        <Button fx:id="commentButton" layoutX="313.0" layoutY="250.0" mnemonicParsing="false" onAction="#feedback" prefHeight="30.0" prefWidth="130.0" text="Retroalimentar" />
                      </children></AnchorPane>
             </content>
           </Tab>
+            <Tab text="Avances">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Label prefHeight="35.0" prefWidth="354.0" text="Entregas de avance:">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+              </content>
+            </Tab>
         </tabs>
       </TabPane>
+<<<<<<<< Updated upstream:bin/mx/uv/fei/gui/fxml/chronogram/ActivityInfo.fxml
       <Pane layoutX="4.0" prefHeight="54.0" prefWidth="593.0">
          <children>
             <Label alignment="CENTER" contentDisplay="CENTER" layoutX="182.0" layoutY="2.0" prefHeight="30.0" prefWidth="194.0" text="[NombreEE]">
@@ -116,5 +125,9 @@
             <Button layoutX="527.0" layoutY="2.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="59.0" text="ProfPic" />
          </children>
       </Pane>
+========
+      <Pane fx:id="headerPane" layoutX="-3.0" prefHeight="63.0" prefWidth="600.0" />
+      <ScrollPane layoutX="-248.0" layoutY="-147.0" prefHeight="200.0" prefWidth="200.0" />
+>>>>>>>> Stashed changes:src/mx/uv/fei/gui/fxml/chronogram/ActivityInfo.fxml
    </children>
 </Pane>

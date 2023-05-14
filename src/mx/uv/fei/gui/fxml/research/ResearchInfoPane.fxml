@@ -8,48 +8,74 @@
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.text.TextFlow?>
 
-<Pane prefHeight="675.0" prefWidth="289.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.uv.fei.gui.controllers.research.ResearchInfoPaneController">
+<Pane prefHeight="984.0" prefWidth="289.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.uv.fei.gui.controllers.research.ResearchInfoPaneController">
    <children>
-      <Label fx:id="titleLabel" alignment="TOP_CENTER" layoutX="2.0" layoutY="4.0" prefHeight="55.0" prefWidth="209.0" text="Título" wrapText="true">
+      <Label fx:id="titleLabel" alignment="TOP_CENTER" layoutX="-4.0" prefHeight="55.0" prefWidth="289.0" text="Título" wrapText="true">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
       </Label>
-      <Button fx:id="saveButton" layoutX="215.0" layoutY="10.0" mnemonicParsing="false" onAction="#modifyResearch" text="Modificar" />
-      <Label fx:id="KGALLabel" layoutX="7.0" layoutY="57.0" prefHeight="17.0" prefWidth="262.0" text="LGAC:                    N/A" />
-      <Label fx:id="directorLabel" layoutX="7.0" layoutY="89.0" prefHeight="17.0" prefWidth="262.0" text="Director(es):    (Sin asignar)" />
-      <Label fx:id="codirectorLabel" layoutX="88.0" layoutY="120.0" prefHeight="17.0" prefWidth="188.0" text="(Opcional)" />
-      <Label fx:id="studentLabel" layoutX="9.0" layoutY="152.0" prefHeight="17.0" prefWidth="262.0" text="Asignado a:   (Sin asignar)" />
-      <Label fx:id="startDateLabel" layoutX="8.0" layoutY="191.0" prefHeight="17.0" prefWidth="262.0" text="Fecha de inicio: " />
-      <Label fx:id="dueDateLabel" layoutX="8.0" layoutY="225.0" prefHeight="17.0" prefWidth="262.0" text="Fecha fin:" />
-      <ScrollPane hbarPolicy="NEVER" layoutX="3.0" layoutY="280.0" prefHeight="142.0" prefWidth="133.0">
+      
+      <Label layoutX="10.0" layoutY="57.0" prefHeight="17.0" prefWidth="66.0" text="LGAC:" />
+      <Label fx:id="KGALLabel" layoutX="94.0" layoutY="57.0" prefHeight="17.0" prefWidth="175.0" text="                    N/A" />
+      <Label layoutX="6.0" layoutY="89.0" prefHeight="17.0" prefWidth="66.0" text="Director(es):" />
+      <Label fx:id="director1Label" layoutX="94.0" layoutY="89.0" prefHeight="17.0" prefWidth="175.0" text="(Sin asignar)" />
+      <Label fx:id="director2Label" layoutX="94.0" layoutY="113.0" prefHeight="17.0" prefWidth="182.0" text="(Sin asignar)" />
+      <Label fx:id="director3Label" layoutX="94.0" layoutY="139.0" prefHeight="17.0" prefWidth="182.0" text="(Sin asignar)" />
+      <Label layoutX="7.0" layoutY="164.0" prefHeight="17.0" prefWidth="72.0" text="Asignado a: " />
+      <Label fx:id="studentLabel" layoutX="94.0" layoutY="164.0" prefHeight="17.0" prefWidth="182.0" text="(Sin asignar)" />
+      <Label layoutX="10.0" layoutY="191.0" prefHeight="17.0" prefWidth="88.0" text="Fecha de inicio: " />
+      <Label fx:id="startDateLabel" layoutX="101.0" layoutY="191.0" prefHeight="17.0" prefWidth="169.0" text="YYYY-MM-DD" />
+      <Label layoutX="10.0" layoutY="216.0" prefHeight="17.0" prefWidth="88.0" text="Fecha fin:" />
+      <Label fx:id="dueDateLabel" layoutX="101.0" layoutY="216.0" prefHeight="17.0" prefWidth="169.0" text="YYYY-MM-DD" />
+      <Label alignment="CENTER" layoutX="89.0" layoutY="254.0" prefHeight="27.0" prefWidth="112.0" text="Descripción">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <ScrollPane hbarPolicy="NEVER" layoutY="281.0" prefHeight="142.0" prefWidth="289.0">
          <content>
-            <TextFlow prefHeight="139.0" prefWidth="133.0">
+            <TextFlow prefHeight="139.0" prefWidth="287.0">
                <children>
                   <Text fx:id="descriptionText" strokeType="OUTSIDE" strokeWidth="0.0" text="Descripción" />
                </children>
             </TextFlow>
          </content>
       </ScrollPane>
-      <ScrollPane hbarPolicy="NEVER" layoutX="149.0" layoutY="280.0" prefHeight="142.0" prefWidth="133.0">
+      <Label alignment="CENTER" layoutX="102.0" layoutY="423.0" prefHeight="27.0" prefWidth="94.0" text="Requisitos">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <ScrollPane hbarPolicy="NEVER" layoutY="454.0" prefHeight="142.0" prefWidth="289.0">
          <content>
-            <TextFlow prefHeight="140.0" prefWidth="132.0">
+            <TextFlow prefHeight="140.0" prefWidth="288.0">
                <children>
                   <Text fx:id="requirementsText" strokeType="OUTSIDE" strokeWidth="0.0" text="Requisitos" />
                </children>
             </TextFlow>
          </content>
       </ScrollPane>
-      <ScrollPane hbarPolicy="NEVER" layoutX="150.0" layoutY="486.0" prefHeight="142.0" prefWidth="133.0">
+      <Label alignment="CENTER" layoutX="33.0" layoutY="596.0" prefHeight="27.0" prefWidth="232.0" text="Bibliografía recomendada" wrapText="true">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <ScrollPane hbarPolicy="NEVER" layoutY="623.0" prefHeight="142.0" prefWidth="289.0">
          <content>
-            <TextFlow prefHeight="140.0" prefWidth="132.0">
+            <TextFlow prefHeight="140.0" prefWidth="287.0">
                <children>
                   <Text fx:id="suggestedBibliographyText" strokeType="OUTSIDE" strokeWidth="0.0" text="Bibliografía recomendada" wrappingWidth="116.767578125" />
                </children>
             </TextFlow>
          </content>
       </ScrollPane>
-      <ScrollPane hbarPolicy="NEVER" layoutX="2.0" layoutY="486.0" prefHeight="142.0" prefWidth="133.0">
+      <Label alignment="CENTER" layoutX="39.0" layoutY="765.0" prefHeight="27.0" prefWidth="199.0" text="Resultados esperados" wrapText="true">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <ScrollPane hbarPolicy="NEVER" layoutY="792.0" prefHeight="142.0" prefWidth="289.0">
          <content>
             <TextFlow prefHeight="140.0" prefWidth="131.0">
                <children>
@@ -58,26 +84,7 @@
             </TextFlow>
          </content>
       </ScrollPane>
-      <Button fx:id="validateButton" layoutX="103.0" layoutY="642.0" mnemonicParsing="false" onAction="#validateResearch" prefHeight="25.0" prefWidth="94.0" text="Validar" />
-      <Label alignment="CENTER" layoutX="6.0" layoutY="254.0" prefHeight="17.0" prefWidth="125.0" text="Descripción">
-         <font>
-            <Font name="System Bold" size="18.0" />
-         </font>
-      </Label>
-      <Label alignment="CENTER" layoutX="149.0" layoutY="254.0" prefHeight="17.0" prefWidth="125.0" text="Requisitos">
-         <font>
-            <Font name="System Bold" size="18.0" />
-         </font>
-      </Label>
-      <Label alignment="CENTER" layoutX="23.0" layoutY="431.0" prefHeight="55.0" prefWidth="94.0" text="Resultados esperados" wrapText="true">
-         <font>
-            <Font name="System Bold" size="18.0" />
-         </font>
-      </Label>
-      <Label alignment="CENTER" layoutX="157.0" layoutY="431.0" prefHeight="55.0" prefWidth="118.0" text="Bibliografía recomendada" wrapText="true">
-         <font>
-            <Font name="System Bold" size="18.0" />
-         </font>
-      </Label>
+      <Button fx:id="validateButton" layoutX="33.0" layoutY="947.0" mnemonicParsing="false" onAction="#validateResearch" prefHeight="25.0" prefWidth="94.0" text="Validar" />
+      <Button fx:id="saveButton" layoutX="154.0" layoutY="947.0" mnemonicParsing="false" onAction="#modifyResearch" prefHeight="25.0" prefWidth="94.0" text="Modificar" />
    </children>
 </Pane>

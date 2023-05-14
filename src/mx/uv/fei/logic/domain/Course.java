@@ -49,11 +49,11 @@ public class Course {
         this.block = block;
     }
 
-    public int getPersonalNumber() {
+    public int getStaffNumber() {
         return this.personalNumber;
     }
 
-    public void setPersonalNumber(int personalNumber) {
+    public void setStaffNumber(int personalNumber) {
         this.personalNumber = personalNumber;
     }
 

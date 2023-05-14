@@ -1,54 +1,65 @@
-
 package mx.uv.fei.logic.domain;
 
 import java.sql.Date;
 
 public class Activity {
-    private int id;
-    private String title;
-    private String description;
     private Date startDate;
     private Date dueDate;
-   
-    public Activity(){
-        id = 0;
-    }
-    public Activity(String title, String description, Date startDate, Date dueDate){
-        this();
-        this.title = title;
-        this.description = description;
+    private int id;
+    private int researchId;
+    private String comment;
+    private String description;
+    private String feedback;
+    private String title;
+    
+    public void setStartDate(Date startDate) {
         this.startDate = startDate;
+    }
+    public void setDueDate(Date dueDate) {
         this.dueDate = dueDate;
     }
-    public void setId(int id){
+    public void setId(int id) {
         this.id = id;
     }
-    public void setTitle(String title){
-        this.title = title;
+    public void setResearchId(int researchId) {
+        this.researchId = researchId;
     }
-    public void setDescription(String description){
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+    public void setDescription(String description) {
         this.description = description;
     }
-    public void setStartDate(Date startDate){
-        this.startDate = startDate;
+    public void setFeedback(String feedback) {
+        this.feedback = feedback;
     }
-    public void setDueDate(Date dueDate){
-        this.dueDate = dueDate;
+    public void setTitle(String title) {
+        this.title = title;
     }
-    public int getId(){
-        return id;
-    }
-    public String getTitle(){
-        return title;
-    }
-    public String getDescription(){
-        return description;
-    }
-    public Date getStartDate(){
+    
+    public Date getStartDate() {
         return startDate;
     }
-    public Date getDueDate(){
+    public Date getDueDate() {
         return dueDate;
+    }
+    public int getId() {
+        return id;
+    }
+    public int getResearchId() {
+        return researchId;
+    }
+    public String getComment() {
+        return comment;
+    }
+    public String getDescription() {
+        return description;
+    }
+    public String getFeedback() {
+        return feedback;
+    }
+    public String getTitle() {
+        return title;
     }
     @Override
     public String toString(){

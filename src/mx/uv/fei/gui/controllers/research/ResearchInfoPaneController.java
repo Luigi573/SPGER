@@ -1,11 +1,11 @@
 package mx.uv.fei.gui.controllers.research;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.Pane;
@@ -13,24 +13,25 @@ import javafx.scene.text.Text;
 import mx.uv.fei.logic.domain.ResearchProject;
 
 public class ResearchInfoPaneController {
+    private ArrayList<Label> directorLabels;
     private ResearchProject research;
     private ScrollPane container;
     @FXML
     private Label KGALLabel;
     @FXML
-    private Label codirectorLabel;
-    @FXML
     private Text descriptionText;
     @FXML
-    private Label directorLabel;
+    private Label director1Label;
+    @FXML
+    private Label director2Label;
+    @FXML
+    private Label director3Label;
     @FXML
     private Label dueDateLabel;
     @FXML
     private Text expectedResultText;
     @FXML
     private Text requirementsText;
-    @FXML
-    private Button saveButton;
     @FXML
     private Label startDateLabel;
     @FXML
@@ -39,8 +40,14 @@ public class ResearchInfoPaneController {
     private Text suggestedBibliographyText;
     @FXML
     private Label titleLabel;
+    
     @FXML
-    private Button validateButton;
+    private void initialize(){
+       directorLabels = new ArrayList();
+       directorLabels.add(director1Label);
+       directorLabels.add(director2Label);
+       directorLabels.add(director3Label);
+    }
     
     @FXML
     private void modifyResearch(ActionEvent event) {
@@ -71,21 +78,21 @@ public class ResearchInfoPaneController {
         titleLabel.setText(research.getTitle());
         
         if(research.getKgal().getDescription() != null){
-            KGALLabel.setText("LGAC: " + research.getKgal().getDescription());
+            KGALLabel.setText(research.getKgal().getDescription());
         }
         
-        if(research.getDirector().getName() != null){
-            directorLabel.setText("Director(es): " + research.getDirector().getName());
+        for(int i = 0; i < 3; i++){
+            if(research.getDirector(i).getName() != null){
+                directorLabels.get(i).setText(research.getDirector(i).getName());
+            }
         }
-        
-        codirectorLabel.setText(research.getCodirector());
         
         if(research.getStudent().getName() != null){
-            studentLabel.setText("Estudiante asignado: " + research.getStudent().getName());
+            studentLabel.setText(research.getStudent().getName());
         }
         
-        startDateLabel.setText("Fecha de inicio: " + research.getStartDate().toString());
-        dueDateLabel.setText("Fecha fin: " + research.getDueDate().toString());
+        startDateLabel.setText(research.getStartDate().toString());
+        dueDateLabel.setText(research.getDueDate().toString());
         descriptionText.setText(research.getDescription());
         requirementsText.setText(research.getRequirements());
         suggestedBibliographyText.setText(research.getSuggestedBibliography());
