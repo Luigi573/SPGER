@@ -5,12 +5,13 @@ import java.util.regex.Pattern;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DialogPane;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import javafx.util.StringConverter;
+import mx.uv.fei.gui.controllers.AlertPaneController;
 import mx.uv.fei.logic.daos.CourseDAO;
 import mx.uv.fei.logic.daos.ProfessorDAO;
 import mx.uv.fei.logic.daos.ScholarPeriodDAO;
@@ -28,6 +29,8 @@ public class ModifyCourseInformationController {
 
     @FXML
     private ComboBox<String> blockComboBox;
+    @FXML
+    private DialogPane dialogPane;
     @FXML
     private ComboBox<String> educativeExperienceComboBox;
     @FXML
@@ -122,7 +125,15 @@ public class ModifyCourseInformationController {
     @FXML
     void initialize() {
         ProfessorDAO professorDAO = new ProfessorDAO();
-        this.professorComboBox.getItems().addAll(professorDAO.getProfessorsFromDatabase());
+
+        try {
+            this.professorComboBox.getItems().addAll(professorDAO.getProfessorsFromDatabase());
+        } catch (DataRetrievalException e) {
+            e.printStackTrace();
+            AlertPaneController alertPaneController = new AlertPaneController();
+            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
+        }
+
         this.professorComboBox.setConverter(new StringConverter<Professor>() {
 
             @Override
@@ -194,37 +205,29 @@ public class ModifyCourseInformationController {
                     newCourseData.setStaffNumber(this.professorComboBox.getValue().getStaffNumber());
                     newCourseData.setIdScholarPeriod(this.scholarPeriodComboBox.getValue().getIdScholarPeriod());
                     if(courseDAO.theCourseIsAlreadyRegisted(newCourseData)) {
-                        Alert errorMessage = new Alert(Alert.AlertType.WARNING);
-                        errorMessage.setContentText("El curso ya está registrado en el sistema");
-                        errorMessage.showAndWait();
-                        String css = this.getClass().getResource("/mx/uv/fei/gui/stylesfiles/Styles.css").toExternalForm();
-                        errorMessage.getStylesheets().add(css);
+                        AlertPaneController alertPaneController = new AlertPaneController();
+                        alertPaneController.openWarningPane("El curso ya está registrado en el sistema");
                         return;
                     }
                     courseDAO.modifyCourseDataFromDatabase(newCourseData, oldCourseData);
-                    Alert errorMessage = new Alert(Alert.AlertType.WARNING);
-                    errorMessage.setContentText("Usuario modificaco exitosamente");
-                    errorMessage.showAndWait();
+                    AlertPaneController alertPaneController = new AlertPaneController();
+                    alertPaneController.openWarningPane("Curso modificado exitosamente");
                 } else {
-                    Alert errorMessage = new Alert(Alert.AlertType.WARNING);
-                    errorMessage.setContentText("Algunos campos contienen dator inváli2");
-                    errorMessage.showAndWait();
+                    AlertPaneController alertPaneController = new AlertPaneController();
+                    alertPaneController.openErrorPane("Algunos campos contienen datos inváli2");
                 }
             } else {
-                Alert errorMessage = new Alert(Alert.AlertType.WARNING);
-                errorMessage.setContentText("Faltan campos por llenar");
-                errorMessage.showAndWait();
+                AlertPaneController alertPaneController = new AlertPaneController();
+                alertPaneController.openWarningPane("Faltan campos por llenar");
             }
         } catch (DataRetrievalException e) {
             e.printStackTrace();
-            Alert errorMessage = new Alert(Alert.AlertType.WARNING);
-            errorMessage.setContentText("HUbo un error, inténtelo más tarde");
-            errorMessage.showAndWait();
+            AlertPaneController alertPaneController = new AlertPaneController();
+            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
         } catch (DataWritingException e) {
             e.printStackTrace();
-            Alert errorMessage = new Alert(Alert.AlertType.WARNING);
-            errorMessage.setContentText("HUbo un error, inténtelo más tarde");
-            errorMessage.showAndWait();
+            AlertPaneController alertPaneController = new AlertPaneController();
+            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
         }
     }
 

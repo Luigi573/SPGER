@@ -9,6 +9,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import javafx.util.StringConverter;
+import mx.uv.fei.gui.controllers.AlertPaneController;
 import mx.uv.fei.logic.daos.CourseDAO;
 import mx.uv.fei.logic.daos.ProfessorDAO;
 import mx.uv.fei.logic.daos.ScholarPeriodDAO;
@@ -41,6 +42,8 @@ public class GuiRegisterCourseController {
             this.professorComboBox.getItems().addAll(professorDAO.getProfessorsFromDatabase());
         } catch (DataRetrievalException e) {
             e.printStackTrace();
+            AlertPaneController alertPaneController = new AlertPaneController();
+            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
         }
         
         this.professorComboBox.setConverter(new StringConverter<Professor>() {
@@ -111,29 +114,33 @@ public class GuiRegisterCourseController {
                 
                 try {
                     if(courseDAO.theCourseIsAlreadyRegisted(course)) {
-                        this.errorMessajeText.setText("El curso ya está registrado en el sistema");
-                        this.errorMessajeText.setVisible(true);
+                        AlertPaneController alertPaneController = new AlertPaneController();
+                        alertPaneController.openWarningPane("El curso ya está registrado en el sistema");
                         return;
                     }
                 } catch (DataRetrievalException e) {
                     e.printStackTrace();
+                    AlertPaneController alertPaneController = new AlertPaneController();
+                    alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
                 }
                 
                 try {
                     courseDAO.addCourseToDatabase(course);
+                    AlertPaneController alertPaneController = new AlertPaneController();
+                    alertPaneController.openWarningPane("Curso registrado exitosamente");
                 } catch (DataWritingException e) {
                     e.printStackTrace();
+                    AlertPaneController alertPaneController = new AlertPaneController();
+                    alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
                 }
-                this.errorMessajeText.setText("Curso registrado exitosamente");
-                this.errorMessajeText.setVisible(true);
             } else {
-                this.errorMessajeText.setText("Algunos campos contienen datos inválidos");
-                this.errorMessajeText.setVisible(true);
+                AlertPaneController alertPaneController = new AlertPaneController();
+                alertPaneController.openWarningPane("Algunos campos contienen datos inválidos");
             }
 
         } else {
-            this.errorMessajeText.setText("Faltan campos por llenar");
-            this.errorMessajeText.setVisible(true);
+            AlertPaneController alertPaneController = new AlertPaneController();
+            alertPaneController.openWarningPane("Faltan campos por llenar");
         }
     }
 

@@ -6,9 +6,11 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
+import mx.uv.fei.gui.controllers.AlertPaneController;
 import mx.uv.fei.logic.daos.AcademicBodyHeadDAO;
 import mx.uv.fei.logic.daos.DegreeBossDAO;
 import mx.uv.fei.logic.daos.DirectorDAO;
@@ -19,14 +21,16 @@ import mx.uv.fei.logic.domain.DegreeBoss;
 import mx.uv.fei.logic.domain.Director;
 import mx.uv.fei.logic.domain.Professor;
 import mx.uv.fei.logic.domain.Student;
-import mx.uv.fei.logic.domain.User;
+import mx.uv.fei.logic.exceptions.DataRetrievalException;
+import mx.uv.fei.logic.exceptions.DataWritingException;
 
 public class ModifyUserInformationController {
-    private GuiUsersController guiUsersController;
     private UserInformationController userInformationController;
 
     @FXML
     private TextField alternateEmailTextField;
+    @FXML
+    private DialogPane dialogPane;
     @FXML
     private TextField emailTextField;
     @FXML
@@ -95,8 +99,8 @@ public class ModifyUserInformationController {
                 }
             }
         } else {
-            this.errorMessageText.setText("Faltan campos por llenar");
-            this.errorMessageText.setVisible(true);
+            AlertPaneController alertPaneController = new AlertPaneController();
+            alertPaneController.openWarningPane("Faltan campos por llenar");
         }
     }
 
@@ -164,10 +168,6 @@ public class ModifyUserInformationController {
         this.telephoneNumberTextField.setText(telephoneNumber);
     }
 
-    public void setGuiUsersController(GuiUsersController guiUsersController){
-        this.guiUsersController = guiUsersController;
-    }
-
     public void setUserInformationController(UserInformationController userInformationController){
         this.userInformationController = userInformationController;
     }
@@ -192,14 +192,26 @@ public class ModifyUserInformationController {
         originalStudentData.setPhoneNumber(this.getAllLabelsDataFromUserInformationPane().get(5));
         originalStudentData.setMatricle(this.getAllLabelsDataFromUserInformationPane().get(6));
 
-        if(studentDAO.theStudentIsAlreadyRegisted(newStudentData)){
-            this.errorMessageText.setText("El usuario ya está registrado en el sistema");
-            this.errorMessageText.setVisible(true);
-            return;
+        try {
+            if(studentDAO.theStudentIsAlreadyRegisted(newStudentData)) {
+                AlertPaneController alertPaneController = new AlertPaneController();
+                alertPaneController.openWarningPane("El usuario ya está registrado en el sistema");
+                return;
+            }
+        } catch (DataRetrievalException e) {
+            e.printStackTrace();
+            AlertPaneController alertPaneController = new AlertPaneController();
+            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
         }
-        studentDAO.modifyStudentDataFromDatabase(newStudentData, originalStudentData);
-        this.errorMessageText.setText("Usuario registrado exitosamente");
-        this.errorMessageText.setVisible(true);
+        try {
+            studentDAO.modifyStudentDataFromDatabase(newStudentData, originalStudentData);
+            AlertPaneController alertPaneController = new AlertPaneController();
+            alertPaneController.openWarningPane("Usuario modificado exitosamente");
+        } catch (DataWritingException e) {
+            e.printStackTrace();
+            AlertPaneController alertPaneController = new AlertPaneController();
+            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
+        }
     }
 
     private void modifyProfessor(){
@@ -221,14 +233,27 @@ public class ModifyUserInformationController {
         originalProfessorData.setAlternateEmail(this.getAllLabelsDataFromUserInformationPane().get(4));
         originalProfessorData.setPhoneNumber(this.getAllLabelsDataFromUserInformationPane().get(5));
         originalProfessorData.setStaffNumber(Integer.parseInt(this.getAllLabelsDataFromUserInformationPane().get(6)));
-        if(professorDAO.theProfessorIsAlreadyRegisted(newProfessorData)){
-            this.errorMessageText.setText("El usuario ya está registrado en el sistema");
-            this.errorMessageText.setVisible(true);
-            return;
+        try {
+            if(professorDAO.theProfessorIsAlreadyRegisted(newProfessorData)){
+                AlertPaneController alertPaneController = new AlertPaneController();
+                alertPaneController.openWarningPane("El usuario ya está registrado en el sistema");
+                return;
+            }
+        } catch (DataRetrievalException e) {
+            e.printStackTrace();
+            AlertPaneController alertPaneController = new AlertPaneController();
+            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
         }
-        professorDAO.modifyProfessorDataFromDatabase(newProfessorData, originalProfessorData);
-        this.errorMessageText.setText("Usuario registrado exitosamente");
-        this.errorMessageText.setVisible(true);
+
+        try {
+            professorDAO.modifyProfessorDataFromDatabase(newProfessorData, originalProfessorData);
+            AlertPaneController alertPaneController = new AlertPaneController();
+            alertPaneController.openWarningPane("Usuario modificado exitosamente");
+        } catch (DataWritingException e) {
+            e.printStackTrace();
+            AlertPaneController alertPaneController = new AlertPaneController();
+            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
+        }
     }
 
     private void modifyDirector(){
@@ -250,14 +275,26 @@ public class ModifyUserInformationController {
         originalDirectorData.setAlternateEmail(this.getAllLabelsDataFromUserInformationPane().get(4));
         originalDirectorData.setPhoneNumber(this.getAllLabelsDataFromUserInformationPane().get(5));
         originalDirectorData.setStaffNumber(Integer.parseInt(this.getAllLabelsDataFromUserInformationPane().get(6)));
-        if(directorDAO.theDirectorIsAlreadyRegisted(newDirectorData)){
-            this.errorMessageText.setText("El usuario ya está registrado en el sistema");
-            this.errorMessageText.setVisible(true);
-            return;
+        try {
+            if(directorDAO.theDirectorIsAlreadyRegisted(newDirectorData)) {
+                AlertPaneController alertPaneController = new AlertPaneController();
+                alertPaneController.openWarningPane("El usuario ya está registrado en el sistema");
+                return;
+            }
+        } catch (DataRetrievalException e) {
+            e.printStackTrace();
+            AlertPaneController alertPaneController = new AlertPaneController();
+            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
         }
-        directorDAO.modifyDirectorDataFromDatabase(newDirectorData, originalDirectorData);
-        this.errorMessageText.setText("Usuario registrado exitosamente");
-        this.errorMessageText.setVisible(true);
+        try {
+            directorDAO.modifyDirectorDataFromDatabase(newDirectorData, originalDirectorData);
+            AlertPaneController alertPaneController = new AlertPaneController();
+            alertPaneController.openWarningPane("Usuario modificado exitosamente");
+        } catch (DataWritingException e) {
+            e.printStackTrace();
+            AlertPaneController alertPaneController = new AlertPaneController();
+            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
+        }
     }
 
     private void modifyAcademicBodyHead(){
@@ -280,14 +317,26 @@ public class ModifyUserInformationController {
         originalAcademicBodyHeadData.setPhoneNumber(this.getAllLabelsDataFromUserInformationPane().get(5));
         originalAcademicBodyHeadData.setStaffNumber(Integer.parseInt(this.getAllLabelsDataFromUserInformationPane().get(6)));
 
-        if(academicBodyHeadDAO.theAcademicBodyHeadIsAlreadyRegisted(newAcademicBodyHeadData)){
-            this.errorMessageText.setText("El usuario ya está registrado en el sistema");
-            this.errorMessageText.setVisible(true);
-            return;
+        try {
+            if(academicBodyHeadDAO.theAcademicBodyHeadIsAlreadyRegisted(newAcademicBodyHeadData)) {
+                AlertPaneController alertPaneController = new AlertPaneController();
+                alertPaneController.openWarningPane("El usuario ya está registrado en el sistema");
+                return;
+            }
+        } catch (DataRetrievalException e) {
+            e.printStackTrace();
+            AlertPaneController alertPaneController = new AlertPaneController();
+            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
         }
-        academicBodyHeadDAO.modifyAcademicBodyHeadDataFromDatabase(newAcademicBodyHeadData, originalAcademicBodyHeadData);
-        this.errorMessageText.setText("Usuario registrado exitosamente");
-        this.errorMessageText.setVisible(true);
+        try {
+            academicBodyHeadDAO.modifyAcademicBodyHeadDataFromDatabase(newAcademicBodyHeadData, originalAcademicBodyHeadData);
+            AlertPaneController alertPaneController = new AlertPaneController();
+            alertPaneController.openWarningPane("Usuario modificado exitosamente");
+        } catch (DataWritingException e) {
+            e.printStackTrace();
+            AlertPaneController alertPaneController = new AlertPaneController();
+            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
+        }
     }
 
     private void modifyDegreeBoss(){
@@ -310,14 +359,26 @@ public class ModifyUserInformationController {
         originalDegreeBossData.setPhoneNumber(this.getAllLabelsDataFromUserInformationPane().get(5));
         originalDegreeBossData.setStaffNumber(Integer.parseInt(this.getAllLabelsDataFromUserInformationPane().get(6)));
 
-        if(degreeBossDAO.theDegreeBossIsAlreadyRegisted(newDegreeBossData)){
-            this.errorMessageText.setText("El usuario ya está registrado en el sistema");
-            this.errorMessageText.setVisible(true);
-            return;
+        try {
+            if(degreeBossDAO.theDegreeBossIsAlreadyRegisted(newDegreeBossData)){
+                AlertPaneController alertPaneController = new AlertPaneController();
+                alertPaneController.openWarningPane("El usuario ya está registrado en el sistema");
+                return;
+            }
+        } catch (DataRetrievalException e) {
+            e.printStackTrace();
+            AlertPaneController alertPaneController = new AlertPaneController();
+            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
         }
-        degreeBossDAO.modifyDegreeBossDataFromDatabase(newDegreeBossData, originalDegreeBossData);
-        this.errorMessageText.setText("Usuario registrado exitosamente");
-        this.errorMessageText.setVisible(true);
+        try {
+            degreeBossDAO.modifyDegreeBossDataFromDatabase(newDegreeBossData, originalDegreeBossData);
+            AlertPaneController alertPaneController = new AlertPaneController();
+            alertPaneController.openWarningPane("Usuario modificado exitosamente");
+        } catch (DataWritingException e) {
+            e.printStackTrace();
+            AlertPaneController alertPaneController = new AlertPaneController();
+            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
+        }
     }
 
     private ArrayList<String> getAllLabelsDataFromUserInformationPane(){

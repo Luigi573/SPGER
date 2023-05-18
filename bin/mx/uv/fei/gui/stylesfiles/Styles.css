@@ -35,6 +35,14 @@ Text {
     -fx-cell-size: 1.66667em;
 }
 
+.dialog {
+    -fx-background-color: #121b9e;
+}
+
+.dialog:header *.header-panel {
+    -fx-background-color: #121b9e;
+}
+
 .label {
     -fx-background-color: transparent;
     -fx-text-fill: white;

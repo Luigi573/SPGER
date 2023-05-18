@@ -14,6 +14,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import mx.uv.fei.gui.controllers.AlertPaneController;
 import mx.uv.fei.logic.daos.AcademicBodyHeadDAO;
 import mx.uv.fei.logic.daos.DegreeBossDAO;
 import mx.uv.fei.logic.daos.DirectorDAO;
@@ -24,6 +25,7 @@ import mx.uv.fei.logic.domain.DegreeBoss;
 import mx.uv.fei.logic.domain.Director;
 import mx.uv.fei.logic.domain.Professor;
 import mx.uv.fei.logic.domain.Student;
+import mx.uv.fei.logic.exceptions.DataRetrievalException;
 
 public class GuiUsersController {
     @FXML
@@ -52,17 +54,24 @@ public class GuiUsersController {
         DirectorDAO directorDAO = new DirectorDAO();
         AcademicBodyHeadDAO academicBodyHeadDAO = new AcademicBodyHeadDAO();
         DegreeBossDAO degreeBossDAO = new DegreeBossDAO();
-        ArrayList<Student> students = studentDAO.getStudentsFromDatabase();
-        ArrayList<Professor> professors = professorDAO.getProfessorsFromDatabase();
-        ArrayList<Director> directors = directorDAO.getDirectorsFromDatabase();
-        ArrayList<AcademicBodyHead> academicBodyHeads = academicBodyHeadDAO.getAcademicBodyHeadsFromDatabase();
-        ArrayList<DegreeBoss> degreeBosses = degreeBossDAO.getDegreeBossesFromDatabase();
-        
-        this.directorButtonMaker(directors);
-        this.academicBodyHeadButtonMaker(academicBodyHeads);
-        this.degreeBossButtonMaker(degreeBosses);
-        this.professorButtonMaker(professors);
-        this.studentButtonMaker(students);
+        ArrayList<Student> students;
+        try {
+            students = studentDAO.getStudentsFromDatabase();
+            ArrayList<Professor> professors = professorDAO.getProfessorsFromDatabase();
+            ArrayList<Director> directors = directorDAO.getDirectorsFromDatabase();
+            ArrayList<AcademicBodyHead> academicBodyHeads = academicBodyHeadDAO.getAcademicBodyHeadsFromDatabase();
+            ArrayList<DegreeBoss> degreeBosses = degreeBossDAO.getDegreeBossesFromDatabase();
+            
+            this.directorButtonMaker(directors);
+            this.academicBodyHeadButtonMaker(academicBodyHeads);
+            this.degreeBossButtonMaker(degreeBosses);
+            this.professorButtonMaker(professors);
+            this.studentButtonMaker(students);
+        } catch (DataRetrievalException e) {
+            e.printStackTrace();
+            AlertPaneController alertPaneController = new AlertPaneController();
+            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
+        }
         
     }
 
@@ -83,6 +92,8 @@ public class GuiUsersController {
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
+            AlertPaneController alertPaneController = new AlertPaneController();
+            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
         }   
     }
 
@@ -94,17 +105,24 @@ public class GuiUsersController {
         DirectorDAO directorDAO = new DirectorDAO();
         AcademicBodyHeadDAO academicBodyHeadDAO = new AcademicBodyHeadDAO();
         DegreeBossDAO degreeBossDAO = new DegreeBossDAO();
-        ArrayList<Student> students = studentDAO.getSpecifiedStudentsFromDatabase(this.searchByNameTextField.getText());
-        ArrayList<Professor> professors = professorDAO.getSpecifiedProfessorsFromDatabase(this.searchByNameTextField.getText());
-        ArrayList<Director> directors = directorDAO.getSpecifiedDirectorsFromDatabase(this.searchByNameTextField.getText());
-        ArrayList<AcademicBodyHead> academicBodyHeads = academicBodyHeadDAO.getSpecifiedAcademicBodyHeadsFromDatabase(this.searchByNameTextField.getText());
-        ArrayList<DegreeBoss> degreeBosses = degreeBossDAO.getSpecifiedDegreeBossesFromDatabase(this.searchByNameTextField.getText());
-
-        this.directorButtonMaker(directors);
-        this.academicBodyHeadButtonMaker(academicBodyHeads);
-        this.degreeBossButtonMaker(degreeBosses);
-        this.professorButtonMaker(professors);
-        this.studentButtonMaker(students);
+        ArrayList<Student> students;
+        try {
+            students = studentDAO.getSpecifiedStudentsFromDatabase(this.searchByNameTextField.getText());
+            ArrayList<Professor> professors = professorDAO.getSpecifiedProfessorsFromDatabase(this.searchByNameTextField.getText());
+            ArrayList<Director> directors = directorDAO.getSpecifiedDirectorsFromDatabase(this.searchByNameTextField.getText());
+            ArrayList<AcademicBodyHead> academicBodyHeads = academicBodyHeadDAO.getSpecifiedAcademicBodyHeadsFromDatabase(this.searchByNameTextField.getText());
+            ArrayList<DegreeBoss> degreeBosses = degreeBossDAO.getSpecifiedDegreeBossesFromDatabase(this.searchByNameTextField.getText());
+    
+            this.directorButtonMaker(directors);
+            this.academicBodyHeadButtonMaker(academicBodyHeads);
+            this.degreeBossButtonMaker(degreeBosses);
+            this.professorButtonMaker(professors);
+            this.studentButtonMaker(students);
+        } catch (DataRetrievalException e) {
+            e.printStackTrace();
+            AlertPaneController alertPaneController = new AlertPaneController();
+            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
+        }
     }
 
     private void studentButtonMaker(ArrayList<Student> students){
@@ -125,6 +143,8 @@ public class GuiUsersController {
             }
         } catch (IOException e) {
             e.printStackTrace();
+            AlertPaneController alertPaneController = new AlertPaneController();
+            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
         }    
     }
 
@@ -145,6 +165,8 @@ public class GuiUsersController {
             }
         } catch (IOException e) {
             e.printStackTrace();
+            AlertPaneController alertPaneController = new AlertPaneController();
+            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
         }    
     }
 
@@ -165,6 +187,8 @@ public class GuiUsersController {
             }
         } catch (IOException e) {
             e.printStackTrace();
+            AlertPaneController alertPaneController = new AlertPaneController();
+            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
         }  
     }
 
@@ -185,6 +209,8 @@ public class GuiUsersController {
             }
         } catch (IOException e) {
             e.printStackTrace();
+            AlertPaneController alertPaneController = new AlertPaneController();
+            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
         }  
     }
 
@@ -205,46 +231,59 @@ public class GuiUsersController {
             }
         } catch (IOException e) {
             e.printStackTrace();
+            AlertPaneController alertPaneController = new AlertPaneController();
+            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
         }  
     }
 
     //This method only should be used by the UserController Class.
     void openPaneWithUserInformation(UserController userController){
-        switch(userController.getType()) {
-            case "Director": {
-                DirectorDAO directorDAO = new DirectorDAO();
-                Director director = directorDAO.getDirectorFromDatabase(Integer.parseInt(userController.getMatriculeOrPersonalNumber()));
-                openPaneWithDirectorInformation(director);
-                break;
-            }
+        try {
+            switch(userController.getType()) {
+                case "Director": {
+                    DirectorDAO directorDAO = new DirectorDAO();
+                    Director director;
+                        director = directorDAO.getDirectorFromDatabase(Integer.parseInt(userController.getMatriculeOrPersonalNumber()));
+                        openPaneWithDirectorInformation(director);
+                        break;
+                    }
 
-            case "Miembro de Cuerpo Académico": {
-                AcademicBodyHeadDAO academicBodyHeadDAO = new AcademicBodyHeadDAO();
-                AcademicBodyHead academicBodyHead = academicBodyHeadDAO.getAcademicBodyHeadFromDatabase(Integer.parseInt(userController.getMatriculeOrPersonalNumber()));
-                openPaneWithAcademicBodyHeadInformation(academicBodyHead);
-                break;
-            }
+                case "Miembro de Cuerpo Académico": {
+                    AcademicBodyHeadDAO academicBodyHeadDAO = new AcademicBodyHeadDAO();
+                    AcademicBodyHead academicBodyHead = academicBodyHeadDAO.getAcademicBodyHeadFromDatabase(Integer.parseInt(userController.getMatriculeOrPersonalNumber()));
+                    openPaneWithAcademicBodyHeadInformation(academicBodyHead);
+                    break;
+                }
 
-            case "Jefe de Carrera": {
-                DegreeBossDAO degreeBossDAO = new DegreeBossDAO();
-                DegreeBoss degreeBoss = degreeBossDAO.getDegreeBossFromDatabase(Integer.parseInt(userController.getMatriculeOrPersonalNumber()));
-                openPaneWithDegreeBossInformation(degreeBoss);
-                break;
-            }
+                case "Jefe de Carrera": {
+                    DegreeBossDAO degreeBossDAO = new DegreeBossDAO();
+                    DegreeBoss degreeBoss = degreeBossDAO.getDegreeBossFromDatabase(Integer.parseInt(userController.getMatriculeOrPersonalNumber()));
+                    openPaneWithDegreeBossInformation(degreeBoss);
+                    break;
+                }
 
-            case "Profesor": {
-                ProfessorDAO professorDAO = new ProfessorDAO();
-                Professor professor = professorDAO.getProfessorFromDatabase(Integer.parseInt(userController.getMatriculeOrPersonalNumber()));
-                openPaneWithProfessorInformation(professor);
-                break;
-            }
+                case "Profesor": {
+                    ProfessorDAO professorDAO = new ProfessorDAO();
+                    Professor professor = professorDAO.getProfessorFromDatabase(Integer.parseInt(userController.getMatriculeOrPersonalNumber()));
+                    openPaneWithProfessorInformation(professor);
+                    break;
+                }
 
-            case "Estudiante": {
-                StudentDAO studentDAO = new StudentDAO();
-                Student student = studentDAO.getStudentFromDatabase(userController.getMatriculeOrPersonalNumber());
-                openPaneWithStudentInformation(student);
-                break;
+                case "Estudiante": {
+                    StudentDAO studentDAO = new StudentDAO();
+                    Student student = studentDAO.getStudentFromDatabase(userController.getMatriculeOrPersonalNumber());
+                    openPaneWithStudentInformation(student);
+                    break;
+                }
             }
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            AlertPaneController alertPaneController = new AlertPaneController();
+            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
+        } catch (DataRetrievalException e) {
+            e.printStackTrace();
+            AlertPaneController alertPaneController = new AlertPaneController();
+            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
         }
     }
 
@@ -262,7 +301,7 @@ public class GuiUsersController {
             userInformationController.setAlternateEmail(director.getAlternateEmail());
             userInformationController.setTelephoneNumber(director.getPhoneNumber());
             userInformationController.setUserType("Director");
-            userInformationController.setStatus(director.getStatus().getValue());
+            userInformationController.setStatus(director.getStatus());
             userInformationController.setMatricleOrPersonalNumber(Integer.toString(director.getStaffNumber()));
             userInformationController.setGuiUsersController(this);
             userInformationController.setMatricleOrPersonalNumberText();
@@ -270,6 +309,8 @@ public class GuiUsersController {
             
         } catch (IOException e){
             e.printStackTrace();
+            AlertPaneController alertPaneController = new AlertPaneController();
+            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
         }
     }
 
@@ -288,7 +329,7 @@ public class GuiUsersController {
             userInformationController.setAlternateEmail(academicBodyHead.getAlternateEmail());
             userInformationController.setTelephoneNumber(academicBodyHead.getPhoneNumber());
             userInformationController.setUserType("Miembro de Cuerpo Académico");
-            userInformationController.setStatus(academicBodyHead.getStatus().getValue());
+            userInformationController.setStatus(academicBodyHead.getStatus());
             userInformationController.setMatricleOrPersonalNumber(Integer.toString(academicBodyHead.getStaffNumber()));
             userInformationController.setGuiUsersController(this);
             userInformationController.setMatricleOrPersonalNumberText();
@@ -296,6 +337,8 @@ public class GuiUsersController {
             
         } catch (IOException e){
             e.printStackTrace();
+            AlertPaneController alertPaneController = new AlertPaneController();
+            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
         }
     }
 
@@ -314,7 +357,7 @@ public class GuiUsersController {
             userInformationController.setAlternateEmail(degreeBoss.getAlternateEmail());
             userInformationController.setTelephoneNumber(degreeBoss.getPhoneNumber());
             userInformationController.setUserType("Jefe de Carrera");
-            userInformationController.setStatus(degreeBoss.getStatus().getValue());
+            userInformationController.setStatus(degreeBoss.getStatus());
             userInformationController.setMatricleOrPersonalNumber(Integer.toString(degreeBoss.getStaffNumber()));
             userInformationController.setGuiUsersController(this);
             userInformationController.setMatricleOrPersonalNumberText();
@@ -322,6 +365,8 @@ public class GuiUsersController {
             
         } catch (IOException e){
             e.printStackTrace();
+            AlertPaneController alertPaneController = new AlertPaneController();
+            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
         }
     }
 
@@ -340,7 +385,7 @@ public class GuiUsersController {
             userInformationController.setAlternateEmail(professor.getAlternateEmail());
             userInformationController.setTelephoneNumber(professor.getPhoneNumber());
             userInformationController.setUserType("Profesor");
-            userInformationController.setStatus(professor.getStatus().getValue());
+            userInformationController.setStatus(professor.getStatus());
             userInformationController.setMatricleOrPersonalNumber(Integer.toString(professor.getStaffNumber()));
             userInformationController.setGuiUsersController(this);
             userInformationController.setMatricleOrPersonalNumberText();
@@ -348,6 +393,8 @@ public class GuiUsersController {
             
         } catch (IOException e){
             e.printStackTrace();
+            AlertPaneController alertPaneController = new AlertPaneController();
+            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
         }
     }
 
@@ -374,6 +421,8 @@ public class GuiUsersController {
             
         } catch (IOException e){
             e.printStackTrace();
+            AlertPaneController alertPaneController = new AlertPaneController();
+            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
         }
     }
 
@@ -394,12 +443,13 @@ public class GuiUsersController {
             modifyUserInformationController.setTelephoneNumber(userInformationController.getTelephoneNumber());
             modifyUserInformationController.setMatricleOrPersonalNumber(userInformationController.getMatriculeOrPersonalNumber());
             modifyUserInformationController.setStatus(userInformationController.getStatus());
-            modifyUserInformationController.setGuiUsersController(this);
             modifyUserInformationController.setUserInformationController(userInformationController);
             this.userInformationScrollPane.setContent(modifyUserInformationVBox);
             
         } catch (IOException e){
             e.printStackTrace();
+            AlertPaneController alertPaneController = new AlertPaneController();
+            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
         }
     }
 

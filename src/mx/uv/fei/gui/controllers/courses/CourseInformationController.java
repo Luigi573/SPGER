@@ -8,10 +8,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
+import mx.uv.fei.gui.controllers.AlertPaneController;
 import mx.uv.fei.gui.controllers.courses.students.GuiUsersCourseController;
 
 public class CourseInformationController {
@@ -65,9 +65,8 @@ public class CourseInformationController {
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
-            Alert errorMessage = new Alert(Alert.AlertType.ERROR);
-            errorMessage.setContentText("Hubo un error, inténtelo más tarde");
-            errorMessage.showAndWait();
+            AlertPaneController alertPaneController = new AlertPaneController();
+            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
         }   
     }
 

@@ -13,9 +13,11 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import mx.uv.fei.gui.controllers.AlertPaneController;
 import mx.uv.fei.gui.controllers.courses.CourseInformationController;
 import mx.uv.fei.logic.daos.StudentDAO;
 import mx.uv.fei.logic.daos.StudentsCoursesDAO;
+import mx.uv.fei.logic.exceptions.DataRetrievalException;
 
 public class GuiUsersCourseController {
 
@@ -58,6 +60,8 @@ public class GuiUsersCourseController {
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
+            AlertPaneController alertPaneController = new AlertPaneController();
+            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
         }   
     }
 
@@ -93,9 +97,18 @@ public class GuiUsersCourseController {
                 );
                 Pane studentPane = studentPaneControllerLoader.load();
                 UserPaneController studentPaneController = studentPaneControllerLoader.getController();
-                studentPaneController.setName(studentDAO.getStudentFromDatabase(studentMatricle).getName());
+
+                try {
+                    studentPaneController.setName(studentDAO.getStudentFromDatabase(studentMatricle).getName());
+                } catch (DataRetrievalException e) {
+                    e.printStackTrace();
+                    AlertPaneController alertPaneController = new AlertPaneController();
+                    alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
+                }
+
                 studentPaneController.setMatricleOrPersonalNumber(studentMatricle);
                 studentPaneController.setGuiUsersCourseController(this);
+                
                 if(this.students % 6 == 0) {
                     HBox studentHBox = new HBox();
                     this.studentsVbox.getChildren().add(studentHBox);
@@ -109,6 +122,8 @@ public class GuiUsersCourseController {
             
         } catch (IOException e) {
             e.printStackTrace();
+            AlertPaneController alertPaneController = new AlertPaneController();
+            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
         }
     }
 

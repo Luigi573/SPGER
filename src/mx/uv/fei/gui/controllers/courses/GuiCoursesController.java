@@ -8,13 +8,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import mx.uv.fei.gui.controllers.AlertPaneController;
 import mx.uv.fei.logic.daos.CourseDAO;
 import mx.uv.fei.logic.daos.ProfessorDAO;
 import mx.uv.fei.logic.daos.ScholarPeriodDAO;
@@ -54,9 +54,8 @@ public class GuiCoursesController {
             this.courseButtonMaker(courses);
         } catch (DataRetrievalException e) {
             e.printStackTrace();
-            Alert errorMessage = new Alert(Alert.AlertType.ERROR);
-            errorMessage.setContentText("Hubo un error, inténtelo más tarde");
-            errorMessage.showAndWait();
+            AlertPaneController alertPaneController = new AlertPaneController();
+            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
         }
     }
 
@@ -77,9 +76,8 @@ public class GuiCoursesController {
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
-            Alert errorMessage = new Alert(Alert.AlertType.ERROR);
-            errorMessage.setContentText("Hubo un error, inténtelo más tarde");
-            errorMessage.showAndWait();
+            AlertPaneController alertPaneController = new AlertPaneController();
+            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
         }   
     }
 
@@ -94,9 +92,8 @@ public class GuiCoursesController {
             this.courseButtonMaker(courses);
         } catch (DataRetrievalException e) {
             e.printStackTrace();
-            Alert errorMessage = new Alert(Alert.AlertType.ERROR);
-            errorMessage.setContentText("Hubo un error, inténtelo más tarde");
-            errorMessage.showAndWait();
+            AlertPaneController alertPaneController = new AlertPaneController();
+            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
         }
     }
 
@@ -119,9 +116,8 @@ public class GuiCoursesController {
             }
         } catch (IOException e) {
             e.printStackTrace();
-            Alert errorMessage = new Alert(Alert.AlertType.ERROR);
-            errorMessage.setContentText("Hubo un error, inténtelo más tarde");
-            errorMessage.showAndWait();
+            AlertPaneController alertPaneController = new AlertPaneController();
+            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
         }    
     }
 
@@ -150,14 +146,12 @@ public class GuiCoursesController {
             
         } catch (IOException e){
             e.printStackTrace();
-            Alert errorMessage = new Alert(Alert.AlertType.ERROR);
-            errorMessage.setContentText("Hubo un error, inténtelo más tarde");
-            errorMessage.showAndWait();
+            AlertPaneController alertPaneController = new AlertPaneController();
+            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
         } catch (DataRetrievalException e) {
             e.printStackTrace();
-            Alert errorMessage = new Alert(Alert.AlertType.ERROR);
-            errorMessage.setContentText("Hubo un error, inténtelo más tarde");
-            errorMessage.showAndWait();
+            AlertPaneController alertPaneController = new AlertPaneController();
+            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
         }
     }
 
@@ -188,14 +182,12 @@ public class GuiCoursesController {
             
         } catch(IOException e) {
             e.printStackTrace();
-            Alert errorMessage = new Alert(Alert.AlertType.ERROR);
-            errorMessage.setContentText("Hubo un error, inténtelo más tarde");
-            errorMessage.showAndWait();
+            AlertPaneController alertPaneController = new AlertPaneController();
+            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
         } catch(DataRetrievalException e) {
             e.printStackTrace();
-            Alert errorMessage = new Alert(Alert.AlertType.ERROR);
-            errorMessage.setContentText("Hubo un error, inténtelo más tarde");
-            errorMessage.showAndWait();
+            AlertPaneController alertPaneController = new AlertPaneController();
+            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
         }
     }
 
@@ -208,9 +200,8 @@ public class GuiCoursesController {
     //        HeaderPaneController headerController = loader.getController();
     //        
     //    }catch(IOException exception){
-    //        Alert errorMessage = new Alert(Alert.AlertType.ERROR);
-    //        errorMessage.setContentText("Error al cargar, faltan archivos");
-    //        errorMessage.showAndWait();
+    //        AlertPaneController alertPaneController = new AlertPaneController();
+    //        alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
     //    }
     //}
 

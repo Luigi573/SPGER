@@ -24,6 +24,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import mx.uv.fei.gui.controllers.AlertPaneController;
 import mx.uv.fei.logic.daos.ResearchesReportDAO;
 import mx.uv.fei.logic.domain.Research;
 import net.sf.jasperreports.engine.JRException;
@@ -80,8 +81,8 @@ public class GuiResearchReportController {
     @FXML
     void generateReportButtonController(ActionEvent event) {
         if(this.selectedResearchesVBox.getChildren().isEmpty()){
-            this.errorMessageText.setText("No se puede generar un reporte vacío");
-            this.errorMessageText.setVisible(true);
+            AlertPaneController alertPaneController = new AlertPaneController();
+            alertPaneController.openWarningPane("No se puede generar un reporte vacío");
             return;
         }
 
@@ -114,8 +115,12 @@ public class GuiResearchReportController {
             
         } catch (IOException ioe) {
             ioe.printStackTrace();
+            AlertPaneController alertPaneController = new AlertPaneController();
+            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
         } catch (JRException jre) {
             jre.printStackTrace();
+            AlertPaneController alertPaneController = new AlertPaneController();
+            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
         }
     }
 
@@ -157,6 +162,8 @@ public class GuiResearchReportController {
             }
         } catch (IOException e) {
             e.printStackTrace();
+            AlertPaneController alertPaneController = new AlertPaneController();
+            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
         }
             
     }
@@ -175,6 +182,8 @@ public class GuiResearchReportController {
             selectedResearchItemController.setGuiResearchReportController(this);
         } catch (IOException e) {
             e.printStackTrace();
+            AlertPaneController alertPaneController = new AlertPaneController();
+            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
         }
     }
 
@@ -192,6 +201,8 @@ public class GuiResearchReportController {
             researchItemController.setGuiResearchReportController(this);
         } catch (IOException e) {
             e.printStackTrace();
+            AlertPaneController alertPaneController = new AlertPaneController();
+            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
         }
     }
 

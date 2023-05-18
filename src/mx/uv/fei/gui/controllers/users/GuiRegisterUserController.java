@@ -5,11 +5,11 @@ import java.util.regex.Pattern;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.chart.PieChart.Data;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
+import mx.uv.fei.gui.controllers.AlertPaneController;
 import mx.uv.fei.logic.daos.AcademicBodyHeadDAO;
 import mx.uv.fei.logic.daos.DegreeBossDAO;
 import mx.uv.fei.logic.daos.DirectorDAO;
@@ -98,13 +98,13 @@ public class GuiRegisterUserController {
                 }
 
             } else {
-                this.errorMessajeText.setText("Algunos campos contienen datos inválidos");
-                this.errorMessajeText.setVisible(true);
+                AlertPaneController alertPaneController = new AlertPaneController();
+                alertPaneController.openWarningPane("Algunos campos contienen datos inválidos");
             }
 
         } else {
-            this.errorMessajeText.setText("Faltan campos por llenar");
-            this.errorMessajeText.setVisible(true);
+            AlertPaneController alertPaneController = new AlertPaneController();
+            alertPaneController.openWarningPane("Faltan campos por llenar");
         }
     }
 
@@ -129,16 +129,19 @@ public class GuiRegisterUserController {
             director.setPhoneNumber(this.telephoneNumberTextField.getText());
             director.setStaffNumber(Integer.parseInt(this.matricleOrPersonalNumberTextField.getText()));
             if(directorDAO.theDirectorIsAlreadyRegisted(director)) {
-                //TODO OPEN ALERT PANE
-                this.errorMessajeText.setText("El usuario ya está registrado en el sistema");
-                this.errorMessajeText.setVisible(true);
+                AlertPaneController alertPaneController = new AlertPaneController();
+                alertPaneController.openWarningPane("El usuario ya está registrado en el sistema");
                 return;
             }
             directorDAO.addDirectorToDatabase(director);
         } catch (DataRetrievalException e) {
             e.printStackTrace();
+            AlertPaneController alertPaneController = new AlertPaneController();
+            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
         } catch (DataWritingException e) {
             e.printStackTrace();
+            AlertPaneController alertPaneController = new AlertPaneController();
+            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
         }
     }
 
@@ -154,39 +157,47 @@ public class GuiRegisterUserController {
             academicBodyHead.setPhoneNumber(this.telephoneNumberTextField.getText());
             academicBodyHead.setStaffNumber(Integer.parseInt(this.matricleOrPersonalNumberTextField.getText()));
             if(academicBodyHeadDAO.theAcademicBodyHeadIsAlreadyRegisted(academicBodyHead)){
-                this.errorMessajeText.setVisible(true);
-                this.errorMessajeText.setText("El usuario ya está registrado en el sistema");
+                AlertPaneController alertPaneController = new AlertPaneController();
+                alertPaneController.openWarningPane("El usuario ya está registrado en el sistema");
                 return;
             }
             academicBodyHeadDAO.addAcademicBodyHeadToDatabase(academicBodyHead);
         } catch (DataRetrievalException e) {
             e.printStackTrace();
+            AlertPaneController alertPaneController = new AlertPaneController();
+            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
         } catch (DataWritingException e) {
             e.printStackTrace();
+            AlertPaneController alertPaneController = new AlertPaneController();
+            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
         }
     }
 
     private void registerDegreeBoss(){
         try {
-        DegreeBossDAO degreeBossDAO = new DegreeBossDAO();
-        DegreeBoss degreeBoss = new DegreeBoss();
-        degreeBoss.setName(this.namesTextField.getText());
-        degreeBoss.setFirstSurname(this.firstSurnameTextField.getText());
-        degreeBoss.setSecondSurname(this.secondSurnameTextField.getText());
-        degreeBoss.setEmailAddress(this.emailTextField.getText());
-        degreeBoss.setAlternateEmail(this.alternateEmailTextField.getText());
-        degreeBoss.setPhoneNumber(this.telephoneNumberTextField.getText());
-        degreeBoss.setStaffNumber(Integer.parseInt(this.matricleOrPersonalNumberTextField.getText()));
-            if(degreeBossDAO.theDegreeBossIsAlreadyRegisted(degreeBoss)){
-                this.errorMessajeText.setText("El usuario ya está registrado en el sistema");
-                this.errorMessajeText.setVisible(true);
-                return;
-            }
-            degreeBossDAO.addDegreeBossToDatabase(degreeBoss);
+            DegreeBossDAO degreeBossDAO = new DegreeBossDAO();
+            DegreeBoss degreeBoss = new DegreeBoss();
+            degreeBoss.setName(this.namesTextField.getText());
+            degreeBoss.setFirstSurname(this.firstSurnameTextField.getText());
+            degreeBoss.setSecondSurname(this.secondSurnameTextField.getText());
+            degreeBoss.setEmailAddress(this.emailTextField.getText());
+            degreeBoss.setAlternateEmail(this.alternateEmailTextField.getText());
+            degreeBoss.setPhoneNumber(this.telephoneNumberTextField.getText());
+            degreeBoss.setStaffNumber(Integer.parseInt(this.matricleOrPersonalNumberTextField.getText()));
+                if(degreeBossDAO.theDegreeBossIsAlreadyRegisted(degreeBoss)) {
+                    AlertPaneController alertPaneController = new AlertPaneController();
+                    alertPaneController.openWarningPane("El usuario ya está registrado en el sistema");
+                    return;
+                }
+                degreeBossDAO.addDegreeBossToDatabase(degreeBoss);
         } catch (DataRetrievalException e) {
             e.printStackTrace();
+            AlertPaneController alertPaneController = new AlertPaneController();
+            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
         } catch (DataWritingException e) {
             e.printStackTrace();
+            AlertPaneController alertPaneController = new AlertPaneController();
+            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
         }
         
     }
@@ -203,15 +214,19 @@ public class GuiRegisterUserController {
             professor.setPhoneNumber(this.telephoneNumberTextField.getText());
             professor.setStaffNumber(Integer.parseInt(this.matricleOrPersonalNumberTextField.getText()));
             if(professorDAO.theProfessorIsAlreadyRegisted(professor)){
-                this.errorMessajeText.setText("El usuario ya está registrado en el sistema");
-                this.errorMessajeText.setVisible(true);
+                AlertPaneController alertPaneController = new AlertPaneController();
+                alertPaneController.openWarningPane("El usuario ya está registrado en el sistema");
                 return;
             }
             professorDAO.addProfessorToDatabase(professor);
         } catch (DataRetrievalException e) {
             e.printStackTrace();
+            AlertPaneController alertPaneController = new AlertPaneController();
+            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
         } catch (DataWritingException e) {
             e.printStackTrace();
+            AlertPaneController alertPaneController = new AlertPaneController();
+            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
         }
     }
 
@@ -226,16 +241,20 @@ public class GuiRegisterUserController {
             student.setAlternateEmail(this.alternateEmailTextField.getText());
             student.setPhoneNumber(this.telephoneNumberTextField.getText());
             student.setMatricle(this.matricleOrPersonalNumberTextField.getText());
-            if(studentDAO.theStudentIsAlreadyRegisted(student)){
-                this.errorMessajeText.setText("El usuario ya está registrado en el sistema");
-                this.errorMessajeText.setVisible(true);
+            if(studentDAO.theStudentIsAlreadyRegisted(student)) {
+                AlertPaneController alertPaneController = new AlertPaneController();
+                alertPaneController.openWarningPane("El usuario ya está registrado en el sistema");
                 return;
             }
             studentDAO.addStudentToDatabase(student);
         } catch (DataRetrievalException e) {
             e.printStackTrace();
+            AlertPaneController alertPaneController = new AlertPaneController();
+            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
         } catch (DataWritingException e) {
             e.printStackTrace();
+            AlertPaneController alertPaneController = new AlertPaneController();
+            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
         }
     }
 
