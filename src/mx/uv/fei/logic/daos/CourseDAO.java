@@ -9,62 +9,70 @@ import java.util.ArrayList;
 import mx.uv.fei.dataaccess.DataBaseManager;
 import mx.uv.fei.logic.daosinterfaces.ICourseDAO;
 import mx.uv.fei.logic.domain.Course;
+import mx.uv.fei.logic.exceptions.DataRetrievalException;
+import mx.uv.fei.logic.exceptions.DataWritingException;
 
 public class CourseDAO implements ICourseDAO{
+
+    private final DataBaseManager dataBaseManager;
+
+    public CourseDAO() {
+        dataBaseManager = new DataBaseManager();
+    }
+
     @Override
-    public void addCourseToDatabase(Course course) {
+    public void addCourseToDatabase(Course course) throws DataWritingException{
         try {
-            DataBaseManager dataBaseManager = new DataBaseManager();
-            String columnNames = 
-                "NRC, IdPeriodoEscolar, NumPersonal, nombreEE, sección, bloque, estado";
-            String wholeQuery = 
-                "INSERT INTO Cursos (" + columnNames + ") VALUES (?, ?, ?, ?, ?, ?, ?)";
+            String query = 
+                "INSERT INTO Cursos (NRC, IdPeriodoEscolar, NumPersonal, nombreEE, sección, bloque, estado)" +
+                " VALUES (?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement preparedStatement = 
-                dataBaseManager.getConnection().prepareStatement(wholeQuery);
+                dataBaseManager.getConnection().prepareStatement(query);
             preparedStatement.setInt(1, course.getNrc());
             preparedStatement.setInt(2, course.getIdScholarPeriod());
-            preparedStatement.setInt(3, course.getPersonalNumber());
+            preparedStatement.setInt(3, course.getStaffNumber());
             preparedStatement.setString(4, course.getEEName());
             preparedStatement.setInt(5, course.getSection());
             preparedStatement.setInt(6, course.getBlock());
-            preparedStatement.setString(7, course.getStatus());
             preparedStatement.executeUpdate();
 
-        } catch (SQLException e) {
+        } catch(SQLException e) {
             e.printStackTrace();
+            throw new DataWritingException("Error al agregar curso. Verifique su conexion e intentelo de nuevo");
+        } finally {
+            dataBaseManager.closeConnection();
         }
     }
 
     @Override
-    public void modifyCourseDataFromDatabase(Course newCourseData, Course originalCourseData) {
+    public void modifyCourseDataFromDatabase(Course newCourseData, Course originalCourseData) throws DataWritingException {
         try {
-            DataBaseManager dataBaseManager = new DataBaseManager();
             String query = "UPDATE Cursos SET NRC = ?, " + 
                            "IdPeriodoEscolar = ?, NumPersonal = ?, nombreEE = ?, " + 
-                           "sección = ?, bloque = ?, estado = ? " +
-                           "WHERE NRC = ?";
+                           "sección = ?, bloque = ? WHERE NRC = ?";
             PreparedStatement preparedStatement = dataBaseManager.getConnection().prepareStatement(query);
             preparedStatement.setInt(1, newCourseData.getNrc());
             preparedStatement.setInt(2, newCourseData.getIdScholarPeriod());
-            preparedStatement.setInt(3, newCourseData.getPersonalNumber());
+            preparedStatement.setInt(3, newCourseData.getStaffNumber());
             preparedStatement.setString(4, newCourseData.getEEName());
             preparedStatement.setInt(5, newCourseData.getSection());
             preparedStatement.setInt(6, newCourseData.getBlock());
-            preparedStatement.setString(7, newCourseData.getStatus());
-            preparedStatement.setInt(8, originalCourseData.getNrc());
+            preparedStatement.setInt(7, originalCourseData.getNrc());
             System.out.println(preparedStatement.toString());
             preparedStatement.executeUpdate();
-        } catch(SQLException e){
+        } catch(SQLException e) {
             e.printStackTrace();
+            throw new DataWritingException("Error al modificar curso. Verifique su conexion e intentelo de nuevo");
+        } finally {
+            dataBaseManager.closeConnection();
         }
     }
 
     @Override
-    public ArrayList<Course> getCoursesFromDatabase() {
+    public ArrayList<Course> getCoursesFromDatabase() throws DataRetrievalException {
         ArrayList<Course> courses = new ArrayList<>();
 
         try {
-            DataBaseManager dataBaseManager = new DataBaseManager();
             Statement statement = dataBaseManager.getConnection().createStatement();
             String query = "SELECT * FROM Cursos";
             ResultSet resultSet = statement.executeQuery(query);
@@ -72,28 +80,29 @@ public class CourseDAO implements ICourseDAO{
                 Course course = new Course();
                 course.setNrc(resultSet.getInt("NRC"));
                 course.setIdScholarPeriod(resultSet.getInt("IdPeriodoEscolar"));
-                course.setPersonalNumber(resultSet.getInt("NumPersonal"));
+                course.setStaffNumber(resultSet.getInt("NumPersonal"));
                 course.setEEName(resultSet.getString("nombreEE"));
                 course.setSection(resultSet.getInt("sección"));
                 course.setBlock(resultSet.getInt("bloque"));
-                course.setStatus(resultSet.getString("estado"));
                 courses.add(course);
             }
             resultSet.close();
             dataBaseManager.getConnection().close();
-        } catch (SQLException e) {
+        } catch(SQLException e) {
             e.printStackTrace();
+            throw new DataRetrievalException("Fallo al recuperar la informacion. Verifique su conexion e intentelo de nuevo");
+        } finally {
+            dataBaseManager.closeConnection();
         }
 
         return courses;
     }
 
     @Override
-    public ArrayList<Course> getSpecifiedCoursesFromDatabase(String courseName) {
+    public ArrayList<Course> getSpecifiedCoursesFromDatabase(String courseName) throws DataRetrievalException {
         ArrayList<Course> courses = new ArrayList<>();
 
         try {
-            DataBaseManager dataBaseManager = new DataBaseManager();
             String query = "SELECT * FROM Cursos WHERE NRC LIKE ?";
             PreparedStatement preparedStatement = dataBaseManager.getConnection().prepareStatement(query);
             preparedStatement.setString(1, courseName + '%');
@@ -102,28 +111,29 @@ public class CourseDAO implements ICourseDAO{
                 Course course = new Course();
                 course.setNrc(resultSet.getInt("NRC"));
                 course.setIdScholarPeriod(resultSet.getInt("IdPeriodoEscolar"));
-                course.setPersonalNumber(resultSet.getInt("NumPersonal"));
+                course.setStaffNumber(resultSet.getInt("NumPersonal"));
                 course.setEEName(resultSet.getString("nombreEE"));
                 course.setSection(resultSet.getInt("sección"));
                 course.setBlock(resultSet.getInt("bloque"));
-                course.setStatus(resultSet.getString("estado"));
                 courses.add(course);
             }
             resultSet.close();
             dataBaseManager.getConnection().close();
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new DataRetrievalException("Fallo al recuperar la informacion. Verifique su conexion e intentelo de nuevo");
+        } finally {
+            dataBaseManager.closeConnection();
         }
 
         return courses;
     }
 
     @Override
-    public Course getCourseFromDatabase(String courseNrc) {
+    public Course getCourseFromDatabase(String courseNrc) throws DataRetrievalException {
         Course course = new Course();
 
         try {
-            DataBaseManager dataBaseManager = new DataBaseManager();
             String query = "SELECT * FROM Cursos WHERE NRC = ?";
             PreparedStatement preparedStatement = dataBaseManager.getConnection().prepareStatement(query);
             preparedStatement.setString(1, courseNrc);
@@ -131,39 +141,50 @@ public class CourseDAO implements ICourseDAO{
             if(resultSet.next()){
                 course.setNrc(resultSet.getInt("NRC"));
                 course.setIdScholarPeriod(resultSet.getInt("IdPeriodoEscolar"));
-                course.setPersonalNumber(resultSet.getInt("NumPersonal"));
+                course.setStaffNumber(resultSet.getInt("NumPersonal"));
                 course.setEEName(resultSet.getString("nombreEE"));
                 course.setSection(resultSet.getInt("sección"));
                 course.setBlock(resultSet.getInt("bloque"));
-                course.setStatus(resultSet.getString("estado"));
             }
             
             resultSet.close();
             dataBaseManager.getConnection().close();
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new DataRetrievalException("Fallo al recuperar la informacion. Verifique su conexion e intentelo de nuevo");
+        } finally {
+            dataBaseManager.closeConnection();
         }
 
         return course;
     }
 
-    public boolean theCourseIsAlreadyRegisted(Course course) {
+    public boolean theCourseIsAlreadyRegisted(Course course) throws DataRetrievalException {
         try {
-            DataBaseManager dataBaseManager = new DataBaseManager();
             Statement statement = dataBaseManager.getConnection().createStatement();
-            String query = "SELECT NRC FROM Cursos";
+            String query = "SELECT * FROM Cursos";
             ResultSet resultSet = statement.executeQuery(query);
             while(resultSet.next()) {
-                if(resultSet.getInt("NRC") == course.getNrc()) { 
-                    resultSet.close();
-                    dataBaseManager.getConnection().close();
-                    return true;
+                if(resultSet.getInt("NRC") == course.getNrc() &&
+                   resultSet.getInt("IdPeriodoEscolar") == course.getIdScholarPeriod() &&
+                   resultSet.getInt("NumPersonal") == course.getStaffNumber() &&
+                   resultSet.getString("nombreEE").equals(course.getEEName()) &&
+                   resultSet.getInt("sección") == course.getSection() &&
+                   resultSet.getInt("bloque") == course.getBlock()) {
+                    
+                   resultSet.close();
+                   dataBaseManager.getConnection().close();
+                   return true;
                 }
             }
+
             resultSet.close();
             dataBaseManager.getConnection().close();
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new DataRetrievalException("Fallo al recuperar la informacion. Verifique su conexion e intentelo de nuevo");
+        } finally {
+            dataBaseManager.closeConnection();
         }
 
         return false;

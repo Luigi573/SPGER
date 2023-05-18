@@ -6,8 +6,7 @@ public class Course {
     private String eeName;
     private int section;
     private int block;
-    private int personalNumber;
-    private String status;
+    private int personalNumber; //cambiar a Profesor
 
     public int getNrc() {
         return this.nrc;
@@ -49,20 +48,34 @@ public class Course {
         this.block = block;
     }
 
-    public int getPersonalNumber() {
+    public int getStaffNumber() {
         return this.personalNumber;
     }
 
-    public void setPersonalNumber(int personalNumber) {
+    public void setStaffNumber(int personalNumber) {
         this.personalNumber = personalNumber;
     }
 
-    public String getStatus() {
-        return this.status;
-    }
+    @Override
+    public boolean equals(Object course) {
+        if (this == course)
+            return true;
+        if (course == null)
+            return false;
+        if (this.getClass() != course.getClass())
+        return false;
 
-    public void setStatus(String status) {
-        this.status = status;
+        Course c = (Course)course;
+ 
+        // Checking only if attribute- name
+        // and age is same and ignoring breed
+
+        return this.nrc == c.nrc  &&
+               this.idScholarPeriod == c.idScholarPeriod &&
+               this.eeName.equals(c.eeName) &&
+               this.section == c.section &&
+               this.block == c.block &&
+               this.personalNumber == c.personalNumber;
     }
     
 }

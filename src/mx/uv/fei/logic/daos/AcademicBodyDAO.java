@@ -25,7 +25,6 @@ public class AcademicBodyDAO implements IAcademicBodyDAO{
         int result;
         String query = "insert into CuerposAcademicos(IdResponsableCA, descripcion) values(?, ?)";
         try {
-            DataBaseManager dataBaseManager = new DataBaseManager();
             Connection connection = dataBaseManager.getConnection();
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setInt(1, academicBody.getAcademicBodyHeadID());

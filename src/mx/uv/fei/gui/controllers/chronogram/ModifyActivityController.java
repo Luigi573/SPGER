@@ -2,7 +2,6 @@ package mx.uv.fei.gui.controllers.chronogram;
 
 import java.io.IOException;
 import java.sql.Date;
-import java.time.LocalDate;
 import java.util.Optional;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -22,9 +21,6 @@ import mx.uv.fei.logic.exceptions.DataWritingException;
 
 public class ModifyActivityController{
     private Activity activity;
-    private Parent parent;
-    private Scene scene;
-    private Stage stage;
     
     @FXML
     private DatePicker startDatePicker; 
@@ -43,17 +39,16 @@ public class ModifyActivityController{
         
         Optional<ButtonType> choice = confirmationMessage.showAndWait();
         if(choice.isPresent() && choice.get() == ButtonType.OK){
-            Activity newActivity = new Activity();
             ActivityDAO activityDAO = new ActivityDAO();
             
-            newActivity.setDescription(activityDescriptionTextArea.getText());
-            newActivity.setTitle(activityTitleTextField.getText());
-            newActivity.setStartDate(Date.valueOf(startDatePicker.getValue()));
-            newActivity.setDueDate(Date.valueOf(dueDatePicker.getValue()));
+            activity.setDescription(activityDescriptionTextArea.getText().trim());
+            activity.setTitle(activityTitleTextField.getText().trim());
+            activity.setStartDate(Date.valueOf(startDatePicker.getValue()));
+            activity.setDueDate(Date.valueOf(dueDatePicker.getValue()));
         
-            if(activityDAO.assertActivity(newActivity)){
+            if(activityDAO.assertActivity(activity)){
                 try{
-                    if(activityDAO.modifyActivity(activity.getId(), newActivity) > 0){
+                    if(activityDAO.modifyActivity(activity) > 0){
                         returnToChronogram(event);
                     }
                 }catch(DataWritingException exception){
@@ -83,10 +78,10 @@ public class ModifyActivityController{
     }
     private void returnToChronogram(ActionEvent event){
         try{
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml/chronogram/Chronogram.fxml"));
-            parent = loader.load();
-            stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-            scene = new Scene(parent);
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/Chronogram.fxml"));
+            Parent parent = loader.load();
+            Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+            Scene scene = new Scene(parent);
             stage.setTitle("SPGER");
             stage.setScene(scene);
             stage.show();

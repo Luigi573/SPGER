@@ -1,14 +1,14 @@
 package mx.uv.fei.logic.domain;
 
 public class AcademicBodyHead extends Professor{
-    private int idAcademicBodyHead;
 
-    public int getIdAcademicBodyHead() {
-        return this.idAcademicBodyHead;
+    private int academicBodyHeadid;
+    
+    public void setAcademicBodyHeadId(int academicBodyHeadid){
+        this.academicBodyHeadid = academicBodyHeadid;
     }
 
-    public void setIdAcademicBodyHead(int idAcademicBodyHead) {
-        this.idAcademicBodyHead = idAcademicBodyHead;
+    public void setacademicBodyHeadId(int academicBodyHeadId) {
+        this.academicBodyHeadid = academicBodyHeadId;
     }
-
 }

@@ -18,6 +18,7 @@ import mx.uv.fei.logic.domain.Activity;
 import mx.uv.fei.logic.exceptions.DataWritingException;
 
 public class CreateActivityController{
+    private int researchId;
     private Parent parent;
     private Scene scene;
     private Stage stage;
@@ -38,10 +39,11 @@ public class CreateActivityController{
             Date dueDate = Date.valueOf(dueDatePicker.getValue());
             
             Activity activity = new Activity();
-            activity.setTitle(activityTitleTextField.getText());
-            activity.setDescription(activityDescriptionTextArea.getText());
+            activity.setTitle(activityTitleTextField.getText().trim());
+            activity.setDescription(activityDescriptionTextArea.getText().trim());
             activity.setStartDate(startDate);
             activity.setDueDate(dueDate);
+            activity.setResearchId(researchId);
         
             ActivityDAO activityDAO = new ActivityDAO();
         
@@ -77,7 +79,7 @@ public class CreateActivityController{
     @FXML
     private void returnToChronogram(ActionEvent event){
         try{
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml/chronogram/Chronogram.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/Chronogram.fxml"));
             parent = loader.load();
             stage = (Stage)((Node)event.getSource()).getScene().getWindow();
             scene = new Scene(parent);
@@ -90,5 +92,8 @@ public class CreateActivityController{
             errorMessage.setContentText("Hubo un error al cargar el cronograma, archivo no encontrado");
             errorMessage.showAndWait();
         }
+    }
+    public void setResearchId(int researchId){
+        this.researchId = researchId;
     }
 }

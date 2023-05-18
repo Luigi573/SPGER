@@ -8,15 +8,15 @@
             "type": "java",
             "name": "Main",
             "request": "launch",
-            "mainClass": "mx.uv.fei.Main",
-            "projectName": "SPGER_919676fc",
-            "vmArgs": "--module-path /home/luisalonso/Documentos/JavaDepencencies/javafx-sdk-19.0.2.1/lib --add-modules javafx.controls,javafx.fxml"
+            "mainClass": "Main",
+            "projectName": "SPGER_919676fc"
         },
         {
             "type": "java",
-            "name": "Current File",
+            "name": "Main",
             "request": "launch",
-            "mainClass": "${file}",
+            "mainClass": "mx.uv.fei.Main",
+            "projectName": "SPGER_919676fc",
             "vmArgs": "--module-path /home/luisalonso/Documentos/JavaDepencencies/javafx-sdk-19.0.2.1/lib --add-modules javafx.controls,javafx.fxml"
         }
     ]

@@ -21,7 +21,7 @@ public class Advance {
         this.advanceID = advanceID;
     }
     
-    public void setStudentID(String studentID) {
+    public void setMatricle(String studentID) {
         this.studentID = studentID;
     }
     
@@ -33,7 +33,7 @@ public class Advance {
         this.title = title;
     }
     
-    public void setComment(String comments) {
+    public void setComments(String comments) {
         this.comments = comments;
     }
     
@@ -41,7 +41,7 @@ public class Advance {
         return this.advanceID;
     }
     
-    public String getStudentID() {
+    public String getMatricule() {
         return this.studentID;
     }
     
@@ -55,5 +55,19 @@ public class Advance {
     
     public String getComments() {
         return this.comments;
+    }
+    
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Advance)) {
+            return false;
+        }
+            Advance advance = (Advance) o;
+            return (this.studentID == advance.getMatricule()) && (this.directorID == advance.getDirectorID() && (this.title.equals(advance.getTitle())) && (this.comments.equals(advance.getComments())));
+    }
+
+    @Override
+    public String toString() {
+        return "ID Avance: " + this.advanceID + " ID Estudiante: " + this.studentID + " ID Director: " + this.directorID + " Titulo: " + this.title + " Comentarios: " + this.comments;
     }
 }

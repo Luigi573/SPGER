@@ -9,18 +9,23 @@ import java.util.ArrayList;
 import mx.uv.fei.dataaccess.DataBaseManager;
 import mx.uv.fei.logic.daosinterfaces.IStudentDAO;
 import mx.uv.fei.logic.domain.Student;
+import mx.uv.fei.logic.exceptions.DataRetrievalException;
+import mx.uv.fei.logic.exceptions.DataWritingException;
 
 public class StudentDAO implements IStudentDAO{
+    private final DataBaseManager dataBaseManager;
+    
+    public StudentDAO(){
+        dataBaseManager = new DataBaseManager();
+    }
 
     @Override
-    public void addStudentToDatabase(Student student) {
+    public void addStudentToDatabase(Student student) throws DataWritingException {
         try {
-            DataBaseManager dataBaseManager = new DataBaseManager();
-            String userTablesToConsult = 
-                "nombre, apellidoPaterno, apellidoMaterno, correo, correoAlterno, númeroTeléfono, estado";
-            String wholeQueryToInsertUserData = "INSERT INTO Usuarios (" + userTablesToConsult + ") VALUES (?, ?, ?, ?, ?, ?, ?)";
+            String queryToInsertUserData = "INSERT INTO Usuarios (nombre, apellidoPaterno, apellidoMaterno, correo" +
+                "correoAlterno, númeroTeléfono, estado) VALUES (?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement preparedStatementToInsertUserData = 
-                dataBaseManager.getConnection().prepareStatement(wholeQueryToInsertUserData);
+                dataBaseManager.getConnection().prepareStatement(queryToInsertUserData);
             preparedStatementToInsertUserData.setString(1, student.getName());
             preparedStatementToInsertUserData.setString(2, student.getFirstSurname());
             preparedStatementToInsertUserData.setString(3, student.getSecondSurname());
@@ -45,7 +50,7 @@ public class StudentDAO implements IStudentDAO{
             preparedStatementForAssignUserIdToStudent.setString(7, student.getStatus());
             ResultSet resultSet = preparedStatementForAssignUserIdToStudent.executeQuery();
             if(resultSet.next()){
-                student.setIdUser(resultSet.getInt("IdUsuario"));
+                student.setUserId(resultSet.getInt("IdUsuario"));
             }
 
             String studentTablesToConsult = "Matrícula, IdUsuario";
@@ -53,8 +58,8 @@ public class StudentDAO implements IStudentDAO{
                 "INSERT INTO Estudiantes (" + studentTablesToConsult + ") VALUES (?, ?)";
             PreparedStatement preparedStatementToInsertStudentData = 
                 dataBaseManager.getConnection().prepareStatement(wholeQueryToInsertStudentData);
-            preparedStatementToInsertStudentData.setString(1, student.getMatricle());
-            preparedStatementToInsertStudentData.setInt(2, student.getIdUser());
+            preparedStatementToInsertStudentData.setString(1, student.getMatricule());
+            preparedStatementToInsertStudentData.setInt(2, student.getUserId());
             preparedStatementToInsertStudentData.executeUpdate();
 
             preparedStatementToInsertStudentData.close();
@@ -62,14 +67,16 @@ public class StudentDAO implements IStudentDAO{
 
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new DataWritingException("Error al agregar estudiante. Verifique su conexion e intentelo de nuevo");
+        } finally {
+            dataBaseManager.closeConnection();
         }
     }
     
     @Override
-    public void modifyStudentDataFromDatabase(Student newStudentData, Student originalStudentData) {
+    public void modifyStudentDataFromDatabase(Student newStudentData, Student originalStudentData) throws DataWritingException {
         try {
-            newStudentData.setIdUser(this.getIdUserFromStudent(originalStudentData));
-            DataBaseManager dataBaseManager = new DataBaseManager();
+            newStudentData.setUserId(this.getUserIdFromStudent(originalStudentData));
             String queryForUpdateUserData = "UPDATE Usuarios SET nombre = ?, " + 
                            "apellidoPaterno = ?, apellidoMaterno = ?, correo = ?, " + 
                            "correoAlterno = ?, númeroTeléfono = ?, estado = ? " +
@@ -99,20 +106,25 @@ public class StudentDAO implements IStudentDAO{
             
             PreparedStatement preparedStatementForUpdateStudentData = 
                 dataBaseManager.getConnection().prepareStatement(queryForUpdateStudentData);
-            preparedStatementForUpdateStudentData.setString(1, newStudentData.getMatricle());
-            preparedStatementForUpdateStudentData.setInt(2, newStudentData.getIdUser());
+            preparedStatementForUpdateStudentData.setString(1, newStudentData.getMatricule());
+            preparedStatementForUpdateStudentData.setString(2, newStudentData.getMatricule());
             preparedStatementForUpdateStudentData.executeUpdate();
         } catch(SQLException e){
             e.printStackTrace();
+            throw new DataWritingException("Error al agregar estudiante. Verifique su conexion e intentelo de nuevo");
+        } catch(DataRetrievalException e) {
+            e.printStackTrace();
+            throw new DataWritingException("Error al agregar estudiante. Verifique su conexion e intentelo de nuevo");
+        } finally {
+            dataBaseManager.closeConnection();
         }
     }
 
     @Override
-    public ArrayList<Student> getStudentsFromDatabase() {
+    public ArrayList<Student> getStudentsFromDatabase() throws DataRetrievalException {
         ArrayList<Student> students = new ArrayList<>();
         
         try {
-            DataBaseManager dataBaseManager = new DataBaseManager();
             Statement statement = dataBaseManager.getConnection().createStatement();
             String query = "SELECT * FROM Usuarios U INNER JOIN Estudiantes E ON U.IdUsuario = E.IdUsuario";
             ResultSet resultSet = statement.executeQuery(query);
@@ -125,6 +137,7 @@ public class StudentDAO implements IStudentDAO{
                 student.setPassword(resultSet.getString("contraseña"));
                 student.setAlternateEmail(resultSet.getString("correoAlterno"));
                 student.setPhoneNumber(resultSet.getString("númeroTeléfono"));
+                student.setStatus(resultSet.getString("estado"));
                 student.setMatricle(resultSet.getString("Matrícula"));
                 students.add(student);
             }
@@ -132,41 +145,46 @@ public class StudentDAO implements IStudentDAO{
             dataBaseManager.getConnection().close();
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new DataRetrievalException("Error al recuperar la información. Verifique su conexión e intentelo de nuevo");
+        } finally {
+            dataBaseManager.closeConnection();
         }
 
         return students;
     }
 
-    //@Override
-    //public ArrayList<Student> getStudentList() throws DataRetrievalException {
-    //    ArrayList<Student> studentList = new ArrayList<>();
-    //    PreparedStatement statement;
-    //    String query = "SELECT e.Matrícula, u.nombre, u.apellidoPaterno, u.apellidoMaterno FROM Estudiantes e "
-    //            + "INNER JOIN Usuarios u ON e.IdUsuario = u.IdUsuario";
-    //    
-    //    try{
-    //        statement = dataBaseManager.getConnection().prepareStatement(query);
-    //        ResultSet resultSet = statement.executeQuery();
-    //        
-    //        while(resultSet.next()){
-    //            Student student = new Student();
-    //            
-    //            student.setMatricle(resultSet.getString("e.Matrícula"));
-    //            student.setName(resultSet.getString("u.nombre"));
-    //            student.setFirstSurname(resultSet.getString("u.apellidoPaterno"));
-    //            student.setSecondSurname(resultSet.getString("u.apellidoMaterno"));
-    //            
-    //            studentList.add(student);
-    //        }
-    //    }catch(SQLException exception){
-    //        throw new DataRetrievalException("Error al recuperar estudiantes. VErifique su conexión e inténtelo de nuevo");
-    //    }
-    //    
-    //    return studentList;
-    //}
+    @Override
+    public ArrayList<Student> getStudentList() throws DataRetrievalException {
+        ArrayList<Student> studentList = new ArrayList<>();
+        PreparedStatement statement;
+        String query = "SELECT e.Matrícula, u.nombre, u.apellidoPaterno, u.apellidoMaterno FROM Estudiantes e "
+                + "INNER JOIN Usuarios u ON e.IdUsuario = u.IdUsuario";
+        
+        try{
+            statement = dataBaseManager.getConnection().prepareStatement(query);
+            ResultSet resultSet = statement.executeQuery();
+            
+            while(resultSet.next()){
+                Student student = new Student();
+                
+                student.setMatricle(resultSet.getString("e.Matrícula"));
+                student.setName(resultSet.getString("u.nombre"));
+                student.setFirstSurname(resultSet.getString("u.apellidoPaterno"));
+                student.setSecondSurname(resultSet.getString("u.apellidoMaterno"));
+                
+                studentList.add(student);
+            }
+        }catch(SQLException exception){
+            throw new DataRetrievalException("Error al recuperar estudiantes. VErifique su conexión e inténtelo de nuevo");
+        } finally {
+            dataBaseManager.closeConnection();
+        }
+        
+        return studentList;
+    }
 
     @Override
-    public ArrayList<Student> getActiveStudentsFromDatabase() {
+    public ArrayList<Student> getActiveStudentsFromDatabase() throws DataRetrievalException {
         ArrayList<Student> students = new ArrayList<>();
         
         try {
@@ -192,78 +210,16 @@ public class StudentDAO implements IStudentDAO{
             dataBaseManager.getConnection().close();
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new DataRetrievalException("Error al recuperar la información. Verifique su conexión e intentelo de nuevo");
+        } finally {
+            dataBaseManager.closeConnection();
         }
 
         return students;
     }
 
     @Override
-    public ArrayList<Student> getSpecifiedStudentsFromDatabase(String studentName) {
-        ArrayList<Student> students = new ArrayList<>();
-        
-        try {
-            DataBaseManager dataBaseManager = new DataBaseManager();
-            String query = "SELECT * FROM Usuarios U INNER JOIN Estudiantes E " + 
-                           "ON U.IdUsuario = E.IdUsuario WHERE U.Nombre LIKE ?";
-            PreparedStatement preparedStatement = dataBaseManager.getConnection().prepareStatement(query);
-            preparedStatement.setString(1, studentName + '%');
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while(resultSet.next()) {
-                Student student = new Student();
-                student.setName(resultSet.getString("nombre"));
-                student.setFirstSurname(resultSet.getString("apellidoPaterno"));
-                student.setSecondSurname(resultSet.getString("apellidoMaterno"));
-                student.setEmailAddress(resultSet.getString("correo"));
-                student.setPassword(resultSet.getString("contraseña"));
-                student.setAlternateEmail(resultSet.getString("correoAlterno"));
-                student.setPhoneNumber(resultSet.getString("númeroTeléfono"));
-                student.setStatus(resultSet.getString("estado"));
-                student.setMatricle(resultSet.getString("Matrícula"));
-                students.add(student);
-            }
-            resultSet.close();
-            dataBaseManager.getConnection().close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return students;
-    }
-
-    @Override
-    public ArrayList<Student> getActiveStudentsFromDatabase() {
-        ArrayList<Student> students = new ArrayList<>();
-        
-        try {
-            DataBaseManager dataBaseManager = new DataBaseManager();
-            Statement statement = dataBaseManager.getConnection().createStatement();
-            String query = "SELECT * FROM Usuarios U INNER JOIN Estudiantes E " + 
-                           "ON U.IdUsuario = E.IdUsuario WHERE U.estado = 'Activo'";
-            ResultSet resultSet = statement.executeQuery(query);
-            while(resultSet.next()) {
-                Student student = new Student();
-                student.setName(resultSet.getString("nombre"));
-                student.setFirstSurname(resultSet.getString("apellidoPaterno"));
-                student.setSecondSurname(resultSet.getString("apellidoMaterno"));
-                student.setEmailAddress(resultSet.getString("correo"));
-                student.setPassword(resultSet.getString("contraseña"));
-                student.setAlternateEmail(resultSet.getString("correoAlterno"));
-                student.setPhoneNumber(resultSet.getString("númeroTeléfono"));
-                student.setStatus(resultSet.getString("estado"));
-                student.setMatricle(resultSet.getString("Matrícula"));
-                students.add(student);
-            }
-            resultSet.close();
-            dataBaseManager.getConnection().close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return students;
-    }
-
-    @Override
-    public ArrayList<Student> getSpecifiedActiveStudentsFromDatabase(String studentName) {
+    public ArrayList<Student> getSpecifiedActiveStudentsFromDatabase(String studentName) throws DataRetrievalException {
         ArrayList<Student> students = new ArrayList<>();
         
         try {
@@ -290,19 +246,60 @@ public class StudentDAO implements IStudentDAO{
             dataBaseManager.getConnection().close();
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new DataRetrievalException("Error al recuperar la información. Verifique su conexión e intentelo de nuevo");
+        } finally {
+            dataBaseManager.closeConnection();
         }
 
         return students;
     }
 
     @Override
-    public Student getStudentFromDatabase(String matricle) {
+    public ArrayList<Student> getSpecifiedStudentsFromDatabase(String studentName) throws DataRetrievalException {
+        ArrayList<Student> students = new ArrayList<>();
+        PreparedStatement statement;
+        String query = "SELECT * FROM Usuarios U INNER JOIN Estudiantes E " + 
+                           "ON U.IdUsuario = E.IdUsuario WHERE U.Nombre LIKE ?";
+        
+        try {
+            statement = dataBaseManager.getConnection().prepareStatement(query);
+            statement.setString(1, studentName + '%');
+            
+            ResultSet resultSet = statement.executeQuery();
+            
+            while(resultSet.next()) {
+                Student student = new Student();
+                student.setName(resultSet.getString("nombre"));
+                student.setFirstSurname(resultSet.getString("apellidoPaterno"));
+                student.setSecondSurname(resultSet.getString("apellidoMaterno"));
+                student.setEmailAddress(resultSet.getString("correo"));
+                student.setPassword(resultSet.getString("contraseña"));
+                student.setAlternateEmail(resultSet.getString("correoAlterno"));
+                student.setPhoneNumber(resultSet.getString("númeroTeléfono"));
+                student.setStatus(resultSet.getString("estado"));
+                student.setMatricle(resultSet.getString("Matrícula"));
+                students.add(student);
+            }
+            resultSet.close();
+            dataBaseManager.getConnection().close();
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+            throw new DataRetrievalException("Error al recuperar la información. Verifique su conexión e intentelo de nuevo");
+        } finally {
+            dataBaseManager.closeConnection();
+        }
+
+        return students;
+    }
+
+    @Override
+    public Student getStudentFromDatabase(String matricle) throws DataRetrievalException {
         Student student = new Student();
+        String query = "SELECT * FROM Usuarios U INNER JOIN Estudiantes E " + 
+                           "ON U.IdUsuario = E.IdUsuario WHERE E.Matrícula = ?";
 
         try {
-            DataBaseManager dataBaseManager = new DataBaseManager();
-            String query = "SELECT * FROM Usuarios U INNER JOIN Estudiantes E " + 
-                           "ON U.IdUsuario = E.IdUsuario WHERE E.Matrícula = ?";
+            
             PreparedStatement preparedStatement = dataBaseManager.getConnection().prepareStatement(query);
             preparedStatement.setString(1, matricle);
 
@@ -323,74 +320,81 @@ public class StudentDAO implements IStudentDAO{
             dataBaseManager.getConnection().close();
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new DataRetrievalException("Error al recuperar la información. Verifique su conexión e intentelo de nuevo");
+        } finally {
+            dataBaseManager.closeConnection();
         }
 
         return student;
     }
 
-    public boolean theStudentIsAlreadyRegisted(Student student) {
+    public boolean theStudentIsAlreadyRegisted(Student student) throws DataRetrievalException {
+        String query = "SELECT * FROM Estudiantes";
+        
         try {
-            DataBaseManager dataBaseManager = new DataBaseManager();
             Statement statement = dataBaseManager.getConnection().createStatement();
-            String query = "SELECT U.nombre, U.apellidoPaterno, U.apellidoMaterno, U.correo, " +
-                           "U.correoAlterno, U.númeroTeléfono, U.estado, E.Matrícula FROM Usuarios U " + 
-                           "INNER JOIN Estudiantes E ON U.IdUsuario = E.IdUsuario";
+            
             ResultSet resultSet = statement.executeQuery(query);
             while(resultSet.next()) {
-                if( (resultSet.getString("nombre").equals(student.getName()) &&
+                if(resultSet.getString("nombre").equals(student.getName()) &&
                    resultSet.getString("apellidoPaterno").equals(student.getFirstSurname()) &&
                    resultSet.getString("apellidoMaterno").equals(student.getSecondSurname()) &&
                    resultSet.getString("correo").equals(student.getEmailAddress()) &&
                    resultSet.getString("correoAlterno").equals(student.getAlternateEmail()) &&
                    resultSet.getString("númeroTeléfono").equals(student.getPhoneNumber()) &&
                    resultSet.getString("estado").equals(student.getStatus()) &&
-                   resultSet.getString("Matrícula").equals(student.getMatricle())) ||
-                   resultSet.getString("Matrícula").equals(student.getMatricle())) {
-                    resultSet.close();
-                    dataBaseManager.getConnection().close();
-                    return true;
+                   resultSet.getString("Matrícula") == student.getMatricule()) {
+                    
+                   resultSet.close();
+                   dataBaseManager.getConnection().close();
+                   return true;
                 }
             }
             resultSet.close();
             dataBaseManager.getConnection().close();
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new DataRetrievalException("Error al recuperar la información. Verifique su conexión e intentelo de nuevo");
+        } finally {
+            dataBaseManager.closeConnection();
         }
 
         return false;
     }
 
-    private int getIdUserFromStudent(Student originalStudentData){
-        int idUser = 0;
-
-        try {
-            DataBaseManager dataBaseManager = new DataBaseManager();
-            String query = "SELECT U.IdUsuario FROM Usuarios U INNER JOIN Estudiantes E ON " + 
+    private int getUserIdFromStudent(Student student) throws DataRetrievalException {
+        int userId = 0;
+        String query = "SELECT U.IdUsuario FROM Usuarios U INNER JOIN Estudiantes E ON " + 
                            "U.IdUsuario = E.IdUsuario WHERE U.nombre = ? && " +
                            "U.apellidoPaterno = ? && U.apellidoMaterno = ? && U.correo = ? && " +
                            "U.correoAlterno = ? && U.númeroTeléfono = ? && U.estado = ? && E.Matrícula = ?";
+
+        try {
             PreparedStatement preparedStatement = dataBaseManager.getConnection().prepareStatement(query);
-            preparedStatement.setString(1, originalStudentData.getName());
-            preparedStatement.setString(2, originalStudentData.getFirstSurname());
-            preparedStatement.setString(3, originalStudentData.getSecondSurname());
-            preparedStatement.setString(4, originalStudentData.getEmailAddress());
-            preparedStatement.setString(5, originalStudentData.getAlternateEmail());
-            preparedStatement.setString(6, originalStudentData.getPhoneNumber());
-            preparedStatement.setString(7, originalStudentData.getStatus());
-            preparedStatement.setString(8, originalStudentData.getMatricle());
+            preparedStatement.setString(1, student.getName());
+            preparedStatement.setString(2, student.getFirstSurname());
+            preparedStatement.setString(3, student.getSecondSurname());
+            preparedStatement.setString(4, student.getEmailAddress());
+            preparedStatement.setString(5, student.getAlternateEmail());
+            preparedStatement.setString(6, student.getPhoneNumber());
+            preparedStatement.setString(7, student.getStatus());
+            preparedStatement.setString(8, student.getMatricule());
 
             ResultSet resultSet = preparedStatement.executeQuery();
+            
             if(resultSet.next()) {
-                idUser = resultSet.getInt("IdUsuario");
+                userId = resultSet.getInt("IdUsuario");
             }
             
             resultSet.close();
             dataBaseManager.getConnection().close();
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new DataRetrievalException("Error al recuperar la información. Verifique su conexión e intentelo de nuevo");
+        } finally {
+            dataBaseManager.closeConnection();
         }
 
-        return idUser;
+        return userId;
     }
-    
 }

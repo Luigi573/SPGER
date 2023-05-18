@@ -10,53 +10,29 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.uv.fei.gui.controllers.chronogram.ChronogramController">
    <children>
+      <Pane fx:id="headerPane" layoutY="-2.0" prefHeight="60.0" prefWidth="600.0" />
       <ScrollPane hbarPolicy="NEVER" layoutX="88.0" layoutY="154.0" prefHeight="244.0" prefWidth="484.0">
          <content>
             <VBox fx:id="activityListVBox" prefHeight="241.0" prefWidth="481.0" />
          </content>
       </ScrollPane>
-      <Pane layoutY="-2.0" prefHeight="54.0" prefWidth="600.0">
-         <children>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="182.0" layoutY="2.0" prefHeight="30.0" prefWidth="194.0" text="[NombreEE]">
-               <font>
-                  <Font size="20.0" />
-               </font>
-            </Label>
-            <Label layoutX="72.0" text="SPGER">
-               <font>
-                  <Font size="32.0" />
-               </font>
-            </Label>
-            <Label layoutX="227.0" layoutY="25.0" prefHeight="30.0" prefWidth="127.0" text="NRC: [NRC]">
-               <font>
-                  <Font size="20.0" />
-               </font>
-            </Label>
-            <Button layoutX="7.0" layoutY="2.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="59.0" text="Home" />
-            <Label alignment="CENTER_RIGHT" layoutX="394.0" layoutY="17.0" prefHeight="25.0" prefWidth="127.0" text="[Nombre]">
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </Label>
-            <Button layoutX="527.0" layoutY="2.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="59.0" text="ProfPic" />
-         </children>
-      </Pane>
       <Pane layoutY="57.0" prefHeight="342.0" prefWidth="59.0" />
-      <Pane layoutX="60.0" layoutY="67.0" prefHeight="87.0" prefWidth="540.0">
+      <Pane layoutX="60.0" layoutY="67.0" prefHeight="87.0" prefWidth="511.0">
          <children>
-            <Label alignment="TOP_CENTER" layoutY="7.0" prefHeight="34.0" prefWidth="269.0" text="Mi cronograma" textAlignment="CENTER">
+            <Label fx:id="chronogramTitleLabel" alignment="TOP_CENTER" layoutY="7.0" prefHeight="34.0" prefWidth="269.0" text="Mi cronograma" textAlignment="CENTER">
                <font>
                   <Font size="23.0" />
                </font>
             </Label>
-            <ComboBox fx:id="studentChronogramComboBox" disable="true" editable="true" layoutX="298.0" layoutY="7.0" prefHeight="34.0" prefWidth="228.0" promptText="Cronograma de [Estudiante]" />
-            <Button fx:id="createActivityButton" layoutX="398.0" layoutY="55.0" mnemonicParsing="false" onAction="#createActivity" text="Create Activity" />
-            <Label layoutX="48.0" layoutY="50.0" text="Lista de actividades">
+
+                  <ComboBox fx:id="studentChronogramComboBox" layoutX="277.0" layoutY="7.0" onAction="#switchChronogram" prefHeight="34.0" prefWidth="228.0" promptText="Cronograma de [Estudiante]" />
+            <Label layoutX="42.0" layoutY="50.0" text="Lista de actividades">
                <font>
                   <Font size="23.0" />
                </font>
             </Label>
+            <Button fx:id="createActivityButton" layoutX="412.0" layoutY="55.0" mnemonicParsing="false" onAction="#createActivity" text="Create Activity" />
          </children>
-      </Pane>
-   </children>
+        </Pane>
+    </children>
 </Pane>

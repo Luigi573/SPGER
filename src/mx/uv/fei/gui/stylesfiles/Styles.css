@@ -1,0 +1,91 @@
+Text {
+    -fx-fill: white;
+    -fx-fill-text: #11d30b;
+    -fx-background-color: #eaeaea;
+}
+
+.root {
+    -fx-background-color: #121b9e;
+    /*-fx-background-color: #ff4800;*/
+}
+
+.anchor-pane {
+    -fx-background-color: #eaeaea;
+}
+
+.button {
+    -fx-background-radius: 50;
+    -fx-background-color: rgb(41, 182, 22);
+    -fx-text-fill: white;
+    -fx-cursor: hand;
+}
+
+.choice-box {
+
+}
+
+.combo-box {
+    -fx-background-color: rgb(41, 182, 22);
+    -fx-text-fill: white;
+}
+
+.combo-box-popup .list-cell {
+    -fx-background-color: rgb(41, 182, 22);
+    -fx-text-fill: white;
+    -fx-cell-size: 1.66667em;
+}
+
+.label {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+}
+
+.scroll-bar:horizontal, .scroll-bar:vertical{
+    -fx-background-color:rgb(18, 68, 11);
+}
+
+.scroll-bar .increment-button ,
+.scroll-bar .decrement-button {
+    -fx-background-color :rgb(41, 182, 22);
+}
+
+ .scroll-bar .increment-arrow,
+ .scroll-bar .decrement-arrow{
+    -fx-background-color :rgb(41, 182, 22);
+}
+
+.scroll-bar:horizontal .thumb,
+.scroll-bar:vertical .thumb {
+    -fx-background-color :rgb(41, 182, 22);
+}
+
+.scroll-pane{
+    -fx-background:  rgb(35, 138, 22);
+    -fx-border-color:  rgb(18, 68, 11);
+}
+
+.text-field {
+    -fx-background-color: rgb(35, 138, 22);
+}
+
+.toggle-button {
+    -fx-background-radius: 50;
+    -fx-background-color: rgb(41, 182, 22);
+    -fx-text-fill: white;
+}
+
+.toggle-button:selected {
+    -fx-background-color: rgb(18, 68, 11);
+}
+
+#researchButton {
+    -fx-background-radius: 5;
+    -fx-background-color: transparent;
+    -fx-border-color:black;
+}
+
+#userButton {
+    -fx-background-radius: 5;
+    -fx-background-color: transparent;
+    -fx-border-color:black;
+}

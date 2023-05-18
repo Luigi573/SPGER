@@ -25,10 +25,10 @@ public class AdvanceDAO implements IAdvanceDAO{
         int result;
         String query = "insert into Avances(Matrícula, IdDirector, título, comentario) values(?, ?, ?, ?)";
         try {
-            DataBaseManager dataBaseManager = new DataBaseManager();
+            dataBaseManager = new DataBaseManager();
             Connection connection = dataBaseManager.getConnection();
             PreparedStatement statement = connection.prepareStatement(query);
-            statement.setString(1, advance.getStudentID());
+            statement.setString(1, advance.getMatricule());
             statement.setInt(2, advance.getDirectorID());
             statement.setString(3, advance.getTitle());
             statement.setString(4, advance.getComments());
@@ -41,7 +41,7 @@ public class AdvanceDAO implements IAdvanceDAO{
 
     @Override
     public ArrayList<Advance> getAdvancesList() throws DataRetrievalException {
-        ArrayList<Advance> advancesList = new ArrayList();
+        ArrayList<Advance> advancesList = new ArrayList<>();
         
         String query = "select * from Avances";
         try {
@@ -52,10 +52,10 @@ public class AdvanceDAO implements IAdvanceDAO{
             while(rs.next()) {
                 Advance advance = new Advance();
                 advance.setAdvanceID(rs.getInt("IdAvances"));
-                advance.setStudentID(rs.getString("Matrícula"));
+                advance.setMatricle(rs.getString("Matrícula"));
                 advance.setDirectorID(rs.getInt("IdDirector"));
                 advance.setTitle(rs.getString("título"));
-                advance.setComment(rs.getString("comentario"));
+                advance.setComments(rs.getString("comentario"));
                 
                advancesList.add(advance);
             }
@@ -68,7 +68,7 @@ public class AdvanceDAO implements IAdvanceDAO{
 
     @Override
     public Advance getAdvanceByID(int advanceID) throws DataRetrievalException {
-        ArrayList<Advance> advancesList = new ArrayList(getAdvancesList());
+        ArrayList<Advance> advancesList = new ArrayList<>(getAdvancesList());
         Advance advanceByID = new Advance();
         int i = 0;
         boolean b = false;

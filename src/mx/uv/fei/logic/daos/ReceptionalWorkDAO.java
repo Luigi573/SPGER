@@ -22,7 +22,7 @@ public class ReceptionalWorkDAO implements IReceptionalWorkDAO{
     @Override
     public int addReceptionalWork(ReceptionalWork receptionalWork) throws DataInsertionException {
         int result;
-        String query = "insert into TrabajosRecepcionales(IdAnteproyecto, nombre, descripcion) values(?, ?, ?)";
+        String query = "insert into TrabajosRecepcionales(IdAnteproyecto, título, descripcion) values(?, ?, ?)";
         try {
             DataBaseManager dataBaseManager = new DataBaseManager();
             Connection connection = dataBaseManager.getConnection();

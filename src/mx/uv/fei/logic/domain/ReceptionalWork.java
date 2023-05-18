@@ -45,4 +45,18 @@ public class ReceptionalWork {
     public String getDescription() {
         return this.description;
     }
+    
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof ReceptionalWork)) {
+            return false;
+        }
+            ReceptionalWork receptionalWork = (ReceptionalWork) o;
+            return (this.researchID == receptionalWork.getResearchID()) && (this.name.equals(receptionalWork.getName())) && (this.description.equals(receptionalWork.getDescription()));
+    }
+
+    @Override
+    public String toString() {
+        return "ID Trabajo Recepcional: " + this.receptionalWorkID + "  Nombre: " + this.name + "  Descripcion: " + this.description;
+    }
 }
