@@ -2,13 +2,14 @@ package mx.uv.fei.logic.daos;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import mx.uv.fei.dataaccess.DataBaseManager;
 import mx.uv.fei.logic.daosinterfaces.IResearchDAO;
 import mx.uv.fei.logic.domain.ResearchProject;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
-import mx.uv.fei.logic.exceptions.DataWritingException;
+import mx.uv.fei.logic.exceptions.DataInsertionException;
 
 public class ResearchDAO implements IResearchDAO{
     private final DataBaseManager dataBaseManager;
@@ -18,15 +19,15 @@ public class ResearchDAO implements IResearchDAO{
     }
     
     @Override
-    public int addResearch(ResearchProject research) throws DataWritingException {
-        int result = 0;
+    public int addResearch(ResearchProject research) throws DataInsertionException {
+        int generatedId = 0;
         PreparedStatement statement;
         String query = "INSERT INTO Anteproyectos(fechaFin, fechaInicio, IdLGAC, descripción, "
                 + "resultadosEsperados, requisitos, bibliografíaRecomendada, título, Matrícula, "
                 + "IdDirector1, IdDirector2, IdDirector3) VALUES (?,?,?,?,?,?,?,?,?,?,?,?);";
         
         try{
-            statement = dataBaseManager.getConnection().prepareStatement(query);
+            statement = dataBaseManager.getConnection().prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             
             statement.setDate(1, research.getDueDate());
             statement.setDate(2, research.getStartDate());
@@ -57,14 +58,19 @@ public class ResearchDAO implements IResearchDAO{
                 }
             }
             
-            result = statement.executeUpdate();
+            statement.executeUpdate();
+            ResultSet generatedKeys = statement.getGeneratedKeys();
+            
+            if(generatedKeys.next()){
+                generatedId = generatedKeys.getInt(1);
+            }
         }catch(SQLException exception){
-            throw new DataWritingException("Error de conexión. Verifique su conexion e intentelo de nuevo");
+            throw new DataInsertionException("Error de conexión. Verifique su conexion e intentelo de nuevo");
         }finally{
             dataBaseManager.closeConnection();
         }
         
-        return result;
+        return generatedId;
     }
     @Override
     public ArrayList<ResearchProject> getResearchProjectList() throws DataRetrievalException    {
@@ -129,7 +135,7 @@ public class ResearchDAO implements IResearchDAO{
         return researchProjectList;
     }
     @Override
-    public int modifyResearch(ResearchProject research) throws DataWritingException {
+    public int modifyResearch(ResearchProject research) throws DataInsertionException {
         int result = 0;
         PreparedStatement statement;
         String query = "UPDATE Anteproyectos SET fechaFin = ?, fechaInicio = ?, IdLGAC = ?, descripción = ?, "
@@ -172,7 +178,7 @@ public class ResearchDAO implements IResearchDAO{
             
             result = statement.executeUpdate();
         }catch(SQLException exception){
-            throw new DataWritingException("Error de conexión. Verifique su conexion e intentelo de nuevo");
+            throw new DataInsertionException("Error de conexión. Verifique su conexion e intentelo de nuevo");
         }finally{
             dataBaseManager.closeConnection();
         }

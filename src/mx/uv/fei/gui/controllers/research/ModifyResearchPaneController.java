@@ -27,7 +27,7 @@ import mx.uv.fei.logic.domain.KGAL;
 import mx.uv.fei.logic.domain.ResearchProject;
 import mx.uv.fei.logic.domain.Student;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
-import mx.uv.fei.logic.exceptions.DataWritingException;
+import mx.uv.fei.logic.exceptions.DataInsertionException;
 
 public class ModifyResearchPaneController{
     private ArrayList<ComboBox> directorComboBoxes;
@@ -143,7 +143,7 @@ public class ModifyResearchPaneController{
                             
                             returnToResearchManager(event);
                         }
-                    }catch(DataWritingException exception){
+                    }catch(DataInsertionException exception){
                         Alert errorMessage = new Alert(Alert.AlertType.ERROR);
                         errorMessage.setContentText(exception.getMessage());
      

@@ -1,4 +1,4 @@
-package mx.uv.fei.gui.controllers.chronogram;
+package mx.uv.fei.gui.controllers.chronogram.activities;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;

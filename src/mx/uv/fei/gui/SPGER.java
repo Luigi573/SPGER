@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
+import mx.uv.fei.logic.domain.statuses.ProfessorStatus;
 
 public class SPGER extends Application{
     @Override
@@ -23,10 +24,7 @@ public class SPGER extends Application{
             stage.setScene(scene);
             stage.show();
         }catch(IllegalStateException | IOException exception){
-            Alert errorMessage = new Alert(AlertType.ERROR);
-            errorMessage.setTitle("Error");
-            errorMessage.setContentText("Hubo un error al cargar el sistema SPGER, no se encontraron los archivos");
-            errorMessage.showAndWait();
+            AlertPopUpGenerator.showMissingFilesMessage();
         }
     }
     

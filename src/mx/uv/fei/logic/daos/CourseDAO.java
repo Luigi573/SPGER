@@ -67,6 +67,7 @@ public class CourseDAO implements ICourseDAO{
             DataBaseManager dataBaseManager = new DataBaseManager();
             Statement statement = dataBaseManager.getConnection().createStatement();
             String query = "SELECT * FROM Cursos";
+            
             ResultSet resultSet = statement.executeQuery(query);
             while(resultSet.next()) {
                 Course course = new Course();

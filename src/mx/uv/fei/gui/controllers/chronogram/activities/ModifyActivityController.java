@@ -1,4 +1,4 @@
-package mx.uv.fei.gui.controllers.chronogram;
+package mx.uv.fei.gui.controllers.chronogram.activities;
 
 import java.io.IOException;
 import java.sql.Date;
@@ -17,7 +17,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import mx.uv.fei.logic.daos.ActivityDAO;
 import mx.uv.fei.logic.domain.Activity;
-import mx.uv.fei.logic.exceptions.DataWritingException;
+import mx.uv.fei.logic.exceptions.DataInsertionException;
 
 public class ModifyActivityController{
     private Activity activity;
@@ -51,7 +51,7 @@ public class ModifyActivityController{
                     if(activityDAO.modifyActivity(activity) > 0){
                         returnToChronogram(event);
                     }
-                }catch(DataWritingException exception){
+                }catch(DataInsertionException exception){
                     Alert errorMessage = new Alert(Alert.AlertType.ERROR);
                     errorMessage.setHeaderText("Error de conexión");
                     errorMessage.setContentText("Favor de verificar su conexión a internet e inténtelo de nuevo");

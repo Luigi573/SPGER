@@ -1,4 +1,4 @@
-package mx.uv.fei.gui.controllers.chronogram;
+package mx.uv.fei.gui.controllers.chronogram.activities;
 
 import java.io.IOException;
 import java.sql.Date;
@@ -12,25 +12,31 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import mx.uv.fei.gui.AlertPopUpGenerator;
 import mx.uv.fei.logic.daos.ActivityDAO;
 import mx.uv.fei.logic.domain.Activity;
-import mx.uv.fei.logic.exceptions.DataWritingException;
+import mx.uv.fei.logic.exceptions.DataInsertionException;
 
 public class CreateActivityController{
     private int researchId;
-    private Parent parent;
-    private Scene scene;
-    private Stage stage;
     
     @FXML
     private DatePicker startDatePicker; 
     @FXML
     private DatePicker dueDatePicker;
     @FXML
+    private Pane headerPane;            
+    @FXML
     private TextField activityTitleTextField;
     @FXML
     private TextArea activityDescriptionTextArea;
+    
+    @FXML
+    private void initialize(){
+        loadHeader();
+    }
     
     @FXML
     private void createActivity(ActionEvent event) {
@@ -57,11 +63,8 @@ public class CreateActivityController{
                     
                         returnToChronogram(event);
                     }
-                }catch(DataWritingException exception){
-                    Alert errorMessage = new Alert(Alert.AlertType.ERROR);
-                    errorMessage.setHeaderText("Error de conexión");
-                    errorMessage.setContentText("Favor de verificar su conexión a internet e inténtelo de nuevo");
-                    errorMessage.showAndWait();
+                }catch(DataInsertionException exception){
+                    AlertPopUpGenerator.showConnectionErrorMessage();
                 }
             }else{
                 Alert warningMessage = new Alert(Alert.AlertType.WARNING);
@@ -80,17 +83,25 @@ public class CreateActivityController{
     private void returnToChronogram(ActionEvent event){
         try{
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/Chronogram.fxml"));
-            parent = loader.load();
-            stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-            scene = new Scene(parent);
+            Parent parent = loader.load();
+            Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+            Scene scene = new Scene(parent);
             stage.setTitle("SPGER");
             stage.setScene(scene);
             stage.show();
         }catch(IllegalStateException | IOException exception){
-            Alert errorMessage = new Alert(Alert.AlertType.ERROR);
-            errorMessage.setTitle("Error");
-            errorMessage.setContentText("Hubo un error al cargar el cronograma, archivo no encontrado");
-            errorMessage.showAndWait();
+            AlertPopUpGenerator.showMissingFilesMessage();
+        }
+    }
+    private void loadHeader(){
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/HeaderPane.fxml"));
+        
+        try{
+            Pane header = loader.load();
+            headerPane.getChildren().add(header);
+            
+        }catch(IOException exception){
+            AlertPopUpGenerator.showMissingFilesMessage();
         }
     }
     public void setResearchId(int researchId){

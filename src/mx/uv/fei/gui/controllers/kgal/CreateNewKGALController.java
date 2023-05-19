@@ -15,10 +15,6 @@ import mx.uv.fei.logic.domain.KGAL;
 import mx.uv.fei.logic.exceptions.DataInsertionException;
 
 public class CreateNewKGALController {
-
-    private Stage stage;
-    private Scene scene;
-    private Parent root;
     
     @FXML
     private TextField tfDescription;
@@ -51,9 +47,9 @@ public class CreateNewKGALController {
     @FXML
     public void switchToKGALListScene(ActionEvent event) {
         try {
-            root = FXMLLoader.load(getClass().getResource("/mx/uv/fei/gui/fxml/manageKGAL/KGALList.fxml"));
-            stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-            scene = new Scene(root);
+            Parent root = FXMLLoader.load(getClass().getResource("/mx/uv/fei/gui/fxml/manageKGAL/KGALList.fxml"));
+            Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
         } catch (IOException e) {

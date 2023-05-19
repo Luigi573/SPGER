@@ -1,116 +1,138 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/UnitTests/JUnit4TestClass.java to edit this template
- */
 package mx.uv.fei.logic.daos;
 
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.ArrayList;
+import mx.uv.fei.dataaccess.DataBaseManager;
 import mx.uv.fei.logic.domain.Advance;
 import mx.uv.fei.logic.exceptions.DataInsertionException;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
-import org.junit.After;
 import org.junit.AfterClass;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-/**
- *
- * @author Jesús Manuel
- */
 public class AdvanceDAOTest {
-    
-    public AdvanceDAOTest() {
-    }
+    private static DataBaseManager dataBaseManager;
+    private static int activityId;
+    private static Advance preloadedAdvance;
     
     @BeforeClass
     public static void setUpClass() {
+        dataBaseManager = new DataBaseManager();
+        PreparedStatement activityStatement;
+        String activityQuery = "INSERT INTO Actividades(título, descripción, fechaInicio, fechaFin) VALUES(?,?,?,?)";
+        
+        try{
+            activityStatement = dataBaseManager.getConnection().prepareStatement(activityQuery, Statement.RETURN_GENERATED_KEYS);
+            
+            activityStatement.setString(1, "Preloaded Activity");
+            activityStatement.setString(2, "This is a preloaded activity to test Advance methods");
+            activityStatement.setDate(3, Date.valueOf(LocalDate.of(2023, Month.MAY, 12)));
+            activityStatement.setDate(4, Date.valueOf(LocalDate.of(2023, Month.MAY, 19)));
+            
+            activityStatement.executeUpdate();
+            ResultSet generatedActivity = activityStatement.getGeneratedKeys();
+            
+            if(generatedActivity.next()){
+                activityId = generatedActivity.getInt(1);
+            }
+            
+            preloadedAdvance = new Advance();
+            preloadedAdvance.setActivityId(activityId);
+            
+            String advanceQuery = "INSERT INTO Avances(IdActividad, título, comentario, fecha) VALUES(?,?,?,?)";
+            PreparedStatement advanceStatement = dataBaseManager.getConnection().prepareStatement(advanceQuery, Statement.RETURN_GENERATED_KEYS);
+            
+            advanceStatement.setInt(1, activityId);
+            advanceStatement.setString(2, "Preloaded advance");
+            advanceStatement.setString(3, "This is a preloaded advance for testing getAdvanceList()");
+            advanceStatement.setDate(4, Date.valueOf(LocalDate.now()));
+            
+            advanceStatement.executeUpdate();
+            ResultSet generatedAdvanceKeys = advanceStatement.getGeneratedKeys();
+            
+            if(generatedAdvanceKeys.next()){
+                preloadedAdvance.setId(generatedAdvanceKeys.getInt(1));
+            }
+        }catch(SQLException exception){
+            fail("Test failed, couldn't connect to DB");
+        }finally{
+            dataBaseManager.closeConnection();
+        }
     }
     
     @AfterClass
     public static void tearDownClass() {
+        PreparedStatement statement;
+        String query = "DELETE FROM Actividades WHERE IdActividad IN(?)";
+        
+        try{
+            statement = dataBaseManager.getConnection().prepareStatement(query);
+            
+            statement.setInt(1, activityId);
+            statement.executeUpdate();
+        }catch(SQLException exception){
+            fail("Couldn't delete preloaded activity. No DB connection");
+        }
     }
-    
-    @Before
-    public void setUp() {
-    }
-    
-    @After
-    public void tearDown() {
-    }
-
-    /**
-     * Test of addAdvance method, of class AdvanceDAO.
-     */
+    ///////     Don't mind these tests, they aint mine and they're wrong
     @Test
     public void testAddAdvance() throws DataInsertionException {
         System.out.println("addAdvance");
         Advance advance = new Advance();
-        advance.setMatricle("zs21013873");
-        advance.setDirectorID(5);
         advance.setTitle("Avance de prueba unitaria");
-        advance.setComments("Este avance es una prueba");
+        advance.setComment("Este avance es una prueba");
         AdvanceDAO instance = new AdvanceDAO();
         int expResult = 1;
         int result = instance.addAdvance(advance);
         assertEquals(expResult, result);
     }
-
-    /**
-     * Test of getAdvancesList method, of class AdvanceDAO.
-     */
+    
+    
     @Test
-    public void testGetAdvancesList() throws DataRetrievalException {
-        System.out.println("getAdvancesList");
+    public void testGetAdvanceList() throws DataRetrievalException {
         AdvanceDAO instance = new AdvanceDAO();
-        Advance advance1 = new Advance();
-        Advance advance2 = new Advance();
-        advance1.setAdvanceID(7);
-        advance2.setAdvanceID(8);
-        advance1.setMatricle("zs21013873");
-        advance2.setMatricle("zs21013873");
-        advance1.setDirectorID(5);
-        advance2.setDirectorID(5);
-        advance1.setTitle("Avance de prueba unitaria");
-        advance2.setTitle("Avance de prueba unitaria num2");
-        advance1.setComments("Este avance es una prueba");
-        advance2.setComments("Este avance también es una prueba");      
-        ArrayList<Advance> expResult = new ArrayList();
-        expResult.add(advance1);
-        expResult.add(advance2);
-        ArrayList<Advance> result = instance.getAdvancesList();
+        ArrayList<Advance> advanceList = instance.getAdvanceList(activityId);
         
-        for(int i = 0; i < result.size(); i++) {
-            System.out.println(result.get(i));
-        }
-        for(int i = 0; i < expResult.size(); i++) {
-            System.out.println(expResult.get(i));
-        }
+        System.out.println("Retrieved advance data: ");
+        System.out.println("Title: " + advanceList.get(0).getTitle());
+        System.out.println("Comment: " + advanceList.get(0).getComment());
+        System.out.println("Date: " + advanceList.get(0).getDate());
         
-        System.out.println(expResult.equals(result));
-        assertEquals(expResult, result);
+        assertTrue(!advanceList.isEmpty());
     }
 
-    /**
-     * Test of getAdvanceByID method, of class AdvanceDAO.
-     */
     @Test
     public void testGetAdvanceByID() throws DataRetrievalException {
         System.out.println("getAdvanceByID");
         int advanceID = 8;
         AdvanceDAO instance = new AdvanceDAO();
         Advance advance1 = new Advance();
-        advance1.setAdvanceID(8);
-        advance1.setMatricle("zs21013873");
-        advance1.setDirectorID(5);
+        advance1.setId(8);
         advance1.setTitle("Avance de prueba unitaria num2");
-        advance1.setComments("Este avance también es una prueba");
+        advance1.setComment("Este avance también es una prueba");
         Advance expResult = advance1;
-        Advance result = instance.getAdvanceByID(advanceID);
+        /*Advance result = instance.getAdvanceByID(advanceID);
         System.out.println(expResult);
         System.out.println(result);
         System.out.println(expResult.equals(result));
-        assertEquals(expResult, result);
+        assertEquals(expResult, result);*/
+        fail("This test case is incomplete");
     }    
+    
+    //This test is correct
+    @Test
+    public void testSetFeedback() throws DataInsertionException{
+        preloadedAdvance.setFeedback("Avance bien hecho, tiene 10");
+        
+        AdvanceDAO instance = new AdvanceDAO();
+        int result = instance.setFeedback(preloadedAdvance);
+        assertTrue(result > 0);
+    }
 }

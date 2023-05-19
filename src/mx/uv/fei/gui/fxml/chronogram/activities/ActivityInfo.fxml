@@ -12,9 +12,10 @@
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.text.TextFlow?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.uv.fei.gui.controllers.chronogram.ActivityInfoController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.uv.fei.gui.controllers.chronogram.activities.ActivityInfoController">
    <children>
-      <Pane layoutY="70.0" prefHeight="330.0" prefWidth="54.0" />
+      <Pane fx:id="headerPane" layoutX="-3.0" prefHeight="67.0" prefWidth="606.0" />
+      <Pane fx:id="toolbarPane" layoutY="70.0" prefHeight="330.0" prefWidth="54.0" />
       <TabPane layoutX="89.0" layoutY="76.0" prefHeight="310.0" prefWidth="457.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
           <Tab text="Información">
@@ -88,39 +89,17 @@
                               <Font size="24.0" />
                            </font>
                         </Label>
+                        <ScrollPane hbarPolicy="NEVER" layoutY="41.0" prefHeight="202.0" prefWidth="457.0">
+                           <content>
+                              <VBox fx:id="advanceVBox" prefHeight="200.0" prefWidth="457.0" />
+                           </content>
+                        </ScrollPane>
+                        <Button layoutX="344.0" layoutY="255.0" mnemonicParsing="false" text="Agregar avance" />
                      </children>
                   </AnchorPane>
               </content>
             </Tab>
         </tabs>
       </TabPane>
-      <Pane layoutX="4.0" prefHeight="54.0" prefWidth="593.0">
-         <children>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="182.0" layoutY="2.0" prefHeight="30.0" prefWidth="194.0" text="[NombreEE]">
-               <font>
-                  <Font size="20.0" />
-               </font>
-            </Label>
-            <Label layoutX="72.0" text="SPGER">
-               <font>
-                  <Font size="32.0" />
-               </font>
-            </Label>
-            <Label layoutX="227.0" layoutY="25.0" prefHeight="30.0" prefWidth="127.0" text="NRC: [NRC]">
-               <font>
-                  <Font size="20.0" />
-               </font>
-            </Label>
-            <Button fx:id="homeButton" layoutX="7.0" layoutY="2.0" mnemonicParsing="false" onAction="#goHome" prefHeight="54.0" prefWidth="59.0" text="Home" />
-            <Label alignment="CENTER_RIGHT" layoutX="394.0" layoutY="17.0" prefHeight="25.0" prefWidth="127.0" text="[Nombre]">
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </Label>
-            <Button layoutX="527.0" layoutY="2.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="59.0" text="ProfPic" />
-         </children>
-      </Pane>
-      <Pane fx:id="headerPane" layoutX="-3.0" prefHeight="63.0" prefWidth="600.0" />
-      <ScrollPane layoutX="-248.0" layoutY="-147.0" prefHeight="200.0" prefWidth="200.0" />
    </children>
 </Pane>

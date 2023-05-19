@@ -7,22 +7,22 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="242.0" prefWidth="448.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.uv.fei.gui.controllers.chronogram.CommentPopUpController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="242.0" prefWidth="448.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.uv.fei.gui.controllers.chronogram.advances.FeedbackPopUpController">
    <children>
-      <Label alignment="CENTER" contentDisplay="CENTER" layoutY="-3.0" prefHeight="34.0" prefWidth="448.0" text="Agregar comentario">
+      <Label alignment="CENTER" contentDisplay="CENTER" layoutY="-3.0" prefHeight="34.0" prefWidth="448.0" text="Retroalimentación">
          <font>
             <Font name="System Bold" size="23.0" />
          </font>
       </Label>
       <ScrollPane hbarPolicy="NEVER" layoutX="-3.0" layoutY="31.0" prefHeight="178.0" prefWidth="448.0">
          <content>
-            <TextArea fx:id="commentTextArea" prefHeight="176.0" prefWidth="449.0" wrapText="true">
+            <TextArea fx:id="feedbackTextArea" prefHeight="176.0" prefWidth="449.0" wrapText="true">
                <font>
                   <Font size="16.0" />
                </font>
             </TextArea>
          </content>
       </ScrollPane>
-      <Button layoutX="162.0" layoutY="216.0" mnemonicParsing="false" onAction="#submitComment" text="Adjuntar comentario" />
+      <Button layoutX="162.0" layoutY="216.0" mnemonicParsing="false" onAction="#submitFeedback" text="Adjuntar comentario" />
    </children>
 </Pane>

@@ -1,4 +1,4 @@
-package mx.uv.fei.gui.controllers.chronogram;
+package mx.uv.fei.gui.controllers.chronogram.activities;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -8,7 +8,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import mx.uv.fei.logic.daos.ActivityDAO;
 import mx.uv.fei.logic.domain.Activity;
-import mx.uv.fei.logic.exceptions.DataWritingException;
+import mx.uv.fei.logic.exceptions.DataInsertionException;
 
 public class FeedbackPopUpController{
     private Activity activity;
@@ -34,7 +34,7 @@ public class FeedbackPopUpController{
                     Stage stage = (Stage)feedbackTextArea.getScene().getWindow();
                     stage.close();
                 }
-            }catch(DataWritingException exception){
+            }catch(DataInsertionException exception){
                 Alert errorMessage = new Alert(Alert.AlertType.ERROR);
                 errorMessage.setHeaderText("Error de conexión");
                 errorMessage.setContentText("Favor de verificar su conexión a internet e inténtelo de nuevo");

@@ -2,107 +2,179 @@ package mx.uv.fei.logic.daos;
 
 import java.util.ArrayList;
 import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.Month;
 import mx.uv.fei.dataaccess.DataBaseManager;
 import mx.uv.fei.logic.domain.Activity;
-import org.junit.After;
 import org.junit.AfterClass;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class ActivityDAOTest {
+    private static int researchId;
+    private static Activity preloadedActivity;
+    private static DataBaseManager dataBaseManager;
      
     @BeforeClass
     public static void setUpClass() {
+        dataBaseManager = new DataBaseManager();
+        PreparedStatement researchStatement;
+        String researchQuery = "INSERT INTO Anteproyectos(título) VALUES(?)"; 
         
+        try{
+            researchStatement = dataBaseManager.getConnection().prepareStatement(researchQuery, Statement.RETURN_GENERATED_KEYS);
+            researchStatement.setString(1, "Test research project");
+            
+            researchStatement.executeUpdate();
+            ResultSet generatedResearch = researchStatement.getGeneratedKeys();
+            
+            if(generatedResearch.next()){
+                researchId = generatedResearch.getInt(1);
+            }
+            
+            //Preload an activity for the getActivityList() and modifyActivity() methods
+            preloadedActivity = new Activity();
+            preloadedActivity.setResearchId(researchId);
+            preloadedActivity.setTitle("Preloaded Activity");
+            preloadedActivity.setDescription("This is a preloaded activity to test getActivityList() & modifyActivity() methods");
+            preloadedActivity.setStartDate(Date.valueOf(LocalDate.of(2023, Month.MAY, 12)));
+            preloadedActivity.setDueDate(Date.valueOf(LocalDate.of(2023, Month.MAY, 19)));
+            
+            PreparedStatement activityStatement;
+            String activityQuery = "INSERT INTO Actividades(IdAnteproyecto, título, descripción, fechaInicio, fechaFin) VALUES(?,?,?,?,?)";
+            
+            activityStatement = dataBaseManager.getConnection().prepareStatement(activityQuery, Statement.RETURN_GENERATED_KEYS);
+            activityStatement.setInt(1, preloadedActivity.getResearchId());
+            activityStatement.setString(2, preloadedActivity.getTitle());
+            activityStatement.setString(3, preloadedActivity.getDescription());
+            activityStatement.setDate(4, preloadedActivity.getStartDate());
+            activityStatement.setDate(5, preloadedActivity.getDueDate());
+            
+            activityStatement.executeUpdate();
+            ResultSet generatedActivity = activityStatement.getGeneratedKeys();
+            
+            if(generatedActivity.next()){
+                preloadedActivity.setId(generatedActivity.getInt(1));
+            }
+        }catch(SQLException exception){
+            fail("Test failed, couldn't connect to DB");
+        }finally{
+            dataBaseManager.closeConnection();
+        }
     }
     
     @AfterClass
     public static void tearDownClass() {
-    }
-    
-    @Before
-    public void setUp() {
+        PreparedStatement deleteStatement;
+        String query = "DELETE FROM Anteproyectos WHERE IdAnteproyecto IN(?)";
         
-    }
-    
-    @After
-    public void tearDown() {
+        try{
+            deleteStatement = dataBaseManager.getConnection().prepareStatement(query);
+            deleteStatement.setInt(1, researchId);
+            
+            deleteStatement.executeUpdate();
+        }catch(SQLException exception){
+            fail("Failed to delete research, no DB connection could be established");
+        }finally{
+            dataBaseManager.closeConnection();
+        }
     }
 
     @Test
     public void testAddActivity() throws Exception {
+        System.out.println("Test 'ActivityDAO.addActivity()'");
+        LocalDate startDate = LocalDate.of(2023, Month.MARCH, 26);
+        LocalDate dueDate = LocalDate.of(2023, Month.DECEMBER, 2);
+        
+        
         Activity activity = new Activity();
-        activity.setTitle("Actividad 1");
-        activity.setDescription("Caso de prueba");
-        activity.setStartDate(new Date(54596958));
-        activity.setDueDate(new Date(65565888));
+        activity.setTitle("Add Activity Test");
+        activity.setDescription("This activity is made to test ActivityDAO.addActivity");
+        activity.setStartDate(Date.valueOf(startDate));
+        activity.setDueDate(Date.valueOf(dueDate));
+        activity.setResearchId(researchId);
         
         ActivityDAO activityDAO = new ActivityDAO();
         
         int result = activityDAO.addActivity(activity);
-        assertTrue("If total of affected rows is greater than 0, activity was created sucessfully", (result > 0));
+        
+        System.out.println("If total of affected rows is greater than 0, activity was created sucessfully");
+        System.out.println("Generated activity Id: " + result);
+        assertTrue(result > 0);
     }
     @Test
     public void testGetActivityList() throws Exception {
-        System.out.println("getActivityList");
         ActivityDAO instance = new ActivityDAO();
-        //ArrayList<Activity> result = instance.getActivityList();
+        ArrayList<Activity> result = instance.getActivityList(researchId);
         
-        //assertTrue("", (!result.isEmpty()));
+        System.out.println("If list is not empty, it means preloaded activity got retrieved sucessfully");
+        System.out.println(result.get(0));
+        
+        assertTrue((!result.isEmpty()));
     }
     @Test
     public void testModifyActivity() throws Exception{
-        System.out.println("modifyActivity");
-        Activity activity = null;
+        Activity activity = preloadedActivity;
+        activity.setTitle("Modified activity Test");
+        activity.setDescription("This is a modification of the preloaded activity");
         ActivityDAO instance = new ActivityDAO();
-        int expResult = 0;
+        
         int result = instance.modifyActivity(activity);
-        assertEquals(expResult, result);
+        System.out.println("If affected rows is greater than 0, it means that activity was modified sucessfully");
+        assertTrue(result > 0);
     }
     @Test
     public void testAssertActivity() {
-        System.out.println("assertActivity");
-        Activity activity = null;
+        Activity activity = preloadedActivity;
         ActivityDAO instance = new ActivityDAO();
-        boolean expResult = false;
-        boolean result = instance.assertActivity(activity);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        
+        System.out.println("If it returns true, it means activity is neither blank or has invalid date");
+        assertTrue(instance.assertActivity(activity));
     }
     @Test
-    public void testIsBlank() {
-        System.out.println("isBlank");
-        Activity activity = null;
+    public void testIsBlank(){
         ActivityDAO instance = new ActivityDAO();
-        boolean expResult = false;
-        boolean result = instance.isBlank(activity);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        
+        System.out.println("IsBlank() will return true when either the title or description are blank");
+        assertTrue(!instance.isBlank(preloadedActivity));
     }
     @Test
-    public void testIsNull() {
-        System.out.println("isNull");
-        Activity activity = null;
+    public void testIsBlank_WithInvalidData() {
+        System.out.println("isBlank() test with blank data");
+        Activity activity = new Activity();
+        activity.setTitle("Blank description activity");
+        activity.setDescription("");
+        
+        System.out.println("IsBlank will return true when either the title or description are blank");
+        System.out.println("Title: " + activity.getTitle());
+        System.out.println("Description: " + activity.getDescription());
+        
         ActivityDAO instance = new ActivityDAO();
-        boolean expResult = false;
-        boolean result = instance.isNull(activity);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertTrue(instance.isBlank(activity));
     }
     @Test
     public void testIsValidDate() {
-        System.out.println("isValidDate");
-        Activity activity = null;
+        Activity activity = preloadedActivity;
         ActivityDAO instance = new ActivityDAO();
-        boolean expResult = false;
-        boolean result = instance.isValidDate(activity);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        
+        System.out.println("If this is true, it means that startDate goes before or the same day as dueDate");
+        assertTrue(instance.isValidDate(activity));
+    }
+    @Test
+    public void testIsValidDate_WithInvalidData() {
+        Activity activity = new Activity();
+        ActivityDAO instance = new ActivityDAO();
+        
+        activity.setStartDate(Date.valueOf(LocalDate.of(2023, Month.MARCH, 20)));
+        activity.setDueDate(Date.valueOf(LocalDate.of(2023, Month.MARCH, 1)));
+        
+        
+        System.out.println("If this is true, it means that startDate goes before or the same day as dueDate");
+        assertTrue(!instance.isValidDate(activity));
     }
 }
