@@ -12,6 +12,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import mx.uv.fei.logic.daos.ResearchDAO;
 import mx.uv.fei.logic.domain.ResearchProject;
+import mx.uv.fei.logic.exceptions.DataWritingException;
 
 public class ResearchInfoPaneController {
     private ArrayList<Label> directorLabels;
@@ -69,6 +70,11 @@ public class ResearchInfoPaneController {
     @FXML
     private void validateResearch(ActionEvent event) {
         ResearchDAO researchDAO = new ResearchDAO();
+        try {
+            researchDAO.validateResearch(research);
+        } catch (DataWritingException e) {
+            e.printStackTrace();
+        }
     }
     
     public void setContainer(ScrollPane container){

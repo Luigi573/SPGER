@@ -9,35 +9,39 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.uv.fei.gui.controllers.research.ResearchManagerController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.uv.fei.gui.controllers.research.ResearchManagerController">
    <children>
-      <Pane fx:id="headerPane" prefHeight="69.0" prefWidth="600.0" />
-      <ScrollPane hbarPolicy="NEVER" layoutX="12.0" layoutY="117.0" prefHeight="273.0" prefWidth="275.0">
+      <Pane fx:id="headerPane" prefHeight="88.0" prefWidth="1025.0" />
+      <ScrollPane hbarPolicy="NEVER" layoutX="26.0" layoutY="164.0" prefHeight="410.0" prefWidth="470.0">
          <content>
-            <VBox fx:id="researchVBox" prefHeight="270.0" prefWidth="275.0" />
+            <VBox fx:id="researchVBox" prefHeight="408.0" prefWidth="467.0" />
          </content>
       </ScrollPane>
-      <ScrollPane fx:id="researchInfoScrollPane" hbarPolicy="NEVER" layoutX="300.0" layoutY="117.0" prefHeight="273.0" prefWidth="297.0">
+      <ScrollPane fx:id="researchInfoScrollPane" hbarPolicy="NEVER" layoutX="524.0" layoutY="164.0" prefHeight="410.0" prefWidth="470.0">
          <content>
-            <Label alignment="CENTER" prefHeight="270.0" prefWidth="298.0" text="Click on a research project to display its info" wrapText="true">
+            <Label alignment="CENTER" prefHeight="408.0" prefWidth="469.0" text="Click on a research project to display its info" textAlignment="CENTER" wrapText="true">
                <font>
                   <Font size="26.0" />
                </font>
             </Label>
          </content></ScrollPane>
-      <Label layoutX="14.0" layoutY="90.0" prefHeight="17.0" prefWidth="90.0" text="Buscar por título:" />
-      <TextField fx:id="reSearchTextField" layoutX="107.0" layoutY="86.0" onAction="#searchResearch" prefHeight="25.0" prefWidth="133.0" />
-      <Label layoutX="402.0" layoutY="89.0" text="(Sin validar)" />
-      <ToggleButton layoutX="471.0" layoutY="85.0" mnemonicParsing="false" onAction="#showValidated" prefHeight="24.0" prefWidth="43.0" text="OFF">
+      <Label layoutX="37.0" layoutY="109.0" prefHeight="17.0" prefWidth="117.0" text="Buscar por título:" />
+      <TextField fx:id="reSearchTextField" layoutX="156.0" layoutY="106.0" prefHeight="25.0" prefWidth="253.0" />
+      <Button layoutX="419.0" layoutY="106.0" mnemonicParsing="false" onAction="#searchButtonController" text="Buscar" />
+      <Label layoutX="556.0" layoutY="104.0" text="Mostrar No Validados:" />
+      <ToggleButton fx:id="showNotValidatedButton" layoutX="708.0" layoutY="100.0" mnemonicParsing="false" onAction="#showNotValidatedButtonController" prefHeight="24.0" prefWidth="43.0" text="No">
          <font>
             <Font size="11.0" />
          </font>
       </ToggleButton>
-      <Button fx:id="addResearchButton" layoutX="524.0" layoutY="84.0" mnemonicParsing="false" onAction="#addResearch" prefHeight="25.0" prefWidth="62.0" text="Agregar" />
-      <Button fx:id="reportButton" layoutX="244.0" layoutY="70.0" mnemonicParsing="false" onAction="#goToReports" prefHeight="40.0" prefWidth="43.0" text="Report">
+      <Button fx:id="addResearchButton" layoutX="790.0" layoutY="100.0" mnemonicParsing="false" onAction="#addResearch" prefHeight="24.0" prefWidth="183.0" text="Registrar Anteproshecto" />
+      <Button fx:id="reportButton" layoutX="823.0" layoutY="131.0" mnemonicParsing="false" onAction="#goToReports" prefHeight="17.0" prefWidth="117.0" text="Crear Reporte" />
+      <Label layoutX="86.0" layoutY="139.0" text="(Deje en blanco para mostrar to2 los Anteproshectos)" />
+      <Label layoutX="568.0" layoutY="136.0" text="Mostrar Validados:" />
+      <ToggleButton fx:id="showValidatedButton" layoutX="708.0" layoutY="132.0" mnemonicParsing="false" onAction="#showValidatedButtonController" prefHeight="24.0" prefWidth="43.0" text="No">
          <font>
-            <Font size="9.0" />
+            <Font size="11.0" />
          </font>
-      </Button>
+      </ToggleButton>
    </children>
 </Pane>

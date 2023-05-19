@@ -5,9 +5,8 @@ Text {
 }
 
 .root {
-    /*-fx-background-color: #121b9e;*/
-    /*-fx-background-color: #121b9e;*/
-    -fx-background-color: #ff4800;
+    -fx-background-color: #121b9e;
+    /*-fx-background-color: #ff4800;*/
 }
 
 .anchor-pane {

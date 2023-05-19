@@ -20,6 +20,7 @@ import mx.uv.fei.logic.domain.Director;
 import mx.uv.fei.logic.domain.KGAL;
 import mx.uv.fei.logic.domain.ResearchProject;
 import mx.uv.fei.logic.domain.Student;
+import mx.uv.fei.logic.domain.statuses.ResearchProjectStatus;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
 import mx.uv.fei.logic.exceptions.DataWritingException;
 
@@ -62,7 +63,7 @@ public class AddResearchController{
             ArrayList<KGAL> KGALList = kgalDAO.getKGALList();
             ArrayList<Student> studentList = studentDAO.getStudentsFromDatabase();
             
-            directorComboBoxes = new ArrayList();
+            directorComboBoxes = new ArrayList<>();
             directorComboBoxes.add(director1ComboBox);
             directorComboBoxes.add(director2ComboBox);
             directorComboBoxes.add(director3ComboBox);
@@ -108,6 +109,7 @@ public class AddResearchController{
             research.setRequirements(requirementsTextArea.getText().trim());
             research.setSuggestedBibliography(suggestedBibliographyTextArea.getText().trim());
             research.setExpectedResult(expectedResultTextArea.getText().trim());
+            research.setValidationStatus(ResearchProjectStatus.PROPOSED.name());
             
             ResearchDAO researchDAO = new ResearchDAO();
             

@@ -11,6 +11,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -23,12 +24,21 @@ public class ResearchManagerController{
     
     @FXML
     private Pane headerPane;
+    
     @FXML
     private TextField reSearchTextField;
+
     @FXML
     private ScrollPane researchInfoScrollPane;
+
     @FXML
     private VBox researchVBox;
+
+    @FXML
+    private ToggleButton showNotValidatedButton;
+
+    @FXML
+    private ToggleButton showValidatedButton;
 
     @FXML
     private void initialize() {
@@ -48,7 +58,7 @@ public class ResearchManagerController{
             stage.setResizable(false);
             
             stage.showAndWait();
-        }catch(IOException exception){
+        } catch(IOException exception){
             Alert errorMessage = new Alert(Alert.AlertType.ERROR);
             errorMessage.setContentText("Error al cargar, faltan archivos");
             errorMessage.showAndWait();
@@ -61,15 +71,37 @@ public class ResearchManagerController{
     }
 
     @FXML
-    private void searchResearch(ActionEvent event) {
+    private void searchButtonController(ActionEvent event) {
         researchVBox.getChildren().clear();
-        loadResearches(1);
+        if(!showValidatedButton.isSelected() && !showNotValidatedButton.isSelected())
+            loadResearches(1);
+
+        if(showValidatedButton.isSelected() && !showNotValidatedButton.isSelected())
+            loadResearches(2);
+
+        if(!showValidatedButton.isSelected() && showNotValidatedButton.isSelected())
+            loadResearches(3);
+
+        if(showValidatedButton.isSelected() && showNotValidatedButton.isSelected())
+            loadResearches(4);
     }
 
     @FXML
-    private void showValidated(ActionEvent event) {
-        researchVBox.getChildren().clear();
-        loadResearches(2);
+    private void showValidatedButtonController(ActionEvent event) {
+        if(showValidatedButton.isSelected()) {
+            showValidatedButton.setText("Nel");
+        } else {
+            showValidatedButton.setText("Simón");
+        }
+    }
+
+    @FXML
+    private void showNotValidatedButtonController(ActionEvent event) {
+        if(showNotValidatedButton.isSelected()) {
+            showNotValidatedButton.setText("Nel");
+        } else {
+            showNotValidatedButton.setText("Simón");
+        }
     }
 
     private void loadHeader() {
@@ -102,7 +134,17 @@ public class ResearchManagerController{
                 }
 
                 case 2: {
-                    researchList = researchDAO.getValidatedResearchProjectList();
+                    researchList = researchDAO.getSpecifiedValidatedResearchProjectList(reSearchTextField.getText());
+                    break;
+                }
+
+                case 3: {
+                    researchList = researchDAO.getSpecifiedNotValidatedResearchProjectList(reSearchTextField.getText());
+                    break;
+                }
+
+                case 4: {
+                    researchList = researchDAO.getSpecifiedValidatedAndNotValidatedResearchProjectList(reSearchTextField.getText());
                     break;
                 }
 
