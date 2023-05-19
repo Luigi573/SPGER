@@ -33,8 +33,9 @@ public class ResearchManagerController{
     @FXML
     private void initialize() {
         loadHeader();
-        loadResearch();
+        loadResearches(0);
     }
+
     @FXML
     void addResearch(ActionEvent event) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/research/AddResearch.fxml"));
@@ -53,19 +54,25 @@ public class ResearchManagerController{
             errorMessage.showAndWait();
         }
     }
+
     @FXML
     private void goToReports(ActionEvent event) {
         
     }
+
     @FXML
     private void searchResearch(ActionEvent event) {
-        
+        researchVBox.getChildren().clear();
+        loadResearches(1);
     }
+
     @FXML
     private void showValidated(ActionEvent event) {
-        
+        researchVBox.getChildren().clear();
+        loadResearches(2);
     }
-    private void loadHeader(){
+
+    private void loadHeader() {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/HeaderPane.fxml"));
         
         try{
@@ -78,11 +85,31 @@ public class ResearchManagerController{
             errorMessage.showAndWait();
         }
     }
-    private void loadResearch(){
+
+    private void loadResearches(int type){
         ResearchDAO researchDAO = new ResearchDAO();
         
         try{
-            researchList = researchDAO.getResearchProjectList();
+            switch(type) {
+                case 0: {
+                    researchList = researchDAO.getResearchProjectList();
+                    break;
+                }
+
+                case 1: {
+                    researchList = researchDAO.getSpecifiedResearchProjectList(reSearchTextField.getText());
+                    break;
+                }
+
+                case 2: {
+                    researchList = researchDAO.getValidatedResearchProjectList();
+                    break;
+                }
+
+                default:
+                    break;
+
+            }
             
             for(ResearchProject research : researchList){
                 try{
@@ -100,9 +127,11 @@ public class ResearchManagerController{
                 }
             }
         }catch(DataRetrievalException exception){
+            exception.printStackTrace();
             Alert errorMessage = new Alert(AlertType.ERROR);
             errorMessage.setContentText("Error al cargar anteproyectos, verifique su conexión a internet y actualice este apartado");
             errorMessage.showAndWait();
         }
     }
+
 }

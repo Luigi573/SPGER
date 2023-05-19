@@ -13,7 +13,7 @@ import mx.uv.fei.logic.exceptions.DataRetrievalException;
 import mx.uv.fei.logic.exceptions.DataWritingException;
 
 public class AcademicBodyHeadDAO implements IAcademicBodyHeadDAO{
-    private DataBaseManager dataBaseManager;
+    private final DataBaseManager dataBaseManager;
     
     public AcademicBodyHeadDAO(){
         dataBaseManager = new DataBaseManager();
@@ -96,13 +96,14 @@ public class AcademicBodyHeadDAO implements IAcademicBodyHeadDAO{
         } catch (SQLException e) {
             e.printStackTrace();
             throw new DataWritingException("Error al agregar miembro del cuerpo académico. Verifique su conexion e intentelo de nuevo");
+        } finally {
+            dataBaseManager.closeConnection();
         }
     }
 
     @Override
     public void modifyAcademicBodyHeadDataFromDatabase(AcademicBodyHead newAcademicBodyHeadData, AcademicBodyHead originalAcademicBodyHeadData) throws DataWritingException {
         try {
-            DataBaseManager dataBaseManager = new DataBaseManager();
             String queryForUpdateUserData = "UPDATE Usuarios SET nombre = ?, " + 
                            "apellidoPaterno = ?, apellidoMaterno = ?, correo = ?, " + 
                            "correoAlterno = ?, númeroTeléfono = ?, estado = ? " +
@@ -145,6 +146,8 @@ public class AcademicBodyHeadDAO implements IAcademicBodyHeadDAO{
         } catch (SQLException e) {
             e.printStackTrace();
             throw new DataWritingException("Error al agregar miembro del cuerpo académico. Verifique su conexion e intentelo de nuevo");
+        } finally {
+            dataBaseManager.closeConnection();
         }
     }
 
@@ -153,7 +156,6 @@ public class AcademicBodyHeadDAO implements IAcademicBodyHeadDAO{
         ArrayList<AcademicBodyHead> academicBodyHeads = new ArrayList<>();
 
         try {
-            DataBaseManager dataBaseManager = new DataBaseManager();
             Statement statement = dataBaseManager.getConnection().createStatement();
             String query = "SELECT * FROM Usuarios U INNER JOIN Profesores P ON U.IdUsuario = P.IdUsuario INNER JOIN ResponsablesCA RCA ON P.NumPersonal = RCA.NumPersonal";
             ResultSet resultSet = statement.executeQuery(query);
@@ -175,6 +177,8 @@ public class AcademicBodyHeadDAO implements IAcademicBodyHeadDAO{
         } catch (SQLException e) {
             e.printStackTrace();
             throw new DataRetrievalException("Fallo al recuperar la informacion. Verifique su conexion e intentelo de nuevo");
+        } finally {
+            dataBaseManager.closeConnection();
         }
 
         return academicBodyHeads;
@@ -185,7 +189,6 @@ public class AcademicBodyHeadDAO implements IAcademicBodyHeadDAO{
         ArrayList<AcademicBodyHead> academicBodyHeads = new ArrayList<>();
 
         try {
-            DataBaseManager dataBaseManager = new DataBaseManager();
             String query = "SELECT * FROM Usuarios U INNER JOIN Profesores P ON U.IdUsuario = P.IdUsuario INNER JOIN ResponsablesCA RCA ON P.NumPersonal = RCA.NumPersonal WHERE U.Nombre LIKE ?";
             PreparedStatement preparedStatement = dataBaseManager.getConnection().prepareStatement(query);
             preparedStatement.setString(1, academicBodyHeadName + '%');
@@ -208,6 +211,8 @@ public class AcademicBodyHeadDAO implements IAcademicBodyHeadDAO{
         } catch (SQLException e) {
             e.printStackTrace();
             throw new DataRetrievalException("Fallo al recuperar la informacion. Verifique su conexion e intentelo de nuevo");
+        } finally {
+            dataBaseManager.closeConnection();
         }
 
         return academicBodyHeads;
@@ -218,7 +223,6 @@ public class AcademicBodyHeadDAO implements IAcademicBodyHeadDAO{
         AcademicBodyHead academicBodyHead = new AcademicBodyHead();
 
         try {
-            DataBaseManager dataBaseManager = new DataBaseManager();
             String query = "SELECT * FROM Usuarios U INNER JOIN Profesores P ON U.IdUsuario = P.IdUsuario INNER JOIN ResponsablesCA RCA ON P.NumPersonal = RCA.NumPersonal WHERE RCA.NumPersonal = ?";
             PreparedStatement preparedStatement = dataBaseManager.getConnection().prepareStatement(query);
             preparedStatement.setInt(1, personalNumber);
@@ -240,6 +244,8 @@ public class AcademicBodyHeadDAO implements IAcademicBodyHeadDAO{
         } catch (SQLException e) {
             e.printStackTrace();
             throw new DataRetrievalException("Fallo al recuperar la informacion. Verifique su conexion e intentelo de nuevo");
+        } finally {
+            dataBaseManager.closeConnection();
         }
 
         return academicBodyHead;
@@ -247,7 +253,6 @@ public class AcademicBodyHeadDAO implements IAcademicBodyHeadDAO{
 
     public boolean theAcademicBodyHeadIsAlreadyRegisted(AcademicBodyHead academicBodyHead) throws DataRetrievalException {
         try {
-            DataBaseManager dataBaseManager = new DataBaseManager();
             Statement statement = dataBaseManager.getConnection().createStatement();
             String query = "SELECT U.nombre, U.apellidoPaterno, U.apellidoMaterno, U.correo, " +
                            "U.correoAlterno, U.númeroTeléfono, U.estado, P.NumPersonal FROM Usuarios U " + 
@@ -274,6 +279,8 @@ public class AcademicBodyHeadDAO implements IAcademicBodyHeadDAO{
         } catch (SQLException e) {
             e.printStackTrace();
             throw new DataRetrievalException("Fallo al recuperar la informacion. Verifique su conexion e intentelo de nuevo");
+        } finally {
+            dataBaseManager.closeConnection();
         }
 
         return false;

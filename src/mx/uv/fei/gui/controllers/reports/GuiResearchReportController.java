@@ -27,6 +27,7 @@ import javafx.scene.text.Text;
 import mx.uv.fei.gui.controllers.AlertPaneController;
 import mx.uv.fei.logic.daos.ResearchesReportDAO;
 import mx.uv.fei.logic.domain.Research;
+import mx.uv.fei.logic.exceptions.DataRetrievalException;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -92,10 +93,10 @@ public class GuiResearchReportController {
             selectedResearches.add(((Label)label).getText());
         }
 
-        ResearchesReportDAO researchesReportDAO = new ResearchesReportDAO();
-        ArrayList<Research> researches = researchesReportDAO.getSelectedResearchesFromDatabase(selectedResearches);
-
         try {
+            ResearchesReportDAO researchesReportDAO = new ResearchesReportDAO();
+            ArrayList<Research> researches = researchesReportDAO.getSelectedResearchesFromDatabase(selectedResearches);
+
             Path path = Paths.get("src/dependencies/resources/jasperreports/ResearchReport.jasper");
             InputStream inputStream = Files.newInputStream(path.toAbsolutePath());
             JasperReport report = (JasperReport) JRLoader.loadObject(inputStream);
@@ -121,6 +122,10 @@ public class GuiResearchReportController {
             jre.printStackTrace();
             AlertPaneController alertPaneController = new AlertPaneController();
             alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
+        } catch (DataRetrievalException e) {
+            e.printStackTrace();
+            AlertPaneController alertPaneController = new AlertPaneController();
+            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
         }
     }
 
@@ -129,24 +134,32 @@ public class GuiResearchReportController {
         this.researchesVBox.getChildren().removeAll(this.researchesVBox.getChildren());
         ResearchesReportDAO researchesReportDAO = new ResearchesReportDAO();
         ArrayList<Research> researches = new ArrayList<>();
-        if(!this.showNotValidatedToggleButton.isSelected() &&
-           !this.showValidatedToggleButton.isSelected()){
-            researches = researchesReportDAO.getResearchesFromDatabase(this.findByTitleTextField.getText(), "");
-        }
+        try {
+            if(!this.showNotValidatedToggleButton.isSelected() &&
+               !this.showValidatedToggleButton.isSelected()){
+                researches = researchesReportDAO.getResearchesFromDatabase(this.findByTitleTextField.getText(), "");
+            }
+        
+            
+            if(!this.showNotValidatedToggleButton.isSelected() &&
+               this.showValidatedToggleButton.isSelected()){
+                researches = researchesReportDAO.getValidatedResearchesFromDatabase(this.findByTitleTextField.getText());
+            }
+        
+            if(this.showNotValidatedToggleButton.isSelected() &&
+               !this.showValidatedToggleButton.isSelected()){
+                researches = researchesReportDAO.getNotValidatedResearchesFromDatabase(this.findByTitleTextField.getText());
+            }
+        
+            if(this.showNotValidatedToggleButton.isSelected() &&
+               this.showValidatedToggleButton.isSelected()){
+                researches = researchesReportDAO.getValidatedAndNotValidatedResearchesFromDatabase(this.findByTitleTextField.getText());
+            }
 
-        if(!this.showNotValidatedToggleButton.isSelected() &&
-           this.showValidatedToggleButton.isSelected()){
-            researches = researchesReportDAO.getValidatedResearchesFromDatabase(this.findByTitleTextField.getText());
-        }
-
-        if(this.showNotValidatedToggleButton.isSelected() &&
-           !this.showValidatedToggleButton.isSelected()){
-            researches = researchesReportDAO.getNotValidatedResearchesFromDatabase(this.findByTitleTextField.getText());
-        }
-
-        if(this.showNotValidatedToggleButton.isSelected() &&
-           this.showValidatedToggleButton.isSelected()){
-            researches = researchesReportDAO.getValidatedAndNotValidatedResearchesFromDatabase(this.findByTitleTextField.getText());
+        } catch (DataRetrievalException e) {
+            e.printStackTrace();
+            AlertPaneController alertPaneController = new AlertPaneController();
+            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
         }
         
         try {
@@ -240,19 +253,6 @@ public class GuiResearchReportController {
     //This method only should be executed by the SelectedResearchItemController Class, do not execute this method in another class.
     VBox getSelectedResearchesVBox() {
         return this.selectedResearchesVBox;
-    }
-
-    //This method only should be executed by the SelectedResearchItemController and ResearchItemController Classes,
-    //do not execute this method in another class.
-    void showAndSetTextToErrorMessageText(String text) {
-        this.errorMessageText.setVisible(true);
-        this.errorMessageText.setText(text);
-    }
-
-    //This method only should be executed by the SelectedResearchItemController and ResearchItemController Classes,
-    //do not execute this method in another class.
-    void hideErrorMessageText(){
-        this.errorMessageText.setVisible(false);
     }
 
 }

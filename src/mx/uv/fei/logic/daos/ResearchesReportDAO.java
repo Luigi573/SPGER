@@ -8,15 +8,20 @@ import java.util.ArrayList;
 import mx.uv.fei.dataaccess.DataBaseManager;
 import mx.uv.fei.logic.daosinterfaces.IResearchesReportDAO;
 import mx.uv.fei.logic.domain.Research;
+import mx.uv.fei.logic.exceptions.DataRetrievalException;
 
-public class ResearchesReportDAO implements IResearchesReportDAO{
+public class ResearchesReportDAO implements IResearchesReportDAO {
+    private final DataBaseManager dataBaseManager;
+
+    public ResearchesReportDAO() {
+        dataBaseManager = new DataBaseManager();
+    }
 
     @Override
-    public ArrayList<Research> getResearchesFromDatabase(String title, String query) {
+    public ArrayList<Research> getResearchesFromDatabase(String title, String query) throws DataRetrievalException{
         ArrayList<Research> researches = new ArrayList<>();
 
         try {
-            DataBaseManager dataBaseManager = new DataBaseManager();
             if(query == ""){
                 query = "SELECT * FROM Anteproyectos WHERE título LIKE ?";
             }
@@ -43,13 +48,16 @@ public class ResearchesReportDAO implements IResearchesReportDAO{
 
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new DataRetrievalException("Fallo al recuperar la informacion. Verifique su conexion e intentelo de nuevo");
+        } finally {
+            dataBaseManager.closeConnection();
         }
 
         return researches;
     }
 
     @Override
-    public ArrayList<Research> getValidatedResearchesFromDatabase(String title) {
+    public ArrayList<Research> getValidatedResearchesFromDatabase(String title) throws DataRetrievalException {
         ArrayList<Research> validatedResearches;
         String query = "SELECT * FROM Anteproyectos WHERE título LIKE ? && V°B° = 'Validado'";
         validatedResearches = this.getResearchesFromDatabase(title, query);
@@ -57,7 +65,7 @@ public class ResearchesReportDAO implements IResearchesReportDAO{
     }
 
     @Override
-    public ArrayList<Research> getNotValidatedResearchesFromDatabase(String title) {
+    public ArrayList<Research> getNotValidatedResearchesFromDatabase(String title) throws DataRetrievalException {
         ArrayList<Research> notValidatedResearches;
         String query = "SELECT * FROM Anteproyectos WHERE título LIKE ? && V°B° = 'No Validado'";
         notValidatedResearches = this.getResearchesFromDatabase(title, query);
@@ -65,7 +73,7 @@ public class ResearchesReportDAO implements IResearchesReportDAO{
     }
 
     @Override
-    public ArrayList<Research> getValidatedAndNotValidatedResearchesFromDatabase(String title) {
+    public ArrayList<Research> getValidatedAndNotValidatedResearchesFromDatabase(String title) throws DataRetrievalException {
         ArrayList<Research> validatedAndNotValidatedResearches;
         String query = "SELECT * FROM Anteproyectos WHERE título LIKE ? && (V°B° = 'Validado' || V°B° = 'No Validado')";
         validatedAndNotValidatedResearches = this.getResearchesFromDatabase(title, query);
@@ -73,7 +81,7 @@ public class ResearchesReportDAO implements IResearchesReportDAO{
     }
 
     @Override
-    public ArrayList<Research> getSelectedResearchesFromDatabase(ArrayList<String> selectedResearchesTitles) {
+    public ArrayList<Research> getSelectedResearchesFromDatabase(ArrayList<String> selectedResearchesTitles) throws DataRetrievalException {
         DataBaseManager dataBaseManager = new DataBaseManager();
         ArrayList<Research> selectedResearches = new ArrayList<>();
 
@@ -112,6 +120,9 @@ public class ResearchesReportDAO implements IResearchesReportDAO{
             dataBaseManager.getConnection().close();
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new DataRetrievalException("Fallo al recuperar la informacion. Verifique su conexion e intentelo de nuevo");
+        } finally {
+            dataBaseManager.closeConnection();
         }
 
         return selectedResearches;

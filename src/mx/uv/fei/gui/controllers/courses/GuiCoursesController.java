@@ -118,6 +118,10 @@ public class GuiCoursesController {
             e.printStackTrace();
             AlertPaneController alertPaneController = new AlertPaneController();
             alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
+        } catch (DataRetrievalException e) {
+            e.printStackTrace();
+            AlertPaneController alertPaneController = new AlertPaneController();
+            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
         }    
     }
 

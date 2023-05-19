@@ -20,6 +20,7 @@ import mx.uv.fei.logic.daos.StudentDAO;
 import mx.uv.fei.logic.daos.StudentsCoursesDAO;
 import mx.uv.fei.logic.domain.Student;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
+import mx.uv.fei.logic.exceptions.DataWritingException;
 
 public class GuiStudentAdderController {
 
@@ -42,14 +43,14 @@ public class GuiStudentAdderController {
 
     @FXML
     void initialize() {
-        StudentsCoursesDAO studentsCoursesDAO = new StudentsCoursesDAO();
-        ArrayList<String> studentMatricles = studentsCoursesDAO.getStudentsMatriclesByCourseNRCFromDatabase(
-            this.guiUsersCourseController.getCourseInformationController().getNrc()
-        );
+        try {
+            StudentsCoursesDAO studentsCoursesDAO = new StudentsCoursesDAO();
+            ArrayList<String> studentMatricles = studentsCoursesDAO.getStudentsMatriclesByCourseNRCFromDatabase(
+                this.guiUsersCourseController.getCourseInformationController().getNrc()
+            );
 
         
-        StudentDAO studentDAO = new StudentDAO();
-        try {
+            StudentDAO studentDAO = new StudentDAO();
             ArrayList<Student> activeStudents = studentDAO.getActiveStudentsFromDatabase();
             if(studentMatricles.isEmpty()) {
                 try {
@@ -112,10 +113,16 @@ public class GuiStudentAdderController {
 
         for(Node studentPane : this.studentsVBox.getChildren()) {
             if( ((RadioButton)((Pane)studentPane).getChildren().get(4)).isSelected() ) {
-                studentCoursesDAO.addStudentCourseToDatabase(
-                    ((Label)((Pane)studentPane).getChildren().get(3)).getText(), 
-                    this.guiUsersCourseController.getCourseInformationController().getNrc()
-                );
+                try {
+                    studentCoursesDAO.addStudentCourseToDatabase(
+                        ((Label)((Pane)studentPane).getChildren().get(3)).getText(), 
+                        this.guiUsersCourseController.getCourseInformationController().getNrc()
+                    );
+                } catch (DataWritingException e) {
+                    e.printStackTrace();
+                    AlertPaneController alertPaneController = new AlertPaneController();
+                    alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
+                }
             }
         }
 
@@ -132,14 +139,14 @@ public class GuiStudentAdderController {
 
     @FXML
     void showByMatricleButtonController(ActionEvent event) {
-        this.studentsVBox.getChildren().clear();
-        StudentsCoursesDAO studentsCoursesDAO = new StudentsCoursesDAO();
-        ArrayList<String> studentMatricles = studentsCoursesDAO.getStudentsMatriclesByCourseNRCFromDatabase(
-            this.guiUsersCourseController.getCourseInformationController().getNrc()
-        );
-
-        StudentDAO studentDAO = new StudentDAO();
         try {
+            this.studentsVBox.getChildren().clear();
+            StudentsCoursesDAO studentsCoursesDAO = new StudentsCoursesDAO();
+            ArrayList<String> studentMatricles = studentsCoursesDAO.getStudentsMatriclesByCourseNRCFromDatabase(
+                this.guiUsersCourseController.getCourseInformationController().getNrc()
+            );
+            
+            StudentDAO studentDAO = new StudentDAO();
             ArrayList<Student> activeStudents = studentDAO.getSpecifiedActiveStudentsFromDatabase(this.showByMatricleTextField.getText());
             if(studentMatricles.isEmpty()) {
                 try {

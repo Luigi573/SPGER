@@ -87,10 +87,10 @@ public class GuiUsersCourseController {
 
         StudentsCoursesDAO studentCoursesDAO = new StudentsCoursesDAO();
         StudentDAO studentDAO = new StudentDAO();
-        ArrayList<String> students = studentCoursesDAO.getStudentsMatriclesByCourseNRCFromDatabase(
+        try {
+            ArrayList<String> students = studentCoursesDAO.getStudentsMatriclesByCourseNRCFromDatabase(
             this.courseInformationController.getNrc());
 
-        try {
             for(String studentMatricle : students) {
                 FXMLLoader studentPaneControllerLoader = new FXMLLoader(
                     getClass().getResource("/mx/uv/fei/gui/fxml/courses/students/UserPane.fxml")
@@ -122,6 +122,10 @@ public class GuiUsersCourseController {
             
         } catch (IOException e) {
             e.printStackTrace();
+            AlertPaneController alertPaneController = new AlertPaneController();
+            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
+        } catch (DataRetrievalException e1) {
+            e1.printStackTrace();
             AlertPaneController alertPaneController = new AlertPaneController();
             alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
         }

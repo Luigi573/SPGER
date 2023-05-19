@@ -51,15 +51,14 @@ public class Main extends Application{
         Parent guiUsuarios;
         FXMLLoader loader = new FXMLLoader(
             //getClass().getResource("/mx/uv/fei/gui/fxml/kgal/KGALList.fxml")
-            //getClass().getResource("/mx/uv/fei/gui/fxml/research/ResearchManager.fxml")
+            getClass().getResource("/mx/uv/fei/gui/fxml/research/ResearchManager.fxml")
             //getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/ModifyActivity.fxml")// tha xavier gui
             //getClass().getResource("gui/fxml/guiuserscourse/GuiUsersCourse.fxml")
-            getClass().getResource("gui/fxml/courses/GuiCourses.fxml")
+            //getClass().getResource("gui/fxml/courses/GuiCourses.fxml")
             //getClass().getResource("gui/fxml/users/GuiUsers.fxml")
             //getClass().getResource("gui/fxml/reports/GuiResearchReport.fxml")
         );
         guiUsuarios = loader.load();
-        Professor professor = new Professor();
         
         Scene scene = new Scene(guiUsuarios);
         String css = this.getClass().getResource("/mx/uv/fei/gui/stylesfiles/Styles.css").toExternalForm();

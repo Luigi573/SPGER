@@ -5,8 +5,9 @@ Text {
 }
 
 .root {
-    -fx-background-color: #121b9e;
-    /*-fx-background-color: #ff4800;*/
+    /*-fx-background-color: #121b9e;*/
+    /*-fx-background-color: #121b9e;*/
+    -fx-background-color: #ff4800;
 }
 
 .anchor-pane {
@@ -33,14 +34,6 @@ Text {
     -fx-background-color: rgb(41, 182, 22);
     -fx-text-fill: white;
     -fx-cell-size: 1.66667em;
-}
-
-.dialog {
-    -fx-background-color: #121b9e;
-}
-
-.dialog:header *.header-panel {
-    -fx-background-color: #121b9e;
 }
 
 .label {

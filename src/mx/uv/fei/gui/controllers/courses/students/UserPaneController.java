@@ -4,7 +4,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import mx.uv.fei.gui.controllers.AlertPaneController;
 import mx.uv.fei.logic.daos.StudentsCoursesDAO;
+import mx.uv.fei.logic.exceptions.DataWritingException;
 
 public class UserPaneController {
 
@@ -22,10 +24,16 @@ public class UserPaneController {
     @FXML
     void deleteButtonController(ActionEvent event) {
         StudentsCoursesDAO studentsCoursesDAO = new StudentsCoursesDAO();
-        studentsCoursesDAO.removeStudentCourseFromDatabase(
-            this.matricleOrPersonalNumberLabel.getText(),
-            this.guiUsersCourseController.getCourseInformationController().getNrc()
-        );
+        try {
+            studentsCoursesDAO.removeStudentCourseFromDatabase(
+                this.matricleOrPersonalNumberLabel.getText(),
+                this.guiUsersCourseController.getCourseInformationController().getNrc()
+            );
+        } catch (DataWritingException e) {
+            e.printStackTrace();
+            AlertPaneController alertPaneController = new AlertPaneController();
+            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
+        }
 
         this.guiUsersCourseController.refreshUsers();
     }

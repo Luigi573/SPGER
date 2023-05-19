@@ -22,7 +22,7 @@ public class StudentDAO implements IStudentDAO{
     @Override
     public void addStudentToDatabase(Student student) throws DataWritingException {
         try {
-            String queryToInsertUserData = "INSERT INTO Usuarios (nombre, apellidoPaterno, apellidoMaterno, correo" +
+            String queryToInsertUserData = "INSERT INTO Usuarios (nombre, apellidoPaterno, apellidoMaterno, correo, " +
                 "correoAlterno, númeroTeléfono, estado) VALUES (?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement preparedStatementToInsertUserData = 
                 dataBaseManager.getConnection().prepareStatement(queryToInsertUserData);

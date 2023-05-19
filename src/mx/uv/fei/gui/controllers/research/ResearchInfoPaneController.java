@@ -10,6 +10,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import mx.uv.fei.logic.daos.ResearchDAO;
 import mx.uv.fei.logic.domain.ResearchProject;
 
 public class ResearchInfoPaneController {
@@ -43,7 +44,7 @@ public class ResearchInfoPaneController {
     
     @FXML
     private void initialize(){
-       directorLabels = new ArrayList();
+       directorLabels = new ArrayList<>();
        directorLabels.add(director1Label);
        directorLabels.add(director2Label);
        directorLabels.add(director3Label);
@@ -67,7 +68,7 @@ public class ResearchInfoPaneController {
     }
     @FXML
     private void validateResearch(ActionEvent event) {
-        
+        ResearchDAO researchDAO = new ResearchDAO();
     }
     
     public void setContainer(ScrollPane container){

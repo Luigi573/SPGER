@@ -66,7 +66,7 @@ public class CourseDAOTest{
             expectedCourse.setIdScholarPeriod(1);
             expectedCourse.setStaffNumber(123456789);
             expectedCourse.setEEName("Experiencia Recepcional");
-            expectedCourse.setSection(8);
+            expectedCourse.setSection(7);
             expectedCourse.setBlock(1);
 
             Assertions.assertTrue(expectedCourse.equals(actualCourse));
@@ -86,7 +86,7 @@ public class CourseDAOTest{
             expectedCourse.setIdScholarPeriod(1);
             expectedCourse.setStaffNumber(123456789);
             expectedCourse.setEEName("Experiencia Recepcional");
-            expectedCourse.setSection(8);
+            expectedCourse.setSection(7);
             expectedCourse.setBlock(1);
 
             Assertions.assertTrue(expectedCourse.equals(actualCourse));

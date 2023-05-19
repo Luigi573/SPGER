@@ -153,7 +153,13 @@ public class ModifyCourseInformationController {
         });
 
         ScholarPeriodDAO scholarPeriodDAO = new ScholarPeriodDAO();
-        this.scholarPeriodComboBox.getItems().addAll(scholarPeriodDAO.getScholarPeriodsFromDatabase());
+        try {
+            this.scholarPeriodComboBox.getItems().addAll(scholarPeriodDAO.getScholarPeriodsFromDatabase());
+        } catch (DataRetrievalException e) {
+            e.printStackTrace();
+            AlertPaneController alertPaneController = new AlertPaneController();
+            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
+        }
         this.scholarPeriodComboBox.setConverter(new StringConverter<ScholarPeriod>() {
             
             @Override

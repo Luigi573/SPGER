@@ -66,9 +66,6 @@ public class Course {
         return false;
 
         Course c = (Course)course;
- 
-        // Checking only if attribute- name
-        // and age is same and ignoring breed
 
         return this.nrc == c.nrc  &&
                this.idScholarPeriod == c.idScholarPeriod &&

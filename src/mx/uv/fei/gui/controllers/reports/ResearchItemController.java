@@ -7,6 +7,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import mx.uv.fei.gui.controllers.AlertPaneController;
 
 public class ResearchItemController {
 
@@ -24,13 +25,12 @@ public class ResearchItemController {
             getSelectedResearchesVBox()).getChildren()){
             Node selectedResearchLabel = ((HBox)selectedResearchHbox).getChildren().get(1);
             if(this.researchNameLabel.getText().equals(((Label)selectedResearchLabel).getText())) {
-                this.guiResearchReportController.showAndSetTextToErrorMessageText(
-                    "Este Anteproyecto ya está seleccionado"
-                );
+                AlertPaneController alertPaneController = new AlertPaneController();
+                alertPaneController.openErrorPane("Este anteproyecto ya está seleccionado");
                 return;
             }
         }
-        this.guiResearchReportController.hideErrorMessageText();
+        
         this.guiResearchReportController.setElementToSelectedResearchesVBox(
             this.researchNameLabel.getText()
         );

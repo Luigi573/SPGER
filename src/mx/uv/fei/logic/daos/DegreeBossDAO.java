@@ -12,11 +12,11 @@ import mx.uv.fei.logic.domain.DegreeBoss;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
 import mx.uv.fei.logic.exceptions.DataWritingException;
 
-public class DegreeBossDAO implements IDegreeBossDAO{
-    private DataBaseManager dataBaseManager;
+public class DegreeBossDAO implements IDegreeBossDAO {
+    private final DataBaseManager dataBaseManager;
     
     public DegreeBossDAO(){
-        
+        this.dataBaseManager = new DataBaseManager();
     }
 
     @Override
@@ -107,7 +107,6 @@ public class DegreeBossDAO implements IDegreeBossDAO{
     @Override
     public void modifyDegreeBossDataFromDatabase(DegreeBoss newDegreeBossData, DegreeBoss originalDegreeBossData) throws DataWritingException {
         try {
-            DataBaseManager dataBaseManager = new DataBaseManager();
             String query = "UPDATE Usuarios SET nombre = ?, " + 
                            "apellidoPaterno = ?, apellidoMaterno = ?, correo = ?, " + 
                            "correoAlterno = ?, númeroTeléfono = ?, estado = ? " +
@@ -161,7 +160,6 @@ public class DegreeBossDAO implements IDegreeBossDAO{
         ArrayList<DegreeBoss> degreeBosses = new ArrayList<>();
 
         try {
-            DataBaseManager dataBaseManager = new DataBaseManager();
             Statement statement = dataBaseManager.getConnection().createStatement();
             String query = "SELECT * FROM Usuarios U INNER JOIN Profesores P ON U.IdUsuario = P.IdUsuario "
                             + "INNER JOIN JefesCarrera JC ON P.NumPersonal = JC.NumPersonal";
@@ -234,7 +232,6 @@ public class DegreeBossDAO implements IDegreeBossDAO{
         DegreeBoss degreeBoss = new DegreeBoss();
 
         try {
-            DataBaseManager dataBaseManager = new DataBaseManager();
             String query = "SELECT * FROM Usuarios U INNER JOIN Profesores P ON U.IdUsuario = P.IdUsuario INNER JOIN JefesCarrera JC ON P.NumPersonal = JC.NumPersonal WHERE JC.NumPersonal = ?";
             PreparedStatement preparedStatement = dataBaseManager.getConnection().prepareStatement(query);
             preparedStatement.setInt(1, personalNumber);
