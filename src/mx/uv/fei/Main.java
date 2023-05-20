@@ -26,25 +26,7 @@ import mx.uv.fei.logic.domain.Research;
 import mx.uv.fei.logic.domain.ResearchReport;
 
 
-public class Main extends Application{    
-
-//    @Override
-//    public void start(Stage arg0) throws Exception {
-//        Parent guiUsuarios;
-//        FXMLLoader loader = new FXMLLoader(    
-//            //getClass().getResource("gui/fxml/guicourses/GuiCourses.fxml")
-//            //getClass().getResource("gui/fxml/guiusers/GuiUsers.fxml")
-//            //getClass().getResource("gui/fxml/guiresearchreport/GuiResearchReport.fxml")
-//        );
-//        guiUsuarios = loader.load();
-//        
-//        Scene scene = new Scene(guiUsuarios);
-//        Stage stage = new Stage();
-//        
-//        stage.setTitle("SPGER");
-//        stage.setScene(scene);
-//        stage.show();
-//    }
+public class Main extends Application {
 
     @Override
     public void start(Stage arg0) throws Exception {
@@ -61,8 +43,8 @@ public class Main extends Application{
         guiUsuarios = loader.load();
         
         Scene scene = new Scene(guiUsuarios);
-        //String css = this.getClass().getResource("/mx/uv/fei/gui/stylesfiles/Styles.css").toExternalForm();
-        //scene.getStylesheets().add(css);
+        String css = this.getClass().getResource("/mx/uv/fei/gui/stylesfiles/Styles.css").toExternalForm();
+        scene.getStylesheets().add(css);
         Stage stage = new Stage();
         //stage.setFullScreen(true);
         

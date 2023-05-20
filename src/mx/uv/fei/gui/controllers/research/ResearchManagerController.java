@@ -21,7 +21,7 @@ import mx.uv.fei.logic.daos.ResearchDAO;
 import mx.uv.fei.logic.domain.ResearchProject;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
 
-public class ResearchManagerController{
+public class ResearchManagerController {
     private ArrayList<ResearchProject> researchList;
     
     @FXML
@@ -58,6 +58,8 @@ public class ResearchManagerController{
             addResearchController.setResearchManagerController(this);
             Scene scene = new Scene(parent);
             Stage stage = new Stage();
+            String css = this.getClass().getResource("/mx/uv/fei/gui/stylesfiles/Styles.css").toExternalForm();
+            scene.getStylesheets().add(css);
             stage.initModality(Modality.WINDOW_MODAL);
             stage.initOwner((Stage)((Node)event.getSource()).getScene().getWindow());
             stage.setScene(scene);
