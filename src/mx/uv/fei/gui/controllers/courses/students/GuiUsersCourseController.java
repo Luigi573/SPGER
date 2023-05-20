@@ -57,6 +57,7 @@ public class GuiUsersCourseController {
             Stage stage = new Stage();
             stage.setTitle("Agregar Estudiante");
             stage.setScene(scene);
+            stage.setResizable(false);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();

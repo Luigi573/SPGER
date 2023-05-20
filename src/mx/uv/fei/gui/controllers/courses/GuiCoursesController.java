@@ -73,6 +73,7 @@ public class GuiCoursesController {
             Stage stage = new Stage();
             stage.setTitle("Registrar Curso");
             stage.setScene(scene);
+            stage.setResizable(false);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();

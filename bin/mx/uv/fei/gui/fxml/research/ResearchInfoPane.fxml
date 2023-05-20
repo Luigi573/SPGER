@@ -84,7 +84,7 @@
             </TextFlow>
          </content>
       </ScrollPane>
-      <Button fx:id="validateButton" layoutX="47.0" layoutY="1043.0" mnemonicParsing="false" onAction="#validateResearch" prefHeight="25.0" prefWidth="94.0" text="Validar" />
-      <Button fx:id="saveButton" layoutX="294.0" layoutY="1043.0" mnemonicParsing="false" onAction="#modifyResearch" prefHeight="25.0" prefWidth="94.0" text="Modificar" />
+      <Button fx:id="validateButton" layoutX="47.0" layoutY="1043.0" mnemonicParsing="false" onAction="#validateResearch" prefHeight="25.0" prefWidth="94.0" text="Validar" visible="false" />
+      <Button fx:id="modifyButton" layoutX="294.0" layoutY="1043.0" mnemonicParsing="false" onAction="#modifyResearch" prefHeight="25.0" prefWidth="94.0" text="Modificar" />
    </children>
 </Pane>

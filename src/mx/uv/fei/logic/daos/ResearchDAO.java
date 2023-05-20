@@ -17,14 +17,13 @@ public class ResearchDAO implements IResearchDAO{
     public ResearchDAO(){
         dataBaseManager = new DataBaseManager();
     }
-    
     @Override
     public int addResearch(ResearchProject research) throws DataWritingException {
         int result = 0;
         PreparedStatement statement;
         String query = "INSERT INTO Anteproyectos(fechaFin, fechaInicio, IdLGAC, descripción, "
                 + "resultadosEsperados, requisitos, bibliografíaRecomendada, título, Matrícula, "
-                + "IdDirector1, IdDirector2, IdDirector3) VALUES (?,?,?,?,?,?,?,?,?,?,?,?);";
+                + "IdDirector1, IdDirector2, IdDirector3, V°B°) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?);";
         
         try{
             statement = dataBaseManager.getConnection().prepareStatement(query);
@@ -57,9 +56,12 @@ public class ResearchDAO implements IResearchDAO{
                     statement.setNull(i + 10, java.sql.Types.INTEGER);
                 }
             }
+
+            statement.setString(13, research.getValidationStatus());
             
             result = statement.executeUpdate();
         }catch(SQLException exception){
+            exception.printStackTrace();
             throw new DataWritingException("Error de conexión. Verifique su conexion e intentelo de nuevo");
         }finally{
             dataBaseManager.closeConnection();
@@ -77,7 +79,7 @@ public class ResearchDAO implements IResearchDAO{
                 + "a.IdDirector2, CONCAT(up2.nombre, ' ', up2.apellidoPaterno, ' ', up2.apellidoMaterno) AS nombreDirector2, "
                 + "a.IdDirector3, CONCAT(up3.nombre, ' ', up3.apellidoPaterno, ' ', up3.apellidoMaterno) AS nombreDirector3, "
                 + "l.IdLGAC, l.descripción AS LGAC, a.descripción, a.resultadosEsperados, a.requisitos, a.bibliografíaRecomendada, "
-                + "a.título, a.Matrícula, CONCAT(ue.nombre, ' ', ue.apellidoPaterno, ' ', ue.apellidoMaterno) AS estudianteAsignado "
+                + "a.título, a.Matrícula, a.V°B°, CONCAT(ue.nombre, ' ', ue.apellidoPaterno, ' ', ue.apellidoMaterno) AS estudianteAsignado "
                 + "FROM Anteproyectos a LEFT JOIN Directores d ON a.IdDirector1 = d.IdDirector LEFT JOIN Profesores p ON d.NumPersonal = p.NumPersonal "
                 + "LEFT JOIN Usuarios up1 ON p.IdUsuario = up1.IdUsuario LEFT JOIN Usuarios up2 ON p.IdUsuario = up2.IdUsuario "
                 + "LEFT JOIN Usuarios up3 ON p.IdUsuario = up3.IdUsuario LEFT JOIN Estudiantes e ON a.Matrícula = e.Matrícula "
@@ -85,7 +87,6 @@ public class ResearchDAO implements IResearchDAO{
         
         try{
             statement = dataBaseManager.getConnection().prepareStatement(query);
-            System.out.println(statement.toString());
             ResultSet resultSet = statement.executeQuery();
             
             while(resultSet.next()){
@@ -115,6 +116,7 @@ public class ResearchDAO implements IResearchDAO{
                 research.setRequirements(resultSet.getString("a.requisitos"));
                 research.setSuggestedBibliography(resultSet.getString("a.bibliografíaRecomendada"));
                 research.setTitle(resultSet.getString("a.título"));
+                research.setValidationStatus(resultSet.getString("a.V°B°"));
                 research.getStudent().setMatricle(resultSet.getString("a.Matrícula"));
                 
                 if(!resultSet.wasNull()){
@@ -142,7 +144,7 @@ public class ResearchDAO implements IResearchDAO{
                 + "a.IdDirector2, CONCAT(up2.nombre, ' ', up2.apellidoPaterno, ' ', up2.apellidoMaterno) AS nombreDirector2, "
                 + "a.IdDirector3, CONCAT(up3.nombre, ' ', up3.apellidoPaterno, ' ', up3.apellidoMaterno) AS nombreDirector3, "
                 + "l.IdLGAC, l.descripción AS LGAC, a.descripción, a.resultadosEsperados, a.requisitos, a.bibliografíaRecomendada, "
-                + "a.título, a.Matrícula, CONCAT(ue.nombre, ' ', ue.apellidoPaterno, ' ', ue.apellidoMaterno) AS estudianteAsignado "
+                + "a.título, a.Matrícula, a.V°B°, CONCAT(ue.nombre, ' ', ue.apellidoPaterno, ' ', ue.apellidoMaterno) AS estudianteAsignado "
                 + "FROM Anteproyectos a LEFT JOIN Directores d ON a.IdDirector1 = d.IdDirector LEFT JOIN Profesores p ON d.NumPersonal = p.NumPersonal "
                 + "LEFT JOIN Usuarios up1 ON p.IdUsuario = up1.IdUsuario LEFT JOIN Usuarios up2 ON p.IdUsuario = up2.IdUsuario "
                 + "LEFT JOIN Usuarios up3 ON p.IdUsuario = up3.IdUsuario LEFT JOIN Estudiantes e ON a.Matrícula = e.Matrícula "
@@ -180,6 +182,7 @@ public class ResearchDAO implements IResearchDAO{
                 research.setRequirements(resultSet.getString("a.requisitos"));
                 research.setSuggestedBibliography(resultSet.getString("a.bibliografíaRecomendada"));
                 research.setTitle(resultSet.getString("a.título"));
+                research.setValidationStatus(resultSet.getString("a.V°B°"));
                 research.getStudent().setMatricle(resultSet.getString("a.Matrícula"));
                 
                 if(!resultSet.wasNull()){
@@ -207,7 +210,7 @@ public class ResearchDAO implements IResearchDAO{
                 + "a.IdDirector2, CONCAT(up2.nombre, ' ', up2.apellidoPaterno, ' ', up2.apellidoMaterno) AS nombreDirector2, "
                 + "a.IdDirector3, CONCAT(up3.nombre, ' ', up3.apellidoPaterno, ' ', up3.apellidoMaterno) AS nombreDirector3, "
                 + "l.IdLGAC, l.descripción AS LGAC, a.descripción, a.resultadosEsperados, a.requisitos, a.bibliografíaRecomendada, "
-                + "a.título, a.Matrícula, CONCAT(ue.nombre, ' ', ue.apellidoPaterno, ' ', ue.apellidoMaterno) AS estudianteAsignado "
+                + "a.título, a.Matrícula, a.V°B°, CONCAT(ue.nombre, ' ', ue.apellidoPaterno, ' ', ue.apellidoMaterno) AS estudianteAsignado "
                 + "FROM Anteproyectos a LEFT JOIN Directores d ON a.IdDirector1 = d.IdDirector LEFT JOIN Profesores p ON d.NumPersonal = p.NumPersonal "
                 + "LEFT JOIN Usuarios up1 ON p.IdUsuario = up1.IdUsuario LEFT JOIN Usuarios up2 ON p.IdUsuario = up2.IdUsuario "
                 + "LEFT JOIN Usuarios up3 ON p.IdUsuario = up3.IdUsuario LEFT JOIN Estudiantes e ON a.Matrícula = e.Matrícula "
@@ -246,6 +249,7 @@ public class ResearchDAO implements IResearchDAO{
                 research.setRequirements(resultSet.getString("a.requisitos"));
                 research.setSuggestedBibliography(resultSet.getString("a.bibliografíaRecomendada"));
                 research.setTitle(resultSet.getString("a.título"));
+                research.setValidationStatus(resultSet.getString("a.V°B°"));
                 research.getStudent().setMatricle(resultSet.getString("a.Matrícula"));
                 
                 if(!resultSet.wasNull()){
@@ -273,7 +277,7 @@ public class ResearchDAO implements IResearchDAO{
                 + "a.IdDirector2, CONCAT(up2.nombre, ' ', up2.apellidoPaterno, ' ', up2.apellidoMaterno) AS nombreDirector2, "
                 + "a.IdDirector3, CONCAT(up3.nombre, ' ', up3.apellidoPaterno, ' ', up3.apellidoMaterno) AS nombreDirector3, "
                 + "l.IdLGAC, l.descripción AS LGAC, a.descripción, a.resultadosEsperados, a.requisitos, a.bibliografíaRecomendada, "
-                + "a.título, a.Matrícula, CONCAT(ue.nombre, ' ', ue.apellidoPaterno, ' ', ue.apellidoMaterno) AS estudianteAsignado "
+                + "a.título, a.Matrícula, a.V°B°, CONCAT(ue.nombre, ' ', ue.apellidoPaterno, ' ', ue.apellidoMaterno) AS estudianteAsignado "
                 + "FROM Anteproyectos a LEFT JOIN Directores d ON a.IdDirector1 = d.IdDirector LEFT JOIN Profesores p ON d.NumPersonal = p.NumPersonal "
                 + "LEFT JOIN Usuarios up1 ON p.IdUsuario = up1.IdUsuario LEFT JOIN Usuarios up2 ON p.IdUsuario = up2.IdUsuario "
                 + "LEFT JOIN Usuarios up3 ON p.IdUsuario = up3.IdUsuario LEFT JOIN Estudiantes e ON a.Matrícula = e.Matrícula "
@@ -312,6 +316,7 @@ public class ResearchDAO implements IResearchDAO{
                 research.setRequirements(resultSet.getString("a.requisitos"));
                 research.setSuggestedBibliography(resultSet.getString("a.bibliografíaRecomendada"));
                 research.setTitle(resultSet.getString("a.título"));
+                research.setValidationStatus(resultSet.getString("a.V°B°"));
                 research.getStudent().setMatricle(resultSet.getString("a.Matrícula"));
                 
                 if(!resultSet.wasNull()){
@@ -339,7 +344,7 @@ public class ResearchDAO implements IResearchDAO{
                 + "a.IdDirector2, CONCAT(up2.nombre, ' ', up2.apellidoPaterno, ' ', up2.apellidoMaterno) AS nombreDirector2, "
                 + "a.IdDirector3, CONCAT(up3.nombre, ' ', up3.apellidoPaterno, ' ', up3.apellidoMaterno) AS nombreDirector3, "
                 + "l.IdLGAC, l.descripción AS LGAC, a.descripción, a.resultadosEsperados, a.requisitos, a.bibliografíaRecomendada, "
-                + "a.título, a.Matrícula, CONCAT(ue.nombre, ' ', ue.apellidoPaterno, ' ', ue.apellidoMaterno) AS estudianteAsignado "
+                + "a.título, a.Matrícula, a.V°B°, CONCAT(ue.nombre, ' ', ue.apellidoPaterno, ' ', ue.apellidoMaterno) AS estudianteAsignado "
                 + "FROM Anteproyectos a LEFT JOIN Directores d ON a.IdDirector1 = d.IdDirector LEFT JOIN Profesores p ON d.NumPersonal = p.NumPersonal "
                 + "LEFT JOIN Usuarios up1 ON p.IdUsuario = up1.IdUsuario LEFT JOIN Usuarios up2 ON p.IdUsuario = up2.IdUsuario "
                 + "LEFT JOIN Usuarios up3 ON p.IdUsuario = up3.IdUsuario LEFT JOIN Estudiantes e ON a.Matrícula = e.Matrícula "
@@ -348,6 +353,7 @@ public class ResearchDAO implements IResearchDAO{
         
         try{
             statement = dataBaseManager.getConnection().prepareStatement(query);
+            statement.setString(1, researchName + '%');
             ResultSet resultSet = statement.executeQuery();
             
             while(resultSet.next()){
@@ -377,6 +383,7 @@ public class ResearchDAO implements IResearchDAO{
                 research.setRequirements(resultSet.getString("a.requisitos"));
                 research.setSuggestedBibliography(resultSet.getString("a.bibliografíaRecomendada"));
                 research.setTitle(resultSet.getString("a.título"));
+                research.setValidationStatus(resultSet.getString("a.V°B°"));
                 research.getStudent().setMatricle(resultSet.getString("a.Matrícula"));
                 
                 if(!resultSet.wasNull()){
@@ -394,7 +401,6 @@ public class ResearchDAO implements IResearchDAO{
         
         return researchProjectList;
     }
-
 
     @Override
     public int modifyResearch(ResearchProject research) throws DataWritingException {

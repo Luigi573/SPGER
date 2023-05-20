@@ -1,6 +1,8 @@
 package mx.uv.fei.gui.controllers.users;
 
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -392,6 +394,60 @@ public class ModifyUserInformationController {
         userInformationPaneData.add(this.userInformationController.getTelephoneNumber());
         userInformationPaneData.add(this.userInformationController.getMatriculeOrPersonalNumber());
         return userInformationPaneData;
+    }
+
+    private boolean allTextFieldsContainsCorrectValues(){
+        Pattern namesPattern = Pattern.compile("([A-Z][a-z]+)\\s?([A-Z][a-z]+)?\\s?([A-Z][a-z]+)?\\s?([A-Z][a-z]+)?"),
+                firstSurnamePattern = Pattern.compile("([A-Z][a-z]+)\\s?([A-Z][a-z]+)?\\s?([A-Z][a-z]+)?\\s?([A-Z][a-z]+)?"),
+                secondSurnamePattern = Pattern.compile("([A-Z][a-z]+)\\s?([A-Z][a-z]+)?\\s?([A-Z][a-z]+)?\\s?([A-Z][a-z]+)?"),
+                emailPattern = Pattern.compile("^(.+)@(\\S+)$"),
+                alternateEmailPattern = Pattern.compile("^(.+)@(\\S+)$"),
+                telephoneNumberPattern = Pattern.compile("^[0-9]{10}$"),
+                matricleOrPersonalNumberPattern = Pattern.compile("");
+    
+        switch(this.userInformationController.getUserType()) {
+            case "Director": {
+                matricleOrPersonalNumberPattern = Pattern.compile("^[0-9]{9}$");
+                break;
+            }
+
+            case "Miembro de Cuerpo Académico": {
+                matricleOrPersonalNumberPattern = Pattern.compile("^[0-9]{9}$");
+                break;
+            }
+
+            case "Jefe de Carrera": {
+                matricleOrPersonalNumberPattern = Pattern.compile("^[0-9]{9}$");
+                break;
+            }
+
+            case "Profesor": {
+                matricleOrPersonalNumberPattern = Pattern.compile("^[0-9]{9}$");
+                break;
+            }
+
+            case "Estudiante": {
+                matricleOrPersonalNumberPattern = Pattern.compile("^[z][S][0-9]{8}$");
+                break;
+            }
+        }
+
+        Matcher namesMatcher = namesPattern.matcher(this.namesTextField.getText()),
+                firstSurnameMatcher = firstSurnamePattern.matcher(this.firstSurnameTextField.getText()),
+                secondSurnameMatcher = secondSurnamePattern.matcher(this.secondSurnameTextField.getText()),
+                emailMatcher = emailPattern.matcher(this.emailTextField.getText()),
+                alternateEmailMatcher = alternateEmailPattern.matcher(this.alternateEmailTextField.getText()),
+                telephoneNumberMatcher = telephoneNumberPattern.matcher(this.telephoneNumberTextField.getText()),
+                matricleOrPersonalNumberMatcher = matricleOrPersonalNumberPattern.matcher(this.matricleOrPersonalNumberTextField.getText());
+
+        if(namesMatcher.find() && firstSurnameMatcher.find() &&
+           secondSurnameMatcher.find() && emailMatcher.find() &&
+           alternateEmailMatcher.find() && telephoneNumberMatcher.find() &&
+           matricleOrPersonalNumberMatcher.find()){
+            return true;
+        }
+
+        return false;
     }
 
 }

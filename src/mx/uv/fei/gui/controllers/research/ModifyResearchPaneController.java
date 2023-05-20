@@ -69,7 +69,7 @@ public class ModifyResearchPaneController{
             ArrayList<KGAL> KGALList = kgalDAO.getKGALList();
             ArrayList<Student> studentList = studentDAO.getStudentsFromDatabase();
             
-            directorComboBoxes = new ArrayList();
+            directorComboBoxes = new ArrayList<>();
             directorComboBoxes.add(director1ComboBox);
             directorComboBoxes.add(director2ComboBox);
             directorComboBoxes.add(director3ComboBox);

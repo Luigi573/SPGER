@@ -61,13 +61,14 @@ public class Main extends Application{
         guiUsuarios = loader.load();
         
         Scene scene = new Scene(guiUsuarios);
-        String css = this.getClass().getResource("/mx/uv/fei/gui/stylesfiles/Styles.css").toExternalForm();
-        scene.getStylesheets().add(css);
+        //String css = this.getClass().getResource("/mx/uv/fei/gui/stylesfiles/Styles.css").toExternalForm();
+        //scene.getStylesheets().add(css);
         Stage stage = new Stage();
         //stage.setFullScreen(true);
         
         stage.setTitle("SPGER");
         stage.setScene(scene);
+        stage.setResizable(false);
         stage.show();
     }
     

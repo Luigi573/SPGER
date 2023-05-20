@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -14,6 +15,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import mx.uv.fei.logic.daos.ResearchDAO;
 import mx.uv.fei.logic.domain.ResearchProject;
@@ -52,8 +54,12 @@ public class ResearchManagerController{
         
         try{
             Parent parent = loader.load();
+            AddResearchController addResearchController = loader.getController();
+            addResearchController.setResearchManagerController(this);
             Scene scene = new Scene(parent);
             Stage stage = new Stage();
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner((Stage)((Node)event.getSource()).getScene().getWindow());
             stage.setScene(scene);
             stage.setResizable(false);
             
@@ -88,7 +94,7 @@ public class ResearchManagerController{
 
     @FXML
     private void showValidatedButtonController(ActionEvent event) {
-        if(showValidatedButton.isSelected()) {
+        if(!showValidatedButton.isSelected()) {
             showValidatedButton.setText("Nel");
         } else {
             showValidatedButton.setText("Simón");
@@ -97,7 +103,7 @@ public class ResearchManagerController{
 
     @FXML
     private void showNotValidatedButtonController(ActionEvent event) {
-        if(showNotValidatedButton.isSelected()) {
+        if(!showNotValidatedButton.isSelected()) {
             showNotValidatedButton.setText("Nel");
         } else {
             showNotValidatedButton.setText("Simón");
@@ -118,7 +124,8 @@ public class ResearchManagerController{
         }
     }
 
-    private void loadResearches(int type){
+    public void loadResearches(int type){
+        researchVBox.getChildren().clear();
         ResearchDAO researchDAO = new ResearchDAO();
         
         try{
@@ -160,6 +167,7 @@ public class ResearchManagerController{
                     ResearchVBoxPaneController controller = (ResearchVBoxPaneController)loader.getController();
                     controller.setResearchProject(research);
                     controller.setContainer(researchInfoScrollPane);
+                    controller.setResearchManagerController(this);
                     
                     researchVBox.getChildren().add(pane);
                 }catch(IOException exception){

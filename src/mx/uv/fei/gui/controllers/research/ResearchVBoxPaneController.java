@@ -9,9 +9,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.Pane;
 import mx.uv.fei.logic.domain.ResearchProject;
+import mx.uv.fei.logic.domain.statuses.ResearchProjectStatus;
 
 public class ResearchVBoxPaneController{
     private ResearchProject research;
+    private ResearchManagerController researchManagerController;
     private ScrollPane container;
     
     @FXML
@@ -28,6 +30,10 @@ public class ResearchVBoxPaneController{
             ResearchInfoPaneController controller = (ResearchInfoPaneController)loader.getController();
             controller.setResearch(research);
             controller.setContainer(container);
+            controller.setResearchManagerController(researchManagerController);
+            if(research.getValidationStatus().equals(ResearchProjectStatus.PROPOSED.getValue()) ) {
+                controller.showValidateButton(true);
+            }
             
             container.setContent(researchInfoPane);
         }catch(IOException exception){
@@ -36,10 +42,21 @@ public class ResearchVBoxPaneController{
             errorMessage.showAndWait();
         }
     }
+
+    public ResearchManagerController getResearchManagerController() {
+        return researchManagerController;
+    }
+
+    public void setResearchManagerController(ResearchManagerController researchManagerController) {
+        this.researchManagerController = researchManagerController;
+    }
+    
     public void setResearchProject(ResearchProject research){
         this.research = research;
         titleLabel.setText(research.getTitle());
+        validationLabel.setText(research.getValidationStatus());
     }
+
     public void setContainer(ScrollPane container){
         this.container = container;
     }

@@ -19,7 +19,7 @@
       </ScrollPane>
       <ScrollPane fx:id="researchInfoScrollPane" hbarPolicy="NEVER" layoutX="524.0" layoutY="164.0" prefHeight="410.0" prefWidth="470.0">
          <content>
-            <Label alignment="CENTER" prefHeight="408.0" prefWidth="469.0" text="Click on a research project to display its info" textAlignment="CENTER" wrapText="true">
+            <Label alignment="CENTER" prefHeight="408.0" prefWidth="469.0" text="Haz click en un anteproshecto para ver su informacion" textAlignment="CENTER" wrapText="true">
                <font>
                   <Font size="26.0" />
                </font>

@@ -104,7 +104,22 @@ public class StudentDAOTest {
 
     @Test
     public void theStudentIsAlreadyRegistedTest() {
-        
+        try {
+            StudentDAO studentDAO = new StudentDAO();
+            Student expectedStudent = new Student();
+            expectedStudent.setName("Felixiano");
+            expectedStudent.setFirstSurname("Carranza");
+            expectedStudent.setSecondSurname("Loeda");
+            expectedStudent.setEmailAddress("fexcarloa345@gmail.com");
+            expectedStudent.setAlternateEmail("fexcarloa399@gmail.com");
+            expectedStudent.setPhoneNumber("2283457810");
+            expectedStudent.setMatricle("zS53943219");
+            expectedStudent.setStatus("Graduado");
+
+            Assertions.assertTrue(studentDAO.theStudentIsAlreadyRegisted(expectedStudent));
+        } catch (DataRetrievalException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test

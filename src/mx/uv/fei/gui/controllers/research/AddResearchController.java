@@ -2,6 +2,9 @@ package mx.uv.fei.gui.controllers.research;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -26,7 +29,7 @@ import mx.uv.fei.logic.exceptions.DataWritingException;
 
 public class AddResearchController{
     private ArrayList<ComboBox> directorComboBoxes;
-    
+    private ResearchManagerController researchManagerController;    
     @FXML
     private TextField titleTextField;
     @FXML
@@ -53,7 +56,8 @@ public class AddResearchController{
     private TextArea expectedResultTextArea;
     
     @FXML
-    private void initialize(){
+    private void initialize() {
+
         DirectorDAO directorDAO = new DirectorDAO();
         KGALDAO kgalDAO = new KGALDAO();
         StudentDAO studentDAO = new StudentDAO();
@@ -74,7 +78,7 @@ public class AddResearchController{
             
             KGALComboBox.setItems(FXCollections.observableArrayList(KGALList));
             studentComboBox.setItems(FXCollections.observableArrayList(studentList));
-        }catch(DataRetrievalException exception){
+        } catch(DataRetrievalException exception){
             Alert errorMessage = new Alert(Alert.AlertType.ERROR);
             errorMessage.setContentText(exception.getMessage());
             errorMessage.showAndWait();
@@ -84,7 +88,7 @@ public class AddResearchController{
     @FXML
     private void addResearch(ActionEvent event) {
         //In case the date is NULL, setting other attributes is pointless
-        if(startDatePicker.getValue() != null && dueDatePicker.getValue() != null){
+        if(allFieldsContainsCorrectValues()){
             ResearchProject research = new ResearchProject();
             
             research.setStartDate(Date.valueOf(startDatePicker.getValue()));
@@ -109,18 +113,19 @@ public class AddResearchController{
             research.setRequirements(requirementsTextArea.getText().trim());
             research.setSuggestedBibliography(suggestedBibliographyTextArea.getText().trim());
             research.setExpectedResult(expectedResultTextArea.getText().trim());
-            research.setValidationStatus(ResearchProjectStatus.PROPOSED.name());
+            research.setValidationStatus(ResearchProjectStatus.PROPOSED.getValue());
             
             ResearchDAO researchDAO = new ResearchDAO();
             
             if(researchDAO.isValidDate(research)){
                 if(!researchDAO.isBlank(research)){
                     try{
-                        if(researchDAO.addResearch(research) > 0){
+                        if(researchDAO.addResearch(research) > 0) {
                             Alert successMessage = new Alert(Alert.AlertType.INFORMATION);
                             successMessage.setHeaderText("Anteproyecto creado exitosamente");
                             successMessage.showAndWait();
                             
+                            researchManagerController.loadResearches(0);
                             Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
                             stage.close();
                         }
@@ -147,5 +152,26 @@ public class AddResearchController{
             warningMessage.setContentText("Favor de seleccionar una fecha válida");
             warningMessage.showAndWait();
         }
+    }
+
+    public ResearchManagerController getResearchManagerController() {
+        return researchManagerController;
+    }
+
+    public void setResearchManagerController(ResearchManagerController researchManagerController) {
+        this.researchManagerController = researchManagerController;
+    }
+
+    private boolean allFieldsContainsCorrectValues() {
+
+        Pattern titlePattern = Pattern.compile("([A-Z][a-z]+)\\s?([A-Z][a-z]+)?\\s?([A-Z][a-z]+)?\\s?([A-Z][a-z]+)?");
+        Matcher titleMatcher = titlePattern.matcher(titleTextField.getText());
+
+        if(titleMatcher.find() && startDatePicker.getValue() != null && 
+           dueDatePicker.getValue() != null) {
+            return true;
+        }
+
+        return false;
     }
 }

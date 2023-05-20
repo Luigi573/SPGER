@@ -62,6 +62,7 @@ public class CourseInformationController {
             scene.getStylesheets().add(css);
             stage.setTitle("Administrar Usuarios");
             stage.setScene(scene);
+            stage.setResizable(false);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
