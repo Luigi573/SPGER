@@ -163,6 +163,8 @@ public class ActivityDAOTest {
         ActivityDAO instance = new ActivityDAO();
         
         System.out.println("If this is true, it means that startDate goes before or the same day as dueDate");
+        System.out.println("Start date: " + activity.getStartDate());
+        System.out.println("Due date: " + activity.getDueDate());
         assertTrue(instance.isValidDate(activity));
     }
     @Test
@@ -173,8 +175,9 @@ public class ActivityDAOTest {
         activity.setStartDate(Date.valueOf(LocalDate.of(2023, Month.MARCH, 20)));
         activity.setDueDate(Date.valueOf(LocalDate.of(2023, Month.MARCH, 1)));
         
-        
         System.out.println("If this is true, it means that startDate goes before or the same day as dueDate");
+        System.out.println("Start date: " + activity.getStartDate());
+        System.out.println("Due date: " + activity.getDueDate());
         assertTrue(!instance.isValidDate(activity));
     }
 }
