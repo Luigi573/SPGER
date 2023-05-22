@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -13,6 +14,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import mx.uv.fei.gui.controllers.AlertPaneController;
 import mx.uv.fei.logic.daos.AcademicBodyHeadDAO;
@@ -49,30 +51,7 @@ public class GuiUsersController {
     
     @FXML
     void initialize() {
-        StudentDAO studentDAO = new StudentDAO();
-        ProfessorDAO professorDAO = new ProfessorDAO();
-        DirectorDAO directorDAO = new DirectorDAO();
-        AcademicBodyHeadDAO academicBodyHeadDAO = new AcademicBodyHeadDAO();
-        DegreeBossDAO degreeBossDAO = new DegreeBossDAO();
-        ArrayList<Student> students;
-        try {
-            students = studentDAO.getStudentsFromDatabase();
-            ArrayList<Professor> professors = professorDAO.getProfessorsFromDatabase();
-            ArrayList<Director> directors = directorDAO.getDirectorsFromDatabase();
-            ArrayList<AcademicBodyHead> academicBodyHeads = academicBodyHeadDAO.getAcademicBodyHeadsFromDatabase();
-            ArrayList<DegreeBoss> degreeBosses = degreeBossDAO.getDegreeBossesFromDatabase();
-            
-            this.directorButtonMaker(directors);
-            this.academicBodyHeadButtonMaker(academicBodyHeads);
-            this.degreeBossButtonMaker(degreeBosses);
-            this.professorButtonMaker(professors);
-            this.studentButtonMaker(students);
-        } catch (DataRetrievalException e) {
-            e.printStackTrace();
-            AlertPaneController alertPaneController = new AlertPaneController();
-            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
-        }
-        
+        loadUserButtons();
     }
 
     @FXML
@@ -83,11 +62,15 @@ public class GuiUsersController {
                 getClass().getResource("/mx/uv/fei/gui/fxml/users/GuiRegisterUser.fxml")
             );
             guiRegisterUser = loader.load();
+            GuiRegisterUserController guiRegisterUserController = loader.getController();
+            guiRegisterUserController.setGuiUsersController(this);
             Scene scene = new Scene(guiRegisterUser);
             String css = this.getClass().getResource("/mx/uv/fei/gui/stylesfiles/Styles.css").toExternalForm();
             scene.getStylesheets().add(css);
             Stage stage = new Stage();
             stage.setTitle("Registrar Usuario");
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner((Stage)((Node)event.getSource()).getScene().getWindow());
             stage.setScene(scene);
             stage.show();
         } catch (IOException e) {
@@ -105,14 +88,38 @@ public class GuiUsersController {
         DirectorDAO directorDAO = new DirectorDAO();
         AcademicBodyHeadDAO academicBodyHeadDAO = new AcademicBodyHeadDAO();
         DegreeBossDAO degreeBossDAO = new DegreeBossDAO();
-        ArrayList<Student> students;
         try {
-            students = studentDAO.getSpecifiedStudentsFromDatabase(this.searchByNameTextField.getText());
+            ArrayList<Student> students = studentDAO.getSpecifiedStudentsFromDatabase(this.searchByNameTextField.getText());
             ArrayList<Professor> professors = professorDAO.getSpecifiedProfessorsFromDatabase(this.searchByNameTextField.getText());
             ArrayList<Director> directors = directorDAO.getSpecifiedDirectorsFromDatabase(this.searchByNameTextField.getText());
             ArrayList<AcademicBodyHead> academicBodyHeads = academicBodyHeadDAO.getSpecifiedAcademicBodyHeadsFromDatabase(this.searchByNameTextField.getText());
             ArrayList<DegreeBoss> degreeBosses = degreeBossDAO.getSpecifiedDegreeBossesFromDatabase(this.searchByNameTextField.getText());
     
+            this.directorButtonMaker(directors);
+            this.academicBodyHeadButtonMaker(academicBodyHeads);
+            this.degreeBossButtonMaker(degreeBosses);
+            this.professorButtonMaker(professors);
+            this.studentButtonMaker(students);
+        } catch (DataRetrievalException e) {
+            e.printStackTrace();
+            AlertPaneController alertPaneController = new AlertPaneController();
+            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
+        }
+    }
+
+    public void loadUserButtons() {
+        StudentDAO studentDAO = new StudentDAO();
+        ProfessorDAO professorDAO = new ProfessorDAO();
+        DirectorDAO directorDAO = new DirectorDAO();
+        AcademicBodyHeadDAO academicBodyHeadDAO = new AcademicBodyHeadDAO();
+        DegreeBossDAO degreeBossDAO = new DegreeBossDAO();
+        try {
+            ArrayList<Student> students = studentDAO.getStudentsFromDatabase();
+            ArrayList<Professor> professors = professorDAO.getProfessorsFromDatabase();
+            ArrayList<Director> directors = directorDAO.getDirectorsFromDatabase();
+            ArrayList<AcademicBodyHead> academicBodyHeads = academicBodyHeadDAO.getAcademicBodyHeadsFromDatabase();
+            ArrayList<DegreeBoss> degreeBosses = degreeBossDAO.getDegreeBossesFromDatabase();
+            
             this.directorButtonMaker(directors);
             this.academicBodyHeadButtonMaker(academicBodyHeads);
             this.degreeBossButtonMaker(degreeBosses);
@@ -134,7 +141,7 @@ public class GuiUsersController {
                 Button userItemButton;
                 userItemButton = userItemControllerLoader.load();
                 UserController userController = userItemControllerLoader.getController();
-                userController.setName(student.getName());
+                userController.setName(student.getName() + " " + student.getFirstSurname() + " " + student.getSecondSurname());
                 userController.setType("Estudiante");
                 userController.setMatricleOrPersonalNumber(student.getMatricule());
                 userController.setMatricleOrPersonalNumberText("Matrícula");
@@ -443,6 +450,7 @@ public class GuiUsersController {
             modifyUserInformationController.setTelephoneNumber(userInformationController.getTelephoneNumber());
             modifyUserInformationController.setMatricleOrPersonalNumber(userInformationController.getMatriculeOrPersonalNumber());
             modifyUserInformationController.setStatus(userInformationController.getStatus());
+            modifyUserInformationController.setGuiUsersController(this);
             modifyUserInformationController.setUserInformationController(userInformationController);
             this.userInformationScrollPane.setContent(modifyUserInformationVBox);
             

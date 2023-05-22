@@ -8,7 +8,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
+import mx.uv.fei.gui.AlertPopUpGenerator;
 import mx.uv.fei.gui.controllers.AlertPaneController;
 import mx.uv.fei.logic.daos.AcademicBodyHeadDAO;
 import mx.uv.fei.logic.daos.DegreeBossDAO;
@@ -20,10 +23,15 @@ import mx.uv.fei.logic.domain.DegreeBoss;
 import mx.uv.fei.logic.domain.Director;
 import mx.uv.fei.logic.domain.Professor;
 import mx.uv.fei.logic.domain.Student;
+import mx.uv.fei.logic.domain.statuses.ProfessorStatus;
+import mx.uv.fei.logic.domain.statuses.StudentStatus;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
 import mx.uv.fei.logic.exceptions.DataWritingException;
 
 public class GuiRegisterUserController {
+
+    private GuiUsersController guiUsersController;
+
     @FXML
     private TextField alternateEmailTextField;
     @FXML
@@ -68,8 +76,6 @@ public class GuiRegisterUserController {
            !this.matricleOrPersonalNumberTextField.getText().trim().isEmpty()) {
 
             if(allTextFieldsContainsCorrectValues()) {
-                this.errorMessajeText.setText("Usuario registrado con éxito");
-                this.errorMessajeText.setVisible(true);
                 switch(this.typeComboBox.getValue()) {
                     case "Director": {
                         this.registerDirector();
@@ -97,6 +103,14 @@ public class GuiRegisterUserController {
                     }
                 }
 
+                AlertPopUpGenerator alertPopUpGenerator = new AlertPopUpGenerator();
+                alertPopUpGenerator.showCustomMessage(AlertType.WARNING, "Éxito", "Usuario registrado exitosamente");
+
+                this.guiUsersController.loadUserButtons();
+
+                Stage stage = (Stage) registerButton.getScene().getWindow();
+                stage.close();
+
             } else {
                 AlertPaneController alertPaneController = new AlertPaneController();
                 alertPaneController.openWarningPane("Algunos campos contienen datos inválidos");
@@ -117,6 +131,10 @@ public class GuiRegisterUserController {
         }
     }
 
+    public void setGuiUsersController(GuiUsersController guiUsersController) {
+        this.guiUsersController = guiUsersController;
+    }
+
     private void registerDirector() {
         try {
             DirectorDAO directorDAO = new DirectorDAO();
@@ -127,6 +145,7 @@ public class GuiRegisterUserController {
             director.setEmailAddress(this.emailTextField.getText());
             director.setAlternateEmail(this.alternateEmailTextField.getText());
             director.setPhoneNumber(this.telephoneNumberTextField.getText());
+            director.setStatus(ProfessorStatus.ACTIVE.getValue());
             director.setStaffNumber(Integer.parseInt(this.matricleOrPersonalNumberTextField.getText()));
             if(directorDAO.theDirectorIsAlreadyRegisted(director)) {
                 AlertPaneController alertPaneController = new AlertPaneController();
@@ -155,6 +174,7 @@ public class GuiRegisterUserController {
             academicBodyHead.setEmailAddress(this.emailTextField.getText());
             academicBodyHead.setAlternateEmail(this.alternateEmailTextField.getText());
             academicBodyHead.setPhoneNumber(this.telephoneNumberTextField.getText());
+            academicBodyHead.setStatus(ProfessorStatus.ACTIVE.getValue());
             academicBodyHead.setStaffNumber(Integer.parseInt(this.matricleOrPersonalNumberTextField.getText()));
             if(academicBodyHeadDAO.theAcademicBodyHeadIsAlreadyRegisted(academicBodyHead)){
                 AlertPaneController alertPaneController = new AlertPaneController();
@@ -183,6 +203,7 @@ public class GuiRegisterUserController {
             degreeBoss.setEmailAddress(this.emailTextField.getText());
             degreeBoss.setAlternateEmail(this.alternateEmailTextField.getText());
             degreeBoss.setPhoneNumber(this.telephoneNumberTextField.getText());
+            degreeBoss.setStatus(ProfessorStatus.ACTIVE.getValue());
             degreeBoss.setStaffNumber(Integer.parseInt(this.matricleOrPersonalNumberTextField.getText()));
                 if(degreeBossDAO.theDegreeBossIsAlreadyRegisted(degreeBoss)) {
                     AlertPaneController alertPaneController = new AlertPaneController();
@@ -212,6 +233,7 @@ public class GuiRegisterUserController {
             professor.setEmailAddress(this.emailTextField.getText());
             professor.setAlternateEmail(this.alternateEmailTextField.getText());
             professor.setPhoneNumber(this.telephoneNumberTextField.getText());
+            professor.setStatus(ProfessorStatus.ACTIVE.getValue());
             professor.setStaffNumber(Integer.parseInt(this.matricleOrPersonalNumberTextField.getText()));
             if(professorDAO.theProfessorIsAlreadyRegisted(professor)){
                 AlertPaneController alertPaneController = new AlertPaneController();
@@ -240,6 +262,7 @@ public class GuiRegisterUserController {
             student.setEmailAddress(this.emailTextField.getText());
             student.setAlternateEmail(this.alternateEmailTextField.getText());
             student.setPhoneNumber(this.telephoneNumberTextField.getText());
+            student.setStatus(StudentStatus.AVAILABLE.getValue());
             student.setMatricle(this.matricleOrPersonalNumberTextField.getText());
             if(studentDAO.theStudentIsAlreadyRegisted(student)) {
                 AlertPaneController alertPaneController = new AlertPaneController();

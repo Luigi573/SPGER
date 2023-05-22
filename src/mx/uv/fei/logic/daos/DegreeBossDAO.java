@@ -23,7 +23,8 @@ public class DegreeBossDAO implements IDegreeBossDAO {
     public void addDegreeBossToDatabase(DegreeBoss degreeBoss) throws DataWritingException {
         try {
             String wholeQueryToInsertDegreeBossDataToUserColumns = 
-                "INSERT INTO Usuarios (nombre, apellidoPaterno, apellidoMaterno, correo, correoAlterno, númeroTeléfono) VALUES (?, ?, ?, ?, ?, ?)";
+                "INSERT INTO Usuarios (nombre, apellidoPaterno, apellidoMaterno, correo, correoAlterno, númeroTeléfono, estado) " + 
+                "VALUES (?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement preparedStatementToInsertDegreeBossDataToUserColumns = 
                 dataBaseManager.getConnection().prepareStatement(wholeQueryToInsertDegreeBossDataToUserColumns);
             preparedStatementToInsertDegreeBossDataToUserColumns.setString(1, degreeBoss.getName());
@@ -111,7 +112,7 @@ public class DegreeBossDAO implements IDegreeBossDAO {
                            "apellidoPaterno = ?, apellidoMaterno = ?, correo = ?, " + 
                            "correoAlterno = ?, númeroTeléfono = ?, estado = ? " +
                            "WHERE nombre = ? && apellidoPaterno = ? && apellidoMaterno = ? && " + 
-                           "correo = ? && correoAlterno = ? && estado = ?";
+                           "correo = ? && correoAlterno = ? && númeroTeléfono = ? && estado = ?";
             
             PreparedStatement preparedStatement = dataBaseManager.getConnection().prepareStatement(query);
             preparedStatement.setString(1, newDegreeBossData.getName());
@@ -263,7 +264,10 @@ public class DegreeBossDAO implements IDegreeBossDAO {
 
     public boolean theDegreeBossIsAlreadyRegisted(DegreeBoss degreeBoss) throws DataRetrievalException {
         PreparedStatement statement;
-        String query = "SELECT * FROM Profesores";
+        String query = "SELECT U.nombre, U.apellidoPaterno, U.apellidoMaterno, U.correo, " +
+                           "U.correoAlterno, U.númeroTeléfono, U.estado, P.NumPersonal FROM Usuarios U " + 
+                           "INNER JOIN Profesores P ON U.IdUsuario = P.IdUsuario INNER JOIN JefesCarrera JC " +
+                           "ON P.NumPersonal = JC.NumPersonal";
         
         try {
             statement = dataBaseManager.getConnection().prepareStatement(query);

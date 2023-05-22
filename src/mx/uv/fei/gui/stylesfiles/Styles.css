@@ -64,6 +64,14 @@ Text {
 	-fx-background-color: #eeb65b;
 }
 
+.dialog {
+    -fx-background-color: #31B189;
+}
+
+.dialog:header *.header-panel {
+    -fx-background-color: #31B189;
+}
+
 .label {
     -fx-background-color: transparent;
     -fx-text-fill: #000000;

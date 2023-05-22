@@ -53,9 +53,8 @@ public class StudentDAO implements IStudentDAO{
                 student.setUserId(resultSet.getInt("IdUsuario"));
             }
 
-            String studentTablesToConsult = "Matrícula, IdUsuario";
             String wholeQueryToInsertStudentData = 
-                "INSERT INTO Estudiantes (" + studentTablesToConsult + ") VALUES (?, ?)";
+                "INSERT INTO Estudiantes (Matrícula, IdUsuario) VALUES (?, ?)";
             PreparedStatement preparedStatementToInsertStudentData = 
                 dataBaseManager.getConnection().prepareStatement(wholeQueryToInsertStudentData);
             preparedStatementToInsertStudentData.setString(1, student.getMatricule());
@@ -99,7 +98,6 @@ public class StudentDAO implements IStudentDAO{
             preparedStatementForUpdateUserData.setString(13, originalStudentData.getPhoneNumber());
             preparedStatementForUpdateUserData.setString(14, originalStudentData.getStatus());
             preparedStatementForUpdateUserData.executeUpdate();
-            System.out.println(preparedStatementForUpdateUserData.toString());
 
             String queryForUpdateStudentData = "UPDATE Estudiantes SET Matrícula = ? " + 
                            "WHERE IdUsuario = ?";
@@ -107,7 +105,7 @@ public class StudentDAO implements IStudentDAO{
             PreparedStatement preparedStatementForUpdateStudentData = 
                 dataBaseManager.getConnection().prepareStatement(queryForUpdateStudentData);
             preparedStatementForUpdateStudentData.setString(1, newStudentData.getMatricule());
-            preparedStatementForUpdateStudentData.setString(2, newStudentData.getMatricule());
+            preparedStatementForUpdateStudentData.setInt(2, newStudentData.getUserId());
             preparedStatementForUpdateStudentData.executeUpdate();
         } catch(SQLException e){
             e.printStackTrace();
@@ -329,11 +327,10 @@ public class StudentDAO implements IStudentDAO{
     }
 
     public boolean theStudentIsAlreadyRegisted(Student student) throws DataRetrievalException {
-        String query = "SELECT * FROM Estudiantes";
+        String query = "SELECT * FROM Usuarios U INNER JOIN Estudiantes E ON U.IdUsuario = E.IdUsuario";
         
         try {
             Statement statement = dataBaseManager.getConnection().createStatement();
-            
             ResultSet resultSet = statement.executeQuery(query);
             while(resultSet.next()) {
                 if(resultSet.getString("nombre").equals(student.getName()) &&
@@ -343,11 +340,11 @@ public class StudentDAO implements IStudentDAO{
                    resultSet.getString("correoAlterno").equals(student.getAlternateEmail()) &&
                    resultSet.getString("númeroTeléfono").equals(student.getPhoneNumber()) &&
                    resultSet.getString("estado").equals(student.getStatus()) &&
-                   resultSet.getString("Matrícula") == student.getMatricule()) {
+                   resultSet.getString("Matrícula").equals(student.getMatricule())) {
                     
-                   resultSet.close();
-                   dataBaseManager.getConnection().close();
-                   return true;
+                    resultSet.close();
+                    dataBaseManager.getConnection().close();
+                    return true;
                 }
             }
             resultSet.close();

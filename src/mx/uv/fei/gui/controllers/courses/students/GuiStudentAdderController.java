@@ -127,10 +127,7 @@ public class GuiStudentAdderController {
         }
 
         this.guiUsersCourseController.refreshUsers();
-        this.sucessText.setVisible(true);
-        //PauseTransition delay = new PauseTransition(Duration.seconds(5));
-        //delay.setOnFinished( this.guiUsersCourseController. stage.close() );
-        //delay.play();
+
 
         this.addStudentsButton.setVisible(false);
         Stage stage = (Stage) addStudentsButton.getScene().getWindow();

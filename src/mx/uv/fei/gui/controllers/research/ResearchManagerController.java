@@ -57,9 +57,9 @@ public class ResearchManagerController {
             AddResearchController addResearchController = loader.getController();
             addResearchController.setResearchManagerController(this);
             Scene scene = new Scene(parent);
-            Stage stage = new Stage();
             String css = this.getClass().getResource("/mx/uv/fei/gui/stylesfiles/Styles.css").toExternalForm();
             scene.getStylesheets().add(css);
+            Stage stage = new Stage();
             stage.initModality(Modality.WINDOW_MODAL);
             stage.initOwner((Stage)((Node)event.getSource()).getScene().getWindow());
             stage.setScene(scene);

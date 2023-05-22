@@ -11,7 +11,9 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.text.Text;
+import mx.uv.fei.gui.AlertPopUpGenerator;
 import mx.uv.fei.gui.controllers.AlertPaneController;
 import mx.uv.fei.logic.daos.AcademicBodyHeadDAO;
 import mx.uv.fei.logic.daos.DegreeBossDAO;
@@ -27,6 +29,8 @@ import mx.uv.fei.logic.exceptions.DataRetrievalException;
 import mx.uv.fei.logic.exceptions.DataWritingException;
 
 public class ModifyUserInformationController {
+    
+    private GuiUsersController guiUsersController;
     private UserInformationController userInformationController;
 
     @FXML
@@ -74,31 +78,38 @@ public class ModifyUserInformationController {
            !this.alternateEmailTextField.getText().trim().isEmpty() &&
            !this.telephoneNumberTextField.getText().trim().isEmpty() &&
            !this.matricleOrPersonalNumberTextField.getText().trim().isEmpty()) {
-            switch(this.userInformationController.getUserType()){
-                case "Director": {
-                    this.modifyDirector();
-                    break;
+            if(allTextFieldsContainsCorrectValues()) {
+                switch(this.userInformationController.getUserType()){
+                    case "Director": {
+                        this.modifyDirector();
+                        break;
+                    }
+        
+                    case "Miembro de Cuerpo Académico": {
+                        this.modifyAcademicBodyHead();
+                        break;
+                    }
+        
+                    case "Jefe de Carrera": {
+                        this.modifyDegreeBoss();
+                        break;
+                    }
+        
+                    case "Profesor": {
+                        this.modifyProfessor();
+                        break;
+                    }
+        
+                    case "Estudiante": {
+                        this.modifyStudent();
+                        break;
+                    }
                 }
-    
-                case "Miembro de Cuerpo Académico": {
-                    this.modifyAcademicBodyHead();
-                    break;
-                }
-    
-                case "Jefe de Carrera": {
-                    this.modifyDegreeBoss();
-                    break;
-                }
-    
-                case "Profesor": {
-                    this.modifyProfessor();
-                    break;
-                }
-    
-                case "Estudiante": {
-                    this.modifyStudent();
-                    break;
-                }
+
+                AlertPopUpGenerator alertPopUpGenerator = new AlertPopUpGenerator();
+                alertPopUpGenerator.showCustomMessage(AlertType.WARNING, "Éxito", "Usuario modificado exitosamente");
+
+                this.guiUsersController.loadUserButtons();
             }
         } else {
             AlertPaneController alertPaneController = new AlertPaneController();
@@ -170,6 +181,10 @@ public class ModifyUserInformationController {
         this.telephoneNumberTextField.setText(telephoneNumber);
     }
 
+    public void setGuiUsersController(GuiUsersController guiUsersController) {
+        this.guiUsersController = guiUsersController;
+    }
+
     public void setUserInformationController(UserInformationController userInformationController){
         this.userInformationController = userInformationController;
     }
@@ -183,6 +198,7 @@ public class ModifyUserInformationController {
         newStudentData.setEmailAddress(this.emailTextField.getText());
         newStudentData.setAlternateEmail(this.alternateEmailTextField.getText());
         newStudentData.setPhoneNumber(this.telephoneNumberTextField.getText());
+        newStudentData.setStatus(this.statusComboBox.getValue());
         newStudentData.setMatricle(this.matricleOrPersonalNumberTextField.getText());
 
         Student originalStudentData = new Student();
@@ -192,7 +208,8 @@ public class ModifyUserInformationController {
         originalStudentData.setEmailAddress(this.getAllLabelsDataFromUserInformationPane().get(3));
         originalStudentData.setAlternateEmail(this.getAllLabelsDataFromUserInformationPane().get(4));
         originalStudentData.setPhoneNumber(this.getAllLabelsDataFromUserInformationPane().get(5));
-        originalStudentData.setMatricle(this.getAllLabelsDataFromUserInformationPane().get(6));
+        originalStudentData.setStatus(this.getAllLabelsDataFromUserInformationPane().get(6));
+        originalStudentData.setMatricle(this.getAllLabelsDataFromUserInformationPane().get(7));
 
         try {
             if(studentDAO.theStudentIsAlreadyRegisted(newStudentData)) {
@@ -225,6 +242,7 @@ public class ModifyUserInformationController {
         newProfessorData.setEmailAddress(this.emailTextField.getText());
         newProfessorData.setAlternateEmail(this.alternateEmailTextField.getText());
         newProfessorData.setPhoneNumber(this.telephoneNumberTextField.getText());
+        newProfessorData.setStatus(this.statusComboBox.getValue());
         newProfessorData.setStaffNumber(Integer.parseInt(this.matricleOrPersonalNumberTextField.getText()));
 
         Professor originalProfessorData = new Professor();
@@ -234,7 +252,8 @@ public class ModifyUserInformationController {
         originalProfessorData.setEmailAddress(this.getAllLabelsDataFromUserInformationPane().get(3));
         originalProfessorData.setAlternateEmail(this.getAllLabelsDataFromUserInformationPane().get(4));
         originalProfessorData.setPhoneNumber(this.getAllLabelsDataFromUserInformationPane().get(5));
-        originalProfessorData.setStaffNumber(Integer.parseInt(this.getAllLabelsDataFromUserInformationPane().get(6)));
+        originalProfessorData.setStatus(this.getAllLabelsDataFromUserInformationPane().get(6));
+        originalProfessorData.setStaffNumber(Integer.parseInt(this.getAllLabelsDataFromUserInformationPane().get(7)));
         try {
             if(professorDAO.theProfessorIsAlreadyRegisted(newProfessorData)){
                 AlertPaneController alertPaneController = new AlertPaneController();
@@ -267,6 +286,7 @@ public class ModifyUserInformationController {
         newDirectorData.setEmailAddress(this.emailTextField.getText());
         newDirectorData.setAlternateEmail(this.alternateEmailTextField.getText());
         newDirectorData.setPhoneNumber(this.telephoneNumberTextField.getText());
+        newDirectorData.setStatus(this.statusComboBox.getValue());
         newDirectorData.setStaffNumber(Integer.parseInt(this.matricleOrPersonalNumberTextField.getText()));
 
         Director originalDirectorData = new Director();
@@ -276,7 +296,8 @@ public class ModifyUserInformationController {
         originalDirectorData.setEmailAddress(this.getAllLabelsDataFromUserInformationPane().get(3));
         originalDirectorData.setAlternateEmail(this.getAllLabelsDataFromUserInformationPane().get(4));
         originalDirectorData.setPhoneNumber(this.getAllLabelsDataFromUserInformationPane().get(5));
-        originalDirectorData.setStaffNumber(Integer.parseInt(this.getAllLabelsDataFromUserInformationPane().get(6)));
+        originalDirectorData.setStatus(this.getAllLabelsDataFromUserInformationPane().get(6));
+        originalDirectorData.setStaffNumber(Integer.parseInt(this.getAllLabelsDataFromUserInformationPane().get(7)));
         try {
             if(directorDAO.theDirectorIsAlreadyRegisted(newDirectorData)) {
                 AlertPaneController alertPaneController = new AlertPaneController();
@@ -308,6 +329,7 @@ public class ModifyUserInformationController {
         newAcademicBodyHeadData.setEmailAddress(this.emailTextField.getText());
         newAcademicBodyHeadData.setAlternateEmail(this.alternateEmailTextField.getText());
         newAcademicBodyHeadData.setPhoneNumber(this.telephoneNumberTextField.getText());
+        newAcademicBodyHeadData.setStatus(this.statusComboBox.getValue());
         newAcademicBodyHeadData.setStaffNumber(Integer.parseInt(this.matricleOrPersonalNumberTextField.getText()));
 
         AcademicBodyHead originalAcademicBodyHeadData = new AcademicBodyHead();
@@ -317,7 +339,8 @@ public class ModifyUserInformationController {
         originalAcademicBodyHeadData.setEmailAddress(this.getAllLabelsDataFromUserInformationPane().get(3));
         originalAcademicBodyHeadData.setAlternateEmail(this.getAllLabelsDataFromUserInformationPane().get(4));
         originalAcademicBodyHeadData.setPhoneNumber(this.getAllLabelsDataFromUserInformationPane().get(5));
-        originalAcademicBodyHeadData.setStaffNumber(Integer.parseInt(this.getAllLabelsDataFromUserInformationPane().get(6)));
+        originalAcademicBodyHeadData.setStatus(this.getAllLabelsDataFromUserInformationPane().get(6));
+        originalAcademicBodyHeadData.setStaffNumber(Integer.parseInt(this.getAllLabelsDataFromUserInformationPane().get(7)));
 
         try {
             if(academicBodyHeadDAO.theAcademicBodyHeadIsAlreadyRegisted(newAcademicBodyHeadData)) {
@@ -350,6 +373,7 @@ public class ModifyUserInformationController {
         newDegreeBossData.setEmailAddress(this.emailTextField.getText());
         newDegreeBossData.setAlternateEmail(this.alternateEmailTextField.getText());
         newDegreeBossData.setPhoneNumber(this.telephoneNumberTextField.getText());
+        newDegreeBossData.setStatus(this.statusComboBox.getValue());
         newDegreeBossData.setStaffNumber(Integer.parseInt(this.matricleOrPersonalNumberTextField.getText()));
 
         DegreeBoss originalDegreeBossData = new DegreeBoss();
@@ -359,7 +383,8 @@ public class ModifyUserInformationController {
         originalDegreeBossData.setEmailAddress(this.getAllLabelsDataFromUserInformationPane().get(3));
         originalDegreeBossData.setAlternateEmail(this.getAllLabelsDataFromUserInformationPane().get(4));
         originalDegreeBossData.setPhoneNumber(this.getAllLabelsDataFromUserInformationPane().get(5));
-        originalDegreeBossData.setStaffNumber(Integer.parseInt(this.getAllLabelsDataFromUserInformationPane().get(6)));
+        originalDegreeBossData.setStatus(this.getAllLabelsDataFromUserInformationPane().get(6));
+        originalDegreeBossData.setStaffNumber(Integer.parseInt(this.getAllLabelsDataFromUserInformationPane().get(7)));
 
         try {
             if(degreeBossDAO.theDegreeBossIsAlreadyRegisted(newDegreeBossData)){
@@ -391,7 +416,7 @@ public class ModifyUserInformationController {
         userInformationPaneData.add(this.userInformationController.getEmail());
         userInformationPaneData.add(this.userInformationController.getAlternateEmail());
         userInformationPaneData.add(this.userInformationController.getTelephoneNumber());
-        userInformationPaneData.add(this.userInformationController.getTelephoneNumber());
+        userInformationPaneData.add(this.userInformationController.getStatus());
         userInformationPaneData.add(this.userInformationController.getMatriculeOrPersonalNumber());
         return userInformationPaneData;
     }
