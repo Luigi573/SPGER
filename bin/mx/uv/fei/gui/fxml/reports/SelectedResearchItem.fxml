@@ -4,11 +4,11 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.HBox?>
 
-<HBox prefHeight="53.0" prefWidth="357.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.uv.fei.gui.controllers.reports.SelectedResearchItemController">
+<HBox prefHeight="53.0" prefWidth="438.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.uv.fei.gui.controllers.reports.SelectedResearchItemController">
    <children>
-      <Label prefHeight="53.0" prefWidth="24.0" stylesheets="@../../stylesfiles/GuiReporteAnteproyectoStyles.css" />
-      <Label fx:id="selectedResearchNameLabel" prefHeight="53.0" prefWidth="188.0" stylesheets="@../../stylesfiles/GuiReporteAnteproyectoStyles.css" />
-      <Label prefHeight="53.0" prefWidth="124.0" stylesheets="@../../stylesfiles/GuiReporteAnteproyectoStyles.css">
+      <Label prefHeight="53.0" prefWidth="10.0" />
+      <Label fx:id="selectedResearchNameLabel" prefHeight="53.0" prefWidth="326.0" />
+      <Label prefHeight="53.0" prefWidth="124.0">
          <graphic>
             <Button fx:id="deselectButton" mnemonicParsing="false" onAction="#deselectButtonController" text="Deseleccionar" />
          </graphic>

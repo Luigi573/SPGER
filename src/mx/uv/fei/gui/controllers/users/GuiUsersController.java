@@ -10,9 +10,12 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -138,15 +141,15 @@ public class GuiUsersController {
                 FXMLLoader userItemControllerLoader = new FXMLLoader(
                     getClass().getResource("/mx/uv/fei/gui/fxml/users/User.fxml")
                 );
-                Button userItemButton;
-                userItemButton = userItemControllerLoader.load();
+                Pane userItemPane;
+                userItemPane = userItemControllerLoader.load();
                 UserController userController = userItemControllerLoader.getController();
                 userController.setName(student.getName() + " " + student.getFirstSurname() + " " + student.getSecondSurname());
                 userController.setType("Estudiante");
                 userController.setMatricleOrPersonalNumber(student.getMatricule());
-                userController.setMatricleOrPersonalNumberText("Matrícula");
+                userController.setMatricleOrPersonalNumberText("Matrícula: ");
                 userController.setGuiUsersController(this);
-                this.usersVBox.getChildren().add(userItemButton);
+                this.usersVBox.getChildren().add(userItemPane);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -157,18 +160,30 @@ public class GuiUsersController {
 
     private void professorButtonMaker(ArrayList<Professor> professors){
         try {
-            for(Professor professor : professors){
-                FXMLLoader userItemControllerLoader = new FXMLLoader(
-                    getClass().getResource("/mx/uv/fei/gui/fxml/users/User.fxml")
-                );
-                Button userItemButton = userItemControllerLoader.load();
-                UserController userController = userItemControllerLoader.getController();
-                userController.setName(professor.getName());
-                userController.setType("Profesor");
-                userController.setMatricleOrPersonalNumber(Integer.toString(professor.getStaffNumber()));
-                userController.setMatricleOrPersonalNumberText("Número de Personal");
-                userController.setGuiUsersController(this);
-                this.usersVBox.getChildren().add(userItemButton);
+            for(Professor professor : professors) {
+                boolean professorAlreadyInUserVbox = false;
+                for(Node pane : ((VBox)this.usersVBox).getChildren()) {
+                    Node label = ((Pane)pane).getChildren().get(5);
+                    if(((Label)label).getText().equals(Integer.toString(professor.getStaffNumber()))) {
+                        professorAlreadyInUserVbox = true;
+                        break;
+                    }
+                }
+
+                if(!professorAlreadyInUserVbox){
+                    FXMLLoader userItemControllerLoader = new FXMLLoader(
+                        getClass().getResource("/mx/uv/fei/gui/fxml/users/User.fxml")
+                    );
+                    Pane userItemPane = userItemControllerLoader.load();
+                    UserController userController = userItemControllerLoader.getController();
+                    userController.setName(professor.getName());
+                    userController.setType("Profesor");
+                    userController.setMatricleOrPersonalNumber(Integer.toString(professor.getStaffNumber()));
+                    userController.setMatricleOrPersonalNumberText("Número de Personal: ");
+                    userController.setGuiUsersController(this);
+                    this.usersVBox.getChildren().add(userItemPane);
+
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -183,14 +198,14 @@ public class GuiUsersController {
                 FXMLLoader userItemControllerLoader = new FXMLLoader(
                     getClass().getResource("/mx/uv/fei/gui/fxml/users/User.fxml")
                 );
-                Button userItemButton = userItemControllerLoader.load();
+                Pane userItemPane = userItemControllerLoader.load();
                 UserController userController = userItemControllerLoader.getController();
                 userController.setName(director.getName());
                 userController.setType("Director");
                 userController.setMatricleOrPersonalNumber(Integer.toString(director.getStaffNumber()));
-                userController.setMatricleOrPersonalNumberText("Número de Personal");
+                userController.setMatricleOrPersonalNumberText("Número de Personal: ");
                 userController.setGuiUsersController(this);
-                this.usersVBox.getChildren().add(userItemButton);
+                this.usersVBox.getChildren().add(userItemPane);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -205,14 +220,14 @@ public class GuiUsersController {
                 FXMLLoader userItemControllerLoader = new FXMLLoader(
                     getClass().getResource("/mx/uv/fei/gui/fxml/users/User.fxml")
                 );
-                Button userItemButton = userItemControllerLoader.load();
+                Pane userItemPane = userItemControllerLoader.load();
                 UserController userController = userItemControllerLoader.getController();
                 userController.setName(academicBodyHead.getName());
                 userController.setType("Miembro de Cuerpo Académico");
                 userController.setMatricleOrPersonalNumber(Integer.toString(academicBodyHead.getStaffNumber()));
-                userController.setMatricleOrPersonalNumberText("Número de Personal");
+                userController.setMatricleOrPersonalNumberText("Número de Personal: ");
                 userController.setGuiUsersController(this);
-                this.usersVBox.getChildren().add(userItemButton);
+                this.usersVBox.getChildren().add(userItemPane);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -227,14 +242,14 @@ public class GuiUsersController {
                 FXMLLoader userItemControllerLoader = new FXMLLoader(
                     getClass().getResource("/mx/uv/fei/gui/fxml/users/User.fxml")
                 );
-                Button userItemButton = userItemControllerLoader.load();
+                Pane userItemPane = userItemControllerLoader.load();
                 UserController userController = userItemControllerLoader.getController();
                 userController.setName(degreeBoss.getName());
                 userController.setType("Jefe de Carrera");
                 userController.setMatricleOrPersonalNumber(Integer.toString(degreeBoss.getStaffNumber()));
-                userController.setMatricleOrPersonalNumberText("Número de Personal");
+                userController.setMatricleOrPersonalNumberText("Número de Personal: ");
                 userController.setGuiUsersController(this);
-                this.usersVBox.getChildren().add(userItemButton);
+                this.usersVBox.getChildren().add(userItemPane);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -450,7 +465,6 @@ public class GuiUsersController {
             modifyUserInformationController.setTelephoneNumber(userInformationController.getTelephoneNumber());
             modifyUserInformationController.setMatricleOrPersonalNumber(userInformationController.getMatriculeOrPersonalNumber());
             modifyUserInformationController.setStatus(userInformationController.getStatus());
-            modifyUserInformationController.setGuiUsersController(this);
             modifyUserInformationController.setUserInformationController(userInformationController);
             this.userInformationScrollPane.setContent(modifyUserInformationVBox);
             

@@ -4,6 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.Pane;
 
 public class UserController {
     GuiUsersController guiUsersController;
@@ -19,6 +20,9 @@ public class UserController {
 
     @FXML
     private Label typeLabel;
+
+    @FXML
+    private Pane userPane;
 
     @FXML
     private Button userButton;

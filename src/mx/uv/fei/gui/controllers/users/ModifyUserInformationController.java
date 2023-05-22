@@ -1,11 +1,16 @@
 package mx.uv.fei.gui.controllers.users;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DialogPane;
@@ -13,6 +18,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import mx.uv.fei.gui.AlertPopUpGenerator;
 import mx.uv.fei.gui.controllers.AlertPaneController;
 import mx.uv.fei.logic.daos.AcademicBodyHeadDAO;
@@ -30,7 +36,6 @@ import mx.uv.fei.logic.exceptions.DataWritingException;
 
 public class ModifyUserInformationController {
     
-    private GuiUsersController guiUsersController;
     private UserInformationController userInformationController;
 
     @FXML
@@ -66,7 +71,7 @@ public class ModifyUserInformationController {
 
     @FXML
     void exitButtonController(ActionEvent event) {
-        //this.guiUsersController.openPaneWithUserInformation(getFirstSurname(), getAlternateEmail(), getStatus());
+        returnToGuiUsers(event);
     }
 
     @FXML
@@ -81,35 +86,30 @@ public class ModifyUserInformationController {
             if(allTextFieldsContainsCorrectValues()) {
                 switch(this.userInformationController.getUserType()){
                     case "Director": {
-                        this.modifyDirector();
+                        this.modifyDirector(event);
                         break;
                     }
         
                     case "Miembro de Cuerpo Académico": {
-                        this.modifyAcademicBodyHead();
+                        this.modifyAcademicBodyHead(event);
                         break;
                     }
         
                     case "Jefe de Carrera": {
-                        this.modifyDegreeBoss();
+                        this.modifyDegreeBoss(event);
                         break;
                     }
         
                     case "Profesor": {
-                        this.modifyProfessor();
+                        this.modifyProfessor(event);
                         break;
                     }
         
                     case "Estudiante": {
-                        this.modifyStudent();
+                        this.modifyStudent(event);
                         break;
                     }
                 }
-
-                AlertPopUpGenerator alertPopUpGenerator = new AlertPopUpGenerator();
-                alertPopUpGenerator.showCustomMessage(AlertType.WARNING, "Éxito", "Usuario modificado exitosamente");
-
-                this.guiUsersController.loadUserButtons();
             }
         } else {
             AlertPaneController alertPaneController = new AlertPaneController();
@@ -181,15 +181,11 @@ public class ModifyUserInformationController {
         this.telephoneNumberTextField.setText(telephoneNumber);
     }
 
-    public void setGuiUsersController(GuiUsersController guiUsersController) {
-        this.guiUsersController = guiUsersController;
-    }
-
     public void setUserInformationController(UserInformationController userInformationController){
         this.userInformationController = userInformationController;
     }
 
-    private void modifyStudent() {
+    private void modifyStudent(ActionEvent event) {
         StudentDAO studentDAO = new StudentDAO();
         Student newStudentData = new Student();
         newStudentData.setName(this.namesTextField.getText());
@@ -224,8 +220,10 @@ public class ModifyUserInformationController {
         }
         try {
             studentDAO.modifyStudentDataFromDatabase(newStudentData, originalStudentData);
-            AlertPaneController alertPaneController = new AlertPaneController();
-            alertPaneController.openWarningPane("Usuario modificado exitosamente");
+
+            AlertPopUpGenerator alertPopUpGenerator = new AlertPopUpGenerator();
+            alertPopUpGenerator.showCustomMessage(AlertType.WARNING, "Éxito", "Usuario modificado exitosamente");
+            this.returnToGuiUsers(event);
         } catch (DataWritingException e) {
             e.printStackTrace();
             AlertPaneController alertPaneController = new AlertPaneController();
@@ -233,7 +231,7 @@ public class ModifyUserInformationController {
         }
     }
 
-    private void modifyProfessor(){
+    private void modifyProfessor(ActionEvent event){
         ProfessorDAO professorDAO = new ProfessorDAO();
         Professor newProfessorData = new Professor();
         newProfessorData.setName(this.namesTextField.getText());
@@ -268,8 +266,10 @@ public class ModifyUserInformationController {
 
         try {
             professorDAO.modifyProfessorDataFromDatabase(newProfessorData, originalProfessorData);
-            AlertPaneController alertPaneController = new AlertPaneController();
-            alertPaneController.openWarningPane("Usuario modificado exitosamente");
+
+            AlertPopUpGenerator alertPopUpGenerator = new AlertPopUpGenerator();
+            alertPopUpGenerator.showCustomMessage(AlertType.WARNING, "Éxito", "Usuario modificado exitosamente");
+            this.returnToGuiUsers(event);
         } catch (DataWritingException e) {
             e.printStackTrace();
             AlertPaneController alertPaneController = new AlertPaneController();
@@ -277,7 +277,7 @@ public class ModifyUserInformationController {
         }
     }
 
-    private void modifyDirector(){
+    private void modifyDirector(ActionEvent event) {
         DirectorDAO directorDAO = new DirectorDAO();
         Director newDirectorData = new Director();
         newDirectorData.setName(this.namesTextField.getText());
@@ -311,8 +311,10 @@ public class ModifyUserInformationController {
         }
         try {
             directorDAO.modifyDirectorDataFromDatabase(newDirectorData, originalDirectorData);
-            AlertPaneController alertPaneController = new AlertPaneController();
-            alertPaneController.openWarningPane("Usuario modificado exitosamente");
+
+            AlertPopUpGenerator alertPopUpGenerator = new AlertPopUpGenerator();
+            alertPopUpGenerator.showCustomMessage(AlertType.WARNING, "Éxito", "Usuario modificado exitosamente");
+            this.returnToGuiUsers(event);
         } catch (DataWritingException e) {
             e.printStackTrace();
             AlertPaneController alertPaneController = new AlertPaneController();
@@ -320,7 +322,7 @@ public class ModifyUserInformationController {
         }
     }
 
-    private void modifyAcademicBodyHead(){
+    private void modifyAcademicBodyHead(ActionEvent event) {
         AcademicBodyHeadDAO academicBodyHeadDAO = new AcademicBodyHeadDAO();
         AcademicBodyHead newAcademicBodyHeadData = new AcademicBodyHead();
         newAcademicBodyHeadData.setName(this.namesTextField.getText());
@@ -355,8 +357,10 @@ public class ModifyUserInformationController {
         }
         try {
             academicBodyHeadDAO.modifyAcademicBodyHeadDataFromDatabase(newAcademicBodyHeadData, originalAcademicBodyHeadData);
-            AlertPaneController alertPaneController = new AlertPaneController();
-            alertPaneController.openWarningPane("Usuario modificado exitosamente");
+
+            AlertPopUpGenerator alertPopUpGenerator = new AlertPopUpGenerator();
+            alertPopUpGenerator.showCustomMessage(AlertType.WARNING, "Éxito", "Usuario modificado exitosamente");
+            this.returnToGuiUsers(event);
         } catch (DataWritingException e) {
             e.printStackTrace();
             AlertPaneController alertPaneController = new AlertPaneController();
@@ -364,7 +368,7 @@ public class ModifyUserInformationController {
         }
     }
 
-    private void modifyDegreeBoss(){
+    private void modifyDegreeBoss(ActionEvent event) {
         DegreeBossDAO degreeBossDAO = new DegreeBossDAO();
         DegreeBoss newDegreeBossData = new DegreeBoss();
         newDegreeBossData.setName(this.namesTextField.getText());
@@ -399,8 +403,10 @@ public class ModifyUserInformationController {
         }
         try {
             degreeBossDAO.modifyDegreeBossDataFromDatabase(newDegreeBossData, originalDegreeBossData);
-            AlertPaneController alertPaneController = new AlertPaneController();
-            alertPaneController.openWarningPane("Usuario modificado exitosamente");
+
+            AlertPopUpGenerator alertPopUpGenerator = new AlertPopUpGenerator();
+            alertPopUpGenerator.showCustomMessage(AlertType.WARNING, "Éxito", "Usuario modificado exitosamente");
+            this.returnToGuiUsers(event);
         } catch (DataWritingException e) {
             e.printStackTrace();
             AlertPaneController alertPaneController = new AlertPaneController();
@@ -473,6 +479,23 @@ public class ModifyUserInformationController {
         }
 
         return false;
+    }
+
+    private void returnToGuiUsers(ActionEvent event) {
+        try{
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/users/GuiUsers.fxml"));
+            Parent parent = loader.load();
+            Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+            Scene scene = new Scene(parent);
+            String css = this.getClass().getResource("/mx/uv/fei/gui/stylesfiles/Styles.css").toExternalForm();
+            scene.getStylesheets().add(css);
+            stage.setTitle("SPGER");
+            stage.setScene(scene);
+            stage.show();
+        }catch(IllegalStateException | IOException exception){
+            AlertPopUpGenerator alertPopUpGenerator = new AlertPopUpGenerator();
+            alertPopUpGenerator.showMissingFilesMessage();
+        }
     }
 
 }

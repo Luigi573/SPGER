@@ -114,7 +114,7 @@ public class GuiUsersCourseController {
                 studentPaneController.setMatricleOrPersonalNumber(studentMatricle);
                 studentPaneController.setGuiUsersCourseController(this);
                 
-                if(this.students % 6 == 0) {
+                if(this.students % 7 == 0) {
                     HBox studentHBox = new HBox();
                     this.studentsVbox.getChildren().add(studentHBox);
                     ( (HBox)this.studentsVbox.getChildren().get(this.studentsVbox.getChildren().size() - 1) ).getChildren().add(studentPane);

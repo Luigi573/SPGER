@@ -4,6 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.Pane;
 import mx.uv.fei.gui.controllers.AlertPaneController;
 import mx.uv.fei.logic.daos.StudentsCoursesDAO;
 import mx.uv.fei.logic.exceptions.DataWritingException;
@@ -20,6 +21,9 @@ public class UserPaneController {
 
     @FXML
     private Label nameLabel;
+
+    @FXML
+    private Pane userPane;
     
     @FXML
     void deleteButtonController(ActionEvent event) {

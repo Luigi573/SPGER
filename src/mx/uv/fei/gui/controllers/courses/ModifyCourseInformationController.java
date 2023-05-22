@@ -1,16 +1,23 @@
 package mx.uv.fei.gui.controllers.courses;
 
+import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DialogPane;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import javafx.util.StringConverter;
+import mx.uv.fei.gui.AlertPopUpGenerator;
 import mx.uv.fei.gui.controllers.AlertPaneController;
 import mx.uv.fei.logic.daos.CourseDAO;
 import mx.uv.fei.logic.daos.ProfessorDAO;
@@ -191,7 +198,7 @@ public class ModifyCourseInformationController {
 
     @FXML
     void exitButtonController(ActionEvent event) {
-        this.guiCoursesController.openPaneWithCourseInformation(this.courseInformationController.getNrc());
+        this.returnToGuiCourses(event);
     }
 
     @FXML
@@ -200,7 +207,7 @@ public class ModifyCourseInformationController {
         try {
             if(!this.nrcTextField.getText().trim().isEmpty()) {
     
-                if(allTextFieldsContainsCorrectValues()){
+                if(allTextFieldsContainsCorrectValues()) {
                     CourseDAO courseDAO = new CourseDAO();
                     Course newCourseData = new Course();
                     Course oldCourseData = courseDAO.getCourseFromDatabase(this.courseInformationController.getNrc());
@@ -218,6 +225,7 @@ public class ModifyCourseInformationController {
                     courseDAO.modifyCourseDataFromDatabase(newCourseData, oldCourseData);
                     AlertPaneController alertPaneController = new AlertPaneController();
                     alertPaneController.openWarningPane("Curso modificado exitosamente");
+                    this.returnToGuiCourses(event);
                 } else {
                     AlertPaneController alertPaneController = new AlertPaneController();
                     alertPaneController.openErrorPane("Algunos campos contienen datos inváli2");
@@ -246,6 +254,23 @@ public class ModifyCourseInformationController {
         }
 
         return false;
+    }
+
+    private void returnToGuiCourses(ActionEvent event) {
+        try{
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/courses/GuiCourses.fxml"));
+            Parent parent = loader.load();
+            Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+            Scene scene = new Scene(parent);
+            String css = this.getClass().getResource("/mx/uv/fei/gui/stylesfiles/Styles.css").toExternalForm();
+            scene.getStylesheets().add(css);
+            stage.setTitle("SPGER");
+            stage.setScene(scene);
+            stage.show();
+        }catch(IllegalStateException | IOException exception){
+            AlertPopUpGenerator alertPopUpGenerator = new AlertPopUpGenerator();
+            alertPopUpGenerator.showMissingFilesMessage();
+        }
     }
 
 }

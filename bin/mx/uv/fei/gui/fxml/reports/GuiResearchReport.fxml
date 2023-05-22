@@ -14,12 +14,12 @@
    <children>
       <ScrollPane layoutX="25.0" layoutY="184.0" prefHeight="364.0" prefWidth="470.0">
          <content>
-            <VBox fx:id="researchesVBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="362.0" prefWidth="457.0" />
+            <VBox fx:id="researchesVBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="360.0" prefWidth="457.0" />
          </content>
       </ScrollPane>
       <ScrollPane layoutX="527.0" layoutY="184.0" prefHeight="364.0" prefWidth="470.0">
          <content>
-            <VBox fx:id="selectedResearchesVBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="362.0" prefWidth="458.0" />
+            <VBox fx:id="selectedResearchesVBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="358.0" prefWidth="458.0" />
          </content>
       </ScrollPane>
       <Button fx:id="generateReportButton" layoutX="707.0" layoutY="556.0" mnemonicParsing="false" onAction="#generateReportButtonController" text="Generar Reporte" />

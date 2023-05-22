@@ -24,6 +24,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import mx.uv.fei.gui.AlertPopUpGenerator;
 import mx.uv.fei.gui.controllers.AlertPaneController;
 import mx.uv.fei.logic.daos.ResearchesReportDAO;
 import mx.uv.fei.logic.domain.Research;
@@ -80,6 +81,37 @@ public class GuiResearchReportController {
     private Text windowText;
 
     @FXML
+    void initialize() {
+        this.researchesVBox.getChildren().clear();
+        ResearchesReportDAO researchesReportDAO = new ResearchesReportDAO();
+        ArrayList<Research> researches = new ArrayList<>();
+        try {
+            researches = researchesReportDAO.getResearchesFromDatabase(this.findByTitleTextField.getText(), "");
+        } catch (DataRetrievalException e) {
+            e.printStackTrace();
+            AlertPopUpGenerator alertPopUpGenerator = new AlertPopUpGenerator();
+            alertPopUpGenerator.showConnectionErrorMessage();
+        }
+        
+        try {
+            for(Research research : researches){
+                FXMLLoader researchItemControllerLoader = new FXMLLoader(
+                    getClass().getResource("/mx/uv/fei/gui/fxml/reports/ResearchItem.fxml")
+                );
+                HBox researchItemHBox = researchItemControllerLoader.load();
+                ResearchItemController researchItemController = researchItemControllerLoader.getController();
+                researchItemController.setResearchNameLabel(research.getTitle());
+                researchItemController.setGuiResearchReportController(this);
+                this.researchesVBox.getChildren().add(researchItemHBox);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            AlertPopUpGenerator alertPopUpGenerator = new AlertPopUpGenerator();
+            alertPopUpGenerator.showConnectionErrorMessage();
+        }
+    }
+
+    @FXML
     void generateReportButtonController(ActionEvent event) {
         if(this.selectedResearchesVBox.getChildren().isEmpty()){
             AlertPaneController alertPaneController = new AlertPaneController();
@@ -116,16 +148,16 @@ public class GuiResearchReportController {
             
         } catch (IOException ioe) {
             ioe.printStackTrace();
-            AlertPaneController alertPaneController = new AlertPaneController();
-            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
+            AlertPopUpGenerator alertPopUpGenerator = new AlertPopUpGenerator();
+            alertPopUpGenerator.showMissingFilesMessage();
         } catch (JRException jre) {
             jre.printStackTrace();
             AlertPaneController alertPaneController = new AlertPaneController();
             alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
         } catch (DataRetrievalException e) {
             e.printStackTrace();
-            AlertPaneController alertPaneController = new AlertPaneController();
-            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
+            AlertPopUpGenerator alertPopUpGenerator = new AlertPopUpGenerator();
+            alertPopUpGenerator.showConnectionErrorMessage();
         }
     }
 
@@ -136,30 +168,30 @@ public class GuiResearchReportController {
         ArrayList<Research> researches = new ArrayList<>();
         try {
             if(!this.showNotValidatedToggleButton.isSelected() &&
-               !this.showValidatedToggleButton.isSelected()){
+               !this.showValidatedToggleButton.isSelected()) {
                 researches = researchesReportDAO.getResearchesFromDatabase(this.findByTitleTextField.getText(), "");
             }
         
             
             if(!this.showNotValidatedToggleButton.isSelected() &&
-               this.showValidatedToggleButton.isSelected()){
+               this.showValidatedToggleButton.isSelected()) {
                 researches = researchesReportDAO.getValidatedResearchesFromDatabase(this.findByTitleTextField.getText());
             }
         
             if(this.showNotValidatedToggleButton.isSelected() &&
-               !this.showValidatedToggleButton.isSelected()){
+               !this.showValidatedToggleButton.isSelected()) {
                 researches = researchesReportDAO.getNotValidatedResearchesFromDatabase(this.findByTitleTextField.getText());
             }
         
             if(this.showNotValidatedToggleButton.isSelected() &&
-               this.showValidatedToggleButton.isSelected()){
+               this.showValidatedToggleButton.isSelected()) {
                 researches = researchesReportDAO.getValidatedAndNotValidatedResearchesFromDatabase(this.findByTitleTextField.getText());
             }
 
         } catch (DataRetrievalException e) {
             e.printStackTrace();
-            AlertPaneController alertPaneController = new AlertPaneController();
-            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
+            AlertPopUpGenerator alertPopUpGenerator = new AlertPopUpGenerator();
+            alertPopUpGenerator.showConnectionErrorMessage();
         }
         
         try {
@@ -175,8 +207,8 @@ public class GuiResearchReportController {
             }
         } catch (IOException e) {
             e.printStackTrace();
-            AlertPaneController alertPaneController = new AlertPaneController();
-            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
+            AlertPopUpGenerator alertPopUpGenerator = new AlertPopUpGenerator();
+            alertPopUpGenerator.showConnectionErrorMessage();
         }
             
     }
@@ -195,8 +227,8 @@ public class GuiResearchReportController {
             selectedResearchItemController.setGuiResearchReportController(this);
         } catch (IOException e) {
             e.printStackTrace();
-            AlertPaneController alertPaneController = new AlertPaneController();
-            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
+            AlertPopUpGenerator alertPopUpGenerator = new AlertPopUpGenerator();
+            alertPopUpGenerator.showConnectionErrorMessage();
         }
     }
 
@@ -214,8 +246,8 @@ public class GuiResearchReportController {
             researchItemController.setGuiResearchReportController(this);
         } catch (IOException e) {
             e.printStackTrace();
-            AlertPaneController alertPaneController = new AlertPaneController();
-            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
+            AlertPopUpGenerator alertPopUpGenerator = new AlertPopUpGenerator();
+            alertPopUpGenerator.showConnectionErrorMessage();
         }
     }
 

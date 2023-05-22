@@ -96,12 +96,12 @@ Text {
     -fx-background-color : #7ACE67;
 }
 
-.scroll-pane{
+.scroll-pane {
     -fx-background:  #7ACE67;
     -fx-border-color:  #7ACE67;
 }
 
-.text-area .content{
+.text-area .content {
     -fx-background-color: #62ca4a;
     -fx-border-color: #62ca4a;
 }
@@ -120,14 +120,26 @@ Text {
     -fx-background-color: #FFC872;
 }
 
-#researchButton {
+#courseButton {
     -fx-background-radius: 5;
     -fx-background-color: transparent;
     -fx-border-color:#000000;
 }
 
+#researchButton {
+    -fx-background-radius: 5;
+    -fx-background-color: transparent;
+    -fx-border-color:#5a9e4b;
+}
+
 #userButton {
     -fx-background-radius: 5;
     -fx-background-color: transparent;
-    -fx-border-color:#000000;
+    -fx-border-color:#5a9e4b;
+}
+
+#userPane {
+    -fx-background-color: #62ca4a;
+    -fx-background-radius: 5;
+    -fx-border-color: #5a9e4b;
 }

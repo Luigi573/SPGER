@@ -191,6 +191,7 @@ public class ModifyResearchPaneController{
         suggestedBibliographyTextArea.setText(research.getSuggestedBibliography());
         expectedResultTextArea.setText(research.getExpectedResult());
     }
+    
     private void returnToResearchManager(ActionEvent event){
         try{
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/research/ResearchManager.fxml"));
