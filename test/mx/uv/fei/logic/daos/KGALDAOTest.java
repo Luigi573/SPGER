@@ -120,5 +120,30 @@ public class KGALDAOTest {
         int result = instance.updateKGALDescription(kgalID, description);
         assertEquals(expResult, result);
     }
+
+    /**
+     * Test of getKGALListByDescription method, of class KGALDAO.
+     */
+    @Test
+    public void testGetKGALListByDescription() throws DataRetrievalException {
+        System.out.println("getKGALListByDescription");
+        String description = "Hola";
+        KGALDAO instance = new KGALDAO();
+        KGAL kgal = new KGAL();
+        kgal.setKgalID(3);
+        kgal.setDescription("Hola");
+        ArrayList<KGAL> expResult = new ArrayList();
+        expResult.add(kgal);
+        ArrayList<KGAL> result = instance.getKGALListByDescription(description);
+        
+        for(int i = 0; i < result.size(); i++) {
+            System.out.println(result.get(i));
+        }
+        for(int i = 0; i < expResult.size(); i++) {
+            System.out.println(expResult.get(i));
+        }
+        
+        assertEquals(expResult, result);
+    }
     
 }

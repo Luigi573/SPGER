@@ -39,7 +39,6 @@ public class DataBaseManager {
 
     public Connection getConnection() throws SQLException {
         this.connect();
-        System.out.println("Connection succesful");
         return connection;
     }
 

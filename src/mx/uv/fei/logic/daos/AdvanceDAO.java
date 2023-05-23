@@ -22,21 +22,27 @@ public class AdvanceDAO implements IAdvanceDAO{
     
     @Override
     public int addAdvance(Advance advance) throws DataInsertionException {
-        int result;
-        String query = "insert into Avances(Matrícula, IdDirector, título, comentario) values(?, ?, ?, ?)";
+        int generatedId = 0;
+        String query = "insert into Avances(IdActividad, IdArchivo, título, comentario, estado) values(?, ?, ?, ?, ?)";
         try {
-            dataBaseManager = new DataBaseManager();
             Connection connection = dataBaseManager.getConnection();
-            PreparedStatement statement = connection.prepareStatement(query);
-            statement.setString(1, advance.getStudentID());
-            statement.setInt(2, advance.getDirectorID());
+            PreparedStatement statement = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
+            statement.setInt(1, advance.getActivityID());
+            statement.setInt(2, advance.getFileID());
             statement.setString(3, advance.getTitle());
             statement.setString(4, advance.getComments());
-            result = statement.executeUpdate();
-        } catch (SQLException e) {
+            statement.setString(5, advance.getState());
+            
+            statement.executeUpdate();
+            ResultSet resultSet = statement.getGeneratedKeys();
+            
+            if(resultSet.next()) {
+                generatedId = resultSet.getInt(1);
+            }
+        } catch (SQLException exception) {
             throw new DataInsertionException("New Advance data could not be saved to the Database. Please try again later");
         }
-        return result;
+        return generatedId;
     }
 
     @Override
@@ -45,17 +51,17 @@ public class AdvanceDAO implements IAdvanceDAO{
         
         String query = "select * from Avances";
         try {
-            DataBaseManager dataBaseManager = new DataBaseManager();
             Connection connection = dataBaseManager.getConnection();
             Statement statement = connection.createStatement();
             ResultSet rs = statement.executeQuery(query);
             while(rs.next()) {
                 Advance advance = new Advance();
                 advance.setAdvanceID(rs.getInt("IdAvances"));
-                advance.setStudentID(rs.getString("Matrícula"));
-                advance.setDirectorID(rs.getInt("IdDirector"));
+                advance.setActivityID(rs.getInt("IdActividad"));
+                advance.setFileID(rs.getInt("IdArchivo"));
                 advance.setTitle(rs.getString("título"));
                 advance.setComments(rs.getString("comentario"));
+                advance.setState(rs.getString("estado"));
                 
                advancesList.add(advance);
             }

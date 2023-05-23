@@ -1,13 +1,14 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
- */
 package mx.uv.fei.logic.daosinterfaces;
 
-/**
- *
- * @author lisre
- */
+import java.util.ArrayList;
+import mx.uv.fei.logic.domain.Director;
+import mx.uv.fei.logic.exceptions.DataRetrievalException;
+
 public interface IDirectorDAO {
-    
+    public void addDirectorToDatabase(Director director);
+    public void modifyDirectorDataFromDatabase(Director newDirectorData, Director originalDirectorData);
+    public ArrayList<Director> getDirectorsFromDatabase();
+    public ArrayList<Director> getSpecifiedDirectorsFromDatabase(String directorName);
+    public Director getDirectorFromDatabase(int personalNumber);
+    public ArrayList<Director> getDirectorList() throws DataRetrievalException;
 }

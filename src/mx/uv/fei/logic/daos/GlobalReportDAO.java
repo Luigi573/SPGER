@@ -27,8 +27,8 @@ public class GlobalReportDAO implements IGlobalReportDAO{
                 Course course = new Course();
                 course.setNrc(resultSet.getInt("NRC"));
                 course.setIdScholarPeriod(resultSet.getInt("IdPeriodoEscolar"));
-                course.setName(resultSet.getString("nombre"));
-                course.setSection(resultSet.getString("sección"));
+                course.setEEName(resultSet.getString("nombre"));
+                course.setSection(resultSet.getInt("sección"));
                 course.setBlock(resultSet.getInt("bloque"));
                 courses.add(course);
             }

@@ -1,9 +1,12 @@
 package mx.uv.fei.logic.domain;
 
 public class Director extends Professor{
+    private int id;
     
-    
-    public Director(String name, String firstSurname, String secondSurname, String emailAddress, String password){
-        super(name, firstSurname, secondSurname, emailAddress, password);
+    public void setDirectorId(int id){
+        this.id = id;
+    }
+    public int getDirectorId(){
+        return id;
     }
 }
