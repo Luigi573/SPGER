@@ -23,7 +23,7 @@
       </HBox>
       <Pane prefHeight="86.0" prefWidth="369.0">
          <children>
-            <Text layoutX="135.0" layoutY="22.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Buscar por Matricula:" />
+            <Text layoutX="138.0" layoutY="22.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Buscar por Nombre:" />
             <Text layoutX="9.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" text="(Deja en blanco para mostrar todos los estudiantes activos)" wrappingWidth="390.0" />
             <TextField fx:id="showByMatricleTextField" layoutX="14.0" layoutY="51.0" prefHeight="24.0" prefWidth="305.0" />
             <Button fx:id="showByMatricleButton" layoutX="330.0" layoutY="51.0" mnemonicParsing="false" onAction="#showByMatricleButtonController" text="Buscar" />

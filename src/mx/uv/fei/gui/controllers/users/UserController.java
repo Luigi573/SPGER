@@ -11,52 +11,61 @@ public class UserController {
 
     @FXML
     private Label matricleOrPersonalNumberLabel;
-
     @FXML
     private Label matricleOrPersonalNumberText;
-
     @FXML
     private Label nameLabel;
-
     @FXML
     private Label typeLabel;
-
     @FXML
     private Pane userPane;
-
     @FXML
     private Button userButton;
 
     @FXML
-    void userButtonController(ActionEvent event) {
+    private void userButtonController(ActionEvent event) {
         this.guiUsersController.openPaneWithUserInformation(this);
     }
 
-    void setGuiUsersController(GuiUsersController guiUsersController) {
+    public void setGuiUsersController(GuiUsersController guiUsersController) {
         this.guiUsersController = guiUsersController;
     }
 
-    void setName(String name) {
+    public void setName(String name) {
         this.nameLabel.setText(name);
     }
 
-    void setType(String type) {
+    public void setType(String type) {
         this.typeLabel.setText(type);
     }
 
-    void setMatricleOrPersonalNumber(String matricleOrPersonalNumber) {
+    public void setMatricleOrPersonalNumber(String matricleOrPersonalNumber) {
         this.matricleOrPersonalNumberLabel.setText(matricleOrPersonalNumber);
     }
 
-    void setMatricleOrPersonalNumberText(String matricleOrPersonalNumber) {
+    public void setMatricleOrPersonalNumberText(String matricleOrPersonalNumber) {
         this.matricleOrPersonalNumberText.setText(matricleOrPersonalNumber);
     }
 
-    String getType() {
+    public String getType() {
         return this.typeLabel.getText();
     }
 
-    String getMatriculeOrPersonalNumber() {
+    public String getMatriculeOrPersonalNumber() {
         return this.matricleOrPersonalNumberLabel.getText();
+    }
+
+    public void setLabelsCorrectBounds(String userType) {
+        if(userType.equals("Estudiante")) {
+            matricleOrPersonalNumberText.setPrefWidth(72);
+            matricleOrPersonalNumberText.setLayoutX(10);
+            matricleOrPersonalNumberLabel.setPrefWidth(373);
+            matricleOrPersonalNumberLabel.setLayoutX(81);
+        } else {
+            matricleOrPersonalNumberText.setPrefWidth(143);
+            matricleOrPersonalNumberText.setLayoutX(10);
+            matricleOrPersonalNumberLabel.setPrefWidth(303);
+            matricleOrPersonalNumberLabel.setLayoutX(151);
+        }
     }
 }

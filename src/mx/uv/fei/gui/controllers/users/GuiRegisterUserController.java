@@ -57,48 +57,48 @@ public class GuiRegisterUserController {
 
     @FXML
     void initialize() {
-        this.typeComboBox.getItems().add("Estudiante");
-        this.typeComboBox.getItems().add("Profesor");
-        this.typeComboBox.getItems().add("Director");
-        this.typeComboBox.getItems().add("Miembro de Cuerpo Académico");
-        this.typeComboBox.getItems().add("Jefe de Carrera");
-        this.typeComboBox.setValue("Estudiante");
+        typeComboBox.getItems().add("Estudiante");
+        typeComboBox.getItems().add("Profesor");
+        typeComboBox.getItems().add("Director");
+        typeComboBox.getItems().add("Miembro de Cuerpo Académico");
+        typeComboBox.getItems().add("Jefe de Carrera");
+        typeComboBox.setValue("Estudiante");
     }
 
     @FXML
     void registerButtonController(ActionEvent event) {
-        if(!this.namesTextField.getText().trim().isEmpty() &&
-           !this.firstSurnameTextField.getText().trim().isEmpty() &&
-           !this.secondSurnameTextField.getText().trim().isEmpty() &&
-           !this.emailTextField.getText().trim().isEmpty() &&
-           !this.alternateEmailTextField.getText().trim().isEmpty() &&
-           !this.telephoneNumberTextField.getText().trim().isEmpty() &&
-           !this.matricleOrPersonalNumberTextField.getText().trim().isEmpty()) {
+        if(!namesTextField.getText().trim().isEmpty() &&
+           !firstSurnameTextField.getText().trim().isEmpty() &&
+           !secondSurnameTextField.getText().trim().isEmpty() &&
+           !emailTextField.getText().trim().isEmpty() &&
+           !alternateEmailTextField.getText().trim().isEmpty() &&
+           !telephoneNumberTextField.getText().trim().isEmpty() &&
+           !matricleOrPersonalNumberTextField.getText().trim().isEmpty()) {
 
             if(allTextFieldsContainsCorrectValues()) {
-                switch(this.typeComboBox.getValue()) {
+                switch(typeComboBox.getValue()) {
                     case "Director": {
-                        this.registerDirector();
+                        registerDirector();
                         break;
                     }
         
                     case "Miembro de Cuerpo Académico": {
-                        this.registerAcademicBodyHead();
+                        registerAcademicBodyHead();
                         break;
                     }
         
                     case "Jefe de Carrera": {
-                        this.registerDegreeBoss();
+                        registerDegreeBoss();
                         break;
                     }
         
                     case "Profesor": {
-                        this.registerProfessor();
+                        registerProfessor();
                         break;
                     }
         
                     case "Estudiante": {
-                        this.registerStudent();
+                        registerStudent();
                         break;
                     }
                 }
@@ -106,28 +106,32 @@ public class GuiRegisterUserController {
                 AlertPopUpGenerator alertPopUpGenerator = new AlertPopUpGenerator();
                 alertPopUpGenerator.showCustomMessage(AlertType.WARNING, "Éxito", "Usuario registrado exitosamente");
 
-                this.guiUsersController.loadUserButtons();
+                guiUsersController.loadUserButtons();
 
                 Stage stage = (Stage) registerButton.getScene().getWindow();
                 stage.close();
 
             } else {
-                AlertPaneController alertPaneController = new AlertPaneController();
-                alertPaneController.openWarningPane("Algunos campos contienen datos inválidos");
+                AlertPopUpGenerator alertPopUpGenerator = new AlertPopUpGenerator();
+                alertPopUpGenerator.showCustomMessage(AlertType.WARNING, "Error", "Algunos campos contienen datos inválidos");
             }
 
         } else {
-            AlertPaneController alertPaneController = new AlertPaneController();
-            alertPaneController.openWarningPane("Faltan campos por llenar");
+            AlertPopUpGenerator alertPopUpGenerator = new AlertPopUpGenerator();
+            alertPopUpGenerator.showCustomMessage(AlertType.WARNING, "Error", "Faltan campos por llenar");
         }
     }
 
     @FXML
     void typeComboBoxController(ActionEvent event) {
-        if(this.typeComboBox.getValue().equals("Estudiante")){
-            this.matricleOrPersonalNumberText.setText("Matrícula");
+        if(typeComboBox.getValue().equals("Estudiante")){
+            matricleOrPersonalNumberText.setText("Matrícula: ");
+            matricleOrPersonalNumberTextField.setPrefWidth(303);
+            matricleOrPersonalNumberTextField.setLayoutX(479);
         } else {
-            this.matricleOrPersonalNumberText.setText("Número de Personal");
+            matricleOrPersonalNumberText.setText("Número de Personal: ");
+            matricleOrPersonalNumberTextField.setPrefWidth(219);
+            matricleOrPersonalNumberTextField.setLayoutX(563);        
         }
     }
 
@@ -139,14 +143,14 @@ public class GuiRegisterUserController {
         try {
             DirectorDAO directorDAO = new DirectorDAO();
             Director director = new Director();
-            director.setName(this.namesTextField.getText());
-            director.setFirstSurname(this.firstSurnameTextField.getText());
-            director.setSecondSurname(this.secondSurnameTextField.getText());
-            director.setEmailAddress(this.emailTextField.getText());
-            director.setAlternateEmail(this.alternateEmailTextField.getText());
-            director.setPhoneNumber(this.telephoneNumberTextField.getText());
+            director.setName(namesTextField.getText());
+            director.setFirstSurname(firstSurnameTextField.getText());
+            director.setSecondSurname(secondSurnameTextField.getText());
+            director.setEmailAddress(emailTextField.getText());
+            director.setAlternateEmail(alternateEmailTextField.getText());
+            director.setPhoneNumber(telephoneNumberTextField.getText());
             director.setStatus(ProfessorStatus.ACTIVE.getValue());
-            director.setStaffNumber(Integer.parseInt(this.matricleOrPersonalNumberTextField.getText()));
+            director.setStaffNumber(Integer.parseInt(matricleOrPersonalNumberTextField.getText()));
             if(directorDAO.theDirectorIsAlreadyRegisted(director)) {
                 AlertPaneController alertPaneController = new AlertPaneController();
                 alertPaneController.openWarningPane("El usuario ya está registrado en el sistema");
@@ -168,14 +172,14 @@ public class GuiRegisterUserController {
         try {
             AcademicBodyHeadDAO academicBodyHeadDAO = new AcademicBodyHeadDAO();
             AcademicBodyHead academicBodyHead = new AcademicBodyHead();
-            academicBodyHead.setName(this.namesTextField.getText());
-            academicBodyHead.setFirstSurname(this.firstSurnameTextField.getText());
-            academicBodyHead.setSecondSurname(this.secondSurnameTextField.getText());
-            academicBodyHead.setEmailAddress(this.emailTextField.getText());
-            academicBodyHead.setAlternateEmail(this.alternateEmailTextField.getText());
-            academicBodyHead.setPhoneNumber(this.telephoneNumberTextField.getText());
+            academicBodyHead.setName(namesTextField.getText());
+            academicBodyHead.setFirstSurname(firstSurnameTextField.getText());
+            academicBodyHead.setSecondSurname(secondSurnameTextField.getText());
+            academicBodyHead.setEmailAddress(emailTextField.getText());
+            academicBodyHead.setAlternateEmail(alternateEmailTextField.getText());
+            academicBodyHead.setPhoneNumber(telephoneNumberTextField.getText());
             academicBodyHead.setStatus(ProfessorStatus.ACTIVE.getValue());
-            academicBodyHead.setStaffNumber(Integer.parseInt(this.matricleOrPersonalNumberTextField.getText()));
+            academicBodyHead.setStaffNumber(Integer.parseInt(matricleOrPersonalNumberTextField.getText()));
             if(academicBodyHeadDAO.theAcademicBodyHeadIsAlreadyRegisted(academicBodyHead)){
                 AlertPaneController alertPaneController = new AlertPaneController();
                 alertPaneController.openWarningPane("El usuario ya está registrado en el sistema");
@@ -197,14 +201,14 @@ public class GuiRegisterUserController {
         try {
             DegreeBossDAO degreeBossDAO = new DegreeBossDAO();
             DegreeBoss degreeBoss = new DegreeBoss();
-            degreeBoss.setName(this.namesTextField.getText());
-            degreeBoss.setFirstSurname(this.firstSurnameTextField.getText());
-            degreeBoss.setSecondSurname(this.secondSurnameTextField.getText());
-            degreeBoss.setEmailAddress(this.emailTextField.getText());
-            degreeBoss.setAlternateEmail(this.alternateEmailTextField.getText());
-            degreeBoss.setPhoneNumber(this.telephoneNumberTextField.getText());
+            degreeBoss.setName(namesTextField.getText());
+            degreeBoss.setFirstSurname(firstSurnameTextField.getText());
+            degreeBoss.setSecondSurname(secondSurnameTextField.getText());
+            degreeBoss.setEmailAddress(emailTextField.getText());
+            degreeBoss.setAlternateEmail(alternateEmailTextField.getText());
+            degreeBoss.setPhoneNumber(telephoneNumberTextField.getText());
             degreeBoss.setStatus(ProfessorStatus.ACTIVE.getValue());
-            degreeBoss.setStaffNumber(Integer.parseInt(this.matricleOrPersonalNumberTextField.getText()));
+            degreeBoss.setStaffNumber(Integer.parseInt(matricleOrPersonalNumberTextField.getText()));
                 if(degreeBossDAO.theDegreeBossIsAlreadyRegisted(degreeBoss)) {
                     AlertPaneController alertPaneController = new AlertPaneController();
                     alertPaneController.openWarningPane("El usuario ya está registrado en el sistema");
@@ -227,14 +231,14 @@ public class GuiRegisterUserController {
         try {
             ProfessorDAO professorDAO = new ProfessorDAO();
             Professor professor = new Professor();
-            professor.setName(this.namesTextField.getText());
-            professor.setFirstSurname(this.firstSurnameTextField.getText());
-            professor.setSecondSurname(this.secondSurnameTextField.getText());
-            professor.setEmailAddress(this.emailTextField.getText());
-            professor.setAlternateEmail(this.alternateEmailTextField.getText());
-            professor.setPhoneNumber(this.telephoneNumberTextField.getText());
+            professor.setName(namesTextField.getText());
+            professor.setFirstSurname(firstSurnameTextField.getText());
+            professor.setSecondSurname(secondSurnameTextField.getText());
+            professor.setEmailAddress(emailTextField.getText());
+            professor.setAlternateEmail(alternateEmailTextField.getText());
+            professor.setPhoneNumber(telephoneNumberTextField.getText());
             professor.setStatus(ProfessorStatus.ACTIVE.getValue());
-            professor.setStaffNumber(Integer.parseInt(this.matricleOrPersonalNumberTextField.getText()));
+            professor.setStaffNumber(Integer.parseInt(matricleOrPersonalNumberTextField.getText()));
             if(professorDAO.theProfessorIsAlreadyRegisted(professor)){
                 AlertPaneController alertPaneController = new AlertPaneController();
                 alertPaneController.openWarningPane("El usuario ya está registrado en el sistema");
@@ -256,14 +260,14 @@ public class GuiRegisterUserController {
         try {
             StudentDAO studentDAO = new StudentDAO();
             Student student = new Student();
-            student.setName(this.namesTextField.getText());
-            student.setFirstSurname(this.firstSurnameTextField.getText());
-            student.setSecondSurname(this.secondSurnameTextField.getText());
-            student.setEmailAddress(this.emailTextField.getText());
-            student.setAlternateEmail(this.alternateEmailTextField.getText());
-            student.setPhoneNumber(this.telephoneNumberTextField.getText());
+            student.setName(namesTextField.getText());
+            student.setFirstSurname(firstSurnameTextField.getText());
+            student.setSecondSurname(secondSurnameTextField.getText());
+            student.setEmailAddress(emailTextField.getText());
+            student.setAlternateEmail(alternateEmailTextField.getText());
+            student.setPhoneNumber(telephoneNumberTextField.getText());
             student.setStatus(StudentStatus.AVAILABLE.getValue());
-            student.setMatricle(this.matricleOrPersonalNumberTextField.getText());
+            student.setMatricle(matricleOrPersonalNumberTextField.getText());
             if(studentDAO.theStudentIsAlreadyRegisted(student)) {
                 AlertPaneController alertPaneController = new AlertPaneController();
                 alertPaneController.openWarningPane("El usuario ya está registrado en el sistema");
@@ -290,7 +294,7 @@ public class GuiRegisterUserController {
                 telephoneNumberPattern = Pattern.compile("^[0-9]{10}$"),
                 matricleOrPersonalNumberPattern = Pattern.compile("");
     
-        switch(this.typeComboBox.getValue()){
+        switch(typeComboBox.getValue()){
             case "Director": {
                 matricleOrPersonalNumberPattern = Pattern.compile("^[0-9]{9}$");
                 break;
@@ -317,13 +321,13 @@ public class GuiRegisterUserController {
             }
         }
 
-        Matcher namesMatcher = namesPattern.matcher(this.namesTextField.getText()),
-                firstSurnameMatcher = firstSurnamePattern.matcher(this.firstSurnameTextField.getText()),
-                secondSurnameMatcher = secondSurnamePattern.matcher(this.secondSurnameTextField.getText()),
-                emailMatcher = emailPattern.matcher(this.emailTextField.getText()),
-                alternateEmailMatcher = alternateEmailPattern.matcher(this.alternateEmailTextField.getText()),
-                telephoneNumberMatcher = telephoneNumberPattern.matcher(this.telephoneNumberTextField.getText()),
-                matricleOrPersonalNumberMatcher = matricleOrPersonalNumberPattern.matcher(this.matricleOrPersonalNumberTextField.getText());
+        Matcher namesMatcher = namesPattern.matcher(namesTextField.getText()),
+                firstSurnameMatcher = firstSurnamePattern.matcher(firstSurnameTextField.getText()),
+                secondSurnameMatcher = secondSurnamePattern.matcher(secondSurnameTextField.getText()),
+                emailMatcher = emailPattern.matcher(emailTextField.getText()),
+                alternateEmailMatcher = alternateEmailPattern.matcher(alternateEmailTextField.getText()),
+                telephoneNumberMatcher = telephoneNumberPattern.matcher(telephoneNumberTextField.getText()),
+                matricleOrPersonalNumberMatcher = matricleOrPersonalNumberPattern.matcher(matricleOrPersonalNumberTextField.getText());
 
         if(namesMatcher.find() && firstSurnameMatcher.find() &&
            secondSurnameMatcher.find() && emailMatcher.find() &&

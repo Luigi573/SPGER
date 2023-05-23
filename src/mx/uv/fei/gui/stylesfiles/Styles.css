@@ -123,7 +123,7 @@ Text {
 #courseButton {
     -fx-background-radius: 5;
     -fx-background-color: transparent;
-    -fx-border-color:#000000;
+    -fx-border-color:#5a9e4b;
 }
 
 #headerPane {

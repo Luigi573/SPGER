@@ -1,12 +1,5 @@
 package mx.uv.fei;
 
-import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.sql.SQLException;
-import java.util.ArrayList;
-
-import javafx.embed.swt.*;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -36,18 +29,18 @@ public class Main extends Application {
             //getClass().getResource("/mx/uv/fei/gui/fxml/research/ResearchManager.fxml")
             //getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/ModifyActivity.fxml")// tha xavier gui
             //getClass().getResource("/mx/uv/fei/gui/fxml/courses/students/GuiUsersCourse.fxml")
-            getClass().getResource("/mx/uv/fei/gui/fxml/courses/GuiCourses.fxml")
-            //getClass().getResource("/mx/uv/fei/gui/fxml/users/GuiUsers.fxml")
+            //getClass().getResource("/mx/uv/fei/gui/fxml/courses/GuiCourses.fxml")
+            getClass().getResource("/mx/uv/fei/gui/fxml/users/GuiUsers.fxml")
             //getClass().getResource("/mx/uv/fei/gui/fxml/reports/GuiResearchReport.fxml")
         );
         guiUsuarios = loader.load();
 
         //TODO
-        //Nombres y apellidoa en userspanes y studentadder en GuiUsersCourse y GuiStudentAdder
-        //Mostrar estatus de usuarios en comboboxes para registrar usuarios en GuiRegisterUsers y ModifyUserPane 
+        //Nombres y apellidos en userspanes y studentadder en GuiUsersCourse y GuiStudentAdder GG
+        //Mostrar estatus de usuarios en comboboxes para registrar usuarios en GuiRegisterUsers y ModifyUserPane GG
         //Checar lo de estudiantes activos y disponibles con xavier
-        //Detalles estéticos en GuiUsers cuando cambias la matricula a nombre de personal y viceversa
-        //Al abrir GuiResearchReport en ResearchManager no debe de salir como ventana emergente
+        //Detalles estéticos en GuiUsers cuando cambias la matricula a nombre de personal y viceversa 1/2 falta userinformation y modifyuserinformation
+        //Al abrir GuiResearchReport en ResearchManager no debe de salir como ventana emergente GG
         //Color de bordes de botones de cursos, usuarios y anteproyectos
         //Cambiar la clase de ventanas emergentes a alertpopup
         //Seguir el standar
@@ -58,8 +51,6 @@ public class Main extends Application {
         String css = this.getClass().getResource("/mx/uv/fei/gui/stylesfiles/Styles.css").toExternalForm();
         scene.getStylesheets().add(css);
         Stage stage = new Stage();
-        //stage.setFullScreen(true);
-        
         stage.setTitle("SPGER");
         stage.setScene(scene);
         stage.setResizable(false);

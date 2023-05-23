@@ -42,6 +42,7 @@ import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.view.JasperViewer;
 
 public class GuiResearchReportController {
+    
     private final DirectoryChooser directoryChooser = new DirectoryChooser();
     
     @FXML

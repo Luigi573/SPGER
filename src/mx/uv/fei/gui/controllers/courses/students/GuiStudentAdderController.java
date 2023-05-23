@@ -57,7 +57,11 @@ public class GuiStudentAdderController {
                         );
                         Pane studentPaneToAdd = studentPaneControllerLoader.load();
                         StudentPaneController studentPaneController = studentPaneControllerLoader.getController();
-                        studentPaneController.setStudentName(activeStudent.getName());
+                        studentPaneController.setStudentName(
+                            activeStudent.getName() + " " + 
+                            activeStudent.getFirstSurname() + " " + 
+                            activeStudent.getSecondSurname()
+                        );
                         studentPaneController.setMatricle(activeStudent.getMatricule());
                         studentsVBox.getChildren().add(studentPaneToAdd);
                         
@@ -86,7 +90,11 @@ public class GuiStudentAdderController {
                         );
                         Pane studentPaneToAdd = studentPaneControllerLoader.load();
                         StudentPaneController studentPaneController = studentPaneControllerLoader.getController();
-                        studentPaneController.setStudentName(activeStudent.getName());
+                        studentPaneController.setStudentName(
+                            activeStudent.getName() + " " + 
+                            activeStudent.getFirstSurname() + " " + 
+                            activeStudent.getSecondSurname()
+                        );
                         studentPaneController.setMatricle(activeStudent.getMatricule());
                         studentsVBox.getChildren().add(studentPaneToAdd);
                     }
@@ -122,7 +130,7 @@ public class GuiStudentAdderController {
             }
         }
 
-        guiUsersCourseController.refreshUsers();
+        guiUsersCourseController.refreshStudents();
 
 
         addStudentsButton.setVisible(false);
@@ -140,17 +148,21 @@ public class GuiStudentAdderController {
             );
             
             StudentDAO studentDAO = new StudentDAO();
-            ArrayList<Student> activeStudents = studentDAO.getSpecifiedAvailableStudentsFromDatabase(showByMatricleTextField.getText());
+            ArrayList<Student> availableStudents = studentDAO.getSpecifiedAvailableStudentsFromDatabase(showByMatricleTextField.getText());
             if(studentMatricles.isEmpty()) {
                 try {
-                    for(Student activeStudent : activeStudents) {
+                    for(Student activeStudent : availableStudents) {
                         
                         FXMLLoader studentPaneControllerLoader = new FXMLLoader(
                             getClass().getResource("/mx/uv/fei/gui/fxml/courses/students/StudentPane.fxml")
                         );
                         Pane studentPaneToAdd = studentPaneControllerLoader.load();
                         StudentPaneController studentPaneController = studentPaneControllerLoader.getController();
-                        studentPaneController.setStudentName(activeStudent.getName());
+                        studentPaneController.setStudentName(
+                            activeStudent.getName() + " " + 
+                            activeStudent.getFirstSurname() + " " + 
+                            activeStudent.getSecondSurname()
+                        );
                         studentPaneController.setMatricle(activeStudent.getMatricule());
                         studentsVBox.getChildren().add(studentPaneToAdd);
                         
@@ -164,7 +176,7 @@ public class GuiStudentAdderController {
             }
     
             try {
-                for(Student activeStudent : activeStudents) {
+                for(Student activeStudent : availableStudents) {
                     boolean activeStudentIsAlreadyRegistedIntoTheCourse = false;
                     for(String studentMatricle : studentMatricles) {
                         if(studentMatricle.equals(activeStudent.getMatricule())) {
@@ -179,7 +191,11 @@ public class GuiStudentAdderController {
                         );
                         Pane studentPaneToAdd = studentPaneControllerLoader.load();
                         StudentPaneController studentPaneController = studentPaneControllerLoader.getController();
-                        studentPaneController.setStudentName(activeStudent.getName());
+                        studentPaneController.setStudentName(
+                            activeStudent.getName() + " " + 
+                            activeStudent.getFirstSurname() + " " + 
+                            activeStudent.getSecondSurname()
+                        );
                         studentPaneController.setMatricle(activeStudent.getMatricule());
                         studentsVBox.getChildren().add(studentPaneToAdd);
                     }

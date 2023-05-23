@@ -11,7 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
-import mx.uv.fei.gui.controllers.AlertPaneController;
+import mx.uv.fei.gui.AlertPopUpGenerator;
 import mx.uv.fei.gui.controllers.courses.students.GuiUsersCourseController;
 
 public class CourseInformationController {
@@ -20,25 +20,18 @@ public class CourseInformationController {
 
     @FXML
     private Button adminUsersButton;
-
     @FXML
     private Label blockLabel;
-
     @FXML
     private Button editButton;
-
     @FXML
     private Label educativeExperienceLabel;
-
     @FXML
     private Label nrcLabel;
-
     @FXML
     private Label professorLabel;
-
     @FXML
     private Label scholarPeriodLabel;
-
     @FXML
     private Label sectionLabel;
 
@@ -56,18 +49,17 @@ public class CourseInformationController {
             loader.setController(guiUsersCourseController);
             guiUsersCourse = loader.load();
 
-            Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
             Scene scene = new Scene(guiUsersCourse);
             String css = this.getClass().getResource("/mx/uv/fei/gui/stylesfiles/Styles.css").toExternalForm();
             scene.getStylesheets().add(css);
+            Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
             stage.setTitle("Administrar Usuarios");
             stage.setScene(scene);
             stage.setResizable(false);
             stage.show();
         } catch (IOException e) {
-            e.printStackTrace();
-            AlertPaneController alertPaneController = new AlertPaneController();
-            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
+            AlertPopUpGenerator alertPopUpGenerator = new AlertPopUpGenerator();
+            alertPopUpGenerator.showMissingFilesMessage();
         }   
     }
 

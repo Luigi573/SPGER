@@ -64,6 +64,7 @@ public class ModifyUserInformationController {
     private ComboBox<String> statusComboBox;
     @FXML
     private TextField telephoneNumberTextField;
+
     @FXML
     void initialize(){
         
@@ -495,6 +496,18 @@ public class ModifyUserInformationController {
         }catch(IllegalStateException | IOException exception){
             AlertPopUpGenerator alertPopUpGenerator = new AlertPopUpGenerator();
             alertPopUpGenerator.showMissingFilesMessage();
+        }
+    }
+
+    public void setDataToStatusCombobox(String userType) {
+        if(userType.equals("Estudiante")) {
+            statusComboBox.getItems().add("Activo");
+            statusComboBox.getItems().add("Inactivo");
+            statusComboBox.getItems().add("Graduado");
+            statusComboBox.getItems().add("Baja");
+        } else {
+            statusComboBox.getItems().add("Activo");
+            statusComboBox.getItems().add("Inactivo");
         }
     }
 

@@ -32,32 +32,30 @@ import mx.uv.fei.logic.domain.Student;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
 
 public class GuiUsersController {
+
+    @FXML
+    private Pane backgroundPane;
     @FXML
     private ToggleButton onlyShowActiveUsersButton;
-
     @FXML
     private Button registerUserButton;
-
     @FXML
     private Button searchByNameButton;
-
     @FXML
     private TextField searchByNameTextField;
-
     @FXML
     private ScrollPane userInformationScrollPane;
-
     @FXML
     private VBox usersVBox;
     
-    
     @FXML
-    void initialize() {
+    private void initialize() {
+        loadHeader();
         loadUserButtons();
     }
 
     @FXML
-    void registerUserButtonController(ActionEvent event) {
+    private void registerUserButtonController(ActionEvent event) {
         Parent guiRegisterUser;
         try {
             FXMLLoader loader = new FXMLLoader(
@@ -83,7 +81,7 @@ public class GuiUsersController {
     }
 
     @FXML
-    void searchByNameButtonController(ActionEvent event) {
+    private void searchByNameButtonController(ActionEvent event) {
         this.usersVBox.getChildren().removeAll(this.usersVBox.getChildren());
         StudentDAO studentDAO = new StudentDAO();
         ProfessorDAO professorDAO = new ProfessorDAO();
@@ -122,11 +120,11 @@ public class GuiUsersController {
             ArrayList<AcademicBodyHead> academicBodyHeads = academicBodyHeadDAO.getAcademicBodyHeadsFromDatabase();
             ArrayList<DegreeBoss> degreeBosses = degreeBossDAO.getDegreeBossesFromDatabase();
             
-            this.directorButtonMaker(directors);
-            this.academicBodyHeadButtonMaker(academicBodyHeads);
-            this.degreeBossButtonMaker(degreeBosses);
-            this.professorButtonMaker(professors);
-            this.studentButtonMaker(students);
+            directorButtonMaker(directors);
+            academicBodyHeadButtonMaker(academicBodyHeads);
+            degreeBossButtonMaker(degreeBosses);
+            professorButtonMaker(professors);
+            studentButtonMaker(students);
         } catch (DataRetrievalException e) {
             e.printStackTrace();
             AlertPaneController alertPaneController = new AlertPaneController();
@@ -147,6 +145,7 @@ public class GuiUsersController {
                 userController.setType("Estudiante");
                 userController.setMatricleOrPersonalNumber(student.getMatricule());
                 userController.setMatricleOrPersonalNumberText("Matrícula: ");
+                userController.setLabelsCorrectBounds("Estudiante");
                 userController.setGuiUsersController(this);
                 this.usersVBox.getChildren().add(userItemPane);
             }
@@ -175,10 +174,11 @@ public class GuiUsersController {
                     );
                     Pane userItemPane = userItemControllerLoader.load();
                     UserController userController = userItemControllerLoader.getController();
-                    userController.setName(professor.getName());
+                    userController.setName(professor.getName() + " " + professor.getFirstSurname() + " " + professor.getSecondSurname());
                     userController.setType("Profesor");
                     userController.setMatricleOrPersonalNumber(Integer.toString(professor.getStaffNumber()));
                     userController.setMatricleOrPersonalNumberText("Número de Personal: ");
+                    userController.setLabelsCorrectBounds("Profesor");
                     userController.setGuiUsersController(this);
                     this.usersVBox.getChildren().add(userItemPane);
 
@@ -199,10 +199,11 @@ public class GuiUsersController {
                 );
                 Pane userItemPane = userItemControllerLoader.load();
                 UserController userController = userItemControllerLoader.getController();
-                userController.setName(director.getName());
+                userController.setName(director.getName() + " " + director.getFirstSurname() + " " + director.getSecondSurname());
                 userController.setType("Director");
                 userController.setMatricleOrPersonalNumber(Integer.toString(director.getStaffNumber()));
                 userController.setMatricleOrPersonalNumberText("Número de Personal: ");
+                userController.setLabelsCorrectBounds("Director");
                 userController.setGuiUsersController(this);
                 this.usersVBox.getChildren().add(userItemPane);
             }
@@ -221,10 +222,11 @@ public class GuiUsersController {
                 );
                 Pane userItemPane = userItemControllerLoader.load();
                 UserController userController = userItemControllerLoader.getController();
-                userController.setName(academicBodyHead.getName());
+                userController.setName(academicBodyHead.getName() + " " + academicBodyHead.getFirstSurname() + " " + academicBodyHead.getSecondSurname());
                 userController.setType("Miembro de Cuerpo Académico");
                 userController.setMatricleOrPersonalNumber(Integer.toString(academicBodyHead.getStaffNumber()));
                 userController.setMatricleOrPersonalNumberText("Número de Personal: ");
+                userController.setLabelsCorrectBounds("Miembro de Cuerpo Académico");
                 userController.setGuiUsersController(this);
                 this.usersVBox.getChildren().add(userItemPane);
             }
@@ -243,10 +245,11 @@ public class GuiUsersController {
                 );
                 Pane userItemPane = userItemControllerLoader.load();
                 UserController userController = userItemControllerLoader.getController();
-                userController.setName(degreeBoss.getName());
+                userController.setName(degreeBoss.getName() + " " + degreeBoss.getFirstSurname() + " " + degreeBoss.getSecondSurname());
                 userController.setType("Jefe de Carrera");
                 userController.setMatricleOrPersonalNumber(Integer.toString(degreeBoss.getStaffNumber()));
                 userController.setMatricleOrPersonalNumberText("Número de Personal: ");
+                userController.setLabelsCorrectBounds("Jefe de Carrera");
                 userController.setGuiUsersController(this);
                 this.usersVBox.getChildren().add(userItemPane);
             }
@@ -464,11 +467,25 @@ public class GuiUsersController {
             modifyUserInformationController.setTelephoneNumber(userInformationController.getTelephoneNumber());
             modifyUserInformationController.setMatricleOrPersonalNumber(userInformationController.getMatriculeOrPersonalNumber());
             modifyUserInformationController.setStatus(userInformationController.getStatus());
+            modifyUserInformationController.setDataToStatusCombobox(userInformationController.getUserType());
             modifyUserInformationController.setUserInformationController(userInformationController);
             this.userInformationScrollPane.setContent(modifyUserInformationVBox);
             
         } catch (IOException e){
             e.printStackTrace();
+            AlertPaneController alertPaneController = new AlertPaneController();
+            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
+        }
+    }
+
+    private void loadHeader(){
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/HeaderPane.fxml"));
+        
+        try{
+            Pane header = loader.load();
+            header.getStyleClass().add("/mx/uv/fei/gui/stylesfiles/Styles.css");
+            backgroundPane.getChildren().add(header);
+        } catch(IOException exception){
             AlertPaneController alertPaneController = new AlertPaneController();
             alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
         }

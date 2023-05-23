@@ -6,43 +6,31 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
 public class UserInformationController {
+    private GuiUsersController guiUsersController;
+    private UserController userController;
 
     @FXML
     private Label alternateEmailLabel;
-
     @FXML
     private Button editButton;
-
     @FXML
     private Label emailLabel;
-
     @FXML
     private Label firstSurnameLabel;
-
     @FXML
     private Label matricleOrPersonalNumberLabel;
-
     @FXML
     private Label matricleOrPersonalNumberText;
-
     @FXML
     private Label namesLabel;
-
     @FXML
     private Label secondSurnameLabel;
-
     @FXML
     private Label statusLabel;
-
     @FXML
     private Label telephoneNumberLabel;
-
     @FXML
     private Label userTypeLabel;
-
-    private GuiUsersController guiUsersController;
-
-    private UserController userController;
 
     @FXML
     void editButtonController(ActionEvent event) {
@@ -50,7 +38,7 @@ public class UserInformationController {
     }
 
     public String getAlternateEmail() {
-        return this.alternateEmailLabel.getText();
+        return alternateEmailLabel.getText();
     }
 
     public void setAlternateEmail(String alternateEmail) {
@@ -58,7 +46,7 @@ public class UserInformationController {
     }
 
     public String getEmail() {
-        return this.emailLabel.getText();
+        return emailLabel.getText();
     }
 
     public void setEmail(String email) {
@@ -66,7 +54,7 @@ public class UserInformationController {
     }
 
     public String getFirstSurname() {
-        return this.firstSurnameLabel.getText();
+        return firstSurnameLabel.getText();
     }
 
     public void setFirstSurname(String firstSurname) {
@@ -74,7 +62,7 @@ public class UserInformationController {
     }
 
     public String getNames() {
-        return this.namesLabel.getText();
+        return namesLabel.getText();
     }
 
     public void setNames(String names) {
@@ -82,7 +70,7 @@ public class UserInformationController {
     }
 
     public String getSecondSurname() {
-        return this.secondSurnameLabel.getText();
+        return secondSurnameLabel.getText();
     }
 
     public void setSecondSurname(String secondSurname) {
@@ -90,7 +78,7 @@ public class UserInformationController {
     }
 
     public String getStatus() {
-        return this.statusLabel.getText();
+        return statusLabel.getText();
     }
 
     public void setStatus(String status) {
@@ -98,7 +86,7 @@ public class UserInformationController {
     }
 
     public String getTelephoneNumber() {
-        return this.telephoneNumberLabel.getText();
+        return telephoneNumberLabel.getText();
     }
 
     public void setTelephoneNumber(String telephoneNumber) {
@@ -106,7 +94,7 @@ public class UserInformationController {
     }
 
     public String getUserType() {
-        return this.userTypeLabel.getText();
+        return userTypeLabel.getText();
     }
 
     public void setUserType(String userType) {
@@ -114,7 +102,7 @@ public class UserInformationController {
     }
 
     public String getMatriculeOrPersonalNumber() {
-        return this.matricleOrPersonalNumberLabel.getText();
+        return matricleOrPersonalNumberLabel.getText();
     }
 
     public void setMatricleOrPersonalNumber(String type) {
@@ -133,16 +121,15 @@ public class UserInformationController {
         this.userController = userController;
     }
 
-    public void setMatricleOrPersonalNumberText(){
-        if(this.userTypeLabel.getText() == "Estudiante"){
-            this.matricleOrPersonalNumberText.setText("Matrícula: ");
-            this.matricleOrPersonalNumberText.setMaxWidth(71);
-            this.matricleOrPersonalNumberLabel.setPrefWidth(282);
+    public void setMatricleOrPersonalNumberText() {
+        if(userTypeLabel.getText() == "Estudiante"){
+            matricleOrPersonalNumberText.setText("Matrícula: ");
+            matricleOrPersonalNumberText.setMaxWidth(71);
+            matricleOrPersonalNumberLabel.setPrefWidth(282);
         } else {
-            this.matricleOrPersonalNumberText.setText("Número de Personal: ");
-            this.matricleOrPersonalNumberText.setMaxWidth(141);
-            this.matricleOrPersonalNumberLabel.setPrefWidth(213);
+            matricleOrPersonalNumberText.setText("Número de Personal: ");
+            matricleOrPersonalNumberText.setMaxWidth(141);
+            matricleOrPersonalNumberLabel.setPrefWidth(213);
         }
     }
-
 }

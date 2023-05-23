@@ -19,6 +19,7 @@ import mx.uv.fei.gui.controllers.AlertPaneController;
 import mx.uv.fei.gui.controllers.courses.CourseInformationController;
 import mx.uv.fei.logic.daos.StudentDAO;
 import mx.uv.fei.logic.daos.StudentsCoursesDAO;
+import mx.uv.fei.logic.domain.Student;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
 
 public class GuiUsersCourseController {
@@ -34,14 +35,15 @@ public class GuiUsersCourseController {
     private HBox professorsHBox;
     @FXML
     private VBox studentsVbox;
+
     @FXML
-    void initialize() {
+    private void initialize() {
         loadHeader();
-        refreshUsers();
+        refreshStudents();
     }
 
     @FXML
-    void addButtonController(ActionEvent event) {
+    private void addButtonController(ActionEvent event) {
         Parent guiStudentAdder;
         try {
             FXMLLoader loader = new FXMLLoader(
@@ -81,11 +83,7 @@ public class GuiUsersCourseController {
         return studentsVbox;
     }
 
-    public void refreshUsers() {
-        refreshStudents();
-    }
-
-    private void refreshStudents() {
+    public void refreshStudents() {
         studentsVbox.getChildren().clear();
         students = 0;
 
@@ -93,22 +91,22 @@ public class GuiUsersCourseController {
         StudentDAO studentDAO = new StudentDAO();
         try {
             ArrayList<String> students = studentCoursesDAO.getStudentsMatriclesByCourseNRCFromDatabase(
-            courseInformationController.getNrc());
+                courseInformationController.getNrc()
+            );
 
             for(String studentMatricle : students) {
+                Student student = studentDAO.getStudentFromDatabase(studentMatricle);
                 FXMLLoader studentPaneControllerLoader = new FXMLLoader(
                     getClass().getResource("/mx/uv/fei/gui/fxml/courses/students/UserPane.fxml")
                 );
                 Pane studentPane = studentPaneControllerLoader.load();
                 UserPaneController studentPaneController = studentPaneControllerLoader.getController();
 
-                try {
-                    studentPaneController.setName(studentDAO.getStudentFromDatabase(studentMatricle).getName());
-                } catch (DataRetrievalException e) {
-                    e.printStackTrace();
-                    AlertPaneController alertPaneController = new AlertPaneController();
-                    alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
-                }
+                studentPaneController.setName(
+                    student.getName() + " "  + 
+                    student.getFirstSurname() + " " + 
+                    student.getSecondSurname()
+                );
 
                 studentPaneController.setMatricleOrPersonalNumber(studentMatricle);
                 studentPaneController.setGuiUsersCourseController(this);
@@ -142,7 +140,6 @@ public class GuiUsersCourseController {
             Pane header = loader.load();
             header.getStyleClass().add("/mx/uv/fei/gui/stylesfiles/Styles.css");
             backgroundPane.getChildren().add(header);
-            
         }catch(IOException exception){
             AlertPaneController alertPaneController = new AlertPaneController();
             alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");

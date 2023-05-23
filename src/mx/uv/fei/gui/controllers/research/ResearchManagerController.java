@@ -82,13 +82,11 @@ public class ResearchManagerController {
             Scene scene = new Scene(parent);
             String css = this.getClass().getResource("/mx/uv/fei/gui/stylesfiles/Styles.css").toExternalForm();
             scene.getStylesheets().add(css);
-            Stage stage = new Stage();
-            stage.initModality(Modality.WINDOW_MODAL);
-            stage.initOwner((Stage)((Node)event.getSource()).getScene().getWindow());
+            Stage stage  = (Stage)((Node)event.getSource()).getScene().getWindow();
+            stage.setTitle("Administrar Usuarios del Curso");
             stage.setScene(scene);
             stage.setResizable(false);
-            
-            stage.showAndWait();
+            stage.show();
         } catch(IOException exception){
             Alert errorMessage = new Alert(Alert.AlertType.ERROR);
             errorMessage.setContentText("Error al cargar, faltan archivos");
