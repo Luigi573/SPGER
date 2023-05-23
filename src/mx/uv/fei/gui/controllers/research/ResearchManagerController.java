@@ -75,7 +75,25 @@ public class ResearchManagerController {
 
     @FXML
     private void goToReports(ActionEvent event) {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/reports/GuiResearchReport.fxml"));
         
+        try{
+            Parent parent = loader.load();
+            Scene scene = new Scene(parent);
+            String css = this.getClass().getResource("/mx/uv/fei/gui/stylesfiles/Styles.css").toExternalForm();
+            scene.getStylesheets().add(css);
+            Stage stage = new Stage();
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner((Stage)((Node)event.getSource()).getScene().getWindow());
+            stage.setScene(scene);
+            stage.setResizable(false);
+            
+            stage.showAndWait();
+        } catch(IOException exception){
+            Alert errorMessage = new Alert(Alert.AlertType.ERROR);
+            errorMessage.setContentText("Error al cargar, faltan archivos");
+            errorMessage.showAndWait();
+        }
     }
 
     @FXML
@@ -97,18 +115,18 @@ public class ResearchManagerController {
     @FXML
     private void showValidatedButtonController(ActionEvent event) {
         if(!showValidatedButton.isSelected()) {
-            showValidatedButton.setText("Nel");
+            showValidatedButton.setText("No");
         } else {
-            showValidatedButton.setText("Simón");
+            showValidatedButton.setText("Si");
         }
     }
 
     @FXML
     private void showNotValidatedButtonController(ActionEvent event) {
         if(!showNotValidatedButton.isSelected()) {
-            showNotValidatedButton.setText("Nel");
+            showNotValidatedButton.setText("No");
         } else {
-            showNotValidatedButton.setText("Simón");
+            showNotValidatedButton.setText("Si");
         }
     }
 

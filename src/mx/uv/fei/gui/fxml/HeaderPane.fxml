@@ -5,30 +5,35 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane fx:id="headerPane" prefHeight="60.0" prefWidth="593.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.uv.fei.gui.controllers.HeaderPaneController">
+<Pane fx:id="headerPane" prefHeight="80.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.uv.fei.gui.controllers.HeaderPaneController">
    <children>
-      <Label fx:id="titleLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="182.0" layoutY="2.0" prefHeight="30.0" prefWidth="194.0" text="[NombreEE]">
+      <Label fx:id="titleLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="319.0" prefHeight="35.0" prefWidth="351.0" text="Experiencia Recepcional" textAlignment="CENTER">
          <font>
-            <Font size="20.0" />
+            <Font name="Comic Sans MS Bold" size="28.0" />
          </font>
       </Label>
-      <Label layoutX="72.0" text="SPGER">
+      <Label layoutX="80.0" layoutY="4.0" text="SPGER">
          <font>
-            <Font size="32.0" />
+            <Font size="50.0" />
          </font>
       </Label>
-      <Label fx:id="NRCLabel" layoutX="227.0" layoutY="25.0" prefHeight="30.0" prefWidth="127.0" text="NRC: [NRC]">
+      <Label fx:id="NRCLabel" alignment="CENTER" layoutX="421.0" layoutY="43.0" prefHeight="32.0" prefWidth="59.0" text="NRC:">
          <font>
-            <Font size="20.0" />
+            <Font size="22.0" />
+         </font>
+      </Label>
+      <Label alignment="CENTER" layoutX="479.0" layoutY="43.0" prefHeight="32.0" prefWidth="90.0" text="12345">
+         <font>
+            <Font size="22.0" />
          </font>
       </Label>
 
-      <Button fx:id="homeButton" layoutX="7.0" layoutY="5.0" mnemonicParsing="false" onAction="#goHome" prefHeight="54.0" prefWidth="59.0" text="Home" />
-      <Label alignment="CENTER_RIGHT" layoutX="394.0" layoutY="17.0" prefHeight="25.0" prefWidth="127.0" text="[Nombre]">
+      <Button fx:id="homeButton" layoutX="6.0" layoutY="7.0" mnemonicParsing="false" onAction="#goHome" prefHeight="67.0" prefWidth="67.0" text="Home" />
+      <Label alignment="CENTER_RIGHT" layoutX="746.0" layoutY="12.0" prefHeight="56.0" prefWidth="197.0" text="[Nombre]" textAlignment="CENTER">
          <font>
-            <Font size="16.0" />
+            <Font size="20.0" />
          </font>
       </Label>
-      <Button fx:id="profileButton" layoutX="534.0" layoutY="5.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="59.0" text="ProfPic" />
+      <Button fx:id="profileButton" layoutX="950.0" layoutY="6.0" mnemonicParsing="false" prefHeight="67.0" prefWidth="67.0" text="ProfPic" />
    </children>
 </Pane>

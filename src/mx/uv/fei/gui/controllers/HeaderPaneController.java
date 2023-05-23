@@ -9,9 +9,13 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 public class HeaderPaneController{
+
+    @FXML
+    private Pane headerPane;
     @FXML
     private Label titleLabel;
     @FXML
@@ -23,8 +27,10 @@ public class HeaderPaneController{
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/Chronogram.fxml"));
             Parent parent = loader.load();
             
-            Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
             Scene scene = new Scene(parent);
+            String css = this.getClass().getResource("/mx/uv/fei/gui/stylesfiles/Styles.css").toExternalForm();
+            scene.getStylesheets().add(css);
+            Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
             stage.setTitle("SPGER");
             stage.setScene(scene);
             stage.show();
@@ -35,4 +41,28 @@ public class HeaderPaneController{
             errorMessage.showAndWait();
         }
     }
+
+    public String getTitle() {
+        return titleLabel.getText();
+    }
+
+    public void setTitle(String title) {
+        this.titleLabel.setText(title);
+    }
+
+    public String getNRC() {
+        return NRCLabel.getText();
+    }
+
+    public void setNRC(String nRC) {
+        NRCLabel.setText(nRC);
+    }
+
+    public void setVisibleNRCLabel(boolean setVisible) {
+        NRCLabel.setVisible(setVisible);
+    }
+
+    //public void setTitleSize() {
+    //    titleLabel.getText().set
+    //}
 }

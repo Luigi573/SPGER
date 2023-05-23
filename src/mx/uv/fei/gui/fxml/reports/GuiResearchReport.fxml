@@ -10,7 +10,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<Pane fx:id="guiCrearAnteproyectoBody" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.uv.fei.gui.controllers.reports.GuiResearchReportController">
+<Pane fx:id="backgroundPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.uv.fei.gui.controllers.reports.GuiResearchReportController">
    <children>
       <ScrollPane layoutX="25.0" layoutY="184.0" prefHeight="364.0" prefWidth="470.0">
          <content>
@@ -47,8 +47,8 @@
          <font>
             <Font size="15.0" />
          </font></Text>
-      <ToggleButton fx:id="showNotValidatedToggleButton" layoutX="803.0" layoutY="96.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="92.0" text="Sí" />
-      <ToggleButton fx:id="showValidatedToggleButton" layoutX="803.0" layoutY="127.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="92.0" text="Sí" />
+      <ToggleButton fx:id="showNotValidatedToggleButton" layoutX="803.0" layoutY="96.0" mnemonicParsing="false" onAction="#showNotValidatedToggleButtonController" prefHeight="24.0" prefWidth="92.0" text="No" />
+      <ToggleButton fx:id="showValidatedToggleButton" layoutX="803.0" layoutY="127.0" mnemonicParsing="false" onAction="#showValidatedToggleButtonController" prefHeight="24.0" prefWidth="92.0" text="No" />
       <Text fx:id="errorMessageText" fill="RED" layoutX="25.0" layoutY="507.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Error:" visible="false" wrappingWidth="383.0">
          <font>
             <Font name="Ubuntu" size="20.0" />

@@ -91,7 +91,7 @@ public class StudentDAOTest {
             expectedStudent.setFirstSurname("Carranza");
             expectedStudent.setSecondSurname("Loeda");
             expectedStudent.setEmailAddress("fexcarloa345@gmail.com");
-            expectedStudent.setAlternateEmail("fexcarloa399@gmail.com");
+            expectedStudent.setAlternateEmail("fexcarloa349@gmail.com");
             expectedStudent.setPhoneNumber("2283457810");
             expectedStudent.setMatricle("zS53943219");
             expectedStudent.setStatus("Graduado");

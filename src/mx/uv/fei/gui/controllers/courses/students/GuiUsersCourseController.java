@@ -23,22 +23,21 @@ import mx.uv.fei.logic.exceptions.DataRetrievalException;
 
 public class GuiUsersCourseController {
 
-    private int students = 0;
-
     private CourseInformationController courseInformationController;
+    private int students = 0;
 
     @FXML
     private Button addButton;
-
+    @FXML
+    private Pane backgroundPane;
     @FXML
     private HBox professorsHBox;
-
     @FXML
     private VBox studentsVbox;
-
     @FXML
     void initialize() {
-        this.refreshUsers();
+        loadHeader();
+        refreshUsers();
     }
 
     @FXML
@@ -54,7 +53,7 @@ public class GuiUsersCourseController {
             loader.setController(guiStudentAdderController);
             guiStudentAdder = loader.load();
             Scene scene = new Scene(guiStudentAdder);
-            String css = this.getClass().getResource("/mx/uv/fei/gui/stylesfiles/Styles.css").toExternalForm();
+            String css = getClass().getResource("/mx/uv/fei/gui/stylesfiles/Styles.css").toExternalForm();
             scene.getStylesheets().add(css);
             Stage stage = new Stage();
             stage.setTitle("Agregar Estudiante");
@@ -83,18 +82,18 @@ public class GuiUsersCourseController {
     }
 
     public void refreshUsers() {
-        this.refreshStudents();
+        refreshStudents();
     }
 
     private void refreshStudents() {
-        this.studentsVbox.getChildren().clear();
-        this.students = 0;
+        studentsVbox.getChildren().clear();
+        students = 0;
 
         StudentsCoursesDAO studentCoursesDAO = new StudentsCoursesDAO();
         StudentDAO studentDAO = new StudentDAO();
         try {
             ArrayList<String> students = studentCoursesDAO.getStudentsMatriclesByCourseNRCFromDatabase(
-            this.courseInformationController.getNrc());
+            courseInformationController.getNrc());
 
             for(String studentMatricle : students) {
                 FXMLLoader studentPaneControllerLoader = new FXMLLoader(
@@ -116,11 +115,11 @@ public class GuiUsersCourseController {
                 
                 if(this.students % 7 == 0) {
                     HBox studentHBox = new HBox();
-                    this.studentsVbox.getChildren().add(studentHBox);
-                    ( (HBox)this.studentsVbox.getChildren().get(this.studentsVbox.getChildren().size() - 1) ).getChildren().add(studentPane);
+                    studentsVbox.getChildren().add(studentHBox);
+                    ( (HBox)studentsVbox.getChildren().get(studentsVbox.getChildren().size() - 1) ).getChildren().add(studentPane);
                     this.students++;
                 } else {
-                    ( (HBox)this.studentsVbox.getChildren().get(this.studentsVbox.getChildren().size() - 1) ).getChildren().add(studentPane);
+                    ( (HBox)studentsVbox.getChildren().get(studentsVbox.getChildren().size() - 1) ).getChildren().add(studentPane);
                     this.students++;
                 }
             }
@@ -131,6 +130,20 @@ public class GuiUsersCourseController {
             alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
         } catch (DataRetrievalException e1) {
             e1.printStackTrace();
+            AlertPaneController alertPaneController = new AlertPaneController();
+            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
+        }
+    }
+
+    private void loadHeader(){
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/HeaderPane.fxml"));
+        
+        try{
+            Pane header = loader.load();
+            header.getStyleClass().add("/mx/uv/fei/gui/stylesfiles/Styles.css");
+            backgroundPane.getChildren().add(header);
+            
+        }catch(IOException exception){
             AlertPaneController alertPaneController = new AlertPaneController();
             alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
         }

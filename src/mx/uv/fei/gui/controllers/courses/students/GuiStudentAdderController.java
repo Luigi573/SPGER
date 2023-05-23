@@ -28,33 +28,29 @@ public class GuiStudentAdderController {
 
     @FXML
     private Button addStudentsButton;
-
     @FXML
     private Button showByMatricleButton;
-
     @FXML
     private TextField showByMatricleTextField;
-
     @FXML
     private VBox studentsVBox;
-
     @FXML
     private Text sucessText;
 
     @FXML
-    void initialize() {
+    private void initialize() {
         try {
             StudentsCoursesDAO studentsCoursesDAO = new StudentsCoursesDAO();
             ArrayList<String> studentMatricles = studentsCoursesDAO.getStudentsMatriclesByCourseNRCFromDatabase(
-                this.guiUsersCourseController.getCourseInformationController().getNrc()
+                guiUsersCourseController.getCourseInformationController().getNrc()
             );
 
         
             StudentDAO studentDAO = new StudentDAO();
-            ArrayList<Student> activeStudents = studentDAO.getActiveStudentsFromDatabase();
+            ArrayList<Student> availableStudents = studentDAO.getAvailableStudentsFromDatabase();
             if(studentMatricles.isEmpty()) {
                 try {
-                    for(Student activeStudent : activeStudents) {
+                    for(Student activeStudent : availableStudents) {
                         
                         FXMLLoader studentPaneControllerLoader = new FXMLLoader(
                             getClass().getResource("/mx/uv/fei/gui/fxml/courses/students/StudentPane.fxml")
@@ -63,7 +59,7 @@ public class GuiStudentAdderController {
                         StudentPaneController studentPaneController = studentPaneControllerLoader.getController();
                         studentPaneController.setStudentName(activeStudent.getName());
                         studentPaneController.setMatricle(activeStudent.getMatricule());
-                        this.studentsVBox.getChildren().add(studentPaneToAdd);
+                        studentsVBox.getChildren().add(studentPaneToAdd);
                         
                     }
                 } catch (IOException e) {
@@ -75,7 +71,7 @@ public class GuiStudentAdderController {
             }
 
             try {
-                for(Student activeStudent : activeStudents) {
+                for(Student activeStudent : availableStudents) {
                     boolean activeStudentIsAlreadyRegistedIntoTheCourse = false;
                     for(String studentMatricle : studentMatricles) {
                         if(studentMatricle.equals(activeStudent.getMatricule())) {
@@ -92,7 +88,7 @@ public class GuiStudentAdderController {
                         StudentPaneController studentPaneController = studentPaneControllerLoader.getController();
                         studentPaneController.setStudentName(activeStudent.getName());
                         studentPaneController.setMatricle(activeStudent.getMatricule());
-                        this.studentsVBox.getChildren().add(studentPaneToAdd);
+                        studentsVBox.getChildren().add(studentPaneToAdd);
                     }
                 }
             } catch (IOException e) {
@@ -108,15 +104,15 @@ public class GuiStudentAdderController {
     }
 
     @FXML
-    void addStudentsButtonController(ActionEvent event) {
+    private void addStudentsButtonController(ActionEvent event) {
         StudentsCoursesDAO studentCoursesDAO = new StudentsCoursesDAO();
 
-        for(Node studentPane : this.studentsVBox.getChildren()) {
+        for(Node studentPane : studentsVBox.getChildren()) {
             if( ((RadioButton)((Pane)studentPane).getChildren().get(4)).isSelected() ) {
                 try {
                     studentCoursesDAO.addStudentCourseToDatabase(
                         ((Label)((Pane)studentPane).getChildren().get(3)).getText(), 
-                        this.guiUsersCourseController.getCourseInformationController().getNrc()
+                        guiUsersCourseController.getCourseInformationController().getNrc()
                     );
                 } catch (DataWritingException e) {
                     e.printStackTrace();
@@ -126,25 +122,25 @@ public class GuiStudentAdderController {
             }
         }
 
-        this.guiUsersCourseController.refreshUsers();
+        guiUsersCourseController.refreshUsers();
 
 
-        this.addStudentsButton.setVisible(false);
+        addStudentsButton.setVisible(false);
         Stage stage = (Stage) addStudentsButton.getScene().getWindow();
         stage.close();
     }
 
     @FXML
-    void showByMatricleButtonController(ActionEvent event) {
+    private void showByMatricleButtonController(ActionEvent event) {
         try {
-            this.studentsVBox.getChildren().clear();
+            studentsVBox.getChildren().clear();
             StudentsCoursesDAO studentsCoursesDAO = new StudentsCoursesDAO();
             ArrayList<String> studentMatricles = studentsCoursesDAO.getStudentsMatriclesByCourseNRCFromDatabase(
-                this.guiUsersCourseController.getCourseInformationController().getNrc()
+                guiUsersCourseController.getCourseInformationController().getNrc()
             );
             
             StudentDAO studentDAO = new StudentDAO();
-            ArrayList<Student> activeStudents = studentDAO.getSpecifiedActiveStudentsFromDatabase(this.showByMatricleTextField.getText());
+            ArrayList<Student> activeStudents = studentDAO.getSpecifiedAvailableStudentsFromDatabase(showByMatricleTextField.getText());
             if(studentMatricles.isEmpty()) {
                 try {
                     for(Student activeStudent : activeStudents) {
@@ -156,7 +152,7 @@ public class GuiStudentAdderController {
                         StudentPaneController studentPaneController = studentPaneControllerLoader.getController();
                         studentPaneController.setStudentName(activeStudent.getName());
                         studentPaneController.setMatricle(activeStudent.getMatricule());
-                        this.studentsVBox.getChildren().add(studentPaneToAdd);
+                        studentsVBox.getChildren().add(studentPaneToAdd);
                         
                     }
                 } catch (IOException e) {
@@ -185,7 +181,7 @@ public class GuiStudentAdderController {
                         StudentPaneController studentPaneController = studentPaneControllerLoader.getController();
                         studentPaneController.setStudentName(activeStudent.getName());
                         studentPaneController.setMatricle(activeStudent.getMatricule());
-                        this.studentsVBox.getChildren().add(studentPaneToAdd);
+                        studentsVBox.getChildren().add(studentPaneToAdd);
                     }
                 }
             } catch (IOException e) {

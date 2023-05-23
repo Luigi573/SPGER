@@ -36,11 +36,23 @@ public class Main extends Application {
             //getClass().getResource("/mx/uv/fei/gui/fxml/research/ResearchManager.fxml")
             //getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/ModifyActivity.fxml")// tha xavier gui
             //getClass().getResource("/mx/uv/fei/gui/fxml/courses/students/GuiUsersCourse.fxml")
-            //getClass().getResource("/mx/uv/fei/gui/fxml/courses/GuiCourses.fxml")
-            getClass().getResource("/mx/uv/fei/gui/fxml/users/GuiUsers.fxml")
+            getClass().getResource("/mx/uv/fei/gui/fxml/courses/GuiCourses.fxml")
+            //getClass().getResource("/mx/uv/fei/gui/fxml/users/GuiUsers.fxml")
             //getClass().getResource("/mx/uv/fei/gui/fxml/reports/GuiResearchReport.fxml")
         );
         guiUsuarios = loader.load();
+
+        //TODO
+        //Nombres y apellidoa en userspanes y studentadder en GuiUsersCourse y GuiStudentAdder
+        //Mostrar estatus de usuarios en comboboxes para registrar usuarios en GuiRegisterUsers y ModifyUserPane 
+        //Checar lo de estudiantes activos y disponibles con xavier
+        //Detalles estéticos en GuiUsers cuando cambias la matricula a nombre de personal y viceversa
+        //Al abrir GuiResearchReport en ResearchManager no debe de salir como ventana emergente
+        //Color de bordes de botones de cursos, usuarios y anteproyectos
+        //Cambiar la clase de ventanas emergentes a alertpopup
+        //Seguir el standar
+        //Quitar los this innecesarios
+        //Pruebas
         
         Scene scene = new Scene(guiUsuarios);
         String css = this.getClass().getResource("/mx/uv/fei/gui/stylesfiles/Styles.css").toExternalForm();

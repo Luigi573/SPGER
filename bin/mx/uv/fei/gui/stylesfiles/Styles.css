@@ -126,6 +126,10 @@ Text {
     -fx-border-color:#000000;
 }
 
+#headerPane {
+    -fx-background-color: #217258;
+}
+
 #researchButton {
     -fx-background-radius: 5;
     -fx-background-color: transparent;
@@ -143,3 +147,5 @@ Text {
     -fx-background-radius: 5;
     -fx-border-color: #5a9e4b;
 }
+
+

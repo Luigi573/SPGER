@@ -19,13 +19,13 @@ public class CourseDAO implements ICourseDAO{
     public CourseDAO() {
         dataBaseManager = new DataBaseManager();
     }
-
+    
     @Override
     public void addCourseToDatabase(Course course) throws DataWritingException{
         try {
             String query = 
-                "INSERT INTO Cursos (NRC, IdPeriodoEscolar, NumPersonal, nombreEE, sección, bloque, estado)" +
-                " VALUES (?, ?, ?, ?, ?, ?, ?)";
+                "INSERT INTO Cursos (NRC, IdPeriodoEscolar, NumPersonal, nombreEE, sección, bloque)" +
+                " VALUES (?, ?, ?, ?, ?, ?)";
             PreparedStatement preparedStatement = 
                 dataBaseManager.getConnection().prepareStatement(query);
             preparedStatement.setInt(1, course.getNrc());
@@ -58,7 +58,6 @@ public class CourseDAO implements ICourseDAO{
             preparedStatement.setInt(5, newCourseData.getSection());
             preparedStatement.setInt(6, newCourseData.getBlock());
             preparedStatement.setInt(7, originalCourseData.getNrc());
-            System.out.println(preparedStatement.toString());
             preparedStatement.executeUpdate();
         } catch(SQLException e) {
             e.printStackTrace();

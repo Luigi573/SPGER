@@ -29,25 +29,20 @@ public class GuiCoursesController {
 
     @FXML
     private ScrollPane courseInformationScrollPane;
-
     @FXML
     private VBox coursesVBox;
-
     @FXML
     private Pane backgroundPane;
-
     @FXML
     private Button registerCourseButton;
-
     @FXML
     private Button searchByNrcButton;
-
     @FXML
     private TextField searchByNrcTextField;
 
     @FXML
-    void initialize() {
-        //this.loadHeader();
+    private void initialize() {
+        this.loadHeader();
         CourseDAO courseDAO = new CourseDAO();
         ArrayList<Course> courses;
         
@@ -62,7 +57,7 @@ public class GuiCoursesController {
     }
 
     @FXML
-    void registerCourseButtonController(ActionEvent event) {
+    private void registerCourseButtonController(ActionEvent event) {
         Parent guiRegisterCourse;
         try {
             FXMLLoader loader = new FXMLLoader(
@@ -87,7 +82,7 @@ public class GuiCoursesController {
     }
 
     @FXML
-    void searchByNrcButtonController(ActionEvent event) {
+    private void searchByNrcButtonController(ActionEvent event) {
         this.coursesVBox.getChildren().removeAll(this.coursesVBox.getChildren());
         CourseDAO courseDAO = new CourseDAO();
         ArrayList<Course> courses;
@@ -200,18 +195,18 @@ public class GuiCoursesController {
         }
     }
 
-    //private void loadHeader(){
-    //    FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/HeaderPane.fxml"));
-    //    
-    //    try{
-    //        Pane header = loader.load();
-    //        mainPane.getChildren().add(header);
-    //        HeaderPaneController headerController = loader.getController();
-    //        
-    //    }catch(IOException exception){
-    //        AlertPaneController alertPaneController = new AlertPaneController();
-    //        alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
-    //    }
-    //}
+    private void loadHeader(){
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/HeaderPane.fxml"));
+        
+        try{
+            Pane header = loader.load();
+            header.getStyleClass().add("/mx/uv/fei/gui/stylesfiles/Styles.css");
+            this.backgroundPane.getChildren().add(header);
+            
+        }catch(IOException exception){
+            AlertPaneController alertPaneController = new AlertPaneController();
+            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
+        }
+    }
 
 }

@@ -188,12 +188,12 @@ public class ModifyCourseInformationController {
         this.educativeExperienceComboBox.getItems().add("Proyecto Guiado");
         this.educativeExperienceComboBox.getItems().add("Experiencia Recepcional");
         this.educativeExperienceComboBox.setValue("Proyecto Guiado");
-        this.sectionComboBox.getItems().add("7");
-        this.sectionComboBox.getItems().add("8");
-        this.sectionComboBox.setValue("7");
-        this.blockComboBox.getItems().add("1");
-        this.blockComboBox.getItems().add("2");
-        this.blockComboBox.setValue("1");
+        this.sectionComboBox.getItems().add("1");
+        this.sectionComboBox.getItems().add("2");
+        this.sectionComboBox.setValue("1");
+        this.blockComboBox.getItems().add("7");
+        this.blockComboBox.getItems().add("8");
+        this.blockComboBox.setValue("7");
     }
 
     @FXML
