@@ -4,10 +4,10 @@ import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.Pane;
+import mx.uv.fei.gui.AlertPopUpGenerator;
 import mx.uv.fei.logic.domain.ResearchProject;
 import mx.uv.fei.logic.domain.statuses.ResearchProjectStatus;
 
@@ -22,7 +22,7 @@ public class ResearchVBoxPaneController{
     private Label validationLabel;
     
     @FXML
-    private void selectResearch(ActionEvent event) {
+    private void selectResearch(ActionEvent event){
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/research/ResearchInfoPane.fxml"));
         
         try{
@@ -31,32 +31,26 @@ public class ResearchVBoxPaneController{
             controller.setResearch(research);
             controller.setContainer(container);
             controller.setResearchManagerController(researchManagerController);
-            if(research.getValidationStatus().equals(ResearchProjectStatus.PROPOSED.getValue()) ) {
+            if(research.getValidationStatus().equals(ResearchProjectStatus.PROPOSED.getValue()) ){
                 controller.showValidateButton(true);
             }
             
             container.setContent(researchInfoPane);
         }catch(IOException exception){
-            Alert errorMessage = new Alert(Alert.AlertType.ERROR);
-            errorMessage.setContentText("Error al cargar, faltan archivos");
-            errorMessage.showAndWait();
+            new AlertPopUpGenerator().showMissingFilesMessage();
         }
     }
-
-    public ResearchManagerController getResearchManagerController() {
+    public ResearchManagerController getResearchManagerController(){
         return researchManagerController;
     }
-
-    public void setResearchManagerController(ResearchManagerController researchManagerController) {
+    public void setResearchManagerController(ResearchManagerController researchManagerController){
         this.researchManagerController = researchManagerController;
     }
-    
     public void setResearchProject(ResearchProject research){
         this.research = research;
         titleLabel.setText(research.getTitle());
         validationLabel.setText(research.getValidationStatus());
     }
-
     public void setContainer(ScrollPane container){
         this.container = container;
     }

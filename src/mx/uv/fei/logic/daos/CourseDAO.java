@@ -16,13 +16,13 @@ public class CourseDAO implements ICourseDAO{
 
     private final DataBaseManager dataBaseManager;
 
-    public CourseDAO() {
+    public CourseDAO(){
         dataBaseManager = new DataBaseManager();
     }
     
     @Override
     public void addCourseToDatabase(Course course) throws DataWritingException{
-        try {
+        try{
             String query = 
                 "INSERT INTO Cursos (NRC, IdPeriodoEscolar, NumPersonal, nombreEE, sección, bloque)" +
                 " VALUES (?, ?, ?, ?, ?, ?)";
@@ -36,17 +36,16 @@ public class CourseDAO implements ICourseDAO{
             preparedStatement.setInt(6, course.getBlock());
             preparedStatement.executeUpdate();
 
-        } catch(SQLException e) {
-            e.printStackTrace();
+        }catch(SQLException e){
             throw new DataWritingException("Error al agregar curso. Verifique su conexion e intentelo de nuevo");
-        } finally {
+        }finally{
             dataBaseManager.closeConnection();
         }
     }
 
     @Override
-    public void modifyCourseDataFromDatabase(Course newCourseData, Course originalCourseData) throws DataWritingException {
-        try {
+    public void modifyCourseDataFromDatabase(Course newCourseData, Course originalCourseData) throws DataWritingException{
+        try{
             String query = "UPDATE Cursos SET NRC = ?, " + 
                            "IdPeriodoEscolar = ?, NumPersonal = ?, nombreEE = ?, " + 
                            "sección = ?, bloque = ? WHERE NRC = ?";
@@ -59,23 +58,22 @@ public class CourseDAO implements ICourseDAO{
             preparedStatement.setInt(6, newCourseData.getBlock());
             preparedStatement.setInt(7, originalCourseData.getNrc());
             preparedStatement.executeUpdate();
-        } catch(SQLException e) {
-            e.printStackTrace();
+        }catch(SQLException e){
             throw new DataWritingException("Error al modificar curso. Verifique su conexion e intentelo de nuevo");
-        } finally {
+        }finally{
             dataBaseManager.closeConnection();
         }
     }
 
     @Override
-    public ArrayList<Course> getCoursesFromDatabase() throws DataRetrievalException {
+    public ArrayList<Course> getCoursesFromDatabase() throws DataRetrievalException{
         ArrayList<Course> courses = new ArrayList<>();
 
-        try {
+        try{
             Statement statement = dataBaseManager.getConnection().createStatement();
             String query = "SELECT * FROM Cursos";
             ResultSet resultSet = statement.executeQuery(query);
-            while(resultSet.next()) {
+            while(resultSet.next()){
                 Course course = new Course();
                 course.setNrc(resultSet.getInt("NRC"));
                 course.setIdScholarPeriod(resultSet.getInt("IdPeriodoEscolar"));
@@ -87,10 +85,9 @@ public class CourseDAO implements ICourseDAO{
             }
             resultSet.close();
             dataBaseManager.getConnection().close();
-        } catch(SQLException e) {
-            e.printStackTrace();
+        }catch(SQLException e){
             throw new DataRetrievalException("Fallo al recuperar la informacion. Verifique su conexion e intentelo de nuevo");
-        } finally {
+        }finally{
             dataBaseManager.closeConnection();
         }
 
@@ -98,15 +95,15 @@ public class CourseDAO implements ICourseDAO{
     }
 
     @Override
-    public ArrayList<Course> getSpecifiedCoursesFromDatabase(String courseName) throws DataRetrievalException {
+    public ArrayList<Course> getSpecifiedCoursesFromDatabase(String courseName) throws DataRetrievalException{
         ArrayList<Course> courses = new ArrayList<>();
 
-        try {
+        try{
             String query = "SELECT * FROM Cursos WHERE NRC LIKE ?";
             PreparedStatement preparedStatement = dataBaseManager.getConnection().prepareStatement(query);
             preparedStatement.setString(1, courseName + '%');
             ResultSet resultSet = preparedStatement.executeQuery();
-            while(resultSet.next()) {
+            while(resultSet.next()){
                 Course course = new Course();
                 course.setNrc(resultSet.getInt("NRC"));
                 course.setIdScholarPeriod(resultSet.getInt("IdPeriodoEscolar"));
@@ -118,10 +115,9 @@ public class CourseDAO implements ICourseDAO{
             }
             resultSet.close();
             dataBaseManager.getConnection().close();
-        } catch (SQLException e) {
-            e.printStackTrace();
+        }catch(SQLException e){
             throw new DataRetrievalException("Fallo al recuperar la informacion. Verifique su conexion e intentelo de nuevo");
-        } finally {
+        }finally{
             dataBaseManager.closeConnection();
         }
 
@@ -129,10 +125,10 @@ public class CourseDAO implements ICourseDAO{
     }
 
     @Override
-    public Course getCourseFromDatabase(String courseNrc) throws DataRetrievalException {
+    public Course getCourseFromDatabase(String courseNrc) throws DataRetrievalException{
         Course course = new Course();
 
-        try {
+        try{
             String query = "SELECT * FROM Cursos WHERE NRC = ?";
             PreparedStatement preparedStatement = dataBaseManager.getConnection().prepareStatement(query);
             preparedStatement.setString(1, courseNrc);
@@ -148,18 +144,17 @@ public class CourseDAO implements ICourseDAO{
             
             resultSet.close();
             dataBaseManager.getConnection().close();
-        } catch (SQLException e) {
-            e.printStackTrace();
+        }catch(SQLException e){
             throw new DataRetrievalException("Fallo al recuperar la informacion. Verifique su conexion e intentelo de nuevo");
-        } finally {
+        }finally{
             dataBaseManager.closeConnection();
         }
 
         return course;
     }
 
-    public boolean theCourseIsAlreadyRegisted(Course course) throws DataRetrievalException {
-        try {
+    public boolean theCourseIsAlreadyRegisted(Course course) throws DataRetrievalException{
+        try{
             Statement statement = dataBaseManager.getConnection().createStatement();
             String query = "SELECT * FROM Cursos";
             ResultSet resultSet = statement.executeQuery(query);
@@ -169,7 +164,7 @@ public class CourseDAO implements ICourseDAO{
                    resultSet.getInt("NumPersonal") == course.getStaffNumber() &&
                    resultSet.getString("nombreEE").equals(course.getEEName()) &&
                    resultSet.getInt("sección") == course.getSection() &&
-                   resultSet.getInt("bloque") == course.getBlock()) {
+                   resultSet.getInt("bloque") == course.getBlock()){
                     
                    resultSet.close();
                    dataBaseManager.getConnection().close();
@@ -179,10 +174,9 @@ public class CourseDAO implements ICourseDAO{
 
             resultSet.close();
             dataBaseManager.getConnection().close();
-        } catch (SQLException e) {
-            e.printStackTrace();
+        }catch(SQLException e){
             throw new DataRetrievalException("Fallo al recuperar la informacion. Verifique su conexion e intentelo de nuevo");
-        } finally {
+        }finally{
             dataBaseManager.closeConnection();
         }
 

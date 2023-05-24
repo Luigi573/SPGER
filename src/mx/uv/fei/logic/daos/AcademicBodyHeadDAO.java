@@ -20,8 +20,8 @@ public class AcademicBodyHeadDAO implements IAcademicBodyHeadDAO{
     }
     
     @Override
-    public void addAcademicBodyHeadToDatabase(AcademicBodyHead academicBodyHead) throws DataWritingException {
-        try {
+    public void addAcademicBodyHeadToDatabase(AcademicBodyHead academicBodyHead) throws DataWritingException{
+        try{
             String wholeQueryToInsertAcademicBodyHeadDataToUserColumns = 
                 "INSERT INTO Usuarios (nombre, apellidoPaterno, apellidoMaterno, correo, correoAlterno, númeroTeléfono) VALUES (?, ?, ?, ?, ?, ?)";
             PreparedStatement preparedStatementToInsertAcademicBodyHeadDataToUserColumns = 
@@ -93,17 +93,16 @@ public class AcademicBodyHeadDAO implements IAcademicBodyHeadDAO{
             preparedStatementToInsertAcademicBodyHeadDataToAcademicBodyHeadColumns.close();
             dataBaseManager.getConnection().close();
 
-        } catch (SQLException e) {
-            e.printStackTrace();
+        }catch(SQLException e){
             throw new DataWritingException("Error al agregar miembro del cuerpo académico. Verifique su conexion e intentelo de nuevo");
-        } finally {
+        }finally{
             dataBaseManager.closeConnection();
         }
     }
 
     @Override
-    public void modifyAcademicBodyHeadDataFromDatabase(AcademicBodyHead newAcademicBodyHeadData, AcademicBodyHead originalAcademicBodyHeadData) throws DataWritingException {
-        try {
+    public void modifyAcademicBodyHeadDataFromDatabase(AcademicBodyHead newAcademicBodyHeadData, AcademicBodyHead originalAcademicBodyHeadData) throws DataWritingException{
+        try{
             String queryForUpdateUserData = "UPDATE Usuarios SET nombre = ?, " + 
                            "apellidoPaterno = ?, apellidoMaterno = ?, correo = ?, " + 
                            "correoAlterno = ?, númeroTeléfono = ?, estado = ? " +
@@ -143,23 +142,22 @@ public class AcademicBodyHeadDAO implements IAcademicBodyHeadDAO{
             preparedStatementForUpdateAcademicBodyHeadData.setInt(1, newAcademicBodyHeadData.getStaffNumber());
             preparedStatementForUpdateAcademicBodyHeadData.setInt(2, originalAcademicBodyHeadData.getStaffNumber());
             preparedStatementForUpdateAcademicBodyHeadData.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
+        }catch(SQLException e){
             throw new DataWritingException("Error al agregar miembro del cuerpo académico. Verifique su conexion e intentelo de nuevo");
-        } finally {
+        }finally{
             dataBaseManager.closeConnection();
         }
     }
 
     @Override
-    public ArrayList<AcademicBodyHead> getAcademicBodyHeadsFromDatabase() throws DataRetrievalException {
+    public ArrayList<AcademicBodyHead> getAcademicBodyHeadsFromDatabase() throws DataRetrievalException{
         ArrayList<AcademicBodyHead> academicBodyHeads = new ArrayList<>();
 
-        try {
+        try{
             Statement statement = dataBaseManager.getConnection().createStatement();
             String query = "SELECT * FROM Usuarios U INNER JOIN Profesores P ON U.IdUsuario = P.IdUsuario INNER JOIN ResponsablesCA RCA ON P.NumPersonal = RCA.NumPersonal";
             ResultSet resultSet = statement.executeQuery(query);
-            while(resultSet.next()) {
+            while(resultSet.next()){
                 AcademicBodyHead academicBodyHead = new AcademicBodyHead();
                 academicBodyHead.setName(resultSet.getString("nombre"));
                 academicBodyHead.setFirstSurname(resultSet.getString("apellidoPaterno"));
@@ -174,10 +172,9 @@ public class AcademicBodyHeadDAO implements IAcademicBodyHeadDAO{
             }
             resultSet.close();
             dataBaseManager.getConnection().close();
-        } catch (SQLException e) {
-            e.printStackTrace();
+        }catch(SQLException e){
             throw new DataRetrievalException("Fallo al recuperar la informacion. Verifique su conexion e intentelo de nuevo");
-        } finally {
+        }finally{
             dataBaseManager.closeConnection();
         }
 
@@ -185,15 +182,15 @@ public class AcademicBodyHeadDAO implements IAcademicBodyHeadDAO{
     }
 
     @Override
-    public ArrayList<AcademicBodyHead> getSpecifiedAcademicBodyHeadsFromDatabase(String academicBodyHeadName) throws DataRetrievalException {
+    public ArrayList<AcademicBodyHead> getSpecifiedAcademicBodyHeadsFromDatabase(String academicBodyHeadName) throws DataRetrievalException{
         ArrayList<AcademicBodyHead> academicBodyHeads = new ArrayList<>();
 
-        try {
+        try{
             String query = "SELECT * FROM Usuarios U INNER JOIN Profesores P ON U.IdUsuario = P.IdUsuario INNER JOIN ResponsablesCA RCA ON P.NumPersonal = RCA.NumPersonal WHERE U.Nombre LIKE ?";
             PreparedStatement preparedStatement = dataBaseManager.getConnection().prepareStatement(query);
             preparedStatement.setString(1, academicBodyHeadName + '%');
             ResultSet resultSet = preparedStatement.executeQuery();
-            while(resultSet.next()) {
+            while(resultSet.next()){
                 AcademicBodyHead academicBodyHead = new AcademicBodyHead();
                 academicBodyHead.setName(resultSet.getString("nombre"));
                 academicBodyHead.setFirstSurname(resultSet.getString("apellidoPaterno"));
@@ -208,10 +205,9 @@ public class AcademicBodyHeadDAO implements IAcademicBodyHeadDAO{
             }
             resultSet.close();
             dataBaseManager.getConnection().close();
-        } catch (SQLException e) {
-            e.printStackTrace();
+        }catch(SQLException e){
             throw new DataRetrievalException("Fallo al recuperar la informacion. Verifique su conexion e intentelo de nuevo");
-        } finally {
+        }finally{
             dataBaseManager.closeConnection();
         }
 
@@ -219,7 +215,7 @@ public class AcademicBodyHeadDAO implements IAcademicBodyHeadDAO{
     }
 
     @Override
-    public AcademicBodyHead getAcademicBodyHeadFromDatabase(int personalNumber) throws DataRetrievalException {
+    public AcademicBodyHead getAcademicBodyHeadFromDatabase(int personalNumber) throws DataRetrievalException{
         AcademicBodyHead academicBodyHead = new AcademicBodyHead();
 
         try {
@@ -241,18 +237,17 @@ public class AcademicBodyHeadDAO implements IAcademicBodyHeadDAO{
             
             resultSet.close();
             dataBaseManager.getConnection().close();
-        } catch (SQLException e) {
-            e.printStackTrace();
+        }catch(SQLException e){
             throw new DataRetrievalException("Fallo al recuperar la informacion. Verifique su conexion e intentelo de nuevo");
-        } finally {
+        }finally{
             dataBaseManager.closeConnection();
         }
 
         return academicBodyHead;
     }
 
-    public boolean theAcademicBodyHeadIsAlreadyRegisted(AcademicBodyHead academicBodyHead) throws DataRetrievalException {
-        try {
+    public boolean theAcademicBodyHeadIsAlreadyRegisted(AcademicBodyHead academicBodyHead) throws DataRetrievalException{
+        try{
             Statement statement = dataBaseManager.getConnection().createStatement();
             String query = "SELECT U.nombre, U.apellidoPaterno, U.apellidoMaterno, U.correo, " +
                            "U.correoAlterno, U.númeroTeléfono, U.estado, P.NumPersonal FROM Usuarios U " + 
@@ -276,14 +271,12 @@ public class AcademicBodyHeadDAO implements IAcademicBodyHeadDAO{
             }
             resultSet.close();
             dataBaseManager.getConnection().close();
-        } catch (SQLException e) {
-            e.printStackTrace();
+        }catch(SQLException e){
             throw new DataRetrievalException("Fallo al recuperar la informacion. Verifique su conexion e intentelo de nuevo");
-        } finally {
+        }finally{
             dataBaseManager.closeConnection();
         }
 
         return false;
     }
-    
 }

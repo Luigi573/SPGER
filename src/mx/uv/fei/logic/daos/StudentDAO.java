@@ -20,8 +20,8 @@ public class StudentDAO implements IStudentDAO{
     }
 
     @Override
-    public void addStudentToDatabase(Student student) throws DataWritingException {
-        try {
+    public void addStudentToDatabase(Student student) throws DataWritingException{
+        try{
             String queryToInsertUserData = "INSERT INTO Usuarios (nombre, apellidoPaterno, apellidoMaterno, correo, " +
                 "correoAlterno, númeroTeléfono, estado) VALUES (?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement preparedStatementToInsertUserData = 
@@ -64,16 +64,16 @@ public class StudentDAO implements IStudentDAO{
             preparedStatementToInsertStudentData.close();
             dataBaseManager.getConnection().close();
 
-        } catch (SQLException e) {
+        }catch(SQLException e){
             throw new DataWritingException("Error al agregar estudiante. Verifique su conexion e intentelo de nuevo");
-        } finally {
+        }finally{
             dataBaseManager.closeConnection();
         }
     }
     
     @Override
-    public void modifyStudentDataFromDatabase(Student newStudentData, Student originalStudentData) throws DataWritingException {
-        try {
+    public void modifyStudentDataFromDatabase(Student newStudentData, Student originalStudentData) throws DataWritingException{
+        try{
             newStudentData.setUserId(this.getUserIdFromStudent(originalStudentData));
             String queryForUpdateUserData = "UPDATE Usuarios SET nombre = ?, " + 
                            "apellidoPaterno = ?, apellidoMaterno = ?, correo = ?, " + 
@@ -106,20 +106,20 @@ public class StudentDAO implements IStudentDAO{
             preparedStatementForUpdateStudentData.setString(1, newStudentData.getMatricule());
             preparedStatementForUpdateStudentData.setInt(2, newStudentData.getUserId());
             preparedStatementForUpdateStudentData.executeUpdate();
-        } catch(SQLException e){
+        }catch(SQLException e){
             throw new DataWritingException("Error al agregar estudiante. Verifique su conexion e intentelo de nuevo");
-        } catch(DataRetrievalException e) {
+        }catch(DataRetrievalException e){
             throw new DataWritingException("Error al agregar estudiante. Verifique su conexion e intentelo de nuevo");
-        } finally {
+        }finally{
             dataBaseManager.closeConnection();
         }
     }
 
     @Override
-    public ArrayList<Student> getStudentsFromDatabase() throws DataRetrievalException {
+    public ArrayList<Student> getStudentsFromDatabase() throws DataRetrievalException{
         ArrayList<Student> students = new ArrayList<>();
         
-        try {
+        try{
             Statement statement = dataBaseManager.getConnection().createStatement();
             String query = "SELECT * FROM Usuarios U INNER JOIN Estudiantes E ON U.IdUsuario = E.IdUsuario";
             ResultSet resultSet = statement.executeQuery(query);
@@ -138,9 +138,9 @@ public class StudentDAO implements IStudentDAO{
             }
             resultSet.close();
             dataBaseManager.getConnection().close();
-        } catch (SQLException e) {
+        }catch(SQLException e){
             throw new DataRetrievalException("Error al recuperar la información. Verifique su conexión e intentelo de nuevo");
-        } finally {
+        }finally{
             dataBaseManager.closeConnection();
         }
 
@@ -148,7 +148,7 @@ public class StudentDAO implements IStudentDAO{
     }
 
     @Override
-    public ArrayList<Student> getStudentList() throws DataRetrievalException {
+    public ArrayList<Student> getStudentList() throws DataRetrievalException{
         ArrayList<Student> studentList = new ArrayList<>();
         PreparedStatement statement;
         String query = "SELECT e.Matrícula, u.nombre, u.apellidoPaterno, u.apellidoMaterno FROM Estudiantes e "
@@ -170,7 +170,7 @@ public class StudentDAO implements IStudentDAO{
             }
         }catch(SQLException exception){
             throw new DataRetrievalException("Error al recuperar estudiantes. VErifique su conexión e inténtelo de nuevo");
-        } finally {
+        }finally{
             dataBaseManager.closeConnection();
         }
         
@@ -178,10 +178,10 @@ public class StudentDAO implements IStudentDAO{
     }
 
     @Override
-    public ArrayList<Student> getAvailableStudentsFromDatabase() throws DataRetrievalException {
+    public ArrayList<Student> getAvailableStudentsFromDatabase() throws DataRetrievalException{
         ArrayList<Student> students = new ArrayList<>();
         
-        try {
+        try{
             DataBaseManager dataBaseManager = new DataBaseManager();
             Statement statement = dataBaseManager.getConnection().createStatement();
             String query = "SELECT * FROM Usuarios U INNER JOIN Estudiantes E " + 
@@ -202,9 +202,9 @@ public class StudentDAO implements IStudentDAO{
             }
             resultSet.close();
             dataBaseManager.getConnection().close();
-        } catch (SQLException e) {
+        }catch(SQLException e){
             throw new DataRetrievalException("Error al recuperar la información. Verifique su conexión e intentelo de nuevo");
-        } finally {
+        }finally{
             dataBaseManager.closeConnection();
         }
 
@@ -212,10 +212,10 @@ public class StudentDAO implements IStudentDAO{
     }
 
     @Override
-    public ArrayList<Student> getSpecifiedAvailableStudentsFromDatabase(String studentName) throws DataRetrievalException {
+    public ArrayList<Student> getSpecifiedAvailableStudentsFromDatabase(String studentName) throws DataRetrievalException{
         ArrayList<Student> students = new ArrayList<>();
         
-        try {
+        try{
             DataBaseManager dataBaseManager = new DataBaseManager();
             String query = "SELECT * FROM Usuarios U INNER JOIN Estudiantes E " + 
                            "ON U.IdUsuario = E.IdUsuario WHERE U.Nombre LIKE ? && U.estado = 'Disponible'";
@@ -237,9 +237,9 @@ public class StudentDAO implements IStudentDAO{
             }
             resultSet.close();
             dataBaseManager.getConnection().close();
-        } catch (SQLException e) {
+        }catch(SQLException e){
             throw new DataRetrievalException("Error al recuperar la información. Verifique su conexión e intentelo de nuevo");
-        } finally {
+        }finally{
             dataBaseManager.closeConnection();
         }
 
@@ -247,10 +247,10 @@ public class StudentDAO implements IStudentDAO{
     }
 
     @Override
-    public ArrayList<Student> getActiveStudentsFromDatabase() throws DataRetrievalException {
+    public ArrayList<Student> getActiveStudentsFromDatabase() throws DataRetrievalException{
         ArrayList<Student> students = new ArrayList<>();
         
-        try {
+        try{
             DataBaseManager dataBaseManager = new DataBaseManager();
             Statement statement = dataBaseManager.getConnection().createStatement();
             String query = "SELECT * FROM Usuarios U INNER JOIN Estudiantes E " + 
@@ -271,9 +271,9 @@ public class StudentDAO implements IStudentDAO{
             }
             resultSet.close();
             dataBaseManager.getConnection().close();
-        } catch (SQLException e) {
+        }catch(SQLException e){
             throw new DataRetrievalException("Error al recuperar la información. Verifique su conexión e intentelo de nuevo");
-        } finally {
+        }finally{
             dataBaseManager.closeConnection();
         }
 
@@ -281,10 +281,10 @@ public class StudentDAO implements IStudentDAO{
     }
 
     @Override
-    public ArrayList<Student> getSpecifiedActiveStudentsFromDatabase(String studentName) throws DataRetrievalException {
+    public ArrayList<Student> getSpecifiedActiveStudentsFromDatabase(String studentName) throws DataRetrievalException{
         ArrayList<Student> students = new ArrayList<>();
         
-        try {
+        try{
             DataBaseManager dataBaseManager = new DataBaseManager();
             String query = "SELECT * FROM Usuarios U INNER JOIN Estudiantes E " + 
                            "ON U.IdUsuario = E.IdUsuario WHERE U.Nombre LIKE ? && U.estado = 'Activo'";
@@ -306,9 +306,9 @@ public class StudentDAO implements IStudentDAO{
             }
             resultSet.close();
             dataBaseManager.getConnection().close();
-        } catch (SQLException e) {
+        }catch(SQLException e){
             throw new DataRetrievalException("Error al recuperar la información. Verifique su conexión e intentelo de nuevo");
-        } finally {
+        }finally{
             dataBaseManager.closeConnection();
         }
 
@@ -316,19 +316,19 @@ public class StudentDAO implements IStudentDAO{
     }
 
     @Override
-    public ArrayList<Student> getSpecifiedStudentsFromDatabase(String studentName) throws DataRetrievalException {
+    public ArrayList<Student> getSpecifiedStudentsFromDatabase(String studentName) throws DataRetrievalException{
         ArrayList<Student> students = new ArrayList<>();
         PreparedStatement statement;
         String query = "SELECT * FROM Usuarios U INNER JOIN Estudiantes E " + 
                            "ON U.IdUsuario = E.IdUsuario WHERE U.Nombre LIKE ?";
         
-        try {
+        try{
             statement = dataBaseManager.getConnection().prepareStatement(query);
             statement.setString(1, studentName + '%');
             
             ResultSet resultSet = statement.executeQuery();
             
-            while(resultSet.next()) {
+            while(resultSet.next()){
                 Student student = new Student();
                 student.setName(resultSet.getString("nombre"));
                 student.setFirstSurname(resultSet.getString("apellidoPaterno"));
@@ -343,10 +343,10 @@ public class StudentDAO implements IStudentDAO{
             }
             resultSet.close();
             dataBaseManager.getConnection().close();
-        } catch (SQLException exception) {
+        }catch(SQLException exception){
             exception.printStackTrace();
             throw new DataRetrievalException("Error al recuperar la información. Verifique su conexión e intentelo de nuevo");
-        } finally {
+        }finally{
             dataBaseManager.closeConnection();
         }
 
@@ -354,12 +354,12 @@ public class StudentDAO implements IStudentDAO{
     }
 
     @Override
-    public Student getStudentFromDatabase(String matricle) throws DataRetrievalException {
+    public Student getStudentFromDatabase(String matricle) throws DataRetrievalException{
         Student student = new Student();
         String query = "SELECT * FROM Usuarios U INNER JOIN Estudiantes E " + 
                            "ON U.IdUsuario = E.IdUsuario WHERE E.Matrícula = ?";
 
-        try {
+        try{
             
             PreparedStatement preparedStatement = dataBaseManager.getConnection().prepareStatement(query);
             preparedStatement.setString(1, matricle);
@@ -379,19 +379,19 @@ public class StudentDAO implements IStudentDAO{
             
             resultSet.close();
             dataBaseManager.getConnection().close();
-        } catch (SQLException e) {
+        }catch(SQLException e){
             throw new DataRetrievalException("Error al recuperar la información. Verifique su conexión e intentelo de nuevo");
-        } finally {
+        }finally{
             dataBaseManager.closeConnection();
         }
 
         return student;
     }
 
-    public boolean theStudentIsAlreadyRegisted(Student student) throws DataRetrievalException {
+    public boolean theStudentIsAlreadyRegisted(Student student) throws DataRetrievalException{
         String query = "SELECT * FROM Usuarios U INNER JOIN Estudiantes E ON U.IdUsuario = E.IdUsuario";
         
-        try {
+        try{
             Statement statement = dataBaseManager.getConnection().createStatement();
             ResultSet resultSet = statement.executeQuery(query);
             while(resultSet.next()) {
@@ -411,23 +411,23 @@ public class StudentDAO implements IStudentDAO{
             }
             resultSet.close();
             dataBaseManager.getConnection().close();
-        } catch (SQLException e) {
+        }catch(SQLException e){
             throw new DataRetrievalException("Error al recuperar la información. Verifique su conexión e intentelo de nuevo");
-        } finally {
+        }finally{
             dataBaseManager.closeConnection();
         }
 
         return false;
     }
 
-    private int getUserIdFromStudent(Student student) throws DataRetrievalException {
+    private int getUserIdFromStudent(Student student) throws DataRetrievalException{
         int userId = 0;
         String query = "SELECT U.IdUsuario FROM Usuarios U INNER JOIN Estudiantes E ON " + 
                            "U.IdUsuario = E.IdUsuario WHERE U.nombre = ? && " +
                            "U.apellidoPaterno = ? && U.apellidoMaterno = ? && U.correo = ? && " +
                            "U.correoAlterno = ? && U.númeroTeléfono = ? && U.estado = ? && E.Matrícula = ?";
 
-        try {
+        try{
             PreparedStatement preparedStatement = dataBaseManager.getConnection().prepareStatement(query);
             preparedStatement.setString(1, student.getName());
             preparedStatement.setString(2, student.getFirstSurname());
@@ -440,15 +440,15 @@ public class StudentDAO implements IStudentDAO{
 
             ResultSet resultSet = preparedStatement.executeQuery();
             
-            if(resultSet.next()) {
+            if(resultSet.next()){
                 userId = resultSet.getInt("IdUsuario");
             }
             
             resultSet.close();
             dataBaseManager.getConnection().close();
-        } catch (SQLException e) {
+        }catch(SQLException e){
             throw new DataRetrievalException("Error al recuperar la información. Verifique su conexión e intentelo de nuevo");
-        } finally {
+        }finally{
             dataBaseManager.closeConnection();
         }
 

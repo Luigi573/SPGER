@@ -15,15 +15,14 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import mx.uv.fei.gui.controllers.AlertPaneController;
+import mx.uv.fei.gui.AlertPopUpGenerator;
 import mx.uv.fei.logic.daos.StudentDAO;
 import mx.uv.fei.logic.daos.StudentsCoursesDAO;
 import mx.uv.fei.logic.domain.Student;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
 import mx.uv.fei.logic.exceptions.DataWritingException;
 
-public class GuiStudentAdderController {
-
+public class GuiStudentAdderController{
     private GuiUsersCourseController guiUsersCourseController;
 
     @FXML
@@ -38,8 +37,8 @@ public class GuiStudentAdderController {
     private Text sucessText;
 
     @FXML
-    private void initialize() {
-        try {
+    private void initialize(){
+        try{
             StudentsCoursesDAO studentsCoursesDAO = new StudentsCoursesDAO();
             ArrayList<String> studentMatricles = studentsCoursesDAO.getStudentsMatriclesByCourseNRCFromDatabase(
                 guiUsersCourseController.getCourseInformationController().getNrc()
@@ -49,8 +48,8 @@ public class GuiStudentAdderController {
             StudentDAO studentDAO = new StudentDAO();
             ArrayList<Student> availableStudents = studentDAO.getAvailableStudentsFromDatabase();
             if(studentMatricles.isEmpty()) {
-                try {
-                    for(Student activeStudent : availableStudents) {
+                try{
+                    for(Student activeStudent : availableStudents){
                         
                         FXMLLoader studentPaneControllerLoader = new FXMLLoader(
                             getClass().getResource("/mx/uv/fei/gui/fxml/courses/students/StudentPane.fxml")
@@ -66,25 +65,23 @@ public class GuiStudentAdderController {
                         studentsVBox.getChildren().add(studentPaneToAdd);
                         
                     }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    AlertPaneController alertPaneController = new AlertPaneController();
-                    alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
+                }catch(IOException e){
+                    new AlertPopUpGenerator().showMissingFilesMessage();
                 }
                 return;
             }
 
-            try {
-                for(Student activeStudent : availableStudents) {
+            try{
+                for(Student activeStudent : availableStudents){
                     boolean activeStudentIsAlreadyRegistedIntoTheCourse = false;
-                    for(String studentMatricle : studentMatricles) {
-                        if(studentMatricle.equals(activeStudent.getMatricule())) {
+                    for(String studentMatricle : studentMatricles){
+                        if(studentMatricle.equals(activeStudent.getMatricule())){
                             activeStudentIsAlreadyRegistedIntoTheCourse = true;
                             break;
                         }
                     }
     
-                    if(!activeStudentIsAlreadyRegistedIntoTheCourse) {
+                    if(!activeStudentIsAlreadyRegistedIntoTheCourse){
                         FXMLLoader studentPaneControllerLoader = new FXMLLoader(
                             getClass().getResource("/mx/uv/fei/gui/fxml/courses/students/StudentPane.fxml")
                         );
@@ -99,33 +96,27 @@ public class GuiStudentAdderController {
                         studentsVBox.getChildren().add(studentPaneToAdd);
                     }
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
-                AlertPaneController alertPaneController = new AlertPaneController();
-                alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
+            }catch(IOException e){
+                new AlertPopUpGenerator().showMissingFilesMessage();
             }
-        } catch (DataRetrievalException e) {
-            e.printStackTrace();
-            AlertPaneController alertPaneController = new AlertPaneController();
-            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
+        }catch(DataRetrievalException e){
+            new AlertPopUpGenerator().showConnectionErrorMessage();
         }
     }
 
     @FXML
-    private void addStudentsButtonController(ActionEvent event) {
+    private void addStudentsButtonController(ActionEvent event){
         StudentsCoursesDAO studentCoursesDAO = new StudentsCoursesDAO();
 
-        for(Node studentPane : studentsVBox.getChildren()) {
-            if( ((RadioButton)((Pane)studentPane).getChildren().get(4)).isSelected() ) {
-                try {
+        for(Node studentPane : studentsVBox.getChildren()){
+            if( ((RadioButton)((Pane)studentPane).getChildren().get(4)).isSelected() ){
+                try{
                     studentCoursesDAO.addStudentCourseToDatabase(
                         ((Label)((Pane)studentPane).getChildren().get(3)).getText(), 
                         guiUsersCourseController.getCourseInformationController().getNrc()
                     );
-                } catch (DataWritingException e) {
-                    e.printStackTrace();
-                    AlertPaneController alertPaneController = new AlertPaneController();
-                    alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
+                }catch(DataWritingException e){
+                    new AlertPopUpGenerator().showConnectionErrorMessage();
                 }
             }
         }
@@ -139,8 +130,8 @@ public class GuiStudentAdderController {
     }
 
     @FXML
-    private void showByMatricleButtonController(ActionEvent event) {
-        try {
+    private void showByMatricleButtonController(ActionEvent event){
+        try{
             studentsVBox.getChildren().clear();
             StudentsCoursesDAO studentsCoursesDAO = new StudentsCoursesDAO();
             ArrayList<String> studentMatricles = studentsCoursesDAO.getStudentsMatriclesByCourseNRCFromDatabase(
@@ -149,9 +140,9 @@ public class GuiStudentAdderController {
             
             StudentDAO studentDAO = new StudentDAO();
             ArrayList<Student> availableStudents = studentDAO.getSpecifiedAvailableStudentsFromDatabase(showByMatricleTextField.getText());
-            if(studentMatricles.isEmpty()) {
-                try {
-                    for(Student activeStudent : availableStudents) {
+            if(studentMatricles.isEmpty()){
+                try{
+                    for(Student activeStudent : availableStudents){
                         
                         FXMLLoader studentPaneControllerLoader = new FXMLLoader(
                             getClass().getResource("/mx/uv/fei/gui/fxml/courses/students/StudentPane.fxml")
@@ -167,25 +158,23 @@ public class GuiStudentAdderController {
                         studentsVBox.getChildren().add(studentPaneToAdd);
                         
                     }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    AlertPaneController alertPaneController = new AlertPaneController();
-                    alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
+                }catch(IOException e){
+                    new AlertPopUpGenerator().showMissingFilesMessage();
                 }
                 return;
             }
     
-            try {
-                for(Student activeStudent : availableStudents) {
+            try{
+                for(Student activeStudent : availableStudents){
                     boolean activeStudentIsAlreadyRegistedIntoTheCourse = false;
-                    for(String studentMatricle : studentMatricles) {
-                        if(studentMatricle.equals(activeStudent.getMatricule())) {
+                    for(String studentMatricle : studentMatricles){
+                        if(studentMatricle.equals(activeStudent.getMatricule())){
                             activeStudentIsAlreadyRegistedIntoTheCourse = true;
                             break;
                         }
                     }
     
-                    if(!activeStudentIsAlreadyRegistedIntoTheCourse) {
+                    if(!activeStudentIsAlreadyRegistedIntoTheCourse){
                         FXMLLoader studentPaneControllerLoader = new FXMLLoader(
                             getClass().getResource("/mx/uv/fei/gui/fxml/courses/students/StudentPane.fxml")
                         );
@@ -200,24 +189,20 @@ public class GuiStudentAdderController {
                         studentsVBox.getChildren().add(studentPaneToAdd);
                     }
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
-                AlertPaneController alertPaneController = new AlertPaneController();
-                alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
+            }catch(IOException e){
+                new AlertPopUpGenerator().showMissingFilesMessage();
             }
-        } catch (DataRetrievalException e) {
-            e.printStackTrace();
-            AlertPaneController alertPaneController = new AlertPaneController();
-            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
+        }catch(DataRetrievalException e) {
+            new AlertPopUpGenerator().showConnectionErrorMessage();
         }
 
     }
 
-    public GuiUsersCourseController getGuiUsersCourseController() {
+    public GuiUsersCourseController getGuiUsersCourseController(){
         return guiUsersCourseController;
     }
 
-    public void setGuiUsersCourseController(GuiUsersCourseController guiUsersCourseController) {
+    public void setGuiUsersCourseController(GuiUsersCourseController guiUsersCourseController){
         this.guiUsersCourseController = guiUsersCourseController;
     }
 

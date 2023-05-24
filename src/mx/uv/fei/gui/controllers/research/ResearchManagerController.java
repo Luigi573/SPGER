@@ -8,8 +8,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
@@ -17,6 +15,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import mx.uv.fei.gui.AlertPopUpGenerator;
 import mx.uv.fei.logic.daos.ResearchDAO;
 import mx.uv.fei.logic.domain.ResearchProject;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
@@ -26,19 +25,14 @@ public class ResearchManagerController {
     
     @FXML
     private Pane headerPane;
-    
     @FXML
     private TextField reSearchTextField;
-
     @FXML
     private ScrollPane researchInfoScrollPane;
-
     @FXML
     private VBox researchVBox;
-
     @FXML
     private ToggleButton showNotValidatedButton;
-
     @FXML
     private ToggleButton showValidatedButton;
 
@@ -47,9 +41,8 @@ public class ResearchManagerController {
         loadHeader();
         loadResearches(0);
     }
-
     @FXML
-    void addResearch(ActionEvent event) {
+    private void addResearch(ActionEvent event) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/research/AddResearch.fxml"));
         
         try{
@@ -66,15 +59,12 @@ public class ResearchManagerController {
             stage.setResizable(false);
             
             stage.showAndWait();
-        } catch(IOException exception){
-            Alert errorMessage = new Alert(Alert.AlertType.ERROR);
-            errorMessage.setContentText("Error al cargar, faltan archivos");
-            errorMessage.showAndWait();
+        }catch(IOException exception){
+            new AlertPopUpGenerator().showMissingFilesMessage();
         }
     }
-
     @FXML
-    private void goToReports(ActionEvent event) {
+    private void goToReports(ActionEvent event){
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/reports/GuiResearchReport.fxml"));
         
         try{
@@ -87,15 +77,12 @@ public class ResearchManagerController {
             stage.setScene(scene);
             stage.setResizable(false);
             stage.show();
-        } catch(IOException exception){
-            Alert errorMessage = new Alert(Alert.AlertType.ERROR);
-            errorMessage.setContentText("Error al cargar, faltan archivos");
-            errorMessage.showAndWait();
+        }catch(IOException exception){
+            new AlertPopUpGenerator().showMissingFilesMessage();
         }
     }
-
     @FXML
-    private void searchButtonController(ActionEvent event) {
+    private void searchButtonController(ActionEvent event){
         researchVBox.getChildren().clear();
         if(!showValidatedButton.isSelected() && !showNotValidatedButton.isSelected())
             loadResearches(1);
@@ -109,36 +96,20 @@ public class ResearchManagerController {
         if(showValidatedButton.isSelected() && showNotValidatedButton.isSelected())
             loadResearches(4);
     }
-
     @FXML
-    private void showValidatedButtonController(ActionEvent event) {
-        if(!showValidatedButton.isSelected()) {
+    private void showValidatedButtonController(ActionEvent event){
+        if(!showValidatedButton.isSelected()){
             showValidatedButton.setText("No");
-        } else {
+        }else{
             showValidatedButton.setText("Si");
         }
     }
-
     @FXML
-    private void showNotValidatedButtonController(ActionEvent event) {
-        if(!showNotValidatedButton.isSelected()) {
+    private void showNotValidatedButtonController(ActionEvent event){
+        if(!showNotValidatedButton.isSelected()){
             showNotValidatedButton.setText("No");
-        } else {
+        }else{
             showNotValidatedButton.setText("Si");
-        }
-    }
-
-    private void loadHeader() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/HeaderPane.fxml"));
-        
-        try{
-            Pane header = loader.load();
-            headerPane.getChildren().add(header);
-            
-        }catch(IOException exception){
-            Alert errorMessage = new Alert(Alert.AlertType.ERROR);
-            errorMessage.setContentText("Error al cargar, faltan archivos");
-            errorMessage.showAndWait();
         }
     }
 
@@ -147,28 +118,28 @@ public class ResearchManagerController {
         ResearchDAO researchDAO = new ResearchDAO();
         
         try{
-            switch(type) {
-                case 0: {
+            switch(type){
+                case 0:{
                     researchList = researchDAO.getResearchProjectList();
                     break;
                 }
 
-                case 1: {
+                case 1:{
                     researchList = researchDAO.getSpecifiedResearchProjectList(reSearchTextField.getText());
                     break;
                 }
 
-                case 2: {
+                case 2:{
                     researchList = researchDAO.getSpecifiedValidatedResearchProjectList(reSearchTextField.getText());
                     break;
                 }
 
-                case 3: {
+                case 3:{
                     researchList = researchDAO.getSpecifiedNotValidatedResearchProjectList(reSearchTextField.getText());
                     break;
                 }
 
-                case 4: {
+                case 4:{
                     researchList = researchDAO.getSpecifiedValidatedAndNotValidatedResearchProjectList(reSearchTextField.getText());
                     break;
                 }
@@ -189,17 +160,23 @@ public class ResearchManagerController {
                     
                     researchVBox.getChildren().add(pane);
                 }catch(IOException exception){
-                    Alert errorMessage = new Alert(AlertType.ERROR);
-                    errorMessage.setContentText("Error al cargar, faltan archivos");
-                    errorMessage.showAndWait();
+                    new AlertPopUpGenerator().showMissingFilesMessage();
                 }
             }
         }catch(DataRetrievalException exception){
-            exception.printStackTrace();
-            Alert errorMessage = new Alert(AlertType.ERROR);
-            errorMessage.setContentText("Error al cargar anteproyectos, verifique su conexión a internet y actualice este apartado");
-            errorMessage.showAndWait();
+            new AlertPopUpGenerator().showConnectionErrorMessage();
         }
     }
 
+    private void loadHeader(){
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/HeaderPane.fxml"));
+        
+        try{
+            Pane header = loader.load();
+            headerPane.getChildren().add(header);
+            
+        }catch(IOException exception){
+            new AlertPopUpGenerator().showMissingFilesMessage();
+        }
+    }
 }

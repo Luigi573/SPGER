@@ -36,7 +36,7 @@ import mx.uv.fei.logic.domain.statuses.StudentStatus;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
 import mx.uv.fei.logic.exceptions.DataWritingException;
 
-public class ModifyUserInformationController {
+public class ModifyUserInformationController{
     private UserInformationController userInformationController;
 
     @FXML
@@ -67,120 +67,109 @@ public class ModifyUserInformationController {
     private TextField telephoneNumberTextField;
 
     @FXML
-    private void initialize(){
-        
-    }
-    @FXML
-    private void exitButtonController(ActionEvent event) {
+    private void exitButtonController(ActionEvent event){
         returnToGuiUsers(event);
     }
     @FXML
-    private void modifyButtonController(ActionEvent event) {
-        if(!this.namesTextField.getText().trim().isEmpty() &&
-           !this.firstSurnameTextField.getText().trim().isEmpty() &&
-           !this.secondSurnameTextField.getText().trim().isEmpty() &&
-           !this.emailTextField.getText().trim().isEmpty() &&
-           !this.alternateEmailTextField.getText().trim().isEmpty() &&
-           !this.telephoneNumberTextField.getText().trim().isEmpty() &&
-           !this.matricleOrPersonalNumberTextField.getText().trim().isEmpty()) {
-            if(allTextFieldsContainsCorrectValues()) {
-                switch(this.userInformationController.getUserType()){
-                    case "Director": {
-                        this.modifyDirector(event);
+    private void modifyButtonController(ActionEvent event){
+        if(!namesTextField.getText().trim().isEmpty() &&
+           !firstSurnameTextField.getText().trim().isEmpty() &&
+           !secondSurnameTextField.getText().trim().isEmpty() &&
+           !emailTextField.getText().trim().isEmpty() &&
+           !alternateEmailTextField.getText().trim().isEmpty() &&
+           !telephoneNumberTextField.getText().trim().isEmpty() &&
+           !matricleOrPersonalNumberTextField.getText().trim().isEmpty()){
+            if(allTextFieldsContainsCorrectValues()){
+                switch(userInformationController.getUserType()){
+                    case "Director":{
+                        modifyDirector(event);
                         break;
                     }
-        
-                    case "Miembro de Cuerpo Académico": {
-                        this.modifyAcademicBodyHead(event);
+                    case "Miembro de Cuerpo Académico":{
+                        modifyAcademicBodyHead(event);
                         break;
                     }
-        
-                    case "Jefe de Carrera": {
-                        this.modifyDegreeBoss(event);
+                    case "Jefe de Carrera":{
+                        modifyDegreeBoss(event);
                         break;
                     }
-        
-                    case "Profesor": {
-                        this.modifyProfessor(event);
+                    case "Profesor":{
+                        modifyProfessor(event);
                         break;
                     }
-        
-                    case "Estudiante": {
-                        this.modifyStudent(event);
+                    case "Estudiante":{
+                        modifyStudent(event);
                         break;
                     }
                 }
             }
-        } else {
-            AlertPaneController alertPaneController = new AlertPaneController();
-            alertPaneController.openWarningPane("Faltan campos por llenar");
+        }else{
+            new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "Error", "Faltan campos por llenar");
         }
     }
 
-    public String getAlternateEmail() {
-        return this.alternateEmailTextField.getText();
+    public String getAlternateEmail(){
+        return alternateEmailTextField.getText();
     }
-    public void setAlternateEmail(String alternateEmail) {
-        this.alternateEmailTextField.setText(alternateEmail);
+    public void setAlternateEmail(String alternateEmail){
+        alternateEmailTextField.setText(alternateEmail);
     }
-    public String getEmail() {
-        return this.emailTextField.getText();
+    public String getEmail(){
+        return emailTextField.getText();
     }
-    public void setEmail(String email) {
-        this.emailTextField.setText(email);
+    public void setEmail(String email){
+        emailTextField.setText(email);
     }
-    public String getFirstSurname() {
-        return this.firstSurnameTextField.getText();
+    public String getFirstSurname(){
+        return firstSurnameTextField.getText();
     }
-    public void setFirstSurname(String firstSurname) {
-        this.firstSurnameTextField.setText(firstSurname);
+    public void setFirstSurname(String firstSurname){
+        firstSurnameTextField.setText(firstSurname);
     }
-    public String getMatriculeOrPersonalNumber() {
-        return this.matricleOrPersonalNumberTextField.getText();
+    public String getMatriculeOrPersonalNumber(){
+        return matricleOrPersonalNumberTextField.getText();
     }
-    public void setMatricleOrPersonalNumber(String matricleOrPersonalNumber) {
-        this.matricleOrPersonalNumberTextField.setText(matricleOrPersonalNumber);
+    public void setMatricleOrPersonalNumber(String matricleOrPersonalNumber){
+        matricleOrPersonalNumberTextField.setText(matricleOrPersonalNumber);
     }
-    public String getNames() {
-        return this.namesTextField.getText();
+    public String getNames(){
+        return namesTextField.getText();
     }
-    public void setNames(String names) {
-        this.namesTextField.setText(names);
+    public void setNames(String names){
+        namesTextField.setText(names);
     }
-    public String getSecondSurname() {
-        return this.secondSurnameTextField.getText();
+    public String getSecondSurname(){
+        return secondSurnameTextField.getText();
     }
-    public void setSecondSurname(String secondSurname) {
-        this.secondSurnameTextField.setText(secondSurname);
+    public void setSecondSurname(String secondSurname){
+        secondSurnameTextField.setText(secondSurname);
     }
-    public String getStatus() {
-        return this.statusComboBox.getItems().get(0);
+    public String getStatus(){
+        return statusComboBox.getItems().get(0);
     }
-    public void setStatus(String status) {
-        this.statusComboBox.setValue(status);
+    public void setStatus(String status){
+        statusComboBox.setValue(status);
     }
-    public String getTelephoneNumber() {
-        return this.telephoneNumberTextField.getText();
+    public String getTelephoneNumber(){
+        return telephoneNumberTextField.getText();
     }
-    public void setTelephoneNumber(String telephoneNumber) {
-        this.telephoneNumberTextField.setText(telephoneNumber);
+    public void setTelephoneNumber(String telephoneNumber){
+        telephoneNumberTextField.setText(telephoneNumber);
     }
     public void setUserInformationController(UserInformationController userInformationController){
         this.userInformationController = userInformationController;
     }
-
-    public void setDataToStatusCombobox(String userType) {
-        if(userType.equals(UserType.STUDENT.getValue())) {
+    public void setDataToStatusCombobox(String userType){
+        if(userType.equals(UserType.STUDENT.getValue())){
             statusComboBox.getItems().add(StudentStatus.ACTIVE.getValue());
             statusComboBox.getItems().add(StudentStatus.AVAILABLE.getValue());
             statusComboBox.getItems().add(StudentStatus.GRADUATED.getValue());
             statusComboBox.getItems().add(StudentStatus.DROPPED.getValue());
-        } else {
+        } else{
             statusComboBox.getItems().add(ProfessorStatus.ACTIVE.getValue());
             statusComboBox.getItems().add(ProfessorStatus.INACTIVE.getValue());
         }
     }
-
     public void setLabelsCorrectBounds(String userType){
         if(userType.equals(UserType.STUDENT.getValue())){
             matricleOrPersonalNumberText.setText("Matrícula: ");
@@ -201,240 +190,207 @@ public class ModifyUserInformationController {
         }
     }
 
-    private void modifyStudent(ActionEvent event) {
+    private void modifyStudent(ActionEvent event){
         StudentDAO studentDAO = new StudentDAO();
         Student newStudentData = new Student();
-        newStudentData.setName(this.namesTextField.getText());
-        newStudentData.setFirstSurname(this.firstSurnameTextField.getText());
-        newStudentData.setSecondSurname(this.secondSurnameTextField.getText());
-        newStudentData.setEmailAddress(this.emailTextField.getText());
-        newStudentData.setAlternateEmail(this.alternateEmailTextField.getText());
-        newStudentData.setPhoneNumber(this.telephoneNumberTextField.getText());
-        newStudentData.setStatus(this.statusComboBox.getValue());
-        newStudentData.setMatricle(this.matricleOrPersonalNumberTextField.getText());
+        newStudentData.setName(namesTextField.getText());
+        newStudentData.setFirstSurname(firstSurnameTextField.getText());
+        newStudentData.setSecondSurname(secondSurnameTextField.getText());
+        newStudentData.setEmailAddress(emailTextField.getText());
+        newStudentData.setAlternateEmail(alternateEmailTextField.getText());
+        newStudentData.setPhoneNumber(telephoneNumberTextField.getText());
+        newStudentData.setStatus(statusComboBox.getValue());
+        newStudentData.setMatricle(matricleOrPersonalNumberTextField.getText());
 
         Student originalStudentData = new Student();
-        originalStudentData.setName(this.getAllLabelsDataFromUserInformationPane().get(0));
-        originalStudentData.setFirstSurname(this.getAllLabelsDataFromUserInformationPane().get(1));
-        originalStudentData.setSecondSurname(this.getAllLabelsDataFromUserInformationPane().get(2));
-        originalStudentData.setEmailAddress(this.getAllLabelsDataFromUserInformationPane().get(3));
-        originalStudentData.setAlternateEmail(this.getAllLabelsDataFromUserInformationPane().get(4));
-        originalStudentData.setPhoneNumber(this.getAllLabelsDataFromUserInformationPane().get(5));
-        originalStudentData.setStatus(this.getAllLabelsDataFromUserInformationPane().get(6));
-        originalStudentData.setMatricle(this.getAllLabelsDataFromUserInformationPane().get(7));
+        originalStudentData.setName(getAllLabelsDataFromUserInformationPane().get(0));
+        originalStudentData.setFirstSurname(getAllLabelsDataFromUserInformationPane().get(1));
+        originalStudentData.setSecondSurname(getAllLabelsDataFromUserInformationPane().get(2));
+        originalStudentData.setEmailAddress(getAllLabelsDataFromUserInformationPane().get(3));
+        originalStudentData.setAlternateEmail(getAllLabelsDataFromUserInformationPane().get(4));
+        originalStudentData.setPhoneNumber(getAllLabelsDataFromUserInformationPane().get(5));
+        originalStudentData.setStatus(getAllLabelsDataFromUserInformationPane().get(6));
+        originalStudentData.setMatricle(getAllLabelsDataFromUserInformationPane().get(7));
 
-        try {
-            if(studentDAO.theStudentIsAlreadyRegisted(newStudentData)) {
-                AlertPaneController alertPaneController = new AlertPaneController();
-                alertPaneController.openWarningPane("El usuario ya está registrado en el sistema");
+        try{
+            if(studentDAO.theStudentIsAlreadyRegisted(newStudentData)){
+                new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "Error", "El usuario ya está registrado en el sistema");
                 return;
             }
-        } catch (DataRetrievalException e) {
-            e.printStackTrace();
-            AlertPaneController alertPaneController = new AlertPaneController();
-            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
+        }catch(DataRetrievalException e){
+            new AlertPopUpGenerator().showConnectionErrorMessage();
         }
-        try {
+        try{
             studentDAO.modifyStudentDataFromDatabase(newStudentData, originalStudentData);
-
-            AlertPopUpGenerator alertPopUpGenerator = new AlertPopUpGenerator();
-            alertPopUpGenerator.showCustomMessage(AlertType.WARNING, "Éxito", "Usuario modificado exitosamente");
-            this.returnToGuiUsers(event);
-        } catch (DataWritingException e) {
-            e.printStackTrace();
-            AlertPaneController alertPaneController = new AlertPaneController();
-            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
+            new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "Éxito", "Usuario modificado exitosamente");
+            returnToGuiUsers(event);
+        }catch(DataWritingException e){
+            new AlertPopUpGenerator().showConnectionErrorMessage();
         }
     }
     private void modifyProfessor(ActionEvent event){
         ProfessorDAO professorDAO = new ProfessorDAO();
         Professor newProfessorData = new Professor();
-        newProfessorData.setName(this.namesTextField.getText());
-        newProfessorData.setFirstSurname(this.firstSurnameTextField.getText());
-        newProfessorData.setSecondSurname(this.secondSurnameTextField.getText());
-        newProfessorData.setEmailAddress(this.emailTextField.getText());
-        newProfessorData.setAlternateEmail(this.alternateEmailTextField.getText());
-        newProfessorData.setPhoneNumber(this.telephoneNumberTextField.getText());
-        newProfessorData.setStatus(this.statusComboBox.getValue());
-        newProfessorData.setStaffNumber(Integer.parseInt(this.matricleOrPersonalNumberTextField.getText()));
+        newProfessorData.setName(namesTextField.getText());
+        newProfessorData.setFirstSurname(firstSurnameTextField.getText());
+        newProfessorData.setSecondSurname(secondSurnameTextField.getText());
+        newProfessorData.setEmailAddress(emailTextField.getText());
+        newProfessorData.setAlternateEmail(alternateEmailTextField.getText());
+        newProfessorData.setPhoneNumber(telephoneNumberTextField.getText());
+        newProfessorData.setStatus(statusComboBox.getValue());
+        newProfessorData.setStaffNumber(Integer.parseInt(matricleOrPersonalNumberTextField.getText()));
 
         Professor originalProfessorData = new Professor();
-        originalProfessorData.setName(this.getAllLabelsDataFromUserInformationPane().get(0));
-        originalProfessorData.setFirstSurname(this.getAllLabelsDataFromUserInformationPane().get(1));
-        originalProfessorData.setSecondSurname(this.getAllLabelsDataFromUserInformationPane().get(2));
-        originalProfessorData.setEmailAddress(this.getAllLabelsDataFromUserInformationPane().get(3));
-        originalProfessorData.setAlternateEmail(this.getAllLabelsDataFromUserInformationPane().get(4));
-        originalProfessorData.setPhoneNumber(this.getAllLabelsDataFromUserInformationPane().get(5));
-        originalProfessorData.setStatus(this.getAllLabelsDataFromUserInformationPane().get(6));
-        originalProfessorData.setStaffNumber(Integer.parseInt(this.getAllLabelsDataFromUserInformationPane().get(7)));
-        try {
+        originalProfessorData.setName(getAllLabelsDataFromUserInformationPane().get(0));
+        originalProfessorData.setFirstSurname(getAllLabelsDataFromUserInformationPane().get(1));
+        originalProfessorData.setSecondSurname(getAllLabelsDataFromUserInformationPane().get(2));
+        originalProfessorData.setEmailAddress(getAllLabelsDataFromUserInformationPane().get(3));
+        originalProfessorData.setAlternateEmail(getAllLabelsDataFromUserInformationPane().get(4));
+        originalProfessorData.setPhoneNumber(getAllLabelsDataFromUserInformationPane().get(5));
+        originalProfessorData.setStatus(getAllLabelsDataFromUserInformationPane().get(6));
+        originalProfessorData.setStaffNumber(Integer.parseInt(getAllLabelsDataFromUserInformationPane().get(7)));
+        try{
             if(professorDAO.theProfessorIsAlreadyRegisted(newProfessorData)){
-                AlertPaneController alertPaneController = new AlertPaneController();
-                alertPaneController.openWarningPane("El usuario ya está registrado en el sistema");
+                new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "Error", "El usuario ya está registrado en el sistema");
                 return;
             }
-        } catch (DataRetrievalException e) {
-            e.printStackTrace();
-            AlertPaneController alertPaneController = new AlertPaneController();
-            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
+        }catch(DataRetrievalException e) {
+            new AlertPopUpGenerator().showConnectionErrorMessage();
         }
 
-        try {
+        try{
             professorDAO.modifyProfessorDataFromDatabase(newProfessorData, originalProfessorData);
-
-            AlertPopUpGenerator alertPopUpGenerator = new AlertPopUpGenerator();
-            alertPopUpGenerator.showCustomMessage(AlertType.WARNING, "Éxito", "Usuario modificado exitosamente");
-            this.returnToGuiUsers(event);
-        } catch (DataWritingException e) {
-            e.printStackTrace();
-            AlertPaneController alertPaneController = new AlertPaneController();
-            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
+            new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "Éxito", "Usuario modificado exitosamente");
+            returnToGuiUsers(event);
+        }catch (DataWritingException e){
+            new AlertPopUpGenerator().showConnectionErrorMessage();
         }
     }
-    private void modifyDirector(ActionEvent event) {
+    private void modifyDirector(ActionEvent event){
         DirectorDAO directorDAO = new DirectorDAO();
         Director newDirectorData = new Director();
-        newDirectorData.setName(this.namesTextField.getText());
-        newDirectorData.setFirstSurname(this.firstSurnameTextField.getText());
-        newDirectorData.setSecondSurname(this.secondSurnameTextField.getText());
-        newDirectorData.setEmailAddress(this.emailTextField.getText());
-        newDirectorData.setAlternateEmail(this.alternateEmailTextField.getText());
-        newDirectorData.setPhoneNumber(this.telephoneNumberTextField.getText());
-        newDirectorData.setStatus(this.statusComboBox.getValue());
-        newDirectorData.setStaffNumber(Integer.parseInt(this.matricleOrPersonalNumberTextField.getText()));
+        newDirectorData.setName(namesTextField.getText());
+        newDirectorData.setFirstSurname(firstSurnameTextField.getText());
+        newDirectorData.setSecondSurname(secondSurnameTextField.getText());
+        newDirectorData.setEmailAddress(emailTextField.getText());
+        newDirectorData.setAlternateEmail(alternateEmailTextField.getText());
+        newDirectorData.setPhoneNumber(telephoneNumberTextField.getText());
+        newDirectorData.setStatus(statusComboBox.getValue());
+        newDirectorData.setStaffNumber(Integer.parseInt(matricleOrPersonalNumberTextField.getText()));
 
         Director originalDirectorData = new Director();
-        originalDirectorData.setName(this.getAllLabelsDataFromUserInformationPane().get(0));
-        originalDirectorData.setFirstSurname(this.getAllLabelsDataFromUserInformationPane().get(1));
-        originalDirectorData.setSecondSurname(this.getAllLabelsDataFromUserInformationPane().get(2));
-        originalDirectorData.setEmailAddress(this.getAllLabelsDataFromUserInformationPane().get(3));
-        originalDirectorData.setAlternateEmail(this.getAllLabelsDataFromUserInformationPane().get(4));
-        originalDirectorData.setPhoneNumber(this.getAllLabelsDataFromUserInformationPane().get(5));
-        originalDirectorData.setStatus(this.getAllLabelsDataFromUserInformationPane().get(6));
-        originalDirectorData.setStaffNumber(Integer.parseInt(this.getAllLabelsDataFromUserInformationPane().get(7)));
-        try {
-            if(directorDAO.theDirectorIsAlreadyRegisted(newDirectorData)) {
-                AlertPaneController alertPaneController = new AlertPaneController();
-                alertPaneController.openWarningPane("El usuario ya está registrado en el sistema");
+        originalDirectorData.setName(getAllLabelsDataFromUserInformationPane().get(0));
+        originalDirectorData.setFirstSurname(getAllLabelsDataFromUserInformationPane().get(1));
+        originalDirectorData.setSecondSurname(getAllLabelsDataFromUserInformationPane().get(2));
+        originalDirectorData.setEmailAddress(getAllLabelsDataFromUserInformationPane().get(3));
+        originalDirectorData.setAlternateEmail(getAllLabelsDataFromUserInformationPane().get(4));
+        originalDirectorData.setPhoneNumber(getAllLabelsDataFromUserInformationPane().get(5));
+        originalDirectorData.setStatus(getAllLabelsDataFromUserInformationPane().get(6));
+        originalDirectorData.setStaffNumber(Integer.parseInt(getAllLabelsDataFromUserInformationPane().get(7)));
+        try{
+            if(directorDAO.theDirectorIsAlreadyRegisted(newDirectorData)){
+                new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "Error", "El usuario ya está registrado en el sistema");
                 return;
             }
-        } catch (DataRetrievalException e) {
-            e.printStackTrace();
-            AlertPaneController alertPaneController = new AlertPaneController();
-            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
+        }catch(DataRetrievalException e){
+            new AlertPopUpGenerator().showConnectionErrorMessage();
         }
-        try {
+        try{
             directorDAO.modifyDirectorDataFromDatabase(newDirectorData, originalDirectorData);
-
-            AlertPopUpGenerator alertPopUpGenerator = new AlertPopUpGenerator();
-            alertPopUpGenerator.showCustomMessage(AlertType.WARNING, "Éxito", "Usuario modificado exitosamente");
-            this.returnToGuiUsers(event);
-        } catch (DataWritingException e) {
-            e.printStackTrace();
-            AlertPaneController alertPaneController = new AlertPaneController();
-            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
+            new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "Éxito", "Usuario modificado exitosamente");
+            returnToGuiUsers(event);
+        }catch(DataWritingException e) {
+            new AlertPopUpGenerator().showConnectionErrorMessage();
         }
     }
-    private void modifyAcademicBodyHead(ActionEvent event) {
+    private void modifyAcademicBodyHead(ActionEvent event){
         AcademicBodyHeadDAO academicBodyHeadDAO = new AcademicBodyHeadDAO();
         AcademicBodyHead newAcademicBodyHeadData = new AcademicBodyHead();
-        newAcademicBodyHeadData.setName(this.namesTextField.getText());
-        newAcademicBodyHeadData.setFirstSurname(this.firstSurnameTextField.getText());
-        newAcademicBodyHeadData.setSecondSurname(this.secondSurnameTextField.getText());
-        newAcademicBodyHeadData.setEmailAddress(this.emailTextField.getText());
-        newAcademicBodyHeadData.setAlternateEmail(this.alternateEmailTextField.getText());
-        newAcademicBodyHeadData.setPhoneNumber(this.telephoneNumberTextField.getText());
-        newAcademicBodyHeadData.setStatus(this.statusComboBox.getValue());
-        newAcademicBodyHeadData.setStaffNumber(Integer.parseInt(this.matricleOrPersonalNumberTextField.getText()));
+        newAcademicBodyHeadData.setName(namesTextField.getText());
+        newAcademicBodyHeadData.setFirstSurname(firstSurnameTextField.getText());
+        newAcademicBodyHeadData.setSecondSurname(secondSurnameTextField.getText());
+        newAcademicBodyHeadData.setEmailAddress(emailTextField.getText());
+        newAcademicBodyHeadData.setAlternateEmail(alternateEmailTextField.getText());
+        newAcademicBodyHeadData.setPhoneNumber(telephoneNumberTextField.getText());
+        newAcademicBodyHeadData.setStatus(statusComboBox.getValue());
+        newAcademicBodyHeadData.setStaffNumber(Integer.parseInt(matricleOrPersonalNumberTextField.getText()));
 
         AcademicBodyHead originalAcademicBodyHeadData = new AcademicBodyHead();
-        originalAcademicBodyHeadData.setName(this.getAllLabelsDataFromUserInformationPane().get(0));
-        originalAcademicBodyHeadData.setFirstSurname(this.getAllLabelsDataFromUserInformationPane().get(1));
-        originalAcademicBodyHeadData.setSecondSurname(this.getAllLabelsDataFromUserInformationPane().get(2));
-        originalAcademicBodyHeadData.setEmailAddress(this.getAllLabelsDataFromUserInformationPane().get(3));
-        originalAcademicBodyHeadData.setAlternateEmail(this.getAllLabelsDataFromUserInformationPane().get(4));
-        originalAcademicBodyHeadData.setPhoneNumber(this.getAllLabelsDataFromUserInformationPane().get(5));
-        originalAcademicBodyHeadData.setStatus(this.getAllLabelsDataFromUserInformationPane().get(6));
-        originalAcademicBodyHeadData.setStaffNumber(Integer.parseInt(this.getAllLabelsDataFromUserInformationPane().get(7)));
+        originalAcademicBodyHeadData.setName(getAllLabelsDataFromUserInformationPane().get(0));
+        originalAcademicBodyHeadData.setFirstSurname(getAllLabelsDataFromUserInformationPane().get(1));
+        originalAcademicBodyHeadData.setSecondSurname(getAllLabelsDataFromUserInformationPane().get(2));
+        originalAcademicBodyHeadData.setEmailAddress(getAllLabelsDataFromUserInformationPane().get(3));
+        originalAcademicBodyHeadData.setAlternateEmail(getAllLabelsDataFromUserInformationPane().get(4));
+        originalAcademicBodyHeadData.setPhoneNumber(getAllLabelsDataFromUserInformationPane().get(5));
+        originalAcademicBodyHeadData.setStatus(getAllLabelsDataFromUserInformationPane().get(6));
+        originalAcademicBodyHeadData.setStaffNumber(Integer.parseInt(getAllLabelsDataFromUserInformationPane().get(7)));
 
-        try {
-            if(academicBodyHeadDAO.theAcademicBodyHeadIsAlreadyRegisted(newAcademicBodyHeadData)) {
-                AlertPaneController alertPaneController = new AlertPaneController();
-                alertPaneController.openWarningPane("El usuario ya está registrado en el sistema");
+        try{
+            if(academicBodyHeadDAO.theAcademicBodyHeadIsAlreadyRegisted(newAcademicBodyHeadData)){
+                new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "Error", "El usuario ya está registrado en el sistema");
                 return;
             }
-        } catch (DataRetrievalException e) {
-            e.printStackTrace();
-            AlertPaneController alertPaneController = new AlertPaneController();
-            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
+        }catch(DataRetrievalException e){
+            new AlertPopUpGenerator().showConnectionErrorMessage();
         }
-        try {
+        try{
             academicBodyHeadDAO.modifyAcademicBodyHeadDataFromDatabase(newAcademicBodyHeadData, originalAcademicBodyHeadData);
 
-            AlertPopUpGenerator alertPopUpGenerator = new AlertPopUpGenerator();
-            alertPopUpGenerator.showCustomMessage(AlertType.WARNING, "Éxito", "Usuario modificado exitosamente");
-            this.returnToGuiUsers(event);
-        } catch (DataWritingException e) {
-            e.printStackTrace();
-            AlertPaneController alertPaneController = new AlertPaneController();
-            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
+            new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "Éxito", "Usuario modificado exitosamente");
+            returnToGuiUsers(event);
+        }catch(DataWritingException e){
+            new AlertPopUpGenerator().showConnectionErrorMessage();
         }
     }
-    private void modifyDegreeBoss(ActionEvent event) {
+    private void modifyDegreeBoss(ActionEvent event){
         DegreeBossDAO degreeBossDAO = new DegreeBossDAO();
         DegreeBoss newDegreeBossData = new DegreeBoss();
-        newDegreeBossData.setName(this.namesTextField.getText());
-        newDegreeBossData.setFirstSurname(this.firstSurnameTextField.getText());
-        newDegreeBossData.setSecondSurname(this.secondSurnameTextField.getText());
-        newDegreeBossData.setEmailAddress(this.emailTextField.getText());
-        newDegreeBossData.setAlternateEmail(this.alternateEmailTextField.getText());
-        newDegreeBossData.setPhoneNumber(this.telephoneNumberTextField.getText());
-        newDegreeBossData.setStatus(this.statusComboBox.getValue());
-        newDegreeBossData.setStaffNumber(Integer.parseInt(this.matricleOrPersonalNumberTextField.getText()));
+        newDegreeBossData.setName(namesTextField.getText());
+        newDegreeBossData.setFirstSurname(firstSurnameTextField.getText());
+        newDegreeBossData.setSecondSurname(secondSurnameTextField.getText());
+        newDegreeBossData.setEmailAddress(emailTextField.getText());
+        newDegreeBossData.setAlternateEmail(alternateEmailTextField.getText());
+        newDegreeBossData.setPhoneNumber(telephoneNumberTextField.getText());
+        newDegreeBossData.setStatus(statusComboBox.getValue());
+        newDegreeBossData.setStaffNumber(Integer.parseInt(matricleOrPersonalNumberTextField.getText()));
 
         DegreeBoss originalDegreeBossData = new DegreeBoss();
-        originalDegreeBossData.setName(this.getAllLabelsDataFromUserInformationPane().get(0));
-        originalDegreeBossData.setFirstSurname(this.getAllLabelsDataFromUserInformationPane().get(1));
-        originalDegreeBossData.setSecondSurname(this.getAllLabelsDataFromUserInformationPane().get(2));
-        originalDegreeBossData.setEmailAddress(this.getAllLabelsDataFromUserInformationPane().get(3));
-        originalDegreeBossData.setAlternateEmail(this.getAllLabelsDataFromUserInformationPane().get(4));
-        originalDegreeBossData.setPhoneNumber(this.getAllLabelsDataFromUserInformationPane().get(5));
-        originalDegreeBossData.setStatus(this.getAllLabelsDataFromUserInformationPane().get(6));
-        originalDegreeBossData.setStaffNumber(Integer.parseInt(this.getAllLabelsDataFromUserInformationPane().get(7)));
+        originalDegreeBossData.setName(getAllLabelsDataFromUserInformationPane().get(0));
+        originalDegreeBossData.setFirstSurname(getAllLabelsDataFromUserInformationPane().get(1));
+        originalDegreeBossData.setSecondSurname(getAllLabelsDataFromUserInformationPane().get(2));
+        originalDegreeBossData.setEmailAddress(getAllLabelsDataFromUserInformationPane().get(3));
+        originalDegreeBossData.setAlternateEmail(getAllLabelsDataFromUserInformationPane().get(4));
+        originalDegreeBossData.setPhoneNumber(getAllLabelsDataFromUserInformationPane().get(5));
+        originalDegreeBossData.setStatus(getAllLabelsDataFromUserInformationPane().get(6));
+        originalDegreeBossData.setStaffNumber(Integer.parseInt(getAllLabelsDataFromUserInformationPane().get(7)));
 
-        try {
+        try{
             if(degreeBossDAO.theDegreeBossIsAlreadyRegisted(newDegreeBossData)){
-                AlertPaneController alertPaneController = new AlertPaneController();
-                alertPaneController.openWarningPane("El usuario ya está registrado en el sistema");
+                new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "Error", "El usuario ya está registrado en el sistema");
                 return;
             }
-        } catch (DataRetrievalException e) {
-            e.printStackTrace();
-            AlertPaneController alertPaneController = new AlertPaneController();
-            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
+        }catch(DataRetrievalException e) {
+            new AlertPopUpGenerator().showConnectionErrorMessage();
         }
-        try {
+        try{
             degreeBossDAO.modifyDegreeBossDataFromDatabase(newDegreeBossData, originalDegreeBossData);
 
-            AlertPopUpGenerator alertPopUpGenerator = new AlertPopUpGenerator();
-            alertPopUpGenerator.showCustomMessage(AlertType.WARNING, "Éxito", "Usuario modificado exitosamente");
-            this.returnToGuiUsers(event);
-        } catch (DataWritingException e) {
-            e.printStackTrace();
-            AlertPaneController alertPaneController = new AlertPaneController();
-            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
+            new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "Éxito", "Usuario modificado exitosamente");
+            returnToGuiUsers(event);
+        }catch(DataWritingException e){
+            new AlertPopUpGenerator().showConnectionErrorMessage();
         }
     }
     private ArrayList<String> getAllLabelsDataFromUserInformationPane(){
         ArrayList<String> userInformationPaneData = new ArrayList<>();
-        userInformationPaneData.add(this.userInformationController.getNames());
-        userInformationPaneData.add(this.userInformationController.getFirstSurname());
-        userInformationPaneData.add(this.userInformationController.getSecondSurname());
-        userInformationPaneData.add(this.userInformationController.getEmail());
-        userInformationPaneData.add(this.userInformationController.getAlternateEmail());
-        userInformationPaneData.add(this.userInformationController.getTelephoneNumber());
-        userInformationPaneData.add(this.userInformationController.getStatus());
-        userInformationPaneData.add(this.userInformationController.getMatriculeOrPersonalNumber());
+        userInformationPaneData.add(userInformationController.getNames());
+        userInformationPaneData.add(userInformationController.getFirstSurname());
+        userInformationPaneData.add(userInformationController.getSecondSurname());
+        userInformationPaneData.add(userInformationController.getEmail());
+        userInformationPaneData.add(userInformationController.getAlternateEmail());
+        userInformationPaneData.add(userInformationController.getTelephoneNumber());
+        userInformationPaneData.add(userInformationController.getStatus());
+        userInformationPaneData.add(userInformationController.getMatriculeOrPersonalNumber());
         return userInformationPaneData;
     }
     private boolean allTextFieldsContainsCorrectValues(){
@@ -446,41 +402,41 @@ public class ModifyUserInformationController {
                 telephoneNumberPattern = Pattern.compile("^[0-9]{10}$"),
                 matricleOrPersonalNumberPattern = Pattern.compile("");
     
-        switch(this.userInformationController.getUserType()) {
+        switch(userInformationController.getUserType()){
             //case UserType.DIRECTOR.getValue(): {
-            case "Director": {
+            case "Director":{
                 matricleOrPersonalNumberPattern = Pattern.compile("^[0-9]{9}$");
                 break;
             }
 
-            case "Miembro de Cuerpo Académico": {
+            case "Miembro de Cuerpo Académico":{
                 matricleOrPersonalNumberPattern = Pattern.compile("^[0-9]{9}$");
                 break;
             }
 
-            case "Jefe de Carrera": {
+            case "Jefe de Carrera":{
                 matricleOrPersonalNumberPattern = Pattern.compile("^[0-9]{9}$");
                 break;
             }
 
-            case "Profesor": {
+            case "Profesor":{
                 matricleOrPersonalNumberPattern = Pattern.compile("^[0-9]{9}$");
                 break;
             }
 
-            case "Estudiante": {
+            case "Estudiante":{
                 matricleOrPersonalNumberPattern = Pattern.compile("^[z][S][0-9]{8}$");
                 break;
             }
         }
 
-        Matcher namesMatcher = namesPattern.matcher(this.namesTextField.getText()),
-                firstSurnameMatcher = firstSurnamePattern.matcher(this.firstSurnameTextField.getText()),
-                secondSurnameMatcher = secondSurnamePattern.matcher(this.secondSurnameTextField.getText()),
-                emailMatcher = emailPattern.matcher(this.emailTextField.getText()),
-                alternateEmailMatcher = alternateEmailPattern.matcher(this.alternateEmailTextField.getText()),
-                telephoneNumberMatcher = telephoneNumberPattern.matcher(this.telephoneNumberTextField.getText()),
-                matricleOrPersonalNumberMatcher = matricleOrPersonalNumberPattern.matcher(this.matricleOrPersonalNumberTextField.getText());
+        Matcher namesMatcher = namesPattern.matcher(namesTextField.getText()),
+                firstSurnameMatcher = firstSurnamePattern.matcher(firstSurnameTextField.getText()),
+                secondSurnameMatcher = secondSurnamePattern.matcher(secondSurnameTextField.getText()),
+                emailMatcher = emailPattern.matcher(emailTextField.getText()),
+                alternateEmailMatcher = alternateEmailPattern.matcher(alternateEmailTextField.getText()),
+                telephoneNumberMatcher = telephoneNumberPattern.matcher(telephoneNumberTextField.getText()),
+                matricleOrPersonalNumberMatcher = matricleOrPersonalNumberPattern.matcher(matricleOrPersonalNumberTextField.getText());
 
         if(namesMatcher.find() && firstSurnameMatcher.find() &&
            secondSurnameMatcher.find() && emailMatcher.find() &&
@@ -491,13 +447,13 @@ public class ModifyUserInformationController {
 
         return false;
     }
-    private void returnToGuiUsers(ActionEvent event) {
+    private void returnToGuiUsers(ActionEvent event){
         try{
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/users/GuiUsers.fxml"));
             Parent parent = loader.load();
             Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
             Scene scene = new Scene(parent);
-            String css = this.getClass().getResource("/mx/uv/fei/gui/stylesfiles/Styles.css").toExternalForm();
+            String css = getClass().getResource("/mx/uv/fei/gui/stylesfiles/Styles.css").toExternalForm();
             scene.getStylesheets().add(css);
             stage.setTitle("SPGER");
             stage.setScene(scene);

@@ -12,11 +12,11 @@ public class Main extends Application{
         Parent guiUsuarios;
         FXMLLoader loader = new FXMLLoader(
             //getClass().getResource("/mx/uv/fei/gui/fxml/kgal/KGALList.fxml")
-            //getClass().getResource("/mx/uv/fei/gui/fxml/research/ResearchManager.fxml")
+            getClass().getResource("/mx/uv/fei/gui/fxml/research/ResearchManager.fxml")
             //getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/ModifyActivity.fxml")// tha xavier gui
             //getClass().getResource("/mx/uv/fei/gui/fxml/courses/students/GuiUsersCourse.fxml")
             //getClass().getResource("/mx/uv/fei/gui/fxml/courses/GuiCourses.fxml")
-            getClass().getResource("/mx/uv/fei/gui/fxml/users/GuiUsers.fxml")
+            //getClass().getResource("/mx/uv/fei/gui/fxml/users/GuiUsers.fxml")
             //getClass().getResource("/mx/uv/fei/gui/fxml/reports/GuiResearchReport.fxml")
         );
         guiUsuarios = loader.load();
@@ -26,13 +26,13 @@ public class Main extends Application{
         //Mostrar estatus de usuarios en comboboxes para registrar usuarios en GuiRegisterUsers y ModifyUserPane GG
         //Checar lo de estudiantes activos y disponibles con xavier GG
         //Detalles estéticos en GuiUsers cuando cambias la matricula a nombre de personal y viceversa GG
-        //Crear enum con tipo de usuario para comboboxes
+        //Crear enum con tipo de usuario para comboboxes EN PROCESO
 
         //Al abrir GuiResearchReport en ResearchManager no debe de salir como ventana emergente GG
         //Color de bordes de botones de cursos, usuarios y anteproyectos
-        //Cambiar la clase de ventanas emergentes a alertpopup
-        //Seguir el standar
-        //Quitar los this innecesarios
+        //Cambiar la clase de ventanas emergentes a alertpopup GG
+        //Seguir el standar GG
+        //Quitar los this innecesarios GG
         //Pruebas
         
         Scene scene = new Scene(guiUsuarios);

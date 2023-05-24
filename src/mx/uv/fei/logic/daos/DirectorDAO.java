@@ -15,13 +15,13 @@ import mx.uv.fei.logic.exceptions.DataWritingException;
 public class DirectorDAO implements IDirectorDAO{
     private final DataBaseManager dataBaseManager;
     
-    public DirectorDAO() {
+    public DirectorDAO(){
         dataBaseManager = new DataBaseManager();
     }
 
     @Override
-    public void addDirectorToDatabase(Director director) throws DataWritingException {
-        try {
+    public void addDirectorToDatabase(Director director) throws DataWritingException{
+        try{
             String queryToInsertDirectorDataToUserColumns = 
                 "INSERT INTO Usuarios (nombre, apellidoPaterno, apellidoMaterno, correo, correoAlterno, númeroTeléfono) VALUES (?, ?, ?, ?, ?, ?)";
             
@@ -96,17 +96,16 @@ public class DirectorDAO implements IDirectorDAO{
             preparedStatementToInsertDirectorDataToDirectorColumns.close();
             dataBaseManager.getConnection().close();
 
-        } catch (SQLException e) {
-            e.printStackTrace();
+        }catch(SQLException e){
             throw new DataWritingException("Error al agregar director. Verifique su conexion e intentelo de nuevo");
-        } finally {
+        }finally{
             dataBaseManager.closeConnection();
         }
     }
 
     @Override
-    public void modifyDirectorDataFromDatabase(Director newDirectorData, Director originalDirectorData) throws DataWritingException {
-        try {
+    public void modifyDirectorDataFromDatabase(Director newDirectorData, Director originalDirectorData) throws DataWritingException{
+        try{
             String queryForUpdateUserData = "UPDATE Usuarios SET nombre = ?, " + 
                            "apellidoPaterno = ?, apellidoMaterno = ?, correo = ?, " + 
                            "correoAlterno = ?, númeroTeléfono = ?, estado = ? " +
@@ -146,10 +145,9 @@ public class DirectorDAO implements IDirectorDAO{
             preparedStatementForUpdateDirectorData.setInt(1, newDirectorData.getStaffNumber());
             preparedStatementForUpdateDirectorData.setInt(2, originalDirectorData.getStaffNumber());
             preparedStatementForUpdateDirectorData.executeUpdate();
-        } catch(SQLException e){
-            e.printStackTrace();
+        }catch(SQLException e){
             throw new DataWritingException("Error al agregar director. Verifique su conexion e intentelo de nuevo");
-        } finally {
+        }finally{
             dataBaseManager.closeConnection();
         }
     }
@@ -178,7 +176,7 @@ public class DirectorDAO implements IDirectorDAO{
             }
         }catch(SQLException exception){
             throw new DataRetrievalException("Error al recuperar la información. Verifique su conexión e intentelo de nuevo");
-        } finally {
+        }finally{
             dataBaseManager.closeConnection();
         }
         
@@ -186,10 +184,10 @@ public class DirectorDAO implements IDirectorDAO{
     }
     
     @Override
-    public ArrayList<Director> getDirectorsFromDatabase() throws DataRetrievalException {
+    public ArrayList<Director> getDirectorsFromDatabase() throws DataRetrievalException{
         ArrayList<Director> directors = new ArrayList<>();
 
-        try {
+        try{
             Statement statement = dataBaseManager.getConnection().createStatement();
             String query = "SELECT * FROM Usuarios U INNER JOIN Profesores P ON U.IdUsuario = P.IdUsuario INNER JOIN Directores D ON P.NumPersonal = D.NumPersonal";
             ResultSet resultSet = statement.executeQuery(query);
@@ -208,10 +206,9 @@ public class DirectorDAO implements IDirectorDAO{
             }
             resultSet.close();
             dataBaseManager.getConnection().close();
-        } catch (SQLException e) {
-            e.printStackTrace();
+        }catch(SQLException e){
             throw new DataRetrievalException("Error al recuperar la información. Verifique su conexión e intentelo de nuevo");
-        } finally {
+        }finally{
             dataBaseManager.closeConnection();
         }
 
@@ -219,10 +216,10 @@ public class DirectorDAO implements IDirectorDAO{
     }
 
     @Override
-    public ArrayList<Director> getSpecifiedDirectorsFromDatabase(String directorName) throws DataRetrievalException {
+    public ArrayList<Director> getSpecifiedDirectorsFromDatabase(String directorName) throws DataRetrievalException{
         ArrayList<Director> directors = new ArrayList<>();
 
-        try {
+        try{
             String query = "SELECT * FROM Usuarios U INNER JOIN Profesores P ON U.IdUsuario = P.IdUsuario INNER JOIN Directores D ON P.NumPersonal = D.NumPersonal WHERE U.Nombre LIKE ?";
             PreparedStatement preparedStatement = dataBaseManager.getConnection().prepareStatement(query);
             preparedStatement.setString(1, directorName + '%');
@@ -242,10 +239,9 @@ public class DirectorDAO implements IDirectorDAO{
             }
             resultSet.close();
             dataBaseManager.getConnection().close();
-        } catch (SQLException e) {
-            e.printStackTrace();
+        }catch(SQLException e){
             throw new DataRetrievalException("Error al recuperar la información. Verifique su conexión e intentelo de nuevo");
-        } finally {
+        }finally{
             dataBaseManager.closeConnection();
         }
 
@@ -253,10 +249,10 @@ public class DirectorDAO implements IDirectorDAO{
     }
 
     @Override
-    public Director getDirectorFromDatabase(int personalNumber) throws DataRetrievalException {
+    public Director getDirectorFromDatabase(int personalNumber) throws DataRetrievalException{
         Director director = new Director();
 
-        try {
+        try{
             String query = "SELECT * FROM Usuarios U INNER JOIN Profesores P ON U.IdUsuario = P.IdUsuario INNER JOIN Directores D ON P.NumPersonal = D.NumPersonal WHERE D.NumPersonal = ?";
             PreparedStatement preparedStatement = dataBaseManager.getConnection().prepareStatement(query);
             preparedStatement.setInt(1, personalNumber);
@@ -275,18 +271,17 @@ public class DirectorDAO implements IDirectorDAO{
 
             resultSet.close();
             dataBaseManager.getConnection().close();
-        } catch (SQLException e) {
-            e.printStackTrace();
+        }catch(SQLException e){
             throw new DataRetrievalException("Error al recuperar la información. Verifique su conexión e intentelo de nuevo");
-        } finally {
+        }finally{
             dataBaseManager.closeConnection();
         }
 
         return director;
     }
 
-    public boolean theDirectorIsAlreadyRegisted(Director director) throws DataRetrievalException {
-        try {
+    public boolean theDirectorIsAlreadyRegisted(Director director) throws DataRetrievalException{
+        try{
             Statement statement = dataBaseManager.getConnection().createStatement();
             String query = "SELECT U.nombre, U.apellidoPaterno, U.apellidoMaterno, U.correo, " +
                            "U.correoAlterno, U.númeroTeléfono, U.estado, P.NumPersonal FROM Usuarios U " + 
@@ -311,10 +306,9 @@ public class DirectorDAO implements IDirectorDAO{
             }
             resultSet.close();
             dataBaseManager.getConnection().close();
-        } catch (SQLException e) {
-            e.printStackTrace();
+        }catch(SQLException e){
             throw new DataRetrievalException("Error al recuperar la información. Verifique su conexión e intentelo de nuevo");
-        } finally {
+        }finally{
             dataBaseManager.closeConnection();
         }
 

@@ -18,6 +18,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import mx.uv.fei.gui.AlertPopUpGenerator;
 import mx.uv.fei.logic.daos.DirectorDAO;
 import mx.uv.fei.logic.daos.KGALDAO;
 import mx.uv.fei.logic.daos.ResearchDAO;
@@ -81,14 +82,11 @@ public class ModifyResearchPaneController{
             KGALComboBox.setItems(FXCollections.observableArrayList(KGALList));
             studentComboBox.setItems(FXCollections.observableArrayList(studentList));
         }catch(DataRetrievalException exception){
-            Alert errorMessage = new Alert(Alert.AlertType.ERROR);
-            errorMessage.setContentText(exception.getMessage());
-            errorMessage.showAndWait();
+            new AlertPopUpGenerator().showConnectionErrorMessage();
         }
     }
-    
     @FXML
-    void cancelChanges(ActionEvent event) {
+    private void cancelChanges(ActionEvent event){
         Alert confirmationMessage = new Alert(Alert.AlertType.CONFIRMATION);
         confirmationMessage.setHeaderText("Guardar cambios");
         confirmationMessage.setContentText("¿Está seguro que desea modificar la actividad y volver al cronograma?");
@@ -98,9 +96,8 @@ public class ModifyResearchPaneController{
             returnToResearchManager(event);
         }
     }
-
     @FXML
-    void saveChanges(ActionEvent event) {
+    private void saveChanges(ActionEvent event){
         Alert confirmationMessage = new Alert(Alert.AlertType.CONFIRMATION);
         confirmationMessage.setHeaderText("Descartar cambios");
         confirmationMessage.setContentText("¿Está seguro que cancelar la modificación del anteproeycto?");
@@ -144,10 +141,7 @@ public class ModifyResearchPaneController{
                             returnToResearchManager(event);
                         }
                     }catch(DataWritingException exception){
-                        Alert errorMessage = new Alert(Alert.AlertType.ERROR);
-                        errorMessage.setContentText(exception.getMessage());
-     
-                   errorMessage.showAndWait();
+                        new AlertPopUpGenerator().showConnectionErrorMessage();
                     }
                 }else{
                     Alert warningMessage = new Alert(Alert.AlertType.WARNING);
@@ -202,10 +196,7 @@ public class ModifyResearchPaneController{
             stage.setScene(scene);
             stage.show();
         }catch(IllegalStateException | IOException exception){
-            Alert errorMessage = new Alert(Alert.AlertType.ERROR);
-            errorMessage.setTitle("Error");
-            errorMessage.setContentText("Hubo un error al cargar el gestor de anteproyectos, archivo no encontrado");
-            errorMessage.showAndWait();
+            new AlertPopUpGenerator().showMissingFilesMessage();
         }
     }
 }

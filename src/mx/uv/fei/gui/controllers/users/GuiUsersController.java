@@ -18,6 +18,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import mx.uv.fei.gui.AlertPopUpGenerator;
 import mx.uv.fei.logic.daos.AcademicBodyHeadDAO;
 import mx.uv.fei.logic.daos.DegreeBossDAO;
 import mx.uv.fei.logic.daos.DirectorDAO;
@@ -30,7 +31,7 @@ import mx.uv.fei.logic.domain.Professor;
 import mx.uv.fei.logic.domain.Student;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
 
-public class GuiUsersController {
+public class GuiUsersController{
 
     @FXML
     private Pane backgroundPane;
@@ -47,16 +48,17 @@ public class GuiUsersController {
     @FXML
     private VBox usersVBox;
     
+    
+
     @FXML
-    private void initialize() {
+    private void initialize(){
         loadHeader();
         loadUserButtons();
     }
-
     @FXML
-    private void registerUserButtonController(ActionEvent event) {
+    private void registerUserButtonController(ActionEvent event){
         Parent guiRegisterUser;
-        try {
+        try{
             FXMLLoader loader = new FXMLLoader(
                 getClass().getResource("/mx/uv/fei/gui/fxml/users/GuiRegisterUser.fxml")
             );
@@ -64,7 +66,7 @@ public class GuiUsersController {
             GuiRegisterUserController guiRegisterUserController = loader.getController();
             guiRegisterUserController.setGuiUsersController(this);
             Scene scene = new Scene(guiRegisterUser);
-            String css = this.getClass().getResource("/mx/uv/fei/gui/stylesfiles/Styles.css").toExternalForm();
+            String css = getClass().getResource("/mx/uv/fei/gui/stylesfiles/Styles.css").toExternalForm();
             scene.getStylesheets().add(css);
             Stage stage = new Stage();
             stage.setTitle("Registrar Usuario");
@@ -72,40 +74,36 @@ public class GuiUsersController {
             stage.initOwner((Stage)((Node)event.getSource()).getScene().getWindow());
             stage.setScene(scene);
             stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-            AlertPaneController alertPaneController = new AlertPaneController();
-            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
+        }catch (IOException e){
+            new AlertPopUpGenerator().showConnectionErrorMessage();
         }   
     }
-
     @FXML
-    private void searchByNameButtonController(ActionEvent event) {
-        this.usersVBox.getChildren().removeAll(this.usersVBox.getChildren());
+    private void searchByNameButtonController(ActionEvent event){
+        usersVBox.getChildren().removeAll(usersVBox.getChildren());
         StudentDAO studentDAO = new StudentDAO();
         ProfessorDAO professorDAO = new ProfessorDAO();
         DirectorDAO directorDAO = new DirectorDAO();
         AcademicBodyHeadDAO academicBodyHeadDAO = new AcademicBodyHeadDAO();
         DegreeBossDAO degreeBossDAO = new DegreeBossDAO();
-        try {
-            ArrayList<Student> students = studentDAO.getSpecifiedStudentsFromDatabase(this.searchByNameTextField.getText());
-            ArrayList<Professor> professors = professorDAO.getSpecifiedProfessorsFromDatabase(this.searchByNameTextField.getText());
-            ArrayList<Director> directors = directorDAO.getSpecifiedDirectorsFromDatabase(this.searchByNameTextField.getText());
-            ArrayList<AcademicBodyHead> academicBodyHeads = academicBodyHeadDAO.getSpecifiedAcademicBodyHeadsFromDatabase(this.searchByNameTextField.getText());
-            ArrayList<DegreeBoss> degreeBosses = degreeBossDAO.getSpecifiedDegreeBossesFromDatabase(this.searchByNameTextField.getText());
+        try{
+            ArrayList<Student> students = studentDAO.getSpecifiedStudentsFromDatabase(searchByNameTextField.getText());
+            ArrayList<Professor> professors = professorDAO.getSpecifiedProfessorsFromDatabase(searchByNameTextField.getText());
+            ArrayList<Director> directors = directorDAO.getSpecifiedDirectorsFromDatabase(searchByNameTextField.getText());
+            ArrayList<AcademicBodyHead> academicBodyHeads = academicBodyHeadDAO.getSpecifiedAcademicBodyHeadsFromDatabase(searchByNameTextField.getText());
+            ArrayList<DegreeBoss> degreeBosses = degreeBossDAO.getSpecifiedDegreeBossesFromDatabase(searchByNameTextField.getText());
     
-            this.directorButtonMaker(directors);
-            this.academicBodyHeadButtonMaker(academicBodyHeads);
-            this.degreeBossButtonMaker(degreeBosses);
-            this.professorButtonMaker(professors);
-            this.studentButtonMaker(students);
-        } catch (DataRetrievalException e) {
-            e.printStackTrace();
-            AlertPaneController alertPaneController = new AlertPaneController();
-            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
+            directorButtonMaker(directors);
+            academicBodyHeadButtonMaker(academicBodyHeads);
+            degreeBossButtonMaker(degreeBosses);
+            professorButtonMaker(professors);
+            studentButtonMaker(students);
+        }catch(DataRetrievalException e){
+            new AlertPopUpGenerator().showConnectionErrorMessage();
         }
     }
-    public void loadUserButtons() {
+
+    public void loadUserButtons(){
         StudentDAO studentDAO = new StudentDAO();
         ProfessorDAO professorDAO = new ProfessorDAO();
         DirectorDAO directorDAO = new DirectorDAO();
@@ -124,14 +122,95 @@ public class GuiUsersController {
             professorButtonMaker(professors);
             studentButtonMaker(students);
         } catch (DataRetrievalException e) {
-            e.printStackTrace();
-            AlertPaneController alertPaneController = new AlertPaneController();
-            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
+            new AlertPopUpGenerator().showConnectionErrorMessage();
         }
     }
-    
+    //This method only should be used by the UserInformationController Class.
+    public void openModifyUserPane(UserInformationController userInformationController){
+        FXMLLoader modifyUserInformationControllerLoader = new FXMLLoader(
+            getClass().getResource("/mx/uv/fei/gui/fxml/users/ModifyUserInformation.fxml")
+        );
+
+        try{
+            VBox modifyUserInformationVBox = modifyUserInformationControllerLoader.load();
+            ModifyUserInformationController modifyUserInformationController = modifyUserInformationControllerLoader.getController();
+            modifyUserInformationController.setNames(userInformationController.getNames());
+            modifyUserInformationController.setFirstSurname(userInformationController.getFirstSurname());
+            modifyUserInformationController.setSecondSurname(userInformationController.getSecondSurname());
+            modifyUserInformationController.setEmail(userInformationController.getEmail());
+            modifyUserInformationController.setAlternateEmail(userInformationController.getAlternateEmail());
+            modifyUserInformationController.setTelephoneNumber(userInformationController.getTelephoneNumber());
+            modifyUserInformationController.setMatricleOrPersonalNumber(userInformationController.getMatriculeOrPersonalNumber());
+            modifyUserInformationController.setStatus(userInformationController.getStatus());
+            modifyUserInformationController.setDataToStatusCombobox(userInformationController.getUserType());
+            modifyUserInformationController.setLabelsCorrectBounds(userInformationController.getUserType());
+            modifyUserInformationController.setUserInformationController(userInformationController);
+            userInformationScrollPane.setContent(modifyUserInformationVBox);
+            
+        } catch (IOException e){
+            new AlertPopUpGenerator().showMissingFilesMessage();
+        }
+    }
+    //This method only should be used by the UserController Class.
+    public void openPaneWithUserInformation(UserController userController){
+        try{
+            switch(userController.getType()){
+                case "Director":{
+                    DirectorDAO directorDAO = new DirectorDAO();
+                    Director director;
+                        director = directorDAO.getDirectorFromDatabase(Integer.parseInt(userController.getMatriculeOrPersonalNumber()));
+                        openPaneWithDirectorInformation(director);
+                        break;
+                    }
+
+                case "Miembro de Cuerpo Académico":{
+                    AcademicBodyHeadDAO academicBodyHeadDAO = new AcademicBodyHeadDAO();
+                    AcademicBodyHead academicBodyHead = academicBodyHeadDAO.getAcademicBodyHeadFromDatabase(Integer.parseInt(userController.getMatriculeOrPersonalNumber()));
+                    openPaneWithAcademicBodyHeadInformation(academicBodyHead);
+                    break;
+                }
+
+                case "Jefe de Carrera":{
+                    DegreeBossDAO degreeBossDAO = new DegreeBossDAO();
+                    DegreeBoss degreeBoss = degreeBossDAO.getDegreeBossFromDatabase(Integer.parseInt(userController.getMatriculeOrPersonalNumber()));
+                    openPaneWithDegreeBossInformation(degreeBoss);
+                    break;
+                }
+
+                case "Profesor":{
+                    ProfessorDAO professorDAO = new ProfessorDAO();
+                    Professor professor = professorDAO.getProfessorFromDatabase(Integer.parseInt(userController.getMatriculeOrPersonalNumber()));
+                    openPaneWithProfessorInformation(professor);
+                    break;
+                }
+
+                case "Estudiante":{
+                    StudentDAO studentDAO = new StudentDAO();
+                    Student student = studentDAO.getStudentFromDatabase(userController.getMatriculeOrPersonalNumber());
+                    openPaneWithStudentInformation(student);
+                    break;
+                }
+            }
+        }catch(NumberFormatException e){
+            new AlertPopUpGenerator().showConnectionErrorMessage();
+        }catch(DataRetrievalException e){
+            new AlertPopUpGenerator().showConnectionErrorMessage();
+        }
+    }
+
+    private void loadHeader(){
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/HeaderPane.fxml"));
+        
+        try{
+            Pane header = loader.load();
+            header.getStyleClass().add("/mx/uv/fei/gui/stylesfiles/Styles.css");
+            backgroundPane.getChildren().add(header);
+        } catch(IOException exception){
+            new AlertPopUpGenerator().showMissingFilesMessage();
+        }
+    }
     private void studentButtonMaker(ArrayList<Student> students){
-        try {
+        try{
             for(Student student : students){
                 FXMLLoader userItemControllerLoader = new FXMLLoader(
                     getClass().getResource("/mx/uv/fei/gui/fxml/users/User.fxml")
@@ -145,20 +224,17 @@ public class GuiUsersController {
                 userController.setMatricleOrPersonalNumberText("Matrícula: ");
                 userController.setLabelsCorrectBounds("Estudiante");
                 userController.setGuiUsersController(this);
-                this.usersVBox.getChildren().add(userItemPane);
+                usersVBox.getChildren().add(userItemPane);
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-            AlertPaneController alertPaneController = new AlertPaneController();
-            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
+        }catch(IOException e){
+            new AlertPopUpGenerator().showMissingFilesMessage();
         }    
     }
-
     private void professorButtonMaker(ArrayList<Professor> professors){
-        try {
-            for(Professor professor : professors) {
+        try{
+            for(Professor professor : professors){
                 boolean professorAlreadyInUserVbox = false;
-                for(Node pane : ((VBox)this.usersVBox).getChildren()) {
+                for(Node pane : ((VBox)usersVBox).getChildren()) {
                     Node label = ((Pane)pane).getChildren().get(5);
                     if(((Label)label).getText().equals(Integer.toString(professor.getStaffNumber()))) {
                         professorAlreadyInUserVbox = true;
@@ -178,19 +254,15 @@ public class GuiUsersController {
                     userController.setMatricleOrPersonalNumberText("Número de Personal: ");
                     userController.setLabelsCorrectBounds("Profesor");
                     userController.setGuiUsersController(this);
-                    this.usersVBox.getChildren().add(userItemPane);
-
+                    usersVBox.getChildren().add(userItemPane);
                 }
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-            AlertPaneController alertPaneController = new AlertPaneController();
-            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
+        }catch(IOException e){
+            new AlertPopUpGenerator().showMissingFilesMessage();
         }    
     }
-
     private void directorButtonMaker(ArrayList<Director> directors){
-        try {
+        try{
             for(Director director : directors){
                 FXMLLoader userItemControllerLoader = new FXMLLoader(
                     getClass().getResource("/mx/uv/fei/gui/fxml/users/User.fxml")
@@ -203,17 +275,14 @@ public class GuiUsersController {
                 userController.setMatricleOrPersonalNumberText("Número de Personal: ");
                 userController.setLabelsCorrectBounds("Director");
                 userController.setGuiUsersController(this);
-                this.usersVBox.getChildren().add(userItemPane);
+                usersVBox.getChildren().add(userItemPane);
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-            AlertPaneController alertPaneController = new AlertPaneController();
-            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
+        }catch(IOException e){
+            new AlertPopUpGenerator().showMissingFilesMessage();
         }  
     }
-
     private void academicBodyHeadButtonMaker(ArrayList<AcademicBodyHead> academicBodyHeads){
-        try {
+        try{
             for(AcademicBodyHead academicBodyHead : academicBodyHeads){
                 FXMLLoader userItemControllerLoader = new FXMLLoader(
                     getClass().getResource("/mx/uv/fei/gui/fxml/users/User.fxml")
@@ -226,17 +295,14 @@ public class GuiUsersController {
                 userController.setMatricleOrPersonalNumberText("Número de Personal: ");
                 userController.setLabelsCorrectBounds("Miembro de Cuerpo Académico");
                 userController.setGuiUsersController(this);
-                this.usersVBox.getChildren().add(userItemPane);
+                usersVBox.getChildren().add(userItemPane);
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-            AlertPaneController alertPaneController = new AlertPaneController();
-            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
+        }catch(IOException e){
+            new AlertPopUpGenerator().showMissingFilesMessage();
         }  
     }
-
     private void degreeBossButtonMaker(ArrayList<DegreeBoss> degreeBosses){
-        try {
+        try{
             for(DegreeBoss degreeBoss : degreeBosses){
                 FXMLLoader userItemControllerLoader = new FXMLLoader(
                     getClass().getResource("/mx/uv/fei/gui/fxml/users/User.fxml")
@@ -249,71 +315,17 @@ public class GuiUsersController {
                 userController.setMatricleOrPersonalNumberText("Número de Personal: ");
                 userController.setLabelsCorrectBounds("Jefe de Carrera");
                 userController.setGuiUsersController(this);
-                this.usersVBox.getChildren().add(userItemPane);
+                usersVBox.getChildren().add(userItemPane);
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-            AlertPaneController alertPaneController = new AlertPaneController();
-            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
+        }catch(IOException e){
+            new AlertPopUpGenerator().showMissingFilesMessage();
         }  
     }
-
-    //This method only should be used by the UserController Class.
-    void openPaneWithUserInformation(UserController userController){
-        try {
-            switch(userController.getType()) {
-                case "Director": {
-                    DirectorDAO directorDAO = new DirectorDAO();
-                    Director director;
-                        director = directorDAO.getDirectorFromDatabase(Integer.parseInt(userController.getMatriculeOrPersonalNumber()));
-                        openPaneWithDirectorInformation(director);
-                        break;
-                    }
-
-                case "Miembro de Cuerpo Académico": {
-                    AcademicBodyHeadDAO academicBodyHeadDAO = new AcademicBodyHeadDAO();
-                    AcademicBodyHead academicBodyHead = academicBodyHeadDAO.getAcademicBodyHeadFromDatabase(Integer.parseInt(userController.getMatriculeOrPersonalNumber()));
-                    openPaneWithAcademicBodyHeadInformation(academicBodyHead);
-                    break;
-                }
-
-                case "Jefe de Carrera": {
-                    DegreeBossDAO degreeBossDAO = new DegreeBossDAO();
-                    DegreeBoss degreeBoss = degreeBossDAO.getDegreeBossFromDatabase(Integer.parseInt(userController.getMatriculeOrPersonalNumber()));
-                    openPaneWithDegreeBossInformation(degreeBoss);
-                    break;
-                }
-
-                case "Profesor": {
-                    ProfessorDAO professorDAO = new ProfessorDAO();
-                    Professor professor = professorDAO.getProfessorFromDatabase(Integer.parseInt(userController.getMatriculeOrPersonalNumber()));
-                    openPaneWithProfessorInformation(professor);
-                    break;
-                }
-
-                case "Estudiante": {
-                    StudentDAO studentDAO = new StudentDAO();
-                    Student student = studentDAO.getStudentFromDatabase(userController.getMatriculeOrPersonalNumber());
-                    openPaneWithStudentInformation(student);
-                    break;
-                }
-            }
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-            AlertPaneController alertPaneController = new AlertPaneController();
-            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
-        } catch (DataRetrievalException e) {
-            e.printStackTrace();
-            AlertPaneController alertPaneController = new AlertPaneController();
-            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
-        }
-    }
-
     private void openPaneWithDirectorInformation(Director director){
         FXMLLoader userInformationControllerLoader = new FXMLLoader(
             getClass().getResource("/mx/uv/fei/gui/fxml/users/UserInformation.fxml")
         );
-        try {
+        try{
             VBox userInformationVBox = userInformationControllerLoader.load();
             UserInformationController userInformationController = userInformationControllerLoader.getController();
             userInformationController.setNames(director.getName());
@@ -327,21 +339,18 @@ public class GuiUsersController {
             userInformationController.setMatricleOrPersonalNumber(Integer.toString(director.getStaffNumber()));
             userInformationController.setGuiUsersController(this);
             userInformationController.setMatricleOrPersonalNumberText();
-            this.userInformationScrollPane.setContent(userInformationVBox);
+            userInformationScrollPane.setContent(userInformationVBox);
             
-        } catch (IOException e){
-            e.printStackTrace();
-            AlertPaneController alertPaneController = new AlertPaneController();
-            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
+        }catch (IOException e){
+            new AlertPopUpGenerator().showMissingFilesMessage();
         }
     }
-
     private void openPaneWithAcademicBodyHeadInformation(AcademicBodyHead academicBodyHead){
         FXMLLoader userInformationControllerLoader = new FXMLLoader(
             getClass().getResource("/mx/uv/fei/gui/fxml/users/UserInformation.fxml")
         );
 
-        try {
+        try{
             VBox userInformationVBox = userInformationControllerLoader.load();
             UserInformationController userInformationController = userInformationControllerLoader.getController();
             userInformationController.setNames(academicBodyHead.getName());
@@ -355,12 +364,10 @@ public class GuiUsersController {
             userInformationController.setMatricleOrPersonalNumber(Integer.toString(academicBodyHead.getStaffNumber()));
             userInformationController.setGuiUsersController(this);
             userInformationController.setMatricleOrPersonalNumberText();
-            this.userInformationScrollPane.setContent(userInformationVBox);
+            userInformationScrollPane.setContent(userInformationVBox);
             
-        } catch (IOException e){
-            e.printStackTrace();
-            AlertPaneController alertPaneController = new AlertPaneController();
-            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
+        }catch(IOException e){
+            new AlertPopUpGenerator().showMissingFilesMessage();
         }
     }
 
@@ -369,7 +376,7 @@ public class GuiUsersController {
             getClass().getResource("/mx/uv/fei/gui/fxml/users/UserInformation.fxml")
         );
 
-        try {
+        try{
             VBox userInformationVBox = userInformationControllerLoader.load();
             UserInformationController userInformationController = userInformationControllerLoader.getController();
             userInformationController.setNames(degreeBoss.getName());
@@ -383,21 +390,18 @@ public class GuiUsersController {
             userInformationController.setMatricleOrPersonalNumber(Integer.toString(degreeBoss.getStaffNumber()));
             userInformationController.setGuiUsersController(this);
             userInformationController.setMatricleOrPersonalNumberText();
-            this.userInformationScrollPane.setContent(userInformationVBox);
+            userInformationScrollPane.setContent(userInformationVBox);
             
-        } catch (IOException e){
-            e.printStackTrace();
-            AlertPaneController alertPaneController = new AlertPaneController();
-            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
+        }catch(IOException e){
+            new AlertPopUpGenerator().showMissingFilesMessage();
         }
     }
-
     private void openPaneWithProfessorInformation(Professor professor){
         FXMLLoader userInformationControllerLoader = new FXMLLoader(
             getClass().getResource("/mx/uv/fei/gui/fxml/users/UserInformation.fxml")
         );
 
-        try {
+        try{
             VBox userInformationVBox = userInformationControllerLoader.load();
             UserInformationController userInformationController = userInformationControllerLoader.getController();
             userInformationController.setNames(professor.getName());
@@ -411,21 +415,18 @@ public class GuiUsersController {
             userInformationController.setMatricleOrPersonalNumber(Integer.toString(professor.getStaffNumber()));
             userInformationController.setGuiUsersController(this);
             userInformationController.setMatricleOrPersonalNumberText();
-            this.userInformationScrollPane.setContent(userInformationVBox);
+            userInformationScrollPane.setContent(userInformationVBox);
             
         } catch (IOException e){
-            e.printStackTrace();
-            AlertPaneController alertPaneController = new AlertPaneController();
-            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
+            new AlertPopUpGenerator().showMissingFilesMessage();
         }
     }
-
     private void openPaneWithStudentInformation(Student student){
         FXMLLoader userInformationControllerLoader = new FXMLLoader(
             getClass().getResource("/mx/uv/fei/gui/fxml/users/UserInformation.fxml")
         );
 
-        try {
+        try{
             VBox userInformationVBox = userInformationControllerLoader.load();
             UserInformationController userInformationController = userInformationControllerLoader.getController();
             userInformationController.setNames(student.getName());
@@ -439,55 +440,10 @@ public class GuiUsersController {
             userInformationController.setMatricleOrPersonalNumber(student.getMatricule());
             userInformationController.setGuiUsersController(this);
             userInformationController.setMatricleOrPersonalNumberText();
-            this.userInformationScrollPane.setContent(userInformationVBox);
+            userInformationScrollPane.setContent(userInformationVBox);
             
-        } catch (IOException e){
-            e.printStackTrace();
-            AlertPaneController alertPaneController = new AlertPaneController();
-            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
+        }catch(IOException e){
+            new AlertPopUpGenerator().showMissingFilesMessage();
         }
     }
-
-    //This method only should be used by the UserInformationController Class.
-    void openModifyUserPane(UserInformationController userInformationController){
-        FXMLLoader modifyUserInformationControllerLoader = new FXMLLoader(
-            getClass().getResource("/mx/uv/fei/gui/fxml/users/ModifyUserInformation.fxml")
-        );
-
-        try {
-            VBox modifyUserInformationVBox = modifyUserInformationControllerLoader.load();
-            ModifyUserInformationController modifyUserInformationController = modifyUserInformationControllerLoader.getController();
-            modifyUserInformationController.setNames(userInformationController.getNames());
-            modifyUserInformationController.setFirstSurname(userInformationController.getFirstSurname());
-            modifyUserInformationController.setSecondSurname(userInformationController.getSecondSurname());
-            modifyUserInformationController.setEmail(userInformationController.getEmail());
-            modifyUserInformationController.setAlternateEmail(userInformationController.getAlternateEmail());
-            modifyUserInformationController.setTelephoneNumber(userInformationController.getTelephoneNumber());
-            modifyUserInformationController.setMatricleOrPersonalNumber(userInformationController.getMatriculeOrPersonalNumber());
-            modifyUserInformationController.setStatus(userInformationController.getStatus());
-            modifyUserInformationController.setDataToStatusCombobox(userInformationController.getUserType());
-            modifyUserInformationController.setLabelsCorrectBounds(userInformationController.getUserType());
-            modifyUserInformationController.setUserInformationController(userInformationController);
-            this.userInformationScrollPane.setContent(modifyUserInformationVBox);
-            
-        } catch (IOException e){
-            e.printStackTrace();
-            AlertPaneController alertPaneController = new AlertPaneController();
-            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
-        }
-    }
-
-    private void loadHeader(){
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/HeaderPane.fxml"));
-        
-        try{
-            Pane header = loader.load();
-            header.getStyleClass().add("/mx/uv/fei/gui/stylesfiles/Styles.css");
-            backgroundPane.getChildren().add(header);
-        } catch(IOException exception){
-            AlertPaneController alertPaneController = new AlertPaneController();
-            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
-        }
-    }
-
 }

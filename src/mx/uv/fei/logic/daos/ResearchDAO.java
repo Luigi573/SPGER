@@ -18,7 +18,7 @@ public class ResearchDAO implements IResearchDAO{
         dataBaseManager = new DataBaseManager();
     }
     @Override
-    public int addResearch(ResearchProject research) throws DataWritingException {
+    public int addResearch(ResearchProject research) throws DataWritingException{
         int result = 0;
         PreparedStatement statement;
         String query = "INSERT INTO Anteproyectos(fechaFin, fechaInicio, IdLGAC, descripción, "
@@ -71,7 +71,7 @@ public class ResearchDAO implements IResearchDAO{
     }
 
     @Override
-    public ArrayList<ResearchProject> getResearchProjectList() throws DataRetrievalException    {
+    public ArrayList<ResearchProject> getResearchProjectList() throws DataRetrievalException{
         ArrayList<ResearchProject> researchProjectList = new ArrayList<>();
         PreparedStatement statement;
         
@@ -136,7 +136,7 @@ public class ResearchDAO implements IResearchDAO{
     }
 
     @Override
-    public ArrayList<ResearchProject> getSpecifiedResearchProjectList(String researchName) throws DataRetrievalException {
+    public ArrayList<ResearchProject> getSpecifiedResearchProjectList(String researchName) throws DataRetrievalException{
         ArrayList<ResearchProject> researchProjectList = new ArrayList<>();
         PreparedStatement statement;
         
@@ -202,7 +202,7 @@ public class ResearchDAO implements IResearchDAO{
     }
 
     @Override
-    public ArrayList<ResearchProject> getSpecifiedValidatedResearchProjectList(String researchName) throws DataRetrievalException {
+    public ArrayList<ResearchProject> getSpecifiedValidatedResearchProjectList(String researchName) throws DataRetrievalException{
         ArrayList<ResearchProject> researchProjectList = new ArrayList<>();
         PreparedStatement statement;
         
@@ -269,7 +269,7 @@ public class ResearchDAO implements IResearchDAO{
     }
 
     @Override
-    public ArrayList<ResearchProject> getSpecifiedNotValidatedResearchProjectList(String researchName) throws DataRetrievalException {
+    public ArrayList<ResearchProject> getSpecifiedNotValidatedResearchProjectList(String researchName) throws DataRetrievalException{
         ArrayList<ResearchProject> researchProjectList = new ArrayList<>();
         PreparedStatement statement;
         
@@ -336,7 +336,7 @@ public class ResearchDAO implements IResearchDAO{
     }
 
     @Override
-    public ArrayList<ResearchProject> getSpecifiedValidatedAndNotValidatedResearchProjectList(String researchName) throws DataRetrievalException {
+    public ArrayList<ResearchProject> getSpecifiedValidatedAndNotValidatedResearchProjectList(String researchName) throws DataRetrievalException{
         ArrayList<ResearchProject> researchProjectList = new ArrayList<>();
         PreparedStatement statement;
         
@@ -403,7 +403,7 @@ public class ResearchDAO implements IResearchDAO{
     }
 
     @Override
-    public int modifyResearch(ResearchProject research) throws DataWritingException {
+    public int modifyResearch(ResearchProject research) throws DataWritingException{
         int result = 0;
         PreparedStatement statement;
         String query = "UPDATE Anteproyectos SET fechaFin = ?, fechaInicio = ?, IdLGAC = ?, descripción = ?, "
@@ -455,7 +455,7 @@ public class ResearchDAO implements IResearchDAO{
     }
 
     @Override
-    public void validateResearch(ResearchProject researchProject) throws DataWritingException {
+    public void validateResearch(ResearchProject researchProject) throws DataWritingException{
         PreparedStatement statement;
         String query = "UPDATE Anteproyectos SET V°B° = ? WHERE IdAnteproyecto = ?";
         
@@ -474,7 +474,7 @@ public class ResearchDAO implements IResearchDAO{
     }
 
     @Override
-    public boolean assertResearch(ResearchProject research) {
+    public boolean assertResearch(ResearchProject research){
         return !isBlank(research) && isValidDate(research);
     }
 

@@ -16,8 +16,7 @@ import mx.uv.fei.logic.daos.ResearchDAO;
 import mx.uv.fei.logic.domain.ResearchProject;
 import mx.uv.fei.logic.exceptions.DataWritingException;
 
-public class ResearchInfoPaneController {
-    
+public class ResearchInfoPaneController{
     private ResearchManagerController researchManagerController;
     private ArrayList<Label> directorLabels;
     private ResearchProject research;
@@ -59,9 +58,8 @@ public class ResearchInfoPaneController {
         directorLabels.add(director2Label);
         directorLabels.add(director3Label);
     }
-    
     @FXML
-    private void modifyResearch(ActionEvent event) {
+    private void modifyResearch(ActionEvent event){
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/research/ModifyResearchPane.fxml"));
         
         try{
@@ -71,41 +69,33 @@ public class ResearchInfoPaneController {
             container.setContent(researchInfoPane);
             researchManagerController.loadResearches(0);
         }catch(IOException exception){
-            AlertPopUpGenerator alertPopUpGenerator = new AlertPopUpGenerator();
-            alertPopUpGenerator.showMissingFilesMessage();
+            new AlertPopUpGenerator().showMissingFilesMessage();
         }
     }
-
     @FXML
-    private void validateResearch(ActionEvent event) {
+    private void validateResearch(ActionEvent event){
         ResearchDAO researchDAO = new ResearchDAO();
-        try {
+        try{
             researchDAO.validateResearch(research);
             validateButton.setVisible(false);
             modifyButton.setVisible(false);
-            AlertPopUpGenerator alertPopUpGenerator = new AlertPopUpGenerator();
-            alertPopUpGenerator.showCustomMessage(AlertType.INFORMATION, "Listo","Anteproyecto validado exitosamente");
-        } catch (DataWritingException e) {
-            e.printStackTrace();
-            AlertPopUpGenerator alertPopUpGenerator = new AlertPopUpGenerator();
-            alertPopUpGenerator.showConnectionErrorMessage();
+            new AlertPopUpGenerator().showCustomMessage(AlertType.INFORMATION, "Listo","Anteproyecto validado exitosamente");
+        }catch(DataWritingException e){
+            new AlertPopUpGenerator().showConnectionErrorMessage();
         }
 
         researchManagerController.loadResearches(0);
     }
 
-    public ResearchManagerController getResearchManagerController() {
+    public ResearchManagerController getResearchManagerController(){
         return researchManagerController;
     }
-
-    public void setResearchManagerController(ResearchManagerController researchManagerController) {
+    public void setResearchManagerController(ResearchManagerController researchManagerController){
         this.researchManagerController = researchManagerController;
     }
-    
     public void setContainer(ScrollPane container){
         this.container = container;
     }
-
     public void setResearch(ResearchProject research){
         this.research = research;
         titleLabel.setText(research.getTitle());
@@ -131,11 +121,10 @@ public class ResearchInfoPaneController {
         suggestedBibliographyText.setText(research.getSuggestedBibliography());
         expectedResultText.setText(research.getExpectedResult());
     }
-
-    public void showValidateButton(boolean show) {
-        if(show) {
+    public void showValidateButton(boolean show){
+        if(show){
             validateButton.setVisible(true);
-        } else {
+        }else{
             validateButton.setVisible(false);
         }
     }

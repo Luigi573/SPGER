@@ -9,12 +9,13 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
+import mx.uv.fei.gui.AlertPopUpGenerator;
 import mx.uv.fei.logic.daos.DirectorDAO;
 import mx.uv.fei.logic.daos.KGALDAO;
 import mx.uv.fei.logic.daos.ResearchDAO;
@@ -30,6 +31,7 @@ import mx.uv.fei.logic.exceptions.DataWritingException;
 public class AddResearchController{
     private ArrayList<ComboBox> directorComboBoxes;
     private ResearchManagerController researchManagerController;    
+
     @FXML
     private TextField titleTextField;
     @FXML
@@ -56,8 +58,7 @@ public class AddResearchController{
     private TextArea expectedResultTextArea;
     
     @FXML
-    private void initialize() {
-
+    private void initialize(){
         DirectorDAO directorDAO = new DirectorDAO();
         KGALDAO kgalDAO = new KGALDAO();
         StudentDAO studentDAO = new StudentDAO();
@@ -79,14 +80,11 @@ public class AddResearchController{
             KGALComboBox.setItems(FXCollections.observableArrayList(KGALList));
             studentComboBox.setItems(FXCollections.observableArrayList(studentList));
         } catch(DataRetrievalException exception){
-            Alert errorMessage = new Alert(Alert.AlertType.ERROR);
-            errorMessage.setContentText(exception.getMessage());
-            errorMessage.showAndWait();
+            new AlertPopUpGenerator().showConnectionErrorMessage();
         }
     }
-    
     @FXML
-    private void addResearch(ActionEvent event) {
+    private void addResearch(ActionEvent event){
         //In case the date is NULL, setting other attributes is pointless
         if(allFieldsContainsCorrectValues()){
             ResearchProject research = new ResearchProject();
@@ -120,50 +118,35 @@ public class AddResearchController{
             if(researchDAO.isValidDate(research)){
                 if(!researchDAO.isBlank(research)){
                     try{
-                        if(researchDAO.addResearch(research) > 0) {
-                            Alert successMessage = new Alert(Alert.AlertType.INFORMATION);
-                            successMessage.setHeaderText("Anteproyecto creado exitosamente");
-                            successMessage.showAndWait();
+                        if(researchDAO.addResearch(research) > 0){
+                            new AlertPopUpGenerator().showCustomMessage(AlertType.INFORMATION, "Éxito", "Anteproyecto creado exitosamente");
                             
                             researchManagerController.loadResearches(0);
                             Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
                             stage.close();
                         }
                     }catch(DataWritingException exception){
-                        Alert errorMessage = new Alert(Alert.AlertType.ERROR);
-                        errorMessage.setContentText(exception.getMessage());
-                        errorMessage.showAndWait();
+                        new AlertPopUpGenerator().showConnectionErrorMessage();
                     }
                 }else{
-                    Alert warningMessage = new Alert(Alert.AlertType.WARNING);
-                    warningMessage.setHeaderText("No se puede crear el anteproyecto");
-                    warningMessage.setContentText("Favor de llenar todos los campos");
-                    warningMessage.showAndWait();
+                    new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "No se puede crear el anteproyecto", "Favor de llenar todos los campos");
                 }
             }else{
-                Alert warningMessage = new Alert(Alert.AlertType.WARNING);
-                warningMessage.setHeaderText("No se puede crear el anteproyecto");
-                warningMessage.setContentText("Favor de introducir una fecha válida");
-                warningMessage.showAndWait();
+                new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "No se puede crear el anteproyecto", "Favor de introducir una fecha válida");
             }
         }else{
-            Alert warningMessage = new Alert(Alert.AlertType.WARNING);
-            warningMessage.setHeaderText("Datos inválidos");
-            warningMessage.setContentText("Favor de seleccionar una fecha válida");
-            warningMessage.showAndWait();
+            new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "Datos inválidos", "Favor de seleccionar una fecha válida");
         }
     }
 
-    public ResearchManagerController getResearchManagerController() {
+    public ResearchManagerController getResearchManagerController(){
         return researchManagerController;
     }
-
-    public void setResearchManagerController(ResearchManagerController researchManagerController) {
+    public void setResearchManagerController(ResearchManagerController researchManagerController){
         this.researchManagerController = researchManagerController;
     }
 
-    private boolean allFieldsContainsCorrectValues() {
-
+    private boolean allFieldsContainsCorrectValues(){
         Pattern titlePattern = Pattern.compile("([A-Z][a-z]+)\\s?([A-Z][a-z]+)?\\s?([A-Z][a-z]+)?\\s?([A-Z][a-z]+)?");
         Matcher titleMatcher = titlePattern.matcher(titleTextField.getText());
 

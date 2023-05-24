@@ -5,11 +5,11 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
-import mx.uv.fei.gui.controllers.AlertPaneController;
+import mx.uv.fei.gui.AlertPopUpGenerator;
 import mx.uv.fei.logic.daos.StudentsCoursesDAO;
 import mx.uv.fei.logic.exceptions.DataWritingException;
 
-public class UserPaneController {
+public class UserPaneController{
     private GuiUsersCourseController guiUsersCourseController;
 
     @FXML
@@ -22,44 +22,35 @@ public class UserPaneController {
     private Pane userPane;
     
     @FXML
-    void deleteButtonController(ActionEvent event) {
+    private void deleteButtonController(ActionEvent event){
         StudentsCoursesDAO studentsCoursesDAO = new StudentsCoursesDAO();
-        try {
+        try{
             studentsCoursesDAO.removeStudentCourseFromDatabase(
-                this.matricleOrPersonalNumberLabel.getText(),
-                this.guiUsersCourseController.getCourseInformationController().getNrc()
+                matricleOrPersonalNumberLabel.getText(),
+                guiUsersCourseController.getCourseInformationController().getNrc()
             );
-        } catch (DataWritingException e) {
-            e.printStackTrace();
-            AlertPaneController alertPaneController = new AlertPaneController();
-            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
+        }catch(DataWritingException e){
+            new AlertPopUpGenerator().showConnectionErrorMessage();
         }
-
-        this.guiUsersCourseController.refreshStudents();
+        guiUsersCourseController.refreshStudents();
     }
     
-    public String getMatricleOrPersonalNumber() {
-        return this.matricleOrPersonalNumberLabel.getText();
+    public String getMatricleOrPersonalNumber(){
+        return matricleOrPersonalNumberLabel.getText();
     }
-
-    public void setMatricleOrPersonalNumber(String matricleOrPersonalNumber) {
-        this.matricleOrPersonalNumberLabel.setText(matricleOrPersonalNumber);
+    public void setMatricleOrPersonalNumber(String matricleOrPersonalNumber){
+        matricleOrPersonalNumberLabel.setText(matricleOrPersonalNumber);
     }
-
-    public String getName() {
-        return this.nameLabel.getText();
+    public String getName(){
+        return nameLabel.getText();
     }
-
-    public void setName(String name) {
-        this.nameLabel.setText(name);
+    public void setName(String name){
+        nameLabel.setText(name);
     }
-
-    public GuiUsersCourseController getGuiUsersCourseController() {
+    public GuiUsersCourseController getGuiUsersCourseController(){
         return guiUsersCourseController;
     }
-
-    public void setGuiUsersCourseController(GuiUsersCourseController guiUsersCourseController) {
+    public void setGuiUsersCourseController(GuiUsersCourseController guiUsersCourseController){
         this.guiUsersCourseController = guiUsersCourseController;
     }
-
 }

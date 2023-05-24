@@ -12,16 +12,16 @@ import mx.uv.fei.logic.domain.Professor;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
 import mx.uv.fei.logic.exceptions.DataWritingException;
 
-public class ProfessorDAO implements IProfessorDAO {
+public class ProfessorDAO implements IProfessorDAO{
     private final DataBaseManager dataBaseManager;
 
-    public ProfessorDAO() {
-        this.dataBaseManager = new DataBaseManager();
+    public ProfessorDAO(){
+        dataBaseManager = new DataBaseManager();
     }
 
     @Override
-    public void addProfessorToDatabase(Professor professor) throws DataWritingException {
-        try {
+    public void addProfessorToDatabase(Professor professor) throws DataWritingException{
+        try{
             String query = "INSERT INTO Usuarios (nombre, apellidoPaterno, apellidoMaterno, correo, correoAlterno, " +
                             "númeroTeléfono, estado) VALUES (?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement preparedStatementToInsertUserData = 
@@ -64,18 +64,17 @@ public class ProfessorDAO implements IProfessorDAO {
             preparedStatementToInsertProfessorData.close();
             dataBaseManager.getConnection().close();
 
-        } catch (SQLException e) {
-            e.printStackTrace();
+        }catch(SQLException e){
             throw new DataWritingException("Fallo al recuperar la informacion. Verifique su conexion e intentelo de nuevo");
-        } finally {
+        }finally{
             dataBaseManager.closeConnection();
         }
     }
 
     @Override
-    public void modifyProfessorDataFromDatabase(Professor newProfessorData, Professor originalProfessorData) throws DataWritingException {
-        try {
-            newProfessorData.setUserId(this.getUserIdFromProfessor(originalProfessorData));
+    public void modifyProfessorDataFromDatabase(Professor newProfessorData, Professor originalProfessorData) throws DataWritingException{
+        try{
+            newProfessorData.setUserId(getUserIdFromProfessor(originalProfessorData));
             String queryForUpdateUserData = "UPDATE Usuarios SET nombre = ?, " + 
                            "apellidoPaterno = ?, apellidoMaterno = ?, correo = ?, " + 
                            "correoAlterno = ?, númeroTeléfono = ?, estado = ? " +
@@ -107,22 +106,20 @@ public class ProfessorDAO implements IProfessorDAO {
             preparedStatementForUpdateProfessorData.setInt(1, newProfessorData.getStaffNumber());
             preparedStatementForUpdateProfessorData.setInt(2, newProfessorData.getUserId());
             preparedStatementForUpdateProfessorData.executeUpdate();
-        } catch(SQLException e){
-            e.printStackTrace();
+        }catch(SQLException e){
             throw new DataWritingException("Fallo al recuperar la informacion. Verifique su conexion e intentelo de nuevo");
-        } catch(DataRetrievalException e) {
-            e.printStackTrace();
+        }catch(DataRetrievalException e) {
             throw new DataWritingException("Fallo al recuperar la informacion. Verifique su conexion e intentelo de nuevo");
-        } finally {
+        }finally{
             dataBaseManager.closeConnection();
         }
     }
 
     @Override
-    public ArrayList<Professor> getProfessorsFromDatabase() throws DataRetrievalException {
+    public ArrayList<Professor> getProfessorsFromDatabase() throws DataRetrievalException{
         ArrayList<Professor> professors = new ArrayList<>();
         
-        try {
+        try{
             Statement statement = dataBaseManager.getConnection().createStatement();
             String query = "SELECT * FROM Usuarios U INNER JOIN Profesores P ON U.IdUsuario = P.IdUsuario";
             ResultSet resultSet = statement.executeQuery(query);
@@ -141,10 +138,9 @@ public class ProfessorDAO implements IProfessorDAO {
             }
             resultSet.close();
             dataBaseManager.getConnection().close();
-        } catch (SQLException e) {
-            e.printStackTrace();
+        }catch(SQLException e) {
             throw new DataRetrievalException("Fallo al recuperar la informacion. Verifique su conexion e intentelo de nuevo");
-        } finally {
+        }finally{
             dataBaseManager.closeConnection();
         }
 
@@ -152,10 +148,10 @@ public class ProfessorDAO implements IProfessorDAO {
     }
 
     @Override
-    public ArrayList<Professor> getSpecifiedProfessorsFromDatabase(String professorName) throws DataRetrievalException {
+    public ArrayList<Professor> getSpecifiedProfessorsFromDatabase(String professorName) throws DataRetrievalException{
         ArrayList<Professor> professors = new ArrayList<>();
         
-        try {
+        try{
             String query = "SELECT * FROM Usuarios U INNER JOIN Profesores P ON U.IdUsuario = P.IdUsuario WHERE U.Nombre LIKE ?";
             PreparedStatement preparedStatement = dataBaseManager.getConnection().prepareStatement(query);
             preparedStatement.setString(1, professorName + '%');
@@ -176,10 +172,9 @@ public class ProfessorDAO implements IProfessorDAO {
             }
             resultSet.close();
             dataBaseManager.getConnection().close();
-        } catch (SQLException e) {
-            e.printStackTrace();
+        }catch(SQLException e){
             throw new DataRetrievalException("Fallo al recuperar la informacion. Verifique su conexion e intentelo de nuevo");
-        } finally {
+        }finally{
             dataBaseManager.closeConnection();
         }
 
@@ -187,10 +182,10 @@ public class ProfessorDAO implements IProfessorDAO {
     }
 
     @Override
-    public Professor getProfessorFromDatabase(int personalNumber) throws DataRetrievalException {
+    public Professor getProfessorFromDatabase(int personalNumber) throws DataRetrievalException{
         Professor professor = new Professor();
 
-        try {
+        try{
             String query = "SELECT * FROM Usuarios U INNER JOIN Profesores P ON U.IdUsuario = P.IdUsuario WHERE P.NumPersonal = ?";
             PreparedStatement preparedStatement = dataBaseManager.getConnection().prepareStatement(query);
             preparedStatement.setInt(1, personalNumber);
@@ -209,18 +204,17 @@ public class ProfessorDAO implements IProfessorDAO {
 
             resultSet.close();
             dataBaseManager.getConnection().close();
-        } catch (SQLException e) {
-            e.printStackTrace();
+        }catch(SQLException e){
             throw new DataRetrievalException("Fallo al recuperar la informacion. Verifique su conexion e intentelo de nuevo");
-        } finally {
+        }finally{
             dataBaseManager.closeConnection();
         }
 
         return professor;
     }
 
-    public boolean theProfessorIsAlreadyRegisted(Professor professor) throws DataRetrievalException {
-        try {
+    public boolean theProfessorIsAlreadyRegisted(Professor professor) throws DataRetrievalException{
+        try{
             Statement statement = dataBaseManager.getConnection().createStatement();
             String query = "SELECT U.nombre, U.apellidoPaterno, U.apellidoMaterno, U.correo, " +
                            "U.correoAlterno, U.númeroTeléfono, U.estado, P.NumPersonal FROM Usuarios U " + 
@@ -243,20 +237,19 @@ public class ProfessorDAO implements IProfessorDAO {
             }
             resultSet.close();
             dataBaseManager.getConnection().close();
-        } catch (SQLException e) {
-            e.printStackTrace();
+        }catch(SQLException e){
             throw new DataRetrievalException("Fallo al recuperar la informacion. Verifique su conexion e intentelo de nuevo");
-        } finally {
+        }finally{
             dataBaseManager.closeConnection();
         }
 
         return false;
     }
 
-    private int getUserIdFromProfessor(Professor originalProfessorData) throws DataRetrievalException {
+    private int getUserIdFromProfessor(Professor originalProfessorData) throws DataRetrievalException{
         int UserId = 0;
 
-        try {
+        try{
             String query = "SELECT U.IdUsuario FROM Usuarios U INNER JOIN Profesores P ON " + 
                            "U.IdUsuario = P.IdUsuario WHERE U.nombre = ? && " +
                            "U.apellidoPaterno = ? && U.apellidoMaterno = ? && U.correo = ? && " +
@@ -278,14 +271,12 @@ public class ProfessorDAO implements IProfessorDAO {
             
             resultSet.close();
             dataBaseManager.getConnection().close();
-        } catch (SQLException e) {
-            e.printStackTrace();
+        }catch(SQLException e){
             throw new DataRetrievalException("Fallo al recuperar la informacion. Verifique su conexion e intentelo de nuevo");
-        } finally {
+        }finally{
             dataBaseManager.closeConnection();
         }
 
         return UserId;
     }
-    
 }
