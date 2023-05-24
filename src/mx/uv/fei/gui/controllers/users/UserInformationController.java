@@ -4,8 +4,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import mx.uv.fei.logic.domain.UserType;
 
-public class UserInformationController {
+public class UserInformationController{
     private GuiUsersController guiUsersController;
     private UserController userController;
 
@@ -33,102 +34,81 @@ public class UserInformationController {
     private Label userTypeLabel;
 
     @FXML
-    void editButtonController(ActionEvent event) {
-        this.guiUsersController.openModifyUserPane(this);
+    private void editButtonController(ActionEvent event){
+        guiUsersController.openModifyUserPane(this);
     }
 
-    public String getAlternateEmail() {
+    public String getAlternateEmail(){
         return alternateEmailLabel.getText();
     }
-
-    public void setAlternateEmail(String alternateEmail) {
-        this.alternateEmailLabel.setText(alternateEmail);
+    public void setAlternateEmail(String alternateEmail){
+        alternateEmailLabel.setText(alternateEmail);
     }
-
-    public String getEmail() {
+    public String getEmail(){
         return emailLabel.getText();
     }
-
-    public void setEmail(String email) {
-        this.emailLabel.setText(email);
+    public void setEmail(String email){
+        emailLabel.setText(email);
     }
-
-    public String getFirstSurname() {
+    public String getFirstSurname(){
         return firstSurnameLabel.getText();
     }
-
-    public void setFirstSurname(String firstSurname) {
-        this.firstSurnameLabel.setText(firstSurname);
+    public void setFirstSurname(String firstSurname){
+        firstSurnameLabel.setText(firstSurname);
     }
-
-    public String getNames() {
+    public String getNames(){
         return namesLabel.getText();
     }
-
-    public void setNames(String names) {
-        this.namesLabel.setText(names);
+    public void setNames(String names){
+        namesLabel.setText(names);
     }
-
-    public String getSecondSurname() {
+    public String getSecondSurname(){
         return secondSurnameLabel.getText();
     }
-
-    public void setSecondSurname(String secondSurname) {
-        this.secondSurnameLabel.setText(secondSurname);
+    public void setSecondSurname(String secondSurname){
+        secondSurnameLabel.setText(secondSurname);
     }
-
-    public String getStatus() {
+    public String getStatus(){
         return statusLabel.getText();
     }
-
-    public void setStatus(String status) {
-        this.statusLabel.setText(status);
+    public void setStatus(String status){
+        statusLabel.setText(status);
     }
-
-    public String getTelephoneNumber() {
+    public String getTelephoneNumber(){
         return telephoneNumberLabel.getText();
     }
-
-    public void setTelephoneNumber(String telephoneNumber) {
-        this.telephoneNumberLabel.setText(telephoneNumber);
+    public void setTelephoneNumber(String telephoneNumber){
+        telephoneNumberLabel.setText(telephoneNumber);
     }
-
-    public String getUserType() {
+    public String getUserType(){
         return userTypeLabel.getText();
     }
-
-    public void setUserType(String userType) {
-        this.userTypeLabel.setText(userType);
+    public void setUserType(String userType){
+        userTypeLabel.setText(userType);
     }
-
-    public String getMatriculeOrPersonalNumber() {
+    public String getMatriculeOrPersonalNumber(){
         return matricleOrPersonalNumberLabel.getText();
     }
-
-    public void setMatricleOrPersonalNumber(String type) {
-        this.matricleOrPersonalNumberLabel.setText(type);
+    public void setMatricleOrPersonalNumber(String type){
+        matricleOrPersonalNumberLabel.setText(type);
     }
-
     public void setGuiUsersController(GuiUsersController guiUsersController){
         this.guiUsersController = guiUsersController;
     }
-
-    public UserController getUserController() {
+    public UserController getUserController(){
         return userController;
     }
-
-    public void setUserController(UserController userController) {
+    public void setUserController(UserController userController){
         this.userController = userController;
     }
-
-    public void setMatricleOrPersonalNumberText() {
-        if(userTypeLabel.getText() == "Estudiante"){
+    public void setMatricleOrPersonalNumberText(){
+        if(userTypeLabel.getText().equals(UserType.STUDENT.getValue())){
             matricleOrPersonalNumberText.setText("Matrícula: ");
-            matricleOrPersonalNumberText.setMaxWidth(71);
+            matricleOrPersonalNumberText.setPrefWidth(71);
             matricleOrPersonalNumberLabel.setPrefWidth(282);
         } else {
             matricleOrPersonalNumberText.setText("Número de Personal: ");
-            matricleOrPersonalNumberText.setMaxWidth(141);
+            matricleOrPersonalNumberText.setPrefWidth(141);
             matricleOrPersonalNumberLabel.setPrefWidth(213);
         }
     }

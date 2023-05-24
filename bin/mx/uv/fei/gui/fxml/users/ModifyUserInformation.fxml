@@ -97,13 +97,13 @@
             </AnchorPane>
          </children>
       </HBox>
-      <HBox prefHeight="42.0" prefWidth="369.0">
+      <HBox prefHeight="40.0" prefWidth="353.0">
          <children>
             <Label prefHeight="25.0" prefWidth="10.0" />
-            <Label fx:id="matricleOrPersonalNumberText" prefHeight="43.0" prefWidth="107.0" text="N° de Personal:" />
-            <AnchorPane prefHeight="200.0" prefWidth="200.0">
+            <Label fx:id="matricleOrPersonalNumberText" prefHeight="39.0" prefWidth="144.0" text="Numero de Personal:" />
+            <AnchorPane layoutX="21.0" prefHeight="39.0" prefWidth="188.0">
                <children>
-                  <TextField fx:id="matricleOrPersonalNumberTextField" layoutY="8.0" prefHeight="25.0" prefWidth="324.0" />
+                  <TextField fx:id="matricleOrPersonalNumberTextField" layoutY="7.0" prefHeight="25.0" prefWidth="286.0" />
                </children>
             </AnchorPane>
          </children>

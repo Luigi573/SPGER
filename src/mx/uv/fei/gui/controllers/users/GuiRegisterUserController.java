@@ -12,7 +12,6 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import mx.uv.fei.gui.AlertPopUpGenerator;
-import mx.uv.fei.gui.controllers.AlertPaneController;
 import mx.uv.fei.logic.daos.AcademicBodyHeadDAO;
 import mx.uv.fei.logic.daos.DegreeBossDAO;
 import mx.uv.fei.logic.daos.DirectorDAO;
@@ -23,13 +22,13 @@ import mx.uv.fei.logic.domain.DegreeBoss;
 import mx.uv.fei.logic.domain.Director;
 import mx.uv.fei.logic.domain.Professor;
 import mx.uv.fei.logic.domain.Student;
+import mx.uv.fei.logic.domain.UserType;
 import mx.uv.fei.logic.domain.statuses.ProfessorStatus;
 import mx.uv.fei.logic.domain.statuses.StudentStatus;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
 import mx.uv.fei.logic.exceptions.DataWritingException;
 
-public class GuiRegisterUserController {
-
+public class GuiRegisterUserController{
     private GuiUsersController guiUsersController;
 
     @FXML
@@ -56,75 +55,64 @@ public class GuiRegisterUserController {
     private ComboBox<String> typeComboBox;
 
     @FXML
-    void initialize() {
-        typeComboBox.getItems().add("Estudiante");
-        typeComboBox.getItems().add("Profesor");
-        typeComboBox.getItems().add("Director");
-        typeComboBox.getItems().add("Miembro de Cuerpo Académico");
-        typeComboBox.getItems().add("Jefe de Carrera");
-        typeComboBox.setValue("Estudiante");
+    private void initialize(){
+        typeComboBox.getItems().add(UserType.STUDENT.getValue());
+        typeComboBox.getItems().add(UserType.PROFESSOR.getValue());
+        typeComboBox.getItems().add(UserType.DIRECTOR.getValue());
+        typeComboBox.getItems().add(UserType.ACADEMIC_BODY_HEAD.getValue());
+        typeComboBox.getItems().add(UserType.DEGREE_BOSS.getValue());
+        typeComboBox.setValue(UserType.STUDENT.getValue());
     }
-
     @FXML
-    void registerButtonController(ActionEvent event) {
+    private void registerButtonController(ActionEvent event){
         if(!namesTextField.getText().trim().isEmpty() &&
            !firstSurnameTextField.getText().trim().isEmpty() &&
            !secondSurnameTextField.getText().trim().isEmpty() &&
            !emailTextField.getText().trim().isEmpty() &&
            !alternateEmailTextField.getText().trim().isEmpty() &&
            !telephoneNumberTextField.getText().trim().isEmpty() &&
-           !matricleOrPersonalNumberTextField.getText().trim().isEmpty()) {
-
-            if(allTextFieldsContainsCorrectValues()) {
-                switch(typeComboBox.getValue()) {
-                    case "Director": {
+           !matricleOrPersonalNumberTextField.getText().trim().isEmpty()){
+            if(allTextFieldsContainsCorrectValues()){
+                switch(typeComboBox.getValue()){
+                    case "Director":{
                         registerDirector();
                         break;
                     }
         
-                    case "Miembro de Cuerpo Académico": {
+                    case "Miembro de Cuerpo Académico":{
                         registerAcademicBodyHead();
                         break;
                     }
         
-                    case "Jefe de Carrera": {
+                    case "Jefe de Carrera":{
                         registerDegreeBoss();
                         break;
                     }
         
-                    case "Profesor": {
+                    case "Profesor":{
                         registerProfessor();
                         break;
                     }
         
-                    case "Estudiante": {
+                    case "Estudiante":{
                         registerStudent();
                         break;
                     }
                 }
-
-                AlertPopUpGenerator alertPopUpGenerator = new AlertPopUpGenerator();
-                alertPopUpGenerator.showCustomMessage(AlertType.WARNING, "Éxito", "Usuario registrado exitosamente");
-
+                new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "Éxito", "Usuario registrado exitosamente");
                 guiUsersController.loadUserButtons();
-
                 Stage stage = (Stage) registerButton.getScene().getWindow();
                 stage.close();
-
-            } else {
-                AlertPopUpGenerator alertPopUpGenerator = new AlertPopUpGenerator();
-                alertPopUpGenerator.showCustomMessage(AlertType.WARNING, "Error", "Algunos campos contienen datos inválidos");
+            }else{
+                new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "Error", "Algunos campos contienen datos inválidos");
             }
-
-        } else {
-            AlertPopUpGenerator alertPopUpGenerator = new AlertPopUpGenerator();
-            alertPopUpGenerator.showCustomMessage(AlertType.WARNING, "Error", "Faltan campos por llenar");
+        }else{
+            new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "Error", "Faltan campos por llenar");
         }
     }
-
     @FXML
-    void typeComboBoxController(ActionEvent event) {
-        if(typeComboBox.getValue().equals("Estudiante")){
+    private void typeComboBoxController(ActionEvent event){
+        if(typeComboBox.getValue().equals(UserType.STUDENT.getValue())){
             matricleOrPersonalNumberText.setText("Matrícula: ");
             matricleOrPersonalNumberTextField.setPrefWidth(303);
             matricleOrPersonalNumberTextField.setLayoutX(479);
@@ -139,7 +127,7 @@ public class GuiRegisterUserController {
         this.guiUsersController = guiUsersController;
     }
 
-    private void registerDirector() {
+    private void registerDirector(){
         try {
             DirectorDAO directorDAO = new DirectorDAO();
             Director director = new Director();
@@ -151,24 +139,18 @@ public class GuiRegisterUserController {
             director.setPhoneNumber(telephoneNumberTextField.getText());
             director.setStatus(ProfessorStatus.ACTIVE.getValue());
             director.setStaffNumber(Integer.parseInt(matricleOrPersonalNumberTextField.getText()));
-            if(directorDAO.theDirectorIsAlreadyRegisted(director)) {
-                AlertPaneController alertPaneController = new AlertPaneController();
-                alertPaneController.openWarningPane("El usuario ya está registrado en el sistema");
+            if(directorDAO.theDirectorIsAlreadyRegisted(director)){
+                new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "Error", "El usuario ya está registrado en el sistema");
                 return;
             }
             directorDAO.addDirectorToDatabase(director);
-        } catch (DataRetrievalException e) {
-            e.printStackTrace();
-            AlertPaneController alertPaneController = new AlertPaneController();
-            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
-        } catch (DataWritingException e) {
-            e.printStackTrace();
-            AlertPaneController alertPaneController = new AlertPaneController();
-            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
+        }catch(DataRetrievalException e){
+            new AlertPopUpGenerator().showConnectionErrorMessage();
+        }catch(DataWritingException e){
+            new AlertPopUpGenerator().showConnectionErrorMessage();
         }
     }
-
-    private void registerAcademicBodyHead() {
+    private void registerAcademicBodyHead(){
         try {
             AcademicBodyHeadDAO academicBodyHeadDAO = new AcademicBodyHeadDAO();
             AcademicBodyHead academicBodyHead = new AcademicBodyHead();
@@ -181,22 +163,16 @@ public class GuiRegisterUserController {
             academicBodyHead.setStatus(ProfessorStatus.ACTIVE.getValue());
             academicBodyHead.setStaffNumber(Integer.parseInt(matricleOrPersonalNumberTextField.getText()));
             if(academicBodyHeadDAO.theAcademicBodyHeadIsAlreadyRegisted(academicBodyHead)){
-                AlertPaneController alertPaneController = new AlertPaneController();
-                alertPaneController.openWarningPane("El usuario ya está registrado en el sistema");
+                new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "Error", "El usuario ya está registrado en el sistema");
                 return;
             }
             academicBodyHeadDAO.addAcademicBodyHeadToDatabase(academicBodyHead);
-        } catch (DataRetrievalException e) {
-            e.printStackTrace();
-            AlertPaneController alertPaneController = new AlertPaneController();
-            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
-        } catch (DataWritingException e) {
-            e.printStackTrace();
-            AlertPaneController alertPaneController = new AlertPaneController();
-            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
+        }catch(DataRetrievalException e){
+            new AlertPopUpGenerator().showConnectionErrorMessage();
+        }catch(DataWritingException e){
+            new AlertPopUpGenerator().showConnectionErrorMessage();
         }
     }
-
     private void registerDegreeBoss(){
         try {
             DegreeBossDAO degreeBossDAO = new DegreeBossDAO();
@@ -209,24 +185,18 @@ public class GuiRegisterUserController {
             degreeBoss.setPhoneNumber(telephoneNumberTextField.getText());
             degreeBoss.setStatus(ProfessorStatus.ACTIVE.getValue());
             degreeBoss.setStaffNumber(Integer.parseInt(matricleOrPersonalNumberTextField.getText()));
-                if(degreeBossDAO.theDegreeBossIsAlreadyRegisted(degreeBoss)) {
-                    AlertPaneController alertPaneController = new AlertPaneController();
-                    alertPaneController.openWarningPane("El usuario ya está registrado en el sistema");
-                    return;
-                }
-                degreeBossDAO.addDegreeBossToDatabase(degreeBoss);
-        } catch (DataRetrievalException e) {
-            e.printStackTrace();
-            AlertPaneController alertPaneController = new AlertPaneController();
-            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
-        } catch (DataWritingException e) {
-            e.printStackTrace();
-            AlertPaneController alertPaneController = new AlertPaneController();
-            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
+            if(degreeBossDAO.theDegreeBossIsAlreadyRegisted(degreeBoss)){
+                new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "Error", "El usuario ya está registrado en el sistema");
+                return;
+            }
+            degreeBossDAO.addDegreeBossToDatabase(degreeBoss);
+        }catch(DataRetrievalException e){
+            new AlertPopUpGenerator().showConnectionErrorMessage();
+        }catch(DataWritingException e){
+            new AlertPopUpGenerator().showConnectionErrorMessage();
         }
         
     }
-
     private void registerProfessor(){
         try {
             ProfessorDAO professorDAO = new ProfessorDAO();
@@ -240,22 +210,16 @@ public class GuiRegisterUserController {
             professor.setStatus(ProfessorStatus.ACTIVE.getValue());
             professor.setStaffNumber(Integer.parseInt(matricleOrPersonalNumberTextField.getText()));
             if(professorDAO.theProfessorIsAlreadyRegisted(professor)){
-                AlertPaneController alertPaneController = new AlertPaneController();
-                alertPaneController.openWarningPane("El usuario ya está registrado en el sistema");
+                new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "Error", "El usuario ya está registrado en el sistema");
                 return;
             }
             professorDAO.addProfessorToDatabase(professor);
-        } catch (DataRetrievalException e) {
-            e.printStackTrace();
-            AlertPaneController alertPaneController = new AlertPaneController();
-            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
-        } catch (DataWritingException e) {
-            e.printStackTrace();
-            AlertPaneController alertPaneController = new AlertPaneController();
-            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
+        }catch(DataRetrievalException e){
+            new AlertPopUpGenerator().showConnectionErrorMessage();
+        }catch(DataWritingException e){
+            new AlertPopUpGenerator().showConnectionErrorMessage();
         }
     }
-
     private void registerStudent(){
         try {
             StudentDAO studentDAO = new StudentDAO();
@@ -268,23 +232,17 @@ public class GuiRegisterUserController {
             student.setPhoneNumber(telephoneNumberTextField.getText());
             student.setStatus(StudentStatus.AVAILABLE.getValue());
             student.setMatricle(matricleOrPersonalNumberTextField.getText());
-            if(studentDAO.theStudentIsAlreadyRegisted(student)) {
-                AlertPaneController alertPaneController = new AlertPaneController();
-                alertPaneController.openWarningPane("El usuario ya está registrado en el sistema");
+            if(studentDAO.theStudentIsAlreadyRegisted(student)){
+                new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "Error", "El usuario ya está registrado en el sistema");
                 return;
             }
             studentDAO.addStudentToDatabase(student);
-        } catch (DataRetrievalException e) {
-            e.printStackTrace();
-            AlertPaneController alertPaneController = new AlertPaneController();
-            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
-        } catch (DataWritingException e) {
-            e.printStackTrace();
-            AlertPaneController alertPaneController = new AlertPaneController();
-            alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
+        }catch(DataRetrievalException e){
+            new AlertPopUpGenerator().showConnectionErrorMessage();
+        }catch(DataWritingException e){
+            new AlertPopUpGenerator().showConnectionErrorMessage();
         }
     }
-
     private boolean allTextFieldsContainsCorrectValues(){
         Pattern namesPattern = Pattern.compile("([A-Z][a-z]+)\\s?([A-Z][a-z]+)?\\s?([A-Z][a-z]+)?\\s?([A-Z][a-z]+)?"),
                 firstSurnamePattern = Pattern.compile("([A-Z][a-z]+)\\s?([A-Z][a-z]+)?\\s?([A-Z][a-z]+)?\\s?([A-Z][a-z]+)?"),
@@ -295,27 +253,23 @@ public class GuiRegisterUserController {
                 matricleOrPersonalNumberPattern = Pattern.compile("");
     
         switch(typeComboBox.getValue()){
-            case "Director": {
+            case "Director":{
                 matricleOrPersonalNumberPattern = Pattern.compile("^[0-9]{9}$");
                 break;
             }
-
-            case "Miembro de Cuerpo Académico": {
+            case "Miembro de Cuerpo Académico":{
                 matricleOrPersonalNumberPattern = Pattern.compile("^[0-9]{9}$");
                 break;
             }
-
-            case "Jefe de Carrera": {
+            case "Jefe de Carrera":{
                 matricleOrPersonalNumberPattern = Pattern.compile("^[0-9]{9}$");
                 break;
             }
-
-            case "Profesor": {
+            case "Profesor":{
                 matricleOrPersonalNumberPattern = Pattern.compile("^[0-9]{9}$");
                 break;
             }
-
-            case "Estudiante": {
+            case "Estudiante":{
                 matricleOrPersonalNumberPattern = Pattern.compile("^[z][S][0-9]{8}$");
                 break;
             }
@@ -338,5 +292,4 @@ public class GuiRegisterUserController {
 
         return false;
     }
-
 }

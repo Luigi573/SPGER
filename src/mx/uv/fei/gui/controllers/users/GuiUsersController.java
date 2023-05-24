@@ -18,7 +18,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import mx.uv.fei.gui.controllers.AlertPaneController;
 import mx.uv.fei.logic.daos.AcademicBodyHeadDAO;
 import mx.uv.fei.logic.daos.DegreeBossDAO;
 import mx.uv.fei.logic.daos.DirectorDAO;
@@ -106,7 +105,6 @@ public class GuiUsersController {
             alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
         }
     }
-
     public void loadUserButtons() {
         StudentDAO studentDAO = new StudentDAO();
         ProfessorDAO professorDAO = new ProfessorDAO();
@@ -131,7 +129,7 @@ public class GuiUsersController {
             alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
         }
     }
-
+    
     private void studentButtonMaker(ArrayList<Student> students){
         try {
             for(Student student : students){
@@ -468,6 +466,7 @@ public class GuiUsersController {
             modifyUserInformationController.setMatricleOrPersonalNumber(userInformationController.getMatriculeOrPersonalNumber());
             modifyUserInformationController.setStatus(userInformationController.getStatus());
             modifyUserInformationController.setDataToStatusCombobox(userInformationController.getUserType());
+            modifyUserInformationController.setLabelsCorrectBounds(userInformationController.getUserType());
             modifyUserInformationController.setUserInformationController(userInformationController);
             this.userInformationScrollPane.setContent(modifyUserInformationVBox);
             

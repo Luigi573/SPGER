@@ -42,7 +42,6 @@ import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.view.JasperViewer;
 
 public class GuiResearchReportController {
-    
     private final DirectoryChooser directoryChooser = new DirectoryChooser();
     
     @FXML
@@ -77,20 +76,19 @@ public class GuiResearchReportController {
     private ToggleButton showValidatedToggleButton;
 
     @FXML
-    void initialize() {
+    private void initialize(){
         loadHeader();
 
         researchesVBox.getChildren().clear();
         ResearchesReportDAO researchesReportDAO = new ResearchesReportDAO();
         ArrayList<Research> researches = new ArrayList<>();
-        try {
+        try{
             researches = researchesReportDAO.getResearchesFromDatabase(findByTitleTextField.getText(), "");
-        } catch (DataRetrievalException e) {
-            AlertPopUpGenerator alertPopUpGenerator = new AlertPopUpGenerator();
-            alertPopUpGenerator.showConnectionErrorMessage();
+        }catch(DataRetrievalException e) {
+            new AlertPopUpGenerator().showConnectionErrorMessage();
         }
         
-        try {
+        try{
             for(Research research : researches){
                 FXMLLoader researchItemControllerLoader = new FXMLLoader(
                     getClass().getResource("/mx/uv/fei/gui/fxml/reports/ResearchItem.fxml")
@@ -101,33 +99,30 @@ public class GuiResearchReportController {
                 researchItemController.setGuiResearchReportController(this);
                 researchesVBox.getChildren().add(researchItemHBox);
             }
-        } catch (IOException e) {
-            AlertPopUpGenerator alertPopUpGenerator = new AlertPopUpGenerator();
-            alertPopUpGenerator.showMissingFilesMessage();
+        }catch(IOException e) {
+            new AlertPopUpGenerator().showMissingFilesMessage();
         }
     }
-
     @FXML
-    void generateReportButtonController(ActionEvent event) {
-        if(selectedResearchesVBox.getChildren().isEmpty()) {
-            AlertPopUpGenerator alertPopUpGenerator = new AlertPopUpGenerator();
-            alertPopUpGenerator.showCustomMessage(AlertType.WARNING, "Error", "No se puede generar un reporte vacío.");
+    private void generateReportButtonController(ActionEvent event){
+        if(selectedResearchesVBox.getChildren().isEmpty()){
+            new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "Error", "No se puede generar un reporte vacío.");
             return;
         }
 
         directoryChooser.setTitle("Seleccionar rrrrrrrrrrrrrrrrrrrrrrrrrrrruta");
         File choosedDirectory = directoryChooser.showDialog(null);
-        if(choosedDirectory == null) {
+        if(choosedDirectory == null){
             return;
         }
 
         ArrayList<String> selectedResearches = new ArrayList<>();
-        for(Node hbox : ((VBox)selectedResearchesVBox).getChildren()) {
+        for(Node hbox : ((VBox)selectedResearchesVBox).getChildren()){
             Node label = ((HBox)hbox).getChildren().get(1); 
             selectedResearches.add(((Label)label).getText());
         }
 
-        try {
+        try{
             ResearchesReportDAO researchesReportDAO = new ResearchesReportDAO();
             ArrayList<Research> researches = researchesReportDAO.getSelectedResearchesFromDatabase(selectedResearches);
 
@@ -147,51 +142,45 @@ public class GuiResearchReportController {
             view.setVisible(true);
             JasperExportManager.exportReportToPdfStream(jasperPrint, reportFinale);
             
-        } catch (IOException ioe) {
-            AlertPopUpGenerator alertPopUpGenerator = new AlertPopUpGenerator();
-            alertPopUpGenerator.showMissingFilesMessage();
-        } catch (JRException jre) {
-            AlertPopUpGenerator alertPopUpGenerator = new AlertPopUpGenerator();
-            alertPopUpGenerator.showMissingFilesMessage();
-        } catch (DataRetrievalException e) {
-            AlertPopUpGenerator alertPopUpGenerator = new AlertPopUpGenerator();
-            alertPopUpGenerator.showConnectionErrorMessage();
+        }catch(IOException ioe){
+            new AlertPopUpGenerator().showMissingFilesMessage();
+        }catch(JRException jre){
+            new AlertPopUpGenerator().showMissingFilesMessage();
+        }catch(DataRetrievalException e){
+            new AlertPopUpGenerator().showConnectionErrorMessage();
         }
     }
-
     @FXML
-    void searchResearchesButtonController(ActionEvent event) {
+    private void searchResearchesButtonController(ActionEvent event){
         researchesVBox.getChildren().removeAll(researchesVBox.getChildren());
         ResearchesReportDAO researchesReportDAO = new ResearchesReportDAO();
         ArrayList<Research> researches = new ArrayList<>();
-        try {
+        try{
             if(!showNotValidatedToggleButton.isSelected() &&
-               !showValidatedToggleButton.isSelected()) {
+               !showValidatedToggleButton.isSelected()){
                 researches = researchesReportDAO.getResearchesFromDatabase(findByTitleTextField.getText(), "");
             }
         
-            
             if(!showNotValidatedToggleButton.isSelected() &&
-               showValidatedToggleButton.isSelected()) {
+               showValidatedToggleButton.isSelected()){
                 researches = researchesReportDAO.getValidatedResearchesFromDatabase(findByTitleTextField.getText());
             }
         
             if(showNotValidatedToggleButton.isSelected() &&
-               !showValidatedToggleButton.isSelected()) {
+               !showValidatedToggleButton.isSelected()){
                 researches = researchesReportDAO.getNotValidatedResearchesFromDatabase(findByTitleTextField.getText());
             }
         
             if(showNotValidatedToggleButton.isSelected() &&
-               showValidatedToggleButton.isSelected()) {
+               showValidatedToggleButton.isSelected()){
                 researches = researchesReportDAO.getValidatedAndNotValidatedResearchesFromDatabase(findByTitleTextField.getText());
             }
 
-        } catch (DataRetrievalException e) {
-            AlertPopUpGenerator alertPopUpGenerator = new AlertPopUpGenerator();
-            alertPopUpGenerator.showConnectionErrorMessage();
+        }catch(DataRetrievalException e){
+            new AlertPopUpGenerator().showConnectionErrorMessage();
         }
         
-        try {
+        try{
             for(Research research : researches){
                 FXMLLoader researchItemControllerLoader = new FXMLLoader(
                     getClass().getResource("/mx/uv/fei/gui/fxml/reports/ResearchItem.fxml")
@@ -202,34 +191,30 @@ public class GuiResearchReportController {
                 researchItemController.setGuiResearchReportController(this);
                 researchesVBox.getChildren().add(researchItemHBox);
             }
-        } catch (IOException e) {
-            AlertPopUpGenerator alertPopUpGenerator = new AlertPopUpGenerator();
-            alertPopUpGenerator.showMissingFilesMessage();
-        }
-            
+        }catch(IOException e) {
+            new AlertPopUpGenerator().showMissingFilesMessage();
+        }  
     }
-
     @FXML
-    private void showValidatedToggleButtonController(ActionEvent event) {
-        if(!showValidatedToggleButton.isSelected()) {
+    private void showValidatedToggleButtonController(ActionEvent event){
+        if(!showValidatedToggleButton.isSelected()){
             showValidatedToggleButton.setText("No");
-        } else {
+        }else{
             showValidatedToggleButton.setText("Si");
         }
     }
-
     @FXML
-    private void showNotValidatedToggleButtonController(ActionEvent event) {
-        if(!showNotValidatedToggleButton.isSelected()) {
+    private void showNotValidatedToggleButtonController(ActionEvent event){
+        if(!showNotValidatedToggleButton.isSelected()){
             showNotValidatedToggleButton.setText("No");
-        } else {
+        }else{
             showNotValidatedToggleButton.setText("Si");
         }
     }
 
     //This method only should be executed by the ResearchItemController Class, do not execute  method in another class.
-    public void setElementToSelectedResearchesVBox(String selectedResearchTitle) {
-        try {
+    public void setElementToSelectedResearchesVBox(String selectedResearchTitle){
+        try{
             FXMLLoader selectedResearchItemControllerLoader = new FXMLLoader(
                 getClass().getResource("/mx/uv/fei/gui/fxml/reports/SelectedResearchItem.fxml")
             );
@@ -239,15 +224,13 @@ public class GuiResearchReportController {
             selectedResearchItemController.setSelectedResearchNameLabel(selectedResearchTitle);
             selectedResearchesVBox.getChildren().add(selectedResearchItemHBox);
             selectedResearchItemController.setGuiResearchReportController(this);
-        } catch (IOException e) {
-            AlertPopUpGenerator alertPopUpGenerator = new AlertPopUpGenerator();
-            alertPopUpGenerator.showMissingFilesMessage();
+        }catch(IOException e) {
+            new AlertPopUpGenerator().showMissingFilesMessage();
         }
     }
-
     //This method only should be executed by the SelectedResearchItemController Class, do not execute  method in another class.
-    public void setElementToResearchesVBox(String researchTitle) {
-        try {
+    public void setElementToResearchesVBox(String researchTitle){
+        try{
             FXMLLoader researchItemControllerLoader = new FXMLLoader(
                 getClass().getResource("/mx/uv/fei/gui/fxml/reports/ResearchItem.fxml")
             );
@@ -257,45 +240,40 @@ public class GuiResearchReportController {
             researchItemController.setResearchNameLabel(researchTitle);
             researchesVBox.getChildren().add(researchItemHBox);
             researchItemController.setGuiResearchReportController(this);
-        } catch (IOException e) {
-            AlertPopUpGenerator alertPopUpGenerator = new AlertPopUpGenerator();
-            alertPopUpGenerator.showMissingFilesMessage();
+        }catch(IOException e){
+            new AlertPopUpGenerator().showMissingFilesMessage();
         }
     }
-
     //This method only should be executed by the ResearchItemController Class, do not execute  method in another class.
     public void removeElementFromResearchesVBox(String researchItemControllerTitle){
         int researchesVBoxIndexForRemove = 0;
-        for(Node hbox : ((VBox)researchesVBox).getChildren()) {
+        for(Node hbox : ((VBox)researchesVBox).getChildren()){
             Node label = ((HBox)hbox).getChildren().get(1); 
-            if(((Label)label).getText() == researchItemControllerTitle) {
+            if(((Label)label).getText() == researchItemControllerTitle){
                 researchesVBox.getChildren().remove(researchesVBoxIndexForRemove);
                 break;
             }    
             researchesVBoxIndexForRemove++;
         }
     }
-
     //This method only should be executed by the SelectedResearchItemController Class, do not execute  method in another class.
     public void removeElementFromSelectedResearchesVBox(String selectedResearchItemControllerTitle){
         int selectedResearchesVBoxIndexForRemove = 0;
-        for(Node hbox : ((VBox)selectedResearchesVBox).getChildren()) {
+        for(Node hbox : ((VBox)selectedResearchesVBox).getChildren()){
             Node label = ((HBox)hbox).getChildren().get(1); 
-            if(((Label)label).getText() == selectedResearchItemControllerTitle) {
+            if(((Label)label).getText() == selectedResearchItemControllerTitle){
                 selectedResearchesVBox.getChildren().remove(selectedResearchesVBoxIndexForRemove);
                 break;
             }    
             selectedResearchesVBoxIndexForRemove++;
         }
     }
-
     //This method only should be executed by the ResearchItemController Class, do not execute  method in another class.
-    public VBox getResearchesVBox() {
+    public VBox getResearchesVBox(){
         return researchesVBox;
     }
-
     //This method only should be executed by the SelectedResearchItemController Class, do not execute  method in another class.
-    public VBox getSelectedResearchesVBox() {
+    public VBox getSelectedResearchesVBox(){
         return selectedResearchesVBox;
     }
 
@@ -311,9 +289,7 @@ public class GuiResearchReportController {
             headerPaneController.setVisibleNRCLabel(false);
             
         }catch(IOException exception){
-            AlertPopUpGenerator alertPopUpGenerator = new AlertPopUpGenerator();
-            alertPopUpGenerator.showMissingFilesMessage();
+            new AlertPopUpGenerator().showMissingFilesMessage();
         }
     }
-
 }

@@ -10,18 +10,14 @@ import mx.uv.fei.logic.daos.StudentsCoursesDAO;
 import mx.uv.fei.logic.exceptions.DataWritingException;
 
 public class UserPaneController {
-
     private GuiUsersCourseController guiUsersCourseController;
 
     @FXML
     private Button deleteButton;
-
     @FXML
     private Label matricleOrPersonalNumberLabel;
-
     @FXML
     private Label nameLabel;
-
     @FXML
     private Pane userPane;
     
@@ -39,7 +35,7 @@ public class UserPaneController {
             alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
         }
 
-        this.guiUsersCourseController.refreshUsers();
+        this.guiUsersCourseController.refreshStudents();
     }
     
     public String getMatricleOrPersonalNumber() {

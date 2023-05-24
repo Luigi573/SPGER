@@ -4,25 +4,11 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.stage.Stage;
-import mx.uv.fei.dataaccess.DataBaseManager;
-import mx.uv.fei.gui.controllers.reports.GuiResearchReportController;
-import mx.uv.fei.logic.exceptions.DataInsertionException;
-import mx.uv.fei.logic.exceptions.DataRetrievalException;
-import mx.uv.fei.logic.daos.AcademicBodyDAO;
-import mx.uv.fei.logic.daos.AdvanceDAO;
-import mx.uv.fei.logic.daos.ReceptionalWorkDAO;
-import mx.uv.fei.logic.daos.ResearchesReportDAO;
-import mx.uv.fei.logic.domain.Professor;
-import mx.uv.fei.logic.domain.Research;
-import mx.uv.fei.logic.domain.ResearchReport;
 
-
-public class Main extends Application {
-
+public class Main extends Application{
     @Override
-    public void start(Stage arg0) throws Exception {
+    public void start(Stage arg0) throws Exception{
         Parent guiUsuarios;
         FXMLLoader loader = new FXMLLoader(
             //getClass().getResource("/mx/uv/fei/gui/fxml/kgal/KGALList.fxml")
@@ -38,8 +24,10 @@ public class Main extends Application {
         //TODO
         //Nombres y apellidos en userspanes y studentadder en GuiUsersCourse y GuiStudentAdder GG
         //Mostrar estatus de usuarios en comboboxes para registrar usuarios en GuiRegisterUsers y ModifyUserPane GG
-        //Checar lo de estudiantes activos y disponibles con xavier
-        //Detalles estéticos en GuiUsers cuando cambias la matricula a nombre de personal y viceversa 1/2 falta userinformation y modifyuserinformation
+        //Checar lo de estudiantes activos y disponibles con xavier GG
+        //Detalles estéticos en GuiUsers cuando cambias la matricula a nombre de personal y viceversa GG
+        //Crear enum con tipo de usuario para comboboxes
+
         //Al abrir GuiResearchReport en ResearchManager no debe de salir como ventana emergente GG
         //Color de bordes de botones de cursos, usuarios y anteproyectos
         //Cambiar la clase de ventanas emergentes a alertpopup
@@ -56,7 +44,6 @@ public class Main extends Application {
         stage.setResizable(false);
         stage.show();
     }
-    
     public static void main (String args[]) {
         launch(args);
     }

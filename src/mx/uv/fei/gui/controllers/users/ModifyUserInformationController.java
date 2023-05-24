@@ -20,7 +20,6 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import mx.uv.fei.gui.AlertPopUpGenerator;
-import mx.uv.fei.gui.controllers.AlertPaneController;
 import mx.uv.fei.logic.daos.AcademicBodyHeadDAO;
 import mx.uv.fei.logic.daos.DegreeBossDAO;
 import mx.uv.fei.logic.daos.DirectorDAO;
@@ -31,11 +30,13 @@ import mx.uv.fei.logic.domain.DegreeBoss;
 import mx.uv.fei.logic.domain.Director;
 import mx.uv.fei.logic.domain.Professor;
 import mx.uv.fei.logic.domain.Student;
+import mx.uv.fei.logic.domain.UserType;
+import mx.uv.fei.logic.domain.statuses.ProfessorStatus;
+import mx.uv.fei.logic.domain.statuses.StudentStatus;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
 import mx.uv.fei.logic.exceptions.DataWritingException;
 
 public class ModifyUserInformationController {
-    
     private UserInformationController userInformationController;
 
     @FXML
@@ -66,17 +67,15 @@ public class ModifyUserInformationController {
     private TextField telephoneNumberTextField;
 
     @FXML
-    void initialize(){
+    private void initialize(){
         
     }
-
     @FXML
-    void exitButtonController(ActionEvent event) {
+    private void exitButtonController(ActionEvent event) {
         returnToGuiUsers(event);
     }
-
     @FXML
-    void modifyButtonController(ActionEvent event) {
+    private void modifyButtonController(ActionEvent event) {
         if(!this.namesTextField.getText().trim().isEmpty() &&
            !this.firstSurnameTextField.getText().trim().isEmpty() &&
            !this.secondSurnameTextField.getText().trim().isEmpty() &&
@@ -121,69 +120,85 @@ public class ModifyUserInformationController {
     public String getAlternateEmail() {
         return this.alternateEmailTextField.getText();
     }
-
     public void setAlternateEmail(String alternateEmail) {
         this.alternateEmailTextField.setText(alternateEmail);
     }
-
     public String getEmail() {
         return this.emailTextField.getText();
     }
-
     public void setEmail(String email) {
         this.emailTextField.setText(email);
     }
-
     public String getFirstSurname() {
         return this.firstSurnameTextField.getText();
     }
-
     public void setFirstSurname(String firstSurname) {
         this.firstSurnameTextField.setText(firstSurname);
     }
-
     public String getMatriculeOrPersonalNumber() {
         return this.matricleOrPersonalNumberTextField.getText();
     }
-
     public void setMatricleOrPersonalNumber(String matricleOrPersonalNumber) {
         this.matricleOrPersonalNumberTextField.setText(matricleOrPersonalNumber);
     }
-
     public String getNames() {
         return this.namesTextField.getText();
     }
-
     public void setNames(String names) {
         this.namesTextField.setText(names);
     }
-
     public String getSecondSurname() {
         return this.secondSurnameTextField.getText();
     }
-
     public void setSecondSurname(String secondSurname) {
         this.secondSurnameTextField.setText(secondSurname);
     }
-
     public String getStatus() {
         return this.statusComboBox.getItems().get(0);
     }
-
     public void setStatus(String status) {
         this.statusComboBox.setValue(status);
     }
-
     public String getTelephoneNumber() {
         return this.telephoneNumberTextField.getText();
     }
-
     public void setTelephoneNumber(String telephoneNumber) {
         this.telephoneNumberTextField.setText(telephoneNumber);
     }
-
     public void setUserInformationController(UserInformationController userInformationController){
         this.userInformationController = userInformationController;
+    }
+
+    public void setDataToStatusCombobox(String userType) {
+        if(userType.equals(UserType.STUDENT.getValue())) {
+            statusComboBox.getItems().add(StudentStatus.ACTIVE.getValue());
+            statusComboBox.getItems().add(StudentStatus.AVAILABLE.getValue());
+            statusComboBox.getItems().add(StudentStatus.GRADUATED.getValue());
+            statusComboBox.getItems().add(StudentStatus.DROPPED.getValue());
+        } else {
+            statusComboBox.getItems().add(ProfessorStatus.ACTIVE.getValue());
+            statusComboBox.getItems().add(ProfessorStatus.INACTIVE.getValue());
+        }
+    }
+
+    public void setLabelsCorrectBounds(String userType){
+        if(userType.equals(UserType.STUDENT.getValue())){
+            matricleOrPersonalNumberText.setText("Matrícula: ");
+            matricleOrPersonalNumberText.setPrefWidth(72);
+            matricleOrPersonalNumberText.setLayoutX(0);
+            matricleOrPersonalNumberText.setLayoutY(0);
+            matricleOrPersonalNumberTextField.setPrefWidth(350);
+            matricleOrPersonalNumberTextField.setLayoutX(1);
+            matricleOrPersonalNumberTextField.setLayoutY(7);
+        } else {
+            matricleOrPersonalNumberText.setText("Número de Personal: ");
+            matricleOrPersonalNumberText.setPrefWidth(144);
+            matricleOrPersonalNumberText.setLayoutX(0);
+            matricleOrPersonalNumberText.setLayoutY(0);
+            matricleOrPersonalNumberTextField.setPrefWidth(286);
+            matricleOrPersonalNumberTextField.setLayoutX(1);
+            matricleOrPersonalNumberTextField.setLayoutY(7);
+        }
     }
 
     private void modifyStudent(ActionEvent event) {
@@ -231,7 +246,6 @@ public class ModifyUserInformationController {
             alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
         }
     }
-
     private void modifyProfessor(ActionEvent event){
         ProfessorDAO professorDAO = new ProfessorDAO();
         Professor newProfessorData = new Professor();
@@ -277,7 +291,6 @@ public class ModifyUserInformationController {
             alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
         }
     }
-
     private void modifyDirector(ActionEvent event) {
         DirectorDAO directorDAO = new DirectorDAO();
         Director newDirectorData = new Director();
@@ -322,7 +335,6 @@ public class ModifyUserInformationController {
             alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
         }
     }
-
     private void modifyAcademicBodyHead(ActionEvent event) {
         AcademicBodyHeadDAO academicBodyHeadDAO = new AcademicBodyHeadDAO();
         AcademicBodyHead newAcademicBodyHeadData = new AcademicBodyHead();
@@ -368,7 +380,6 @@ public class ModifyUserInformationController {
             alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
         }
     }
-
     private void modifyDegreeBoss(ActionEvent event) {
         DegreeBossDAO degreeBossDAO = new DegreeBossDAO();
         DegreeBoss newDegreeBossData = new DegreeBoss();
@@ -414,7 +425,6 @@ public class ModifyUserInformationController {
             alertPaneController.openErrorPane("Hubo un error, inténtelo más tarde");
         }
     }
-
     private ArrayList<String> getAllLabelsDataFromUserInformationPane(){
         ArrayList<String> userInformationPaneData = new ArrayList<>();
         userInformationPaneData.add(this.userInformationController.getNames());
@@ -427,7 +437,6 @@ public class ModifyUserInformationController {
         userInformationPaneData.add(this.userInformationController.getMatriculeOrPersonalNumber());
         return userInformationPaneData;
     }
-
     private boolean allTextFieldsContainsCorrectValues(){
         Pattern namesPattern = Pattern.compile("([A-Z][a-z]+)\\s?([A-Z][a-z]+)?\\s?([A-Z][a-z]+)?\\s?([A-Z][a-z]+)?"),
                 firstSurnamePattern = Pattern.compile("([A-Z][a-z]+)\\s?([A-Z][a-z]+)?\\s?([A-Z][a-z]+)?\\s?([A-Z][a-z]+)?"),
@@ -438,6 +447,7 @@ public class ModifyUserInformationController {
                 matricleOrPersonalNumberPattern = Pattern.compile("");
     
         switch(this.userInformationController.getUserType()) {
+            //case UserType.DIRECTOR.getValue(): {
             case "Director": {
                 matricleOrPersonalNumberPattern = Pattern.compile("^[0-9]{9}$");
                 break;
@@ -481,7 +491,6 @@ public class ModifyUserInformationController {
 
         return false;
     }
-
     private void returnToGuiUsers(ActionEvent event) {
         try{
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/users/GuiUsers.fxml"));
@@ -498,17 +507,4 @@ public class ModifyUserInformationController {
             alertPopUpGenerator.showMissingFilesMessage();
         }
     }
-
-    public void setDataToStatusCombobox(String userType) {
-        if(userType.equals("Estudiante")) {
-            statusComboBox.getItems().add("Activo");
-            statusComboBox.getItems().add("Inactivo");
-            statusComboBox.getItems().add("Graduado");
-            statusComboBox.getItems().add("Baja");
-        } else {
-            statusComboBox.getItems().add("Activo");
-            statusComboBox.getItems().add("Inactivo");
-        }
-    }
-
 }
