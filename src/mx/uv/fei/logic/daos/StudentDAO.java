@@ -3,6 +3,7 @@ package mx.uv.fei.logic.daos;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
@@ -64,6 +65,9 @@ public class StudentDAO implements IStudentDAO{
             preparedStatementToInsertStudentData.close();
             dataBaseManager.getConnection().close();
 
+        }catch(SQLIntegrityConstraintViolationException e){
+            deleteStudentFromUsersTable(student);
+            throw new DataWritingException("Error al agregar estudiante. Verifique su conexion e intentelo de nuevo");
         }catch(SQLException e){
             throw new DataWritingException("Error al agregar estudiante. Verifique su conexion e intentelo de nuevo");
         }finally{
@@ -453,5 +457,23 @@ public class StudentDAO implements IStudentDAO{
         }
 
         return userId;
+    }
+    private void deleteStudentFromUsersTable(Student student) throws DataWritingException{
+        String queryToInsertUserData = "DELETE FROM Usuarios WHERE nombre = ? && apellidoPaterno = ? && apellidoMaterno = ? && " +
+            "correo = ? && correoAlterno = ? && númeroTeléfono = ? && estado = ?";
+        try{
+            PreparedStatement preparedStatementToInsertUserData = 
+            dataBaseManager.getConnection().prepareStatement(queryToInsertUserData);
+            preparedStatementToInsertUserData.setString(1, student.getName());
+            preparedStatementToInsertUserData.setString(2, student.getFirstSurname());
+            preparedStatementToInsertUserData.setString(3, student.getSecondSurname());
+            preparedStatementToInsertUserData.setString(4, student.getEmailAddress());
+            preparedStatementToInsertUserData.setString(5, student.getAlternateEmail());
+            preparedStatementToInsertUserData.setString(6, student.getPhoneNumber());
+            preparedStatementToInsertUserData.setString(7, student.getStatus());
+            preparedStatementToInsertUserData.executeUpdate();
+        }catch(SQLException e){
+            throw new DataWritingException("Error al eliminar estudiante de la tabla usuarios");
+        }
     }
 }
