@@ -1,0 +1,167 @@
+Text {
+    -fx-fill: white;
+}
+
+TextFlow {
+    -fx-background-color: #62ca4a;
+}
+
+.root {
+    -fx-background-color: #31B189;
+    /*-fx-background-color: #ff4800;*/
+}
+
+.anchor-pane {
+    -fx-background-color: #31B189;
+}
+
+.button {
+    -fx-background-radius: 50;
+    -fx-background-color: #FFE3B3;
+    -fx-text-fill: #000000;
+    -fx-cursor: hand;
+}
+
+.calendar-grid {
+    -fx-background-color: #FFC872;
+}
+
+.choice-box {
+
+}
+
+.combo-box {
+    -fx-background-color: #FFC872;
+    -fx-text-fill: #000000;
+}
+
+.combo-box-popup {
+    -fx-background-color: #FFC872;
+}
+
+.combo-box-popup .list-view {
+    -fx-background-color: #FFC872;
+    -fx-text-fill: #000000;
+    -fx-cell-size: 1.66667em;
+}
+
+.combo-box-popup .list-cell {
+    -fx-background-color: #FFE3B3;
+    -fx-text-fill: #000000;
+    -fx-cell-size: 1.66667em;
+}
+
+.date-picker {
+    -fx-control-inner-background: #FFE3B3;
+}
+
+.date-picker .arrow-button {
+	-fx-background-color: #5a9e4b;
+	-fx-background-radius: 0;
+}
+
+.date-picker .arrow-button:hover {
+	-fx-background-color: #497e3d;
+}
+
+.date-picker-popup > .month-year-pane {
+	-fx-background-color: #eeb65b;
+}
+
+.dialog {
+    -fx-background-color: #31B189;
+}
+
+.dialog:header *.header-panel {
+    -fx-background-color: #31B189;
+}
+
+.label {
+    -fx-background-color: transparent;
+    -fx-text-fill: #000000;
+}
+
+.scroll-bar:horizontal, .scroll-bar:vertical{
+    -fx-background-color: #5a9e4b;
+}
+
+.scroll-bar .increment-button ,
+.scroll-bar .decrement-button {
+    -fx-background-color : #7ACE67;
+}
+
+ .scroll-bar .increment-arrow,
+ .scroll-bar .decrement-arrow{
+    -fx-background-color : #5a9e4b;
+}
+
+.scroll-bar:horizontal .thumb,
+.scroll-bar:vertical .thumb {
+    -fx-background-color : #7ACE67;
+}
+
+.scroll-pane {
+    -fx-background:  #7ACE67;
+    -fx-border-color:  #7ACE67;
+}
+
+.text-area .content {
+    -fx-background-color: #62ca4a;
+    -fx-border-color: #62ca4a;
+}
+
+.text-field {
+    -fx-background-color: #62ca4a;
+}
+
+.toggle-button {
+    -fx-background-radius: 50;
+    -fx-background-color: #FFE3B3;
+    -fx-text-fill: #000000;
+}
+
+.toggle-button:selected {
+    -fx-background-color: #FFC872;
+}
+
+#courseButton {
+    -fx-background-radius: 5;
+    -fx-background-color: transparent;
+    -fx-border-color:#5a9e4b;
+}
+
+#headerPane {
+    -fx-background-color: #217258;
+}
+
+#researchButton {
+    -fx-background-radius: 5;
+    -fx-background-color: transparent;
+    -fx-border-color:#5a9e4b;
+}
+
+#researchPane {
+    -fx-background-color: #62ca4a;
+    -fx-background-radius: 5;
+    -fx-border-color: #5a9e4b;
+}
+
+#studentPane {
+    -fx-background-color: #62ca4a;
+    -fx-background-radius: 5;
+    -fx-border-color: #5a9e4b;
+}
+
+#userButton {
+    -fx-background-radius: 5;
+    -fx-background-color: transparent;
+    -fx-border-color:#5a9e4b;
+}
+
+#userPane {
+    -fx-background-color: #62ca4a;
+    -fx-background-radius: 5;
+    -fx-border-color: #5a9e4b;
+}
+
+

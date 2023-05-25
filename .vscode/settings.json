@@ -1,0 +1,43 @@
+{
+    "java.project.sourcePaths": [
+        "src",
+        "test"
+    ],
+    "java.project.outputPath": "bin",
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "/home/luisalonso/Documentos/JavaDepencencies/mysql-connector-j-8.0.31/mysql-connector-j-8.0.31.jar",
+        "/home/luisalonso/Documentos/JavaDepencencies/javafx-sdk-19.0.2.1/lib/javafx.controls.jar",
+        "/home/luisalonso/Documentos/JavaDepencencies/javafx-sdk-19.0.2.1/lib/javafx.fxml.jar",
+        "/home/luisalonso/Documentos/JavaDepencencies/javafx-sdk-19.0.2.1/lib/javafx.media.jar",
+        "/home/luisalonso/Documentos/JavaDepencencies/javafx-sdk-19.0.2.1/lib/javafx.web.jar",
+        "/home/luisalonso/Documentos/JavaDepencencies/javafx-sdk-19.0.2.1/lib/javafx-swt.jar",
+        "/home/luisalonso/Documentos/JavaDepencencies/javafx-sdk-19.0.2.1/lib/javafx.base.jar",
+        "/home/luisalonso/Documentos/JavaDepencencies/javafx-sdk-19.0.2.1/lib/javafx.graphics.jar",
+        "/home/luisalonso/Documentos/JavaDepencencies/javafx-sdk-19.0.2.1/lib/javafx.swing.jar",
+        "/home/luisalonso/Documentos/JavaDepencencies/charm-glisten-4.4.1-javadoc.jar",
+        "/home/luisalonso/Documentos/JavaDepencencies/charm-glisten-4.4.1.jar",
+        "/home/luisalonso/Documentos/JavaDepencencies/commons-logging-1.1.2.jar",
+        "/home/luisalonso/Documentos/JavaDepencencies/commons-beanutils-1.8.3.jar",
+        "/home/luisalonso/Documentos/JavaDepencencies/commons-collections4-4.4.jar",
+        "/home/luisalonso/Documentos/JavaDepencencies/commons-digester3-3.2.jar",
+        "/home/luisalonso/Documentos/JavaDepencencies/commons-digester-2.1.jar",
+        "/home/luisalonso/Documentos/JavaDepencencies/itextpdf-5.5.0.jar",
+        "/home/luisalonso/Documentos/JavaDepencencies/itext-2.1.7.js4.jar",
+        "/home/luisalonso/Documentos/JavaDepencencies/jasperreports-6.14.0.jar"
+    ],
+    "sqltools.connections": [
+        {
+            "mysqlOptions": {
+                "authProtocol": "default"
+            },
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 3306,
+            "driver": "MySQL",
+            "database": "SPGER",
+            "username": "LuisAlonso",
+            "name": "SPGER"
+        }
+    ]
+}

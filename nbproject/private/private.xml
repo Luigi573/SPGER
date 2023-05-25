@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/src/mx/uv/fei/gui/controllers/courses/ModifyCourseInformationController.java</file>
+            <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/src/mx/uv/fei/logic/daos/ProfessorDAO.java</file>
+            <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/src/mx/uv/fei/logic/daos/GlobalReportDAO.java</file>
+            <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/src/mx/uv/fei/logic/domain/statuses/ProfessorStatus.java</file>
+            <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/src/mx/uv/fei/gui/controllers/users/ModifyUserInformationController.java</file>
+            <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/src/mx/uv/fei/logic/daos/ResearchDAO.java</file>
+            <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/src/mx/uv/fei/gui/controllers/users/GuiRegisterUserController.java</file>
+        </group>
+    </open-files>
+</project-private>
