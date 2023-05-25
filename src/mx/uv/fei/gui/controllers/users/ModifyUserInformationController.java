@@ -80,27 +80,24 @@ public class ModifyUserInformationController{
            !telephoneNumberTextField.getText().trim().isEmpty() &&
            !matricleOrPersonalNumberTextField.getText().trim().isEmpty()){
             if(allTextFieldsContainsCorrectValues()){
-                switch(userInformationController.getUserType()){
-                    case "Director":{
-                        modifyDirector(event);
-                        break;
-                    }
-                    case "Miembro de Cuerpo Académico":{
-                        modifyAcademicBodyHead(event);
-                        break;
-                    }
-                    case "Jefe de Carrera":{
-                        modifyDegreeBoss(event);
-                        break;
-                    }
-                    case "Profesor":{
-                        modifyProfessor(event);
-                        break;
-                    }
-                    case "Estudiante":{
-                        modifyStudent(event);
-                        break;
-                    }
+                if(userInformationController.getUserType().equals(UserType.DIRECTOR.getValue())){
+                    modifyDirector(event);
+                }
+
+                if(userInformationController.getUserType().equals(UserType.ACADEMIC_BODY_HEAD.getValue())){
+                    modifyAcademicBodyHead(event);
+                }
+
+                if(userInformationController.getUserType().equals(UserType.DEGREE_BOSS.getValue())){
+                    modifyDegreeBoss(event);
+                }
+
+                if(userInformationController.getUserType().equals(UserType.PROFESSOR.getValue())){
+                    modifyProfessor(event);
+                }
+
+                if(userInformationController.getUserType().equals(UserType.STUDENT.getValue())){
+                    modifyStudent(event);
                 }
             }
         }else{
@@ -402,32 +399,10 @@ public class ModifyUserInformationController{
                 telephoneNumberPattern = Pattern.compile("^[0-9]{10}$"),
                 matricleOrPersonalNumberPattern = Pattern.compile("");
     
-        switch(userInformationController.getUserType()){
-            //case UserType.DIRECTOR.getValue(): {
-            case "Director":{
-                matricleOrPersonalNumberPattern = Pattern.compile("^[0-9]{9}$");
-                break;
-            }
-
-            case "Miembro de Cuerpo Académico":{
-                matricleOrPersonalNumberPattern = Pattern.compile("^[0-9]{9}$");
-                break;
-            }
-
-            case "Jefe de Carrera":{
-                matricleOrPersonalNumberPattern = Pattern.compile("^[0-9]{9}$");
-                break;
-            }
-
-            case "Profesor":{
-                matricleOrPersonalNumberPattern = Pattern.compile("^[0-9]{9}$");
-                break;
-            }
-
-            case "Estudiante":{
-                matricleOrPersonalNumberPattern = Pattern.compile("^[z][S][0-9]{8}$");
-                break;
-            }
+        if(userInformationController.getUserType().equals(UserType.STUDENT.getValue())){
+            matricleOrPersonalNumberPattern = Pattern.compile("^[z][S][0-9]{8}$");
+        }else{
+            matricleOrPersonalNumberPattern = Pattern.compile("^[0-9]{9}$");
         }
 
         Matcher namesMatcher = namesPattern.matcher(namesTextField.getText()),

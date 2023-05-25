@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import mx.uv.fei.gui.AlertPopUpGenerator;
 import mx.uv.fei.logic.domain.ResearchProject;
@@ -16,6 +17,8 @@ public class ResearchVBoxPaneController{
     private ResearchManagerController researchManagerController;
     private ScrollPane container;
     
+    @FXML
+    private AnchorPane researchPane;
     @FXML
     private Label titleLabel;
     @FXML

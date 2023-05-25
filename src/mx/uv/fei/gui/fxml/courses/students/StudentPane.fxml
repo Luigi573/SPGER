@@ -4,7 +4,7 @@
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.layout.Pane?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="52.0" prefWidth="405.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.uv.fei.gui.controllers.courses.students.StudentPaneController">
+<Pane fx:id="studentPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="52.0" prefWidth="405.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.uv.fei.gui.controllers.courses.students.StudentPaneController">
    <children>
       <Label layoutX="6.0" layoutY="8.0" text="Estudiante: " />
       <Label fx:id="studentNameLabel" layoutX="82.0" layoutY="8.0" prefHeight="16.0" prefWidth="288.0" text="Label" />

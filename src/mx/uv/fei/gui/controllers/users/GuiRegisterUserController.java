@@ -73,32 +73,26 @@ public class GuiRegisterUserController{
            !telephoneNumberTextField.getText().trim().isEmpty() &&
            !matricleOrPersonalNumberTextField.getText().trim().isEmpty()){
             if(allTextFieldsContainsCorrectValues()){
-                switch(typeComboBox.getValue()){
-                    case "Director":{
-                        registerDirector();
-                        break;
-                    }
-        
-                    case "Miembro de Cuerpo Académico":{
-                        registerAcademicBodyHead();
-                        break;
-                    }
-        
-                    case "Jefe de Carrera":{
-                        registerDegreeBoss();
-                        break;
-                    }
-        
-                    case "Profesor":{
-                        registerProfessor();
-                        break;
-                    }
-        
-                    case "Estudiante":{
-                        registerStudent();
-                        break;
-                    }
+                if(typeComboBox.getValue().equals(UserType.DIRECTOR.getValue())){
+                    registerDirector();
                 }
+
+                if(typeComboBox.getValue().equals(UserType.ACADEMIC_BODY_HEAD.getValue())){
+                    registerAcademicBodyHead();
+                }
+
+                if(typeComboBox.getValue().equals(UserType.DEGREE_BOSS.getValue())){
+                    registerDegreeBoss();
+                }
+
+                if(typeComboBox.getValue().equals(UserType.PROFESSOR.getValue())){
+                    registerProfessor();
+                }
+
+                if(typeComboBox.getValue().equals(UserType.STUDENT.getValue())){
+                    registerStudent();
+                }
+
                 new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "Éxito", "Usuario registrado exitosamente");
                 guiUsersController.loadUserButtons();
                 Stage stage = (Stage) registerButton.getScene().getWindow();
@@ -252,27 +246,10 @@ public class GuiRegisterUserController{
                 telephoneNumberPattern = Pattern.compile("^[0-9]{10}$"),
                 matricleOrPersonalNumberPattern = Pattern.compile("");
     
-        switch(typeComboBox.getValue()){
-            case "Director":{
-                matricleOrPersonalNumberPattern = Pattern.compile("^[0-9]{9}$");
-                break;
-            }
-            case "Miembro de Cuerpo Académico":{
-                matricleOrPersonalNumberPattern = Pattern.compile("^[0-9]{9}$");
-                break;
-            }
-            case "Jefe de Carrera":{
-                matricleOrPersonalNumberPattern = Pattern.compile("^[0-9]{9}$");
-                break;
-            }
-            case "Profesor":{
-                matricleOrPersonalNumberPattern = Pattern.compile("^[0-9]{9}$");
-                break;
-            }
-            case "Estudiante":{
-                matricleOrPersonalNumberPattern = Pattern.compile("^[z][S][0-9]{8}$");
-                break;
-            }
+        if(typeComboBox.getValue().equals(UserType.STUDENT.getValue())){
+            matricleOrPersonalNumberPattern = Pattern.compile("^[z][S][0-9]{8}$");
+        }else{
+            matricleOrPersonalNumberPattern = Pattern.compile("^[0-9]{9}$");
         }
 
         Matcher namesMatcher = namesPattern.matcher(namesTextField.getText()),

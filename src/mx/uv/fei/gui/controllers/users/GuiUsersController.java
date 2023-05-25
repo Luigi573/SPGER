@@ -29,6 +29,7 @@ import mx.uv.fei.logic.domain.DegreeBoss;
 import mx.uv.fei.logic.domain.Director;
 import mx.uv.fei.logic.domain.Professor;
 import mx.uv.fei.logic.domain.Student;
+import mx.uv.fei.logic.domain.UserType;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
 
 public class GuiUsersController{
@@ -154,42 +155,44 @@ public class GuiUsersController{
     //This method only should be used by the UserController Class.
     public void openPaneWithUserInformation(UserController userController){
         try{
-            switch(userController.getType()){
-                case "Director":{
-                    DirectorDAO directorDAO = new DirectorDAO();
-                    Director director;
-                        director = directorDAO.getDirectorFromDatabase(Integer.parseInt(userController.getMatriculeOrPersonalNumber()));
-                        openPaneWithDirectorInformation(director);
-                        break;
-                    }
+            if(userController.getType().equals(UserType.DIRECTOR.getValue())){
+                DirectorDAO directorDAO = new DirectorDAO();
+                Director director = directorDAO.getDirectorFromDatabase(
+                    Integer.parseInt(userController.getMatriculeOrPersonalNumber())
+                );
+                openPaneWithDirectorInformation(director);
+            }
+            
+            if(userController.getType().equals(UserType.ACADEMIC_BODY_HEAD.getValue())){
+                AcademicBodyHeadDAO academicBodyHeadDAO = new AcademicBodyHeadDAO();
+                AcademicBodyHead academicBodyHead = academicBodyHeadDAO.getAcademicBodyHeadFromDatabase(
+                    Integer.parseInt(userController.getMatriculeOrPersonalNumber())
+                );
+                openPaneWithAcademicBodyHeadInformation(academicBodyHead);
+            }
+            
+            if(userController.getType().equals(UserType.DEGREE_BOSS.getValue())){
+                DegreeBossDAO degreeBossDAO = new DegreeBossDAO();
+                DegreeBoss degreeBoss = degreeBossDAO.getDegreeBossFromDatabase(
+                    Integer.parseInt(userController.getMatriculeOrPersonalNumber())
+                );
+                openPaneWithDegreeBossInformation(degreeBoss);
+            }
 
-                case "Miembro de Cuerpo Académico":{
-                    AcademicBodyHeadDAO academicBodyHeadDAO = new AcademicBodyHeadDAO();
-                    AcademicBodyHead academicBodyHead = academicBodyHeadDAO.getAcademicBodyHeadFromDatabase(Integer.parseInt(userController.getMatriculeOrPersonalNumber()));
-                    openPaneWithAcademicBodyHeadInformation(academicBodyHead);
-                    break;
-                }
+            if(userController.getType().equals(UserType.PROFESSOR.getValue())){
+                ProfessorDAO professorDAO = new ProfessorDAO();
+                Professor professor = professorDAO.getProfessorFromDatabase(
+                    Integer.parseInt(userController.getMatriculeOrPersonalNumber())
+                );
+                openPaneWithProfessorInformation(professor);
+            }
 
-                case "Jefe de Carrera":{
-                    DegreeBossDAO degreeBossDAO = new DegreeBossDAO();
-                    DegreeBoss degreeBoss = degreeBossDAO.getDegreeBossFromDatabase(Integer.parseInt(userController.getMatriculeOrPersonalNumber()));
-                    openPaneWithDegreeBossInformation(degreeBoss);
-                    break;
-                }
-
-                case "Profesor":{
-                    ProfessorDAO professorDAO = new ProfessorDAO();
-                    Professor professor = professorDAO.getProfessorFromDatabase(Integer.parseInt(userController.getMatriculeOrPersonalNumber()));
-                    openPaneWithProfessorInformation(professor);
-                    break;
-                }
-
-                case "Estudiante":{
-                    StudentDAO studentDAO = new StudentDAO();
-                    Student student = studentDAO.getStudentFromDatabase(userController.getMatriculeOrPersonalNumber());
-                    openPaneWithStudentInformation(student);
-                    break;
-                }
+            if(userController.getType().equals(UserType.STUDENT.getValue())){
+                StudentDAO studentDAO = new StudentDAO();
+                Student student = studentDAO.getStudentFromDatabase(
+                    userController.getMatriculeOrPersonalNumber()
+                );
+                openPaneWithStudentInformation(student);
             }
         }catch(NumberFormatException e){
             new AlertPopUpGenerator().showConnectionErrorMessage();

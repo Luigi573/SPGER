@@ -190,8 +190,10 @@ public class ModifyResearchPaneController{
         try{
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/research/ResearchManager.fxml"));
             Parent parent = loader.load();
-            Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
             Scene scene = new Scene(parent);
+            String css = this.getClass().getResource("/mx/uv/fei/gui/stylesfiles/Styles.css").toExternalForm();
+            scene.getStylesheets().add(css);
+            Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
             stage.setTitle("SPGER");
             stage.setScene(scene);
             stage.show();

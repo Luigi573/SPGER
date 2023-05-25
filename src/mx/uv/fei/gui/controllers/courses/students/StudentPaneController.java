@@ -3,6 +3,7 @@ package mx.uv.fei.gui.controllers.courses.students;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
+import javafx.scene.layout.Pane;
 
 public class StudentPaneController{
     @FXML
@@ -11,6 +12,8 @@ public class StudentPaneController{
     private RadioButton selectStudentRadioButton;
     @FXML
     private Label studentNameLabel;
+    @FXML
+    private Pane studentPane;
 
     public String getMatricle(){
         return matricleLabel.getText();
