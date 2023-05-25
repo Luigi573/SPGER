@@ -29,8 +29,8 @@ public class ScholarPeriodDAO implements IScholarPeriodDAO{
             while(resultSet.next()) {
                 ScholarPeriod scholarPeriod = new ScholarPeriod();
                 scholarPeriod.setIdScholarPeriod(resultSet.getInt("IdPeriodoEscolar"));
-                scholarPeriod.setEndDate(resultSet.getString("fechaInicio"));
-                scholarPeriod.setStartDate(resultSet.getString("fechaFin"));
+                scholarPeriod.setStartDate(resultSet.getString("fechaInicio"));
+                scholarPeriod.setEndDate(resultSet.getString("fechaFin"));
                 scholarPeriods.add(scholarPeriod);
             }
             resultSet.close();
@@ -55,8 +55,8 @@ public class ScholarPeriodDAO implements IScholarPeriodDAO{
             ResultSet resultSet = preparedStatement.executeQuery();
             if(resultSet.next()){
                 scholarPeriod.setIdScholarPeriod(resultSet.getInt("IdPeriodoEscolar"));
-                scholarPeriod.setEndDate(resultSet.getString("fechaInicio"));
-                scholarPeriod.setStartDate(resultSet.getString("fechaFin"));
+                scholarPeriod.setStartDate(resultSet.getString("fechaInicio"));
+                scholarPeriod.setEndDate(resultSet.getString("fechaFin"));
             }
             
             resultSet.close();

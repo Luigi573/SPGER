@@ -10,8 +10,42 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class DirectorDAOTest {
+    @Test
+    void testAddDirectorToDatabase() {
+
+    }
+
+    @Test
+    void testGetDirectorFromDatabase() {
+        
+    }
+
+    @Test
+    public void testGetDirectorList() throws Exception {
+        DirectorDAO directorDAO = new DirectorDAO();
+        ArrayList<Director> directorList = directorDAO.getDirectorList();
+        
+        assertNotNull("If size is greater than one, it means data was retrieved correctly", (directorList.size() > 0));
+    }
+
+    @Test
+    void testGetDirectorsFromDatabase() {
+        
+    }
     
-    public DirectorDAOTest() {
+    @Test
+    void testGetSpecifiedDirectorsFromDatabase() {
+        
+    }
+    
+    @Test
+    void testModifyDirectorDataFromDatabase() {
+        
+    }
+    
+    @Test
+    void testTheDirectorIsAlreadyRegisted() {
+        
     }
     
     @BeforeClass
@@ -30,11 +64,4 @@ public class DirectorDAOTest {
     public void tearDown() {
     }
 
-    @Test
-    public void testGetDirectorList() throws Exception {
-        DirectorDAO directorDAO = new DirectorDAO();
-        ArrayList<Director> directorList = directorDAO.getDirectorList();
-        
-        assertNotNull("If size is greater than one, it means data was retrieved correctly", (directorList.size() > 0));
-    }
 }

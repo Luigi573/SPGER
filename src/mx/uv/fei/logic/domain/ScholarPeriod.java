@@ -33,5 +33,20 @@ public class ScholarPeriod {
     public String toString(){
         return this.startDate + " " + this.endDate;
     }
+
+    @Override
+    public boolean equals(Object scholarPeriod) {
+        if (this == scholarPeriod)
+            return true;
+        if (scholarPeriod == null)
+            return false;
+        if (this.getClass() != scholarPeriod.getClass())
+        return false;
+
+        ScholarPeriod s = (ScholarPeriod)scholarPeriod;
+
+        return this.startDate.equals(s.startDate) &&
+               this.endDate.equals(s.endDate);
+    }
     
 }
