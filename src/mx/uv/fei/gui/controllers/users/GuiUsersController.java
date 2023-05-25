@@ -105,6 +105,7 @@ public class GuiUsersController{
     }
 
     public void loadUserButtons(){
+        usersVBox.getChildren().removeAll(usersVBox.getChildren());
         StudentDAO studentDAO = new StudentDAO();
         ProfessorDAO professorDAO = new ProfessorDAO();
         DirectorDAO directorDAO = new DirectorDAO();

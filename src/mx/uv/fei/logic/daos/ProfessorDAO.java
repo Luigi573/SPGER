@@ -3,6 +3,7 @@ package mx.uv.fei.logic.daos;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
@@ -64,7 +65,11 @@ public class ProfessorDAO implements IProfessorDAO{
             preparedStatementToInsertProfessorData.close();
             dataBaseManager.getConnection().close();
 
+        }catch(SQLIntegrityConstraintViolationException e){
+            deleteProfessorFromUsersTable(professor);
+            throw new DataWritingException("Error al agregar estudiante. Verifique su conexion e intentelo de nuevo");
         }catch(SQLException e){
+            e.printStackTrace();
             throw new DataWritingException("Fallo al recuperar la informacion. Verifique su conexion e intentelo de nuevo");
         }finally{
             dataBaseManager.closeConnection();
@@ -107,8 +112,10 @@ public class ProfessorDAO implements IProfessorDAO{
             preparedStatementForUpdateProfessorData.setInt(2, newProfessorData.getUserId());
             preparedStatementForUpdateProfessorData.executeUpdate();
         }catch(SQLException e){
+            e.printStackTrace();
             throw new DataWritingException("Fallo al recuperar la informacion. Verifique su conexion e intentelo de nuevo");
-        }catch(DataRetrievalException e) {
+        }catch(DataRetrievalException e){
+            e.printStackTrace();
             throw new DataWritingException("Fallo al recuperar la informacion. Verifique su conexion e intentelo de nuevo");
         }finally{
             dataBaseManager.closeConnection();
@@ -261,8 +268,8 @@ public class ProfessorDAO implements IProfessorDAO{
             preparedStatement.setString(4, originalProfessorData.getEmailAddress());
             preparedStatement.setString(5, originalProfessorData.getAlternateEmail());
             preparedStatement.setString(6, originalProfessorData.getPhoneNumber());
-            preparedStatement.setString(6, originalProfessorData.getStatus());
-            preparedStatement.setInt(7, originalProfessorData.getStaffNumber());
+            preparedStatement.setString(7, originalProfessorData.getStatus());
+            preparedStatement.setInt(8, originalProfessorData.getStaffNumber());
 
             ResultSet resultSet = preparedStatement.executeQuery();
             if(resultSet.next()) {
@@ -272,11 +279,30 @@ public class ProfessorDAO implements IProfessorDAO{
             resultSet.close();
             dataBaseManager.getConnection().close();
         }catch(SQLException e){
+            e.printStackTrace();
             throw new DataRetrievalException("Fallo al recuperar la informacion. Verifique su conexion e intentelo de nuevo");
         }finally{
             dataBaseManager.closeConnection();
         }
 
         return UserId;
+    }
+    private void deleteProfessorFromUsersTable(Professor professor) throws DataWritingException{
+        String queryToInsertUserData = "DELETE FROM Usuarios WHERE nombre = ? && apellidoPaterno = ? && apellidoMaterno = ? && " +
+            "correo = ? && correoAlterno = ? && númeroTeléfono = ? && estado = ?";
+        try{
+            PreparedStatement preparedStatementToInsertUserData = 
+            dataBaseManager.getConnection().prepareStatement(queryToInsertUserData);
+            preparedStatementToInsertUserData.setString(1, professor.getName());
+            preparedStatementToInsertUserData.setString(2, professor.getFirstSurname());
+            preparedStatementToInsertUserData.setString(3, professor.getSecondSurname());
+            preparedStatementToInsertUserData.setString(4, professor.getEmailAddress());
+            preparedStatementToInsertUserData.setString(5, professor.getAlternateEmail());
+            preparedStatementToInsertUserData.setString(6, professor.getPhoneNumber());
+            preparedStatementToInsertUserData.setString(7, professor.getStatus());
+            preparedStatementToInsertUserData.executeUpdate();
+        }catch(SQLException e){
+            throw new DataWritingException("Error al eliminar profesor de la tabla usuarios");
+        }
     }
 }

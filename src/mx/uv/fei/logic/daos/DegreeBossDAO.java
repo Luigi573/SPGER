@@ -3,6 +3,7 @@ package mx.uv.fei.logic.daos;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
@@ -97,7 +98,11 @@ public class DegreeBossDAO implements IDegreeBossDAO{
             preparedStatementToInsertDegreeBossDataToDegreeBossColumns.close();
             dataBaseManager.getConnection().close();
 
+        }catch(SQLIntegrityConstraintViolationException e){
+            deleteDegreeBossFromUsersTable(degreeBoss);
+            throw new DataWritingException("Error al agregar estudiante. Verifique su conexion e intentelo de nuevo");
         }catch(SQLException e){
+            e.printStackTrace();
             throw new DataWritingException("Error al agregar jefe de carrera. Verifique su conexion e intentelo de nuevo");
         }finally{
             dataBaseManager.closeConnection();
@@ -293,5 +298,23 @@ public class DegreeBossDAO implements IDegreeBossDAO{
         }
 
         return false;
+    }
+    private void deleteDegreeBossFromUsersTable(DegreeBoss degreeBoss) throws DataWritingException{
+        String queryToInsertUserData = "DELETE FROM Usuarios WHERE nombre = ? && apellidoPaterno = ? && apellidoMaterno = ? && " +
+            "correo = ? && correoAlterno = ? && númeroTeléfono = ? && estado = ?";
+        try{
+            PreparedStatement preparedStatementToInsertUserData = 
+            dataBaseManager.getConnection().prepareStatement(queryToInsertUserData);
+            preparedStatementToInsertUserData.setString(1, degreeBoss.getName());
+            preparedStatementToInsertUserData.setString(2, degreeBoss.getFirstSurname());
+            preparedStatementToInsertUserData.setString(3, degreeBoss.getSecondSurname());
+            preparedStatementToInsertUserData.setString(4, degreeBoss.getEmailAddress());
+            preparedStatementToInsertUserData.setString(5, degreeBoss.getAlternateEmail());
+            preparedStatementToInsertUserData.setString(6, degreeBoss.getPhoneNumber());
+            preparedStatementToInsertUserData.setString(7, degreeBoss.getStatus());
+            preparedStatementToInsertUserData.executeUpdate();
+        }catch(SQLException e){
+            throw new DataWritingException("Error al eliminar profesor de la tabla usuarios");
+        }
     }
 }

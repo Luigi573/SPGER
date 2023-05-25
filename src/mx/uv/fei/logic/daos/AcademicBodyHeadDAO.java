@@ -3,6 +3,7 @@ package mx.uv.fei.logic.daos;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
@@ -23,7 +24,7 @@ public class AcademicBodyHeadDAO implements IAcademicBodyHeadDAO{
     public void addAcademicBodyHeadToDatabase(AcademicBodyHead academicBodyHead) throws DataWritingException{
         try{
             String wholeQueryToInsertAcademicBodyHeadDataToUserColumns = 
-                "INSERT INTO Usuarios (nombre, apellidoPaterno, apellidoMaterno, correo, correoAlterno, númeroTeléfono) VALUES (?, ?, ?, ?, ?, ?)";
+                "INSERT INTO Usuarios (nombre, apellidoPaterno, apellidoMaterno, correo, correoAlterno, númeroTeléfono, estado) VALUES (?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement preparedStatementToInsertAcademicBodyHeadDataToUserColumns = 
                 dataBaseManager.getConnection().prepareStatement(wholeQueryToInsertAcademicBodyHeadDataToUserColumns);
             preparedStatementToInsertAcademicBodyHeadDataToUserColumns.setString(1, academicBodyHead.getName());
@@ -93,7 +94,11 @@ public class AcademicBodyHeadDAO implements IAcademicBodyHeadDAO{
             preparedStatementToInsertAcademicBodyHeadDataToAcademicBodyHeadColumns.close();
             dataBaseManager.getConnection().close();
 
+        }catch(SQLIntegrityConstraintViolationException e){
+            deleteAcademicBodyHeadFromUsersTable(academicBodyHead);
+            throw new DataWritingException("Error al agregar estudiante. Verifique su conexion e intentelo de nuevo");
         }catch(SQLException e){
+            e.printStackTrace();
             throw new DataWritingException("Error al agregar miembro del cuerpo académico. Verifique su conexion e intentelo de nuevo");
         }finally{
             dataBaseManager.closeConnection();
@@ -278,5 +283,23 @@ public class AcademicBodyHeadDAO implements IAcademicBodyHeadDAO{
         }
 
         return false;
+    }
+    private void deleteAcademicBodyHeadFromUsersTable(AcademicBodyHead academicBodyHead) throws DataWritingException{
+        String queryToInsertUserData = "DELETE FROM Usuarios WHERE nombre = ? && apellidoPaterno = ? && apellidoMaterno = ? && " +
+            "correo = ? && correoAlterno = ? && númeroTeléfono = ? && estado = ?";
+        try{
+            PreparedStatement preparedStatementToInsertUserData = 
+            dataBaseManager.getConnection().prepareStatement(queryToInsertUserData);
+            preparedStatementToInsertUserData.setString(1, academicBodyHead.getName());
+            preparedStatementToInsertUserData.setString(2, academicBodyHead.getFirstSurname());
+            preparedStatementToInsertUserData.setString(3, academicBodyHead.getSecondSurname());
+            preparedStatementToInsertUserData.setString(4, academicBodyHead.getEmailAddress());
+            preparedStatementToInsertUserData.setString(5, academicBodyHead.getAlternateEmail());
+            preparedStatementToInsertUserData.setString(6, academicBodyHead.getPhoneNumber());
+            preparedStatementToInsertUserData.setString(7, academicBodyHead.getStatus());
+            preparedStatementToInsertUserData.executeUpdate();
+        }catch(SQLException e){
+            throw new DataWritingException("Error al eliminar profesor de la tabla usuarios");
+        }
     }
 }

@@ -3,6 +3,7 @@ package mx.uv.fei.logic.daos;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
@@ -23,7 +24,7 @@ public class DirectorDAO implements IDirectorDAO{
     public void addDirectorToDatabase(Director director) throws DataWritingException{
         try{
             String queryToInsertDirectorDataToUserColumns = 
-                "INSERT INTO Usuarios (nombre, apellidoPaterno, apellidoMaterno, correo, correoAlterno, númeroTeléfono) VALUES (?, ?, ?, ?, ?, ?)";
+                "INSERT INTO Usuarios (nombre, apellidoPaterno, apellidoMaterno, correo, correoAlterno, númeroTeléfono, estado) VALUES (?, ?, ?, ?, ?, ?, ?)";
             
             PreparedStatement preparedStatementToInsertDirectorDataToUserColumns = 
                 dataBaseManager.getConnection().prepareStatement(queryToInsertDirectorDataToUserColumns);
@@ -96,7 +97,11 @@ public class DirectorDAO implements IDirectorDAO{
             preparedStatementToInsertDirectorDataToDirectorColumns.close();
             dataBaseManager.getConnection().close();
 
+        }catch(SQLIntegrityConstraintViolationException e){
+            deleteDirectorFromUsersTable(director);
+            throw new DataWritingException("Error al agregar estudiante. Verifique su conexion e intentelo de nuevo");
         }catch(SQLException e){
+            e.printStackTrace();
             throw new DataWritingException("Error al agregar director. Verifique su conexion e intentelo de nuevo");
         }finally{
             dataBaseManager.closeConnection();
@@ -314,5 +319,22 @@ public class DirectorDAO implements IDirectorDAO{
 
         return false;
     }
-    
+    private void deleteDirectorFromUsersTable(Director director) throws DataWritingException{
+        String queryToInsertUserData = "DELETE FROM Usuarios WHERE nombre = ? && apellidoPaterno = ? && apellidoMaterno = ? && " +
+            "correo = ? && correoAlterno = ? && númeroTeléfono = ? && estado = ?";
+        try{
+            PreparedStatement preparedStatementToInsertUserData = 
+            dataBaseManager.getConnection().prepareStatement(queryToInsertUserData);
+            preparedStatementToInsertUserData.setString(1, director.getName());
+            preparedStatementToInsertUserData.setString(2, director.getFirstSurname());
+            preparedStatementToInsertUserData.setString(3, director.getSecondSurname());
+            preparedStatementToInsertUserData.setString(4, director.getEmailAddress());
+            preparedStatementToInsertUserData.setString(5, director.getAlternateEmail());
+            preparedStatementToInsertUserData.setString(6, director.getPhoneNumber());
+            preparedStatementToInsertUserData.setString(7, director.getStatus());
+            preparedStatementToInsertUserData.executeUpdate();
+        }catch(SQLException e){
+            throw new DataWritingException("Error al eliminar profesor de la tabla usuarios");
+        }
+    }   
 }

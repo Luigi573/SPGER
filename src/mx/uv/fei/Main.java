@@ -26,12 +26,15 @@ public class Main extends Application{
         //Mostrar estatus de usuarios en comboboxes para registrar usuarios en GuiRegisterUsers y ModifyUserPane GG
         //Checar lo de estudiantes activos y disponibles con xavier GG
         //Detalles estéticos en GuiUsers cuando cambias la matricula a nombre de personal y viceversa GG
-        //Crear enum con tipo de usuario para comboboxes EN PROCESO
+        //Crear enum con tipo de usuario para comboboxes GG
         //Al abrir GuiResearchReport en ResearchManager no debe de salir como ventana emergente GG
         //Color de bordes de botones de cursos, usuarios y anteproyectos GG
         //Cambiar la clase de ventanas emergentes a alertpopup GG
         //Seguir el standar GG
         //Quitar los this innecesarios GG
+
+        //Eliminar printstacktraces de los daos
+        //Probar las guis de usuario como si no hibiera un mañana
         //Pruebas
         
         Scene scene = new Scene(guiUsuarios);
