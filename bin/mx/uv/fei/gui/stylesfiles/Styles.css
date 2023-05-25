@@ -2,12 +2,6 @@ Text {
     -fx-fill: white;
 }
 
-TextFlow {
-    -fx-background-color: #62ca4a;
-    -fx-background-radius: 5;
-    -fx-border-color: #5a9e4b;
-}
-
 .root {
     -fx-background-color: #31B189;
     /*-fx-background-color: #ff4800;*/
@@ -142,18 +136,6 @@ TextFlow {
     -fx-border-color:#5a9e4b;
 }
 
-#researchPane {
-    -fx-background-color: #62ca4a;
-    -fx-background-radius: 5;
-    -fx-border-color: #5a9e4b;
-}
-
-#studentPane {
-    -fx-background-color: #62ca4a;
-    -fx-background-radius: 5;
-    -fx-border-color: #5a9e4b;
-}
-
 #userButton {
     -fx-background-radius: 5;
     -fx-background-color: transparent;
@@ -165,6 +147,5 @@ TextFlow {
     -fx-background-radius: 5;
     -fx-border-color: #5a9e4b;
 }
-
 
 
