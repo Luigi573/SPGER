@@ -152,13 +152,77 @@ public class StudentDAO implements IStudentDAO{
     }
 
     @Override
-    public ArrayList<Student> getSpecifiedStudentsFromDatabase(String studentName) {
+    public ArrayList<Student> getStudentList() throws DataRetrievalException{
+        ArrayList<Student> studentList = new ArrayList<>();
+        PreparedStatement statement;
+        String query = "SELECT e.Matrícula, u.nombre, u.apellidoPaterno, u.apellidoMaterno FROM Estudiantes e "
+                + "INNER JOIN Usuarios u ON e.IdUsuario = u.IdUsuario";
+        
+        try{
+            statement = dataBaseManager.getConnection().prepareStatement(query);
+            ResultSet resultSet = statement.executeQuery();
+            
+            while(resultSet.next()){
+                Student student = new Student();
+                
+                student.setMatricle(resultSet.getString("e.Matrícula"));
+                student.setName(resultSet.getString("u.nombre"));
+                student.setFirstSurname(resultSet.getString("u.apellidoPaterno"));
+                student.setSecondSurname(resultSet.getString("u.apellidoMaterno"));
+                
+                studentList.add(student);
+            }
+        }catch(SQLException exception){
+            throw new DataRetrievalException("Error al recuperar estudiantes. VErifique su conexión e inténtelo de nuevo");
+        }finally{
+            dataBaseManager.closeConnection();
+        }
+        
+        return studentList;
+    }
+
+    @Override
+    public ArrayList<Student> getAvailableStudentsFromDatabase() throws DataRetrievalException{
         ArrayList<Student> students = new ArrayList<>();
         
-        try {
+        try{
+            DataBaseManager dataBaseManager = new DataBaseManager();
+            Statement statement = dataBaseManager.getConnection().createStatement();
+            String query = "SELECT * FROM Usuarios U INNER JOIN Estudiantes E " + 
+                           "ON U.IdUsuario = E.IdUsuario WHERE U.estado = 'Disponible'";
+            ResultSet resultSet = statement.executeQuery(query);
+            while(resultSet.next()) {
+                Student student = new Student();
+                student.setName(resultSet.getString("nombre"));
+                student.setFirstSurname(resultSet.getString("apellidoPaterno"));
+                student.setSecondSurname(resultSet.getString("apellidoMaterno"));
+                student.setEmailAddress(resultSet.getString("correo"));
+                student.setPassword(resultSet.getString("contraseña"));
+                student.setAlternateEmail(resultSet.getString("correoAlterno"));
+                student.setPhoneNumber(resultSet.getString("númeroTeléfono"));
+                student.setStatus(resultSet.getString("estado"));
+                student.setMatricle(resultSet.getString("Matrícula"));
+                students.add(student);
+            }
+            resultSet.close();
+            dataBaseManager.getConnection().close();
+        }catch(SQLException e){
+            throw new DataRetrievalException("Error al recuperar la información. Verifique su conexión e intentelo de nuevo");
+        }finally{
+            dataBaseManager.closeConnection();
+        }
+
+        return students;
+    }
+
+    @Override
+    public ArrayList<Student> getSpecifiedAvailableStudentsFromDatabase(String studentName) throws DataRetrievalException{
+        ArrayList<Student> students = new ArrayList<>();
+        
+        try{
             DataBaseManager dataBaseManager = new DataBaseManager();
             String query = "SELECT * FROM Usuarios U INNER JOIN Estudiantes E " + 
-                           "ON U.IdUsuario = E.IdUsuario WHERE U.Nombre LIKE ?";
+                           "ON U.IdUsuario = E.IdUsuario WHERE U.Nombre LIKE ? && U.estado = 'Disponible'";
             PreparedStatement preparedStatement = dataBaseManager.getConnection().prepareStatement(query);
             preparedStatement.setString(1, studentName + '%');
             ResultSet resultSet = preparedStatement.executeQuery();
