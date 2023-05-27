@@ -44,7 +44,7 @@ public class KGALListElementController {
     
     public void switchToUpdateKGALScene(ActionEvent event) {
         try {  
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/kgal/UpdateKGAL.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/manageKGAL/UpdateKGAL.fxml"));
             root = loader.load();
             UpdateKGALController controller = (UpdateKGALController)loader.getController();
             controller.setKGAL(kgal);

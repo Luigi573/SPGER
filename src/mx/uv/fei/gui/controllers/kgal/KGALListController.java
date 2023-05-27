@@ -40,7 +40,7 @@ public class KGALListController {
              kgalList = kgalDAO.getKGALList();
             for (KGAL kgal: kgalList) {
                 try {
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/kgal/KGALListElement.fxml"));
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/manageKGAL/KGALListElement.fxml"));
                     Pane pane = loader.load();
                     KGALListElementController controller = (KGALListElementController)loader.getController();
                     controller.setLabelText(kgal);
@@ -76,7 +76,7 @@ public class KGALListController {
              kgalList = kgalDAO.getKGALListByDescription(description);
             for (KGAL kgal: kgalList) {
                 try {
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/kgal/KGALListElement.fxml"));
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/manageKGAL/KGALListElement.fxml"));
                     Pane pane = loader.load();
                     KGALListElementController controller = (KGALListElementController)loader.getController();
                     controller.setLabelText(kgal);
@@ -99,7 +99,7 @@ public class KGALListController {
     }
            
     public void switchToCreateNewKGALScene(ActionEvent event) throws IOException {
-        root = FXMLLoader.load(getClass().getResource("/mx/uv/fei/gui/fxml/kgal/createNewKGAL.fxml"));
+        root = FXMLLoader.load(getClass().getResource("/mx/uv/fei/gui/fxml/manageKGAL/createNewKGAL.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene); 
@@ -108,7 +108,7 @@ public class KGALListController {
     
     public void exitKGALListScene(ActionEvent event) {
         try {
-            root = FXMLLoader.load(getClass().getResource("/mx/uv/fei/gui/fxml/kgal/KGALList.fxml")); //should point to main menu
+            root = FXMLLoader.load(getClass().getResource("/mx/uv/fei/gui/fxml/manageKGAL/KGALList.fxml")); //should point to main menu
             stage = (Stage)((Node)event.getSource()).getScene().getWindow();
             scene = new Scene(root);
             stage.setScene(scene);

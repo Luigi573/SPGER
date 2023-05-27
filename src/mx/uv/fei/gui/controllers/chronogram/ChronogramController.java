@@ -39,7 +39,6 @@ public class ChronogramController{
         loadHeader();
         loadResearch();
     }
-
     @FXML
     private void createActivity(ActionEvent event){
         if(studentChronogramComboBox.getValue() != null){
@@ -75,7 +74,6 @@ public class ChronogramController{
            loadActivities(studentChronogramComboBox.getValue().getId());
        }
     }
-    
     private void loadHeader(){
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/HeaderPane.fxml"));
         
@@ -89,7 +87,6 @@ public class ChronogramController{
             errorMessage.showAndWait();
         }
     }
-
     private void loadResearch(){
         ResearchDAO researchDAO = new ResearchDAO();
         

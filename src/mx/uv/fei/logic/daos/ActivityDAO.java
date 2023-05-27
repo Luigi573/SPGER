@@ -39,9 +39,9 @@ public class ActivityDAO implements IActivityDAO{
             if(resultSet.next()){
                 generatedId = resultSet.getInt("IdActividad");
             }
-        } catch(SQLException exception){
+        }catch(SQLException exception){
             throw new DataWritingException("Error al agregar actividad. Verifique su conexion e intentelo de nuevo");
-        } finally{
+        }finally{
             dataBaseManager.closeConnection();
         }
         
@@ -50,7 +50,7 @@ public class ActivityDAO implements IActivityDAO{
 
     @Override
     public ArrayList<Activity> getActivityList(int researchId) throws DataRetrievalException{
-        ArrayList<Activity> activityList = new ArrayList<>();
+        ArrayList<Activity> activityList = new ArrayList();
         PreparedStatement statement;
         String query = "SELECT a.IdActividad, a.IdAnteproyecto, IdArchivo, a.título, a.descripción, a.fechaInicio, a.fechaFin, a.comentario, a.retroalimentación "
                 + "FROM Actividades a INNER JOIN Anteproyectos ap ON a.IdAnteproyecto = ap.IdAnteproyecto WHERE a.IdAnteproyecto IN(?) "
@@ -109,7 +109,6 @@ public class ActivityDAO implements IActivityDAO{
         
         return result;
     }
-
     @Override
     public int setComment(String comment, int activityId) throws DataWritingException{
         int result = 0;
@@ -131,7 +130,6 @@ public class ActivityDAO implements IActivityDAO{
         
         return result;
     }
-
     @Override
     public int setFeedback(String feedback, int activityId)  throws DataWritingException{
         int result = 0;
@@ -153,7 +151,6 @@ public class ActivityDAO implements IActivityDAO{
         
         return result;
     }
-
     @Override
     public boolean assertActivity(Activity activity){
         return !isNull(activity) && !isBlank(activity) && isValidDate(activity);
