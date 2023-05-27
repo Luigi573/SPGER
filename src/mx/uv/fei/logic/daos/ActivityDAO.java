@@ -84,6 +84,7 @@ public class ActivityDAO implements IActivityDAO{
         
         return activityList;
     }
+
     @Override
     public int modifyActivity(Activity activity) throws DataWritingException{
         int result = 0;
@@ -154,9 +155,11 @@ public class ActivityDAO implements IActivityDAO{
     public boolean assertActivity(Activity activity){
         return !isNull(activity) && !isBlank(activity) && isValidDate(activity);
     }
+
     public boolean isBlank(Activity activity){
         return activity.getTitle().isBlank() && activity.getDescription().isBlank();
     }
+    
     public boolean isNull(Activity activity){
         if(activity != null){
             if(activity.getTitle() != null && activity.getDescription() != null){
@@ -168,6 +171,7 @@ public class ActivityDAO implements IActivityDAO{
         
         return true;
     }
+
     public boolean isValidDate(Activity activity){
         return activity.getStartDate().compareTo(activity.getDueDate()) <= 0;
     }

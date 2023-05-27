@@ -1,5 +1,7 @@
 package mx.uv.fei.gui.controllers.reports;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -19,13 +21,17 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
-import javafx.scene.image.ImageView;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.stage.DirectoryChooser;
+import mx.uv.fei.gui.AlertPopUpGenerator;
+import mx.uv.fei.gui.controllers.HeaderPaneController;
 import mx.uv.fei.logic.daos.ResearchesReportDAO;
 import mx.uv.fei.logic.domain.Research;
+import mx.uv.fei.logic.exceptions.DataRetrievalException;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -36,6 +42,10 @@ import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.view.JasperViewer;
 
 public class GuiResearchReportController {
+    private final DirectoryChooser directoryChooser = new DirectoryChooser();
+    
+    @FXML
+    private Pane backgroundPane;
     @FXML
     private Text errorMessageText;
     @FXML
@@ -45,13 +55,11 @@ public class GuiResearchReportController {
     @FXML
     private Button generateReportButton;
     @FXML
-    private Pane guiCrearAnteproyectoBody;
-    @FXML
-    private VBox selectedResearchesVBox;
-    @FXML
     private Text recentlySelectedResearchesText;
     @FXML
     private VBox researchesVBox;
+    @FXML
+    private VBox selectedResearchesVBox;
     @FXML
     private Button searchResearchesButton;
     @FXML
@@ -66,35 +74,58 @@ public class GuiResearchReportController {
     private Text showValidatedText;
     @FXML
     private ToggleButton showValidatedToggleButton;
-    @FXML
-    private ImageView spgerLogo;
-    @FXML
-    private Text spgerText;
-    @FXML
-    private ImageView userLogo;
-    @FXML
-    private Text userNameText;
-    @FXML
-    private Text windowText;
 
     @FXML
-    void generateReportButtonController(ActionEvent event) {
-        if(this.selectedResearchesVBox.getChildren().isEmpty()){
-            this.errorMessageText.setText("No se puede generar un reporte vacío");
-            this.errorMessageText.setVisible(true);
+    private void initialize(){
+        loadHeader();
+
+        researchesVBox.getChildren().clear();
+        ResearchesReportDAO researchesReportDAO = new ResearchesReportDAO();
+        ArrayList<Research> researches = new ArrayList<>();
+        try{
+            researches = researchesReportDAO.getResearchesFromDatabase(findByTitleTextField.getText(), "");
+        }catch(DataRetrievalException e) {
+            new AlertPopUpGenerator().showConnectionErrorMessage();
+        }
+        
+        try{
+            for(Research research : researches){
+                FXMLLoader researchItemControllerLoader = new FXMLLoader(
+                    getClass().getResource("/mx/uv/fei/gui/fxml/reports/ResearchItem.fxml")
+                );
+                HBox researchItemHBox = researchItemControllerLoader.load();
+                ResearchItemController researchItemController = researchItemControllerLoader.getController();
+                researchItemController.setResearchNameLabel(research.getTitle());
+                researchItemController.setGuiResearchReportController(this);
+                researchesVBox.getChildren().add(researchItemHBox);
+            }
+        }catch(IOException e) {
+            new AlertPopUpGenerator().showMissingFilesMessage();
+        }
+    }
+    @FXML
+    private void generateReportButtonController(ActionEvent event){
+        if(selectedResearchesVBox.getChildren().isEmpty()){
+            new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "Error", "No se puede generar un reporte vacío.");
+            return;
+        }
+
+        directoryChooser.setTitle("Seleccionar rrrrrrrrrrrrrrrrrrrrrrrrrrrruta");
+        File choosedDirectory = directoryChooser.showDialog(null);
+        if(choosedDirectory == null){
             return;
         }
 
         ArrayList<String> selectedResearches = new ArrayList<>();
-        for(Node hbox : ((VBox)this.selectedResearchesVBox).getChildren()) {
+        for(Node hbox : ((VBox)selectedResearchesVBox).getChildren()){
             Node label = ((HBox)hbox).getChildren().get(1); 
             selectedResearches.add(((Label)label).getText());
         }
 
-        ResearchesReportDAO researchesReportDAO = new ResearchesReportDAO();
-        ArrayList<Research> researches = researchesReportDAO.getSelectedResearchesFromDatabase(selectedResearches);
+        try{
+            ResearchesReportDAO researchesReportDAO = new ResearchesReportDAO();
+            ArrayList<Research> researches = researchesReportDAO.getSelectedResearchesFromDatabase(selectedResearches);
 
-        try {
             Path path = Paths.get("src/dependencies/resources/jasperreports/ResearchReport.jasper");
             InputStream inputStream = Files.newInputStream(path.toAbsolutePath());
             JasperReport report = (JasperReport) JRLoader.loadObject(inputStream);
@@ -103,8 +134,7 @@ public class GuiResearchReportController {
             HashMap<String, Object> parameters = new HashMap<>();
             parameters.put("researchesReportDataSource", researchesReportDataSource);
 
-            Path outputStreamPath = Paths.get("src/mx/uv/fei/ResearchReport.pdf");
-            OutputStream reportFinale = Files.newOutputStream(outputStreamPath.toAbsolutePath());
+            OutputStream reportFinale = new FileOutputStream(choosedDirectory.getAbsolutePath() + "/Reporte.pdf");
 
             JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters);
             JasperViewer view = new JasperViewer(jasperPrint, false);
@@ -112,136 +142,154 @@ public class GuiResearchReportController {
             view.setVisible(true);
             JasperExportManager.exportReportToPdfStream(jasperPrint, reportFinale);
             
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
-        } catch (JRException jre) {
-            jre.printStackTrace();
+        }catch(IOException ioe){
+            new AlertPopUpGenerator().showMissingFilesMessage();
+        }catch(JRException jre){
+            new AlertPopUpGenerator().showMissingFilesMessage();
+        }catch(DataRetrievalException e){
+            new AlertPopUpGenerator().showConnectionErrorMessage();
         }
     }
-
     @FXML
-    void searchResearchesButtonController(ActionEvent event) {
-        this.researchesVBox.getChildren().removeAll(this.researchesVBox.getChildren());
+    private void searchResearchesButtonController(ActionEvent event){
+        researchesVBox.getChildren().removeAll(researchesVBox.getChildren());
         ResearchesReportDAO researchesReportDAO = new ResearchesReportDAO();
         ArrayList<Research> researches = new ArrayList<>();
-        if(!this.showNotValidatedToggleButton.isSelected() &&
-           !this.showValidatedToggleButton.isSelected()){
-            researches = researchesReportDAO.getResearchesFromDatabase(this.findByTitleTextField.getText(), "");
-        }
+        try{
+            if(!showNotValidatedToggleButton.isSelected() &&
+               !showValidatedToggleButton.isSelected()){
+                researches = researchesReportDAO.getResearchesFromDatabase(findByTitleTextField.getText(), "");
+            }
+        
+            if(!showNotValidatedToggleButton.isSelected() &&
+               showValidatedToggleButton.isSelected()){
+                researches = researchesReportDAO.getValidatedResearchesFromDatabase(findByTitleTextField.getText());
+            }
+        
+            if(showNotValidatedToggleButton.isSelected() &&
+               !showValidatedToggleButton.isSelected()){
+                researches = researchesReportDAO.getNotValidatedResearchesFromDatabase(findByTitleTextField.getText());
+            }
+        
+            if(showNotValidatedToggleButton.isSelected() &&
+               showValidatedToggleButton.isSelected()){
+                researches = researchesReportDAO.getValidatedAndNotValidatedResearchesFromDatabase(findByTitleTextField.getText());
+            }
 
-        if(!this.showNotValidatedToggleButton.isSelected() &&
-           this.showValidatedToggleButton.isSelected()){
-            researches = researchesReportDAO.getValidatedResearchesFromDatabase(this.findByTitleTextField.getText());
-        }
-
-        if(this.showNotValidatedToggleButton.isSelected() &&
-           !this.showValidatedToggleButton.isSelected()){
-            researches = researchesReportDAO.getNotValidatedResearchesFromDatabase(this.findByTitleTextField.getText());
-        }
-
-        if(this.showNotValidatedToggleButton.isSelected() &&
-           this.showValidatedToggleButton.isSelected()){
-            researches = researchesReportDAO.getValidatedAndNotValidatedResearchesFromDatabase(this.findByTitleTextField.getText());
+        }catch(DataRetrievalException e){
+            new AlertPopUpGenerator().showConnectionErrorMessage();
         }
         
-        try {
+        try{
             for(Research research : researches){
                 FXMLLoader researchItemControllerLoader = new FXMLLoader(
-                    getClass().getResource("/mx/uv/fei/gui/fxmlfiles/guiresearchreport/ResearchItem.fxml")
+                    getClass().getResource("/mx/uv/fei/gui/fxml/reports/ResearchItem.fxml")
                 );
                 HBox researchItemHBox = researchItemControllerLoader.load();
                 ResearchItemController researchItemController = researchItemControllerLoader.getController();
                 researchItemController.setResearchNameLabel(research.getTitle());
                 researchItemController.setGuiResearchReportController(this);
-                this.researchesVBox.getChildren().add(researchItemHBox);
+                researchesVBox.getChildren().add(researchItemHBox);
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+        }catch(IOException e) {
+            new AlertPopUpGenerator().showMissingFilesMessage();
+        }  
+    }
+    @FXML
+    private void showValidatedToggleButtonController(ActionEvent event){
+        if(!showValidatedToggleButton.isSelected()){
+            showValidatedToggleButton.setText("No");
+        }else{
+            showValidatedToggleButton.setText("Si");
         }
-            
+    }
+    @FXML
+    private void showNotValidatedToggleButtonController(ActionEvent event){
+        if(!showNotValidatedToggleButton.isSelected()){
+            showNotValidatedToggleButton.setText("No");
+        }else{
+            showNotValidatedToggleButton.setText("Si");
+        }
     }
 
-    //This method only should be executed by the ResearchItemController Class, do not execute this method in another class.
-    void setElementToSelectedResearchesVBox(String selectedResearchTitle) {
-        try {
+    //This method only should be executed by the ResearchItemController Class, do not execute  method in another class.
+    public void setElementToSelectedResearchesVBox(String selectedResearchTitle){
+        try{
             FXMLLoader selectedResearchItemControllerLoader = new FXMLLoader(
-                getClass().getResource("/mx/uv/fei/gui/fxmlfiles/guiresearchreport/SelectedResearchItem.fxml")
+                getClass().getResource("/mx/uv/fei/gui/fxml/reports/SelectedResearchItem.fxml")
             );
             HBox selectedResearchItemHBox;
             selectedResearchItemHBox = selectedResearchItemControllerLoader.load();
             SelectedResearchItemController selectedResearchItemController = selectedResearchItemControllerLoader.getController();
             selectedResearchItemController.setSelectedResearchNameLabel(selectedResearchTitle);
-            this.selectedResearchesVBox.getChildren().add(selectedResearchItemHBox);
+            selectedResearchesVBox.getChildren().add(selectedResearchItemHBox);
             selectedResearchItemController.setGuiResearchReportController(this);
-        } catch (IOException e) {
-            e.printStackTrace();
+        }catch(IOException e) {
+            new AlertPopUpGenerator().showMissingFilesMessage();
         }
     }
-
-    //This method only should be executed by the SelectedResearchItemController Class, do not execute this method in another class.
-    public void setElementToResearchesVBox(String researchTitle) {
-        try {
+    //This method only should be executed by the SelectedResearchItemController Class, do not execute  method in another class.
+    public void setElementToResearchesVBox(String researchTitle){
+        try{
             FXMLLoader researchItemControllerLoader = new FXMLLoader(
-                getClass().getResource("/mx/uv/fei/gui/fxmlfiles/guiresearchreport/ResearchItem.fxml")
+                getClass().getResource("/mx/uv/fei/gui/fxml/reports/ResearchItem.fxml")
             );
             HBox researchItemHBox;
             researchItemHBox = researchItemControllerLoader.load();
             ResearchItemController researchItemController = researchItemControllerLoader.getController();
             researchItemController.setResearchNameLabel(researchTitle);
-            this.researchesVBox.getChildren().add(researchItemHBox);
+            researchesVBox.getChildren().add(researchItemHBox);
             researchItemController.setGuiResearchReportController(this);
-        } catch (IOException e) {
-            e.printStackTrace();
+        }catch(IOException e){
+            new AlertPopUpGenerator().showMissingFilesMessage();
         }
     }
-
-    //This method only should be executed by the ResearchItemController Class, do not execute this method in another class.
-    void removeElementFromResearchesVBox(String researchItemControllerTitle){
+    //This method only should be executed by the ResearchItemController Class, do not execute  method in another class.
+    public void removeElementFromResearchesVBox(String researchItemControllerTitle){
         int researchesVBoxIndexForRemove = 0;
-        for(Node hbox : ((VBox)this.researchesVBox).getChildren()) {
+        for(Node hbox : ((VBox)researchesVBox).getChildren()){
             Node label = ((HBox)hbox).getChildren().get(1); 
-            if(((Label)label).getText() == researchItemControllerTitle) {
-                this.researchesVBox.getChildren().remove(researchesVBoxIndexForRemove);
+            if(((Label)label).getText() == researchItemControllerTitle){
+                researchesVBox.getChildren().remove(researchesVBoxIndexForRemove);
                 break;
             }    
             researchesVBoxIndexForRemove++;
         }
     }
-
-    //This method only should be executed by the SelectedResearchItemController Class, do not execute this method in another class.
-    void removeElementFromSelectedResearchesVBox(String selectedResearchItemControllerTitle){
+    //This method only should be executed by the SelectedResearchItemController Class, do not execute  method in another class.
+    public void removeElementFromSelectedResearchesVBox(String selectedResearchItemControllerTitle){
         int selectedResearchesVBoxIndexForRemove = 0;
-        for(Node hbox : ((VBox)this.selectedResearchesVBox).getChildren()) {
+        for(Node hbox : ((VBox)selectedResearchesVBox).getChildren()){
             Node label = ((HBox)hbox).getChildren().get(1); 
-            if(((Label)label).getText() == selectedResearchItemControllerTitle) {
-                this.selectedResearchesVBox.getChildren().remove(selectedResearchesVBoxIndexForRemove);
+            if(((Label)label).getText() == selectedResearchItemControllerTitle){
+                selectedResearchesVBox.getChildren().remove(selectedResearchesVBoxIndexForRemove);
                 break;
             }    
             selectedResearchesVBoxIndexForRemove++;
         }
     }
-
-    //This method only should be executed by the ResearchItemController Class, do not execute this method in another class.
-    VBox getResearchesVBox() {
-        return this.researchesVBox;
+    //This method only should be executed by the ResearchItemController Class, do not execute  method in another class.
+    public VBox getResearchesVBox(){
+        return researchesVBox;
+    }
+    //This method only should be executed by the SelectedResearchItemController Class, do not execute  method in another class.
+    public VBox getSelectedResearchesVBox(){
+        return selectedResearchesVBox;
     }
 
-    //This method only should be executed by the SelectedResearchItemController Class, do not execute this method in another class.
-    VBox getSelectedResearchesVBox() {
-        return this.selectedResearchesVBox;
+    private void loadHeader(){
+        FXMLLoader headerLoader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/HeaderPane.fxml"));
+        
+        try{
+            Pane header = headerLoader.load();
+            header.getStyleClass().add("/mx/uv/fei/gui/stylesfiles/Styles.css");
+            backgroundPane.getChildren().add(header);
+            HeaderPaneController headerPaneController = headerLoader.getController();
+            headerPaneController.setTitle("Generar Reporte de Anteproshectos");
+            headerPaneController.setVisibleNRCLabel(false);
+            
+        }catch(IOException exception){
+            new AlertPopUpGenerator().showMissingFilesMessage();
+        }
     }
-
-    //This method only should be executed by the SelectedResearchItemController and ResearchItemController Classes,
-    //do not execute this method in another class.
-    void showAndSetTextToErrorMessageText(String text) {
-        this.errorMessageText.setVisible(true);
-        this.errorMessageText.setText(text);
-    }
-
-    //This method only should be executed by the SelectedResearchItemController and ResearchItemController Classes,
-    //do not execute this method in another class.
-    void hideErrorMessageText(){
-        this.errorMessageText.setVisible(false);
-    }
-
 }

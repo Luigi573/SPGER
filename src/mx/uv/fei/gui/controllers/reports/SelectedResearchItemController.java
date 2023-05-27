@@ -5,31 +5,28 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
-public class SelectedResearchItemController {
-
+public class SelectedResearchItemController{
     private GuiResearchReportController guiResearchReportController;
 
     @FXML
     private Button deselectButton;
-
     @FXML
     private Label selectedResearchNameLabel;
 
     @FXML
-    void deselectButtonController(ActionEvent event) {
-        this.guiResearchReportController.setElementToResearchesVBox(
-            this.selectedResearchNameLabel.getText()
+    private void deselectButtonController(ActionEvent event){
+        guiResearchReportController.setElementToResearchesVBox(
+            selectedResearchNameLabel.getText()
         );
-        this.guiResearchReportController.removeElementFromSelectedResearchesVBox(
-            this.selectedResearchNameLabel.getText()
+        guiResearchReportController.removeElementFromSelectedResearchesVBox(
+            selectedResearchNameLabel.getText()
         );
     }
 
-    void setSelectedResearchNameLabel(String title){
-        this.selectedResearchNameLabel.setText(title);
+    public void setSelectedResearchNameLabel(String title){
+        selectedResearchNameLabel.setText(title);
     }
-
-    void setGuiResearchReportController(
+    public void setGuiResearchReportController(
         GuiResearchReportController guiResearchReportController){
             this.guiResearchReportController = guiResearchReportController;
     }

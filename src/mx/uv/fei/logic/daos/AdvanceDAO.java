@@ -41,7 +41,7 @@ public class AdvanceDAO implements IAdvanceDAO{
 
     @Override
     public ArrayList<Advance> getAdvancesList() throws DataRetrievalException {
-        ArrayList<Advance> advancesList = new ArrayList();
+        ArrayList<Advance> advancesList = new ArrayList<>();
         
         String query = "select * from Avances";
         try {
@@ -68,7 +68,7 @@ public class AdvanceDAO implements IAdvanceDAO{
 
     @Override
     public Advance getAdvanceByID(int advanceID) throws DataRetrievalException {
-        ArrayList<Advance> advancesList = new ArrayList(getAdvancesList());
+        ArrayList<Advance> advancesList = new ArrayList<>(getAdvancesList());
         Advance advanceByID = new Advance();
         int i = 0;
         boolean b = false;

@@ -4,7 +4,7 @@ import mx.uv.fei.logic.domain.statuses.ProfessorStatus;
 
 public class Professor extends User{
     int staffNumber;
-    ProfessorStatus status;
+    String status;
     
     public void setStaffNumber(int staffNumber){
         this.staffNumber = staffNumber;
@@ -14,11 +14,11 @@ public class Professor extends User{
         return staffNumber;
     }
     
-    public void setStatus(ProfessorStatus status){
+    public void setStatus(String status){
         this.status = status;
     }
 
-    public ProfessorStatus getStatus(){
+    public String getStatus(){
         return this.status;
     }
 

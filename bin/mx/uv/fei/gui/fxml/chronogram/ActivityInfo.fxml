@@ -44,11 +44,7 @@
                            <content>
                               <TextFlow fx:id="descriptionTextFlow" lineSpacing="1.0" prefHeight="207.0" prefWidth="453.0">
                                  <children>
-<<<<<<<< Updated upstream:bin/mx/uv/fei/gui/fxml/chronogram/ActivityInfo.fxml
-                                    <Text fx:id="descriptionText" strokeType="OUTSIDE" strokeWidth="0.0" text="sd" wrappingWidth="314.158203125" />
-========
                                     <Text fx:id="descriptionText" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="314.158203125" />
->>>>>>>> Stashed changes:src/mx/uv/fei/gui/fxml/chronogram/ActivityInfo.fxml
                                  </children></TextFlow>
                            </content>
                         </ScrollPane>
@@ -74,15 +70,15 @@
                            <children>
                               <Label layoutX="59.0" layoutY="19.0" prefHeight="17.0" prefWidth="213.0" text="Seleccione un archivo de su dispositivo" />
                               <Label alignment="CENTER" layoutY="4.0" prefHeight="47.0" prefWidth="44.0" text="Icon" />
-                              <Button fx:id="uploadFileButton" layoutX="287.0" layoutY="15.0" mnemonicParsing="false" onAction="#uploadFileForDelivery" text="Cargar" />
-                              <Button layoutX="351.0" layoutY="15.0" mnemonicParsing="false" text="Descargar" />
+                              <Button fx:id="uploadFile" layoutX="272.0" layoutY="15.0" mnemonicParsing="false" onAction="#uploadFileForDelivery" text="Cargar" />
                            </children>
                         </Pane>
-                        <Button fx:id="turnInButton" layoutX="14.0" layoutY="252.0" mnemonicParsing="false" onAction="#deliverActivity" prefHeight="30.0" prefWidth="100.0" text="Entregar" />
+                        <Button fx:id="deliverActivity" layoutX="358.0" layoutY="252.0" mnemonicParsing="false" onAction="#deliverActivity" prefHeight="30.0" prefWidth="82.0" text="Entregar" />
                         <Button fx:id="commentButton" layoutX="313.0" layoutY="250.0" mnemonicParsing="false" onAction="#feedback" prefHeight="30.0" prefWidth="130.0" text="Retroalimentar" />
+                        <Button fx:id="removeFiles" layoutX="14.0" layoutY="253.0" mnemonicParsing="false" onAction="#removeFiles" text="Quitar Archivos" />
                      </children></AnchorPane>
             </content>
-          </Tab>
+          </Tab>        
             <Tab text="Avances">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
@@ -98,7 +94,6 @@
             </Tab>
         </tabs>
       </TabPane>
-<<<<<<<< Updated upstream:bin/mx/uv/fei/gui/fxml/chronogram/ActivityInfo.fxml
       <Pane layoutX="4.0" prefHeight="54.0" prefWidth="593.0">
          <children>
             <Label alignment="CENTER" contentDisplay="CENTER" layoutX="182.0" layoutY="2.0" prefHeight="30.0" prefWidth="194.0" text="[NombreEE]">
@@ -125,9 +120,7 @@
             <Button layoutX="527.0" layoutY="2.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="59.0" text="ProfPic" />
          </children>
       </Pane>
-========
       <Pane fx:id="headerPane" layoutX="-3.0" prefHeight="63.0" prefWidth="600.0" />
       <ScrollPane layoutX="-248.0" layoutY="-147.0" prefHeight="200.0" prefWidth="200.0" />
->>>>>>>> Stashed changes:src/mx/uv/fei/gui/fxml/chronogram/ActivityInfo.fxml
    </children>
 </Pane>

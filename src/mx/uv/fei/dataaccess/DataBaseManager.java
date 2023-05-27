@@ -2,9 +2,6 @@ package mx.uv.fei.dataaccess;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -14,14 +11,11 @@ import java.util.logging.Level;
 
 public class DataBaseManager {
     private Connection connection;
-    private Path path;
-    private InputStream fis;
     private Properties dataBaseUserPropertiesFile;
 
     public DataBaseManager(){
         try {
-            path = Paths.get("src/dependencies/resources/DatabaseAccess.properties");
-            fis = Files.newInputStream(path.toAbsolutePath());
+            InputStream fis = getClass().getResourceAsStream("/dependencies/resources/DatabaseAccess.properties");
             dataBaseUserPropertiesFile = new Properties();
             dataBaseUserPropertiesFile.load(fis);
         } catch (IOException e) {

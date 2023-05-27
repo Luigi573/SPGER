@@ -5,47 +5,43 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import mx.uv.fei.gui.AlertPopUpGenerator;
 
-public class ResearchItemController {
-
+public class ResearchItemController{
     private GuiResearchReportController guiResearchReportController;
 
     @FXML
     private Label researchNameLabel;
-
     @FXML
     private Button selectButton;
 
     @FXML
-    void selectButtonController(ActionEvent event) {
-        for(Node selectedResearchHbox : ((VBox)this.guiResearchReportController.
+    private void selectButtonController(ActionEvent event){
+        for(Node selectedResearchHbox : ((VBox)guiResearchReportController.
             getSelectedResearchesVBox()).getChildren()){
             Node selectedResearchLabel = ((HBox)selectedResearchHbox).getChildren().get(1);
-            if(this.researchNameLabel.getText().equals(((Label)selectedResearchLabel).getText())) {
-                this.guiResearchReportController.showAndSetTextToErrorMessageText(
-                    "Este Anteproyecto ya está seleccionado"
-                );
+            if(researchNameLabel.getText().equals(((Label)selectedResearchLabel).getText())){
+                new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "Error", "Este anteproyecto ya está seleccionado");
                 return;
             }
         }
-        this.guiResearchReportController.hideErrorMessageText();
-        this.guiResearchReportController.setElementToSelectedResearchesVBox(
-            this.researchNameLabel.getText()
+        
+        guiResearchReportController.setElementToSelectedResearchesVBox(
+            researchNameLabel.getText()
         );
-        this.guiResearchReportController.removeElementFromResearchesVBox(
-            this.researchNameLabel.getText()
+        guiResearchReportController.removeElementFromResearchesVBox(
+            researchNameLabel.getText()
         );
     }
 
-    public void setResearchNameLabel(String researchName) {
-        this.researchNameLabel.setText(researchName);
+    public void setResearchNameLabel(String researchName){
+        researchNameLabel.setText(researchName);
     }
-
     public void setGuiResearchReportController(
         GuiResearchReportController guiResearchReportController){
             this.guiResearchReportController = guiResearchReportController;
     }
-
 } 
