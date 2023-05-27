@@ -63,19 +63,19 @@
                         </Label>
                         <ScrollPane hbarPolicy="NEVER" layoutX="4.0" layoutY="94.0" prefHeight="148.0" prefWidth="450.0">
                            <content>
-                              <VBox prefHeight="144.0" prefWidth="448.0" />
+                              <VBox fx:id="activityFileListVBox" prefHeight="144.0" prefWidth="448.0" />
                            </content>
                         </ScrollPane>
                         <Pane layoutX="12.0" layoutY="35.0" prefHeight="54.0" prefWidth="434.0">
                            <children>
                               <Label layoutX="59.0" layoutY="19.0" prefHeight="17.0" prefWidth="213.0" text="Seleccione un archivo de su dispositivo" />
                               <Label alignment="CENTER" layoutY="4.0" prefHeight="47.0" prefWidth="44.0" text="Icon" />
-                              <Button fx:id="uploadFile" layoutX="272.0" layoutY="15.0" mnemonicParsing="false" onAction="#uploadFileForDelivery" text="Cargar" />
+                              <Button fx:id="uploadFile" layoutX="382.0" layoutY="15.0" mnemonicParsing="false" onAction="#uploadFileForDelivery" text="Cargar" />
                            </children>
                         </Pane>
                         <Button fx:id="deliverActivity" layoutX="358.0" layoutY="252.0" mnemonicParsing="false" onAction="#deliverActivity" prefHeight="30.0" prefWidth="82.0" text="Entregar" />
-                        <Button fx:id="commentButton" layoutX="313.0" layoutY="250.0" mnemonicParsing="false" onAction="#feedback" prefHeight="30.0" prefWidth="130.0" text="Retroalimentar" />
                         <Button fx:id="removeFiles" layoutX="14.0" layoutY="253.0" mnemonicParsing="false" onAction="#removeFiles" text="Quitar Archivos" />
+                        <Button fx:id="commentButton" layoutX="211.0" layoutY="252.0" mnemonicParsing="false" onAction="#feedback" prefHeight="30.0" prefWidth="130.0" text="Retroalimentar" />
                      </children></AnchorPane>
             </content>
           </Tab>        
@@ -88,39 +88,20 @@
                               <Font size="24.0" />
                            </font>
                         </Label>
+                        <ScrollPane hbarPolicy="NEVER" layoutX="4.0" layoutY="67.0" prefHeight="148.0" prefWidth="450.0">
+                           <content>
+                              <VBox fx:id="advanceListVBox" prefHeight="166.0" prefWidth="450.0" />
+                           </content>
+                        </ScrollPane>
+                        <Button fx:id="createAdvanceButton" layoutX="324.0" layoutY="244.0" mnemonicParsing="false" onAction="#createNewAdvance" prefHeight="30.0" prefWidth="130.0" text="Crear nuevo avance" />
                      </children>
                   </AnchorPane>
               </content>
             </Tab>
         </tabs>
       </TabPane>
-      <Pane layoutX="4.0" prefHeight="54.0" prefWidth="593.0">
-         <children>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="182.0" layoutY="2.0" prefHeight="30.0" prefWidth="194.0" text="[NombreEE]">
-               <font>
-                  <Font size="20.0" />
-               </font>
-            </Label>
-            <Label layoutX="72.0" text="SPGER">
-               <font>
-                  <Font size="32.0" />
-               </font>
-            </Label>
-            <Label layoutX="227.0" layoutY="25.0" prefHeight="30.0" prefWidth="127.0" text="NRC: [NRC]">
-               <font>
-                  <Font size="20.0" />
-               </font>
-            </Label>
-            <Button fx:id="homeButton" layoutX="7.0" layoutY="2.0" mnemonicParsing="false" onAction="#goHome" prefHeight="54.0" prefWidth="59.0" text="Home" />
-            <Label alignment="CENTER_RIGHT" layoutX="394.0" layoutY="17.0" prefHeight="25.0" prefWidth="127.0" text="[Nombre]">
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </Label>
-            <Button layoutX="527.0" layoutY="2.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="59.0" text="ProfPic" />
-         </children>
-      </Pane>
-      <Pane fx:id="headerPane" layoutX="-3.0" prefHeight="63.0" prefWidth="600.0" />
+      <Pane layoutX="4.0" prefHeight="54.0" prefWidth="593.0" />
+      <Pane fx:id="headerPane" layoutX="-163.0" layoutY="-31.0" prefHeight="63.0" prefWidth="600.0" />
       <ScrollPane layoutX="-248.0" layoutY="-147.0" prefHeight="200.0" prefWidth="200.0" />
    </children>
 </Pane>

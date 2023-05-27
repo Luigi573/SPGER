@@ -171,4 +171,34 @@ public class ActivityDAO implements IActivityDAO{
     public boolean isValidDate(Activity activity){
         return activity.getStartDate().compareTo(activity.getDueDate()) <= 0;
     }
+    
+    public ArrayList<Activity> getActivityListSimple() throws DataRetrievalException { //SHOULD BE REMOVED
+        ArrayList<Activity> activityList = new ArrayList();
+        PreparedStatement statement;
+        String query = "SELECT * FROM Actividades";
+        
+        try{
+            statement = dataBaseManager.getConnection().prepareStatement(query);
+            ResultSet resultSet = statement.executeQuery();
+                        
+            while(resultSet.next()){
+                Activity activity = new Activity();
+                
+                activity.setId(resultSet.getInt("IdActividad"));
+                activity.setTitle(resultSet.getString("título"));
+                activity.setDescription(resultSet.getString("descripción"));
+                activity.setStartDate(resultSet.getDate("fechaInicio"));
+                activity.setDueDate(resultSet.getDate("fechaFin"));
+                activity.setComment(resultSet.getString("estado"));
+                
+                activityList.add(activity);
+            }
+        }catch(SQLException exception){
+            throw new DataRetrievalException("Fallo al recuperar la informacion. Verifique su conexion e intentelo de nuevo");
+        }finally{
+            dataBaseManager.closeConnection();
+        }
+        
+        return activityList;
+    }
 }

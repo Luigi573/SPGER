@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/UnitTests/JUnit4TestClass.java to edit this template
- */
 package mx.uv.fei.logic.daos;
 
 import java.util.ArrayList;
@@ -15,10 +11,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-/**
- *
- * @author Jesús Manuel
- */
 public class AdvanceDAOTest {
     
     public AdvanceDAOTest() {
@@ -47,10 +39,11 @@ public class AdvanceDAOTest {
     public void testAddAdvance() throws DataInsertionException {
         System.out.println("addAdvance");
         Advance advance = new Advance();
-        advance.setMatricle("zs21013873");
-        advance.setDirectorID(5);
+        advance.setActivityID(1);
+        advance.setFileID(5);
         advance.setTitle("Avance de prueba unitaria");
         advance.setComments("Este avance es una prueba");
+        advance.setState("Sin revisar");
         AdvanceDAO instance = new AdvanceDAO();
         int expResult = 1;
         int result = instance.addAdvance(advance);
@@ -68,10 +61,10 @@ public class AdvanceDAOTest {
         Advance advance2 = new Advance();
         advance1.setAdvanceID(7);
         advance2.setAdvanceID(8);
-        advance1.setMatricle("zs21013873");
-        advance2.setMatricle("zs21013873");
-        advance1.setDirectorID(5);
-        advance2.setDirectorID(5);
+//        advance1.setMatricle("zs21013873");
+//        advance2.setMatricle("zs21013873");
+//        advance1.setDirectorID(5);
+//        advance2.setDirectorID(5);
         advance1.setTitle("Avance de prueba unitaria");
         advance2.setTitle("Avance de prueba unitaria num2");
         advance1.setComments("Este avance es una prueba");
@@ -102,8 +95,8 @@ public class AdvanceDAOTest {
         AdvanceDAO instance = new AdvanceDAO();
         Advance advance1 = new Advance();
         advance1.setAdvanceID(8);
-        advance1.setMatricle("zs21013873");
-        advance1.setDirectorID(5);
+//        advance1.setMatricle("zs21013873");
+//        advance1.setDirectorID(5);
         advance1.setTitle("Avance de prueba unitaria num2");
         advance1.setComments("Este avance también es una prueba");
         Advance expResult = advance1;

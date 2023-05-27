@@ -15,12 +15,15 @@ import mx.uv.fei.logic.exceptions.DataRetrievalException;
 public class KGALDAO implements IKGALDAO {
     private DataBaseManager dataBaseManager;
 
+    public KGALDAO () {
+        dataBaseManager = new DataBaseManager();
+    }
+    
     @Override
     public int addKGAL(KGAL kgal) throws DataInsertionException {
         int result;
         String query = "insert into LGAC(descripción) values(?)";
         try {
-            dataBaseManager = new DataBaseManager();
             Connection connection = dataBaseManager.getConnection();
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, kgal.getDescription());
@@ -37,7 +40,6 @@ public class KGALDAO implements IKGALDAO {
         
         String query = "select * from LGAC";
         try {
-            dataBaseManager = new DataBaseManager();
             Connection connection = dataBaseManager.getConnection();
             Statement statement = connection.createStatement();
             ResultSet rs = statement.executeQuery(query);
@@ -59,7 +61,6 @@ public class KGALDAO implements IKGALDAO {
     public KGAL getKGALByID(int kgalID) throws DataRetrievalException {
         String query = "select * from LGAC where IdLGAC=?";
         try {
-            dataBaseManager = new DataBaseManager();
             Connection connection = dataBaseManager.getConnection();
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setInt(1, kgalID);
@@ -81,7 +82,6 @@ public class KGALDAO implements IKGALDAO {
     public KGAL getKGALByDescription(String description) throws DataRetrievalException {
         String query = "select * from LGAC where descripción=?";
         try {
-            dataBaseManager = new DataBaseManager();
             Connection connection = dataBaseManager.getConnection();
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, description);
@@ -105,7 +105,6 @@ public class KGALDAO implements IKGALDAO {
         String query = "select * from LGAC where descripción like ?";
         ArrayList<KGAL> kgalList = new ArrayList();
         try {
-            dataBaseManager = new DataBaseManager();
             Connection connection = dataBaseManager.getConnection();
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, "%" + description + "%");
@@ -129,7 +128,6 @@ public class KGALDAO implements IKGALDAO {
         int result;
         String query = "update LGAC set descripción=? where IdLGAC=?";
         try {
-            dataBaseManager = new DataBaseManager();
             Connection connection = dataBaseManager.getConnection();
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, description);

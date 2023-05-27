@@ -1,18 +1,17 @@
-
 package mx.uv.fei.logic.domain;
 
 public class Advance {
     private int advanceID;
-    private String studentID;
-    private int directorID;
+    private int activityID;
+    private int fileID;
     private String title;
     private String comments;
+    private String state;
 
     public Advance() {}
     
-    public Advance(String studentID, int directorID, String title, String comments) {
-        this.studentID = studentID;
-        this.directorID = directorID;
+    public Advance(int activityID, String title, String comments) {
+        this.activityID = activityID;
         this.title = title;
         this.comments = comments;
     }
@@ -21,12 +20,12 @@ public class Advance {
         this.advanceID = advanceID;
     }
     
-    public void setMatricle(String studentID) {
-        this.studentID = studentID;
+    public void setActivityID(int activityID) {
+        this.activityID = activityID;
     }
     
-    public void setDirectorID(int directorID) {
-        this.directorID = directorID;
+    public void setFileID(int fileID) {
+        this.fileID = fileID;
     }
     
     public void setTitle(String title) {
@@ -37,16 +36,20 @@ public class Advance {
         this.comments = comments;
     }
     
+    public void setState(String state) {
+        this.state = state;
+    }
+    
     public int getAdvanceID() {
         return this.advanceID;
     }
     
-    public String getMatricule() {
-        return this.studentID;
+    public int getActivityID() {
+        return this.activityID;
     }
     
-    public int getDirectorID() {
-        return this.directorID;
+    public int getFileID() {
+        return this.fileID;
     }
     
     public String getTitle() {
@@ -57,17 +60,21 @@ public class Advance {
         return this.comments;
     }
     
+    public String getState() {
+        return this.state;
+    }
+    
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof Advance)) {
             return false;
         }
             Advance advance = (Advance) o;
-            return (this.studentID == advance.getMatricule()) && (this.directorID == advance.getDirectorID() && (this.title.equals(advance.getTitle())) && (this.comments.equals(advance.getComments())));
+            return ((this.activityID == advance.getActivityID()) && (this.title.equals(advance.getTitle())) && (this.comments.equals(advance.getComments())));
     }
 
     @Override
     public String toString() {
-        return "ID Avance: " + this.advanceID + " ID Estudiante: " + this.studentID + " ID Director: " + this.directorID + " Titulo: " + this.title + " Comentarios: " + this.comments;
+        return "ID Avance: " + this.advanceID + " ID Actividad: " + this.activityID + " ID Archivo: " + this.fileID + " Titulo: " + this.title + " Comentarios: " + this.comments;
     }
 }

@@ -16,13 +16,15 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.FileChooser;
-import mx.uv.fei.gui.controllers.chronogram.ModifyActivityController;
+import mx.uv.fei.logic.daos.AdvanceDAO;
 import mx.uv.fei.logic.exceptions.DataInsertionException;
 import mx.uv.fei.logic.domain.Activity;
 import mx.uv.fei.logic.daos.FileDAO;
+import mx.uv.fei.logic.domain.Advance;
+import mx.uv.fei.logic.exceptions.DataRetrievalException;
 
 public class ActivityInfoController{
-    private Activity activity;
+    static Activity activity;
 
     private ArrayList<File> filesList;
     
@@ -35,7 +37,9 @@ public class ActivityInfoController{
     @FXML
     private Pane headerPane;
     @FXML
-    private VBox vBoxActivityFileList;
+    private VBox activityFileListVBox;
+    @FXML
+    private VBox advanceListVBox;
     @FXML
     private Text descriptionText;
     
@@ -43,6 +47,34 @@ public class ActivityInfoController{
     public void initialize() {
         this.filesList = new ArrayList();
         loadHeader();
+        
+        AdvanceDAO advanceDAO = new AdvanceDAO();
+        
+        try {
+            ArrayList<Advance> advancesList = advanceDAO.getAdvancesList();
+            
+            for (Advance advance : advancesList) {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/AdvanceItem.fxml"));
+                
+                try {
+                    Pane activityPane = loader.load();
+                    AdvanceItemController controller = (AdvanceItemController)loader.getController();
+                    controller.setAdvance(advance);
+                    
+                    advanceListVBox.getChildren().add(activityPane);
+                } catch (IllegalStateException | IOException exception) {
+                    Alert errorMessage = new Alert(Alert.AlertType.ERROR);
+                    errorMessage.setHeaderText("Error de carga");
+                    errorMessage.setContentText("No se pudo abrir la ventana, verifique que el archivo .fxml esté en su ubicación correcta");
+                    errorMessage.showAndWait();
+                }
+            }
+        } catch (DataRetrievalException exception) {
+            Alert errorMessage = new Alert(Alert.AlertType.ERROR);
+            errorMessage.setHeaderText("Error de conexión");
+            errorMessage.setContentText("Favor de verificar su conexión a internet e inténtelo de nuevo");
+            errorMessage.showAndWait();
+        }
     }
     @FXML
     private void editActivity(ActionEvent event) {
@@ -95,7 +127,7 @@ public class ActivityInfoController{
                     Pane pane = loader.load();
                     ActivityFileItemController controller = (ActivityFileItemController)loader.getController();
                     controller.setLabelText(file.getName());
-                    vBoxActivityFileList.getChildren().add(pane);
+                    activityFileListVBox.getChildren().add(pane);
                     this.filesList.add(file);
                 } catch (IOException | IllegalStateException exception) {
                     Alert errorMessage = new Alert(Alert.AlertType.ERROR);
@@ -136,9 +168,10 @@ public class ActivityInfoController{
             errorMessage.showAndWait();
         }
     }
+    
     @FXML
     public void removeFiles(ActionEvent event) {
-        vBoxActivityFileList.getChildren().clear();
+        activityFileListVBox.getChildren().clear();
         filesList.clear();
     }
     
@@ -164,6 +197,26 @@ public class ActivityInfoController{
         }
     }
     
+    @FXML
+    void createNewAdvance(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/CreateNewAdvance.fxml"));
+            Parent parent = loader.load();
+            CreateNewAdvanceController createNewAdvanceController = (CreateNewAdvanceController)loader.getController();
+            createNewAdvanceController.setActivity(activity);
+
+            Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+            Scene scene = new Scene(parent);
+            stage.setTitle("SPGER");
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException exeption) {
+            Alert errorMessage = new Alert(Alert.AlertType.ERROR);
+            errorMessage.setContentText("Error al cargar, faltan archivos");
+            errorMessage.showAndWait();
+        }
+    }
+    
     private void loadHeader(){
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/HeaderPane.fxml"));
         
@@ -177,8 +230,9 @@ public class ActivityInfoController{
             errorMessage.showAndWait();
         }
     }
+    
     public void setActivity(Activity activity){
-        this.activity = activity;
+        ActivityInfoController.activity = activity;
         titleLabel.setText(activity.getTitle());
         startDateLabel.setText("Fecha inicio: " + activity.getStartDate());
         dueDateLabel.setText("Fecha fin: " + activity.getDueDate());
