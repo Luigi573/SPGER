@@ -12,7 +12,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import mx.uv.fei.logic.domain.Activity;
 import mx.uv.fei.logic.domain.Advance;
 
 public class AdvanceItemController {

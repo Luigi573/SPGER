@@ -1,0 +1,10 @@
+Artefactos para el examen:
+1. Diagrama de Flujo de Datos
+2. Diccionario de Datos
+3. Diagrama de Clases (Modelo del Dominio) con atributos, métodos, navigabilidad y multiplicidad.
+4. Diagrama de Casos de Uso
+5. Descripciones de Casos de Uso
+6. Diagramas de Actividad
+
+Modelos adicionales:
+7. Diagramas de Robustez

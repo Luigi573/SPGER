@@ -126,7 +126,7 @@ public class ActivityInfoController{
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/ActivityFileItem.fxml"));
                     Pane pane = loader.load();
                     ActivityFileItemController controller = (ActivityFileItemController)loader.getController();
-                    controller.setLabelText(file.getName());
+                    controller.setFile(file);
                     activityFileListVBox.getChildren().add(pane);
                     this.filesList.add(file);
                 } catch (IOException | IllegalStateException exception) {

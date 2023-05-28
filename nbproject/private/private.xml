@@ -3,10 +3,8 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Jesús%20Manuel/Desktop/SPGER/src/mx/uv/fei/gui/controllers/chronogram/CreateNewAdvanceController.java</file>
-            <file>file:/C:/Users/Jesús%20Manuel/Desktop/SPGER/src/mx/uv/fei/logic/daos/KGALDAO.java</file>
-            <file>file:/C:/Users/Jesús%20Manuel/Desktop/SPGER/src/mx/uv/fei/gui/controllers/chronogram/AdvanceInfoController.java</file>
-            <file>file:/C:/Users/Jesús%20Manuel/Desktop/SPGER/src/mx/uv/fei/logic/domain/Activity.java</file>
+            <file>file:/C:/Users/Jesús%20Manuel/Desktop/SPGER/src/mx/uv/fei/gui/controllers/chronogram/ActivityFileItemController.java</file>
+            <file>file:/C:/Users/Jesús%20Manuel/Desktop/SPGER/src/mx/uv/fei/logic/daos/AdvanceDAO.java</file>
             <file>file:/C:/Users/Jesús%20Manuel/Desktop/SPGER/src/mx/uv/fei/gui/controllers/chronogram/ModifyAdvanceController.java</file>
         </group>
     </open-files>

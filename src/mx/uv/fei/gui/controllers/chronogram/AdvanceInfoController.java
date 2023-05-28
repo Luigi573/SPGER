@@ -98,28 +98,31 @@ public class AdvanceInfoController {
         advanceCommentsText.setText(advance.getComments());
         
         FileDAO fileDAO = new FileDAO();
-        File file = new File();
-        try {
-            file = fileDAO.getFileByID(advance.getFileID());
-            
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/ActivityFileItem.fxml"));               
-            try{
-                Pane advancePane = loader.load();
-                ActivityFileItemController controller = (ActivityFileItemController)loader.getController();
-                controller.setLabelText(file.getFilePath());
+        File file;
+        
+        if(advance.getFileID() != 0) {
+            try {
+                file = fileDAO.getFileByID(advance.getFileID());
                 
-                advanceFileVBox.getChildren().add(advancePane);
-            }catch(IllegalStateException | IOException exception){
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/ActivityFileItem.fxml"));               
+                try {
+                    Pane advancePane = loader.load();
+                    ActivityFileItemController controller = (ActivityFileItemController)loader.getController();
+                    controller.setFile(file.getFilePath());
+
+                    advanceFileVBox.getChildren().add(advancePane);
+                } catch(IllegalStateException | IOException exception){
+                    Alert errorMessage = new Alert(Alert.AlertType.ERROR);
+                    errorMessage.setHeaderText("Error de carga");
+                    errorMessage.setContentText("No se pudo abrir la ventana, verifique que el archivo .fxml esté en su ubicación correcta");
+                    errorMessage.showAndWait();
+                }
+            } catch (DataRetrievalException exception) {
                 Alert errorMessage = new Alert(Alert.AlertType.ERROR);
-                errorMessage.setHeaderText("Error de carga");
-                errorMessage.setContentText("No se pudo abrir la ventana, verifique que el archivo .fxml esté en su ubicación correcta");
+                errorMessage.setHeaderText("Error de conexión");
+                errorMessage.setContentText("Favor de verificar su conexión a internet e inténtelo de nuevo");
                 errorMessage.showAndWait();
             }
-        } catch (DataRetrievalException exception) {
-            Alert errorMessage = new Alert(Alert.AlertType.ERROR);
-            errorMessage.setHeaderText("Error de conexión");
-            errorMessage.setContentText("Favor de verificar su conexión a internet e inténtelo de nuevo");
-            errorMessage.showAndWait();
         }
     }
     

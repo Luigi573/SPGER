@@ -110,7 +110,7 @@ public class CreateNewAdvanceController {
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/ActivityFileItem.fxml"));
                     Pane pane = loader.load();
                     ActivityFileItemController controller = (ActivityFileItemController)loader.getController();
-                    controller.setLabelText(file.getName());
+                    controller.setFile(file);
                     advanceFileVBox.getChildren().add(pane);
                     this.filePath = file.getPath();
                 } catch (IOException | IllegalStateException exception) {
