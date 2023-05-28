@@ -71,6 +71,7 @@ public class GuiCoursesController{
             stage.setResizable(false);
             stage.show();
         }catch(IOException e){
+            e.printStackTrace();
             new AlertPopUpGenerator().showMissingFilesMessage();
         }   
     }

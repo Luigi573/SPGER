@@ -7,16 +7,16 @@ import mx.uv.fei.logic.domain.Course;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
 import mx.uv.fei.logic.exceptions.DataWritingException;
 
-public class CourseDAOTest{
+public class CourseDAOTest {
     
     @Test
     public void addCourseToDatabaseTest() {
         try {
             CourseDAO courseDAO = new CourseDAO();
             Course expectedCourse = new Course();
-            expectedCourse.setNrc(10000);
+            expectedCourse.setNrc(11000);
             expectedCourse.setIdScholarPeriod(1);
-            expectedCourse.setStaffNumber(100000000);
+            expectedCourse.setStaffNumber(100000001);
             expectedCourse.setEEName("Proyecto Guiado");
             expectedCourse.setSection(1);
             expectedCourse.setBlock(7);
@@ -29,16 +29,15 @@ public class CourseDAOTest{
         } catch (DataRetrievalException e) {
             e.printStackTrace();
         }
-
     }
 
     @Test
     public void modifyCourseDataFromDatabaseTest() {
         try {
             CourseDAO courseDAO = new CourseDAO();
-            Course originalCourse = courseDAO.getCourseFromDatabase("10000");
+            Course originalCourse = courseDAO.getCourseFromDatabase("11000");
             Course expectedCourse = new Course();
-            expectedCourse.setNrc(10002);
+            expectedCourse.setNrc(11001);
             expectedCourse.setIdScholarPeriod(1);
             expectedCourse.setStaffNumber(100000001);
             expectedCourse.setEEName("Experiencia Recepcional");
@@ -64,7 +63,7 @@ public class CourseDAOTest{
             Course expectedCourse = new Course();
             expectedCourse.setNrc(10001);
             expectedCourse.setIdScholarPeriod(1);
-            expectedCourse.setStaffNumber(100000000);
+            expectedCourse.setStaffNumber(100000001);
             expectedCourse.setEEName("Proyecto Guiado");
             expectedCourse.setSection(2);
             expectedCourse.setBlock(7);
@@ -79,12 +78,12 @@ public class CourseDAOTest{
     public void getSpecifiedCoursesFromDatabaseTest() {
         try {
             CourseDAO courseDAO = new CourseDAO();
-            Course actualCourse = courseDAO.getSpecifiedCoursesFromDatabase("1").get(1);
+            Course actualCourse = courseDAO.getSpecifiedCoursesFromDatabase("1").get(0);
 
             Course expectedCourse = new Course();
             expectedCourse.setNrc(10001);
             expectedCourse.setIdScholarPeriod(1);
-            expectedCourse.setStaffNumber(100000000);
+            expectedCourse.setStaffNumber(100000001);
             expectedCourse.setEEName("Proyecto Guiado");
             expectedCourse.setSection(2);
             expectedCourse.setBlock(7);
@@ -102,7 +101,7 @@ public class CourseDAOTest{
             Course expectedCourse = new Course();
             expectedCourse.setNrc(10001);
             expectedCourse.setIdScholarPeriod(1);
-            expectedCourse.setStaffNumber(100000000);
+            expectedCourse.setStaffNumber(100000001);
             expectedCourse.setEEName("Proyecto Guiado");
             expectedCourse.setSection(2);
             expectedCourse.setBlock(7);
@@ -121,7 +120,7 @@ public class CourseDAOTest{
             Course expectedCourse = new Course();
             expectedCourse.setNrc(10001);
             expectedCourse.setIdScholarPeriod(1);
-            expectedCourse.setStaffNumber(100000000);
+            expectedCourse.setStaffNumber(100000001);
             expectedCourse.setEEName("Proyecto Guiado");
             expectedCourse.setSection(2);
             expectedCourse.setBlock(7);
