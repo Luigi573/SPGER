@@ -69,7 +69,7 @@ public class LoginController{
                     } 
                 }
             }catch(LoginException exception){
-                AlertPopUpGenerator.showConnectionErrorMessage();
+                new AlertPopUpGenerator().showConnectionErrorMessage();
             }
             
         }else{
@@ -93,7 +93,7 @@ public class LoginController{
             Stage oldStage = (Stage)((Node)event.getSource()).getScene().getWindow();
             oldStage.close();
         }catch(IOException exception){            
-            AlertPopUpGenerator.showMissingFilesMessage();
+            new AlertPopUpGenerator().showMissingFilesMessage();
         }
     }
 }

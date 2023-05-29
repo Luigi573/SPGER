@@ -69,7 +69,7 @@ public class Course {
 
         return this.nrc == c.nrc  &&
                this.idScholarPeriod == c.idScholarPeriod &&
-               this.eeName.equals(c.eeName) &&
+               this.Name.equals(c.Name) &&
                this.section == c.section &&
                this.block == c.block &&
                this.personalNumber == c.personalNumber;

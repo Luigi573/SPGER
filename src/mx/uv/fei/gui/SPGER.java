@@ -19,7 +19,7 @@ public class SPGER extends Application{
             stage.setScene(scene);
             stage.show();
         }catch(IOException exception){
-            AlertPopUpGenerator.showMissingFilesMessage();
+            new AlertPopUpGenerator().showMissingFilesMessage();
         }
     }
     

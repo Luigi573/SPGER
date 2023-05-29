@@ -58,7 +58,7 @@ public class CreateActivityController{
             if(activityDAO.isBlank(activity)){
                 try{
                     if(activityDAO.addActivity(activity) > 0){
-                        AlertPopUpGenerator.showCustomMessage(Alert.AlertType.INFORMATION, "Mensaje de éxito", "Actividad creada exitosamente");
+                        new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.INFORMATION, "Mensaje de éxito", "Actividad creada exitosamente");
 
                         try{
                             FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/Chronogram.fxml"));
@@ -69,17 +69,17 @@ public class CreateActivityController{
                             stage.setScene(scene);
                             stage.show();
                         }catch(IllegalStateException | IOException exception){
-                            AlertPopUpGenerator.showMissingFilesMessage();
+                            new AlertPopUpGenerator().showMissingFilesMessage();
                         }
                     }
                 }catch(DataInsertionException exception){
-                    AlertPopUpGenerator.showConnectionErrorMessage();
+                    new AlertPopUpGenerator().showConnectionErrorMessage();
                 }
             }else{
-                AlertPopUpGenerator.showCustomMessage(Alert.AlertType.WARNING, "No se puede crear la actividad", "Favor de llenar todos los campos");
+                new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.WARNING, "No se puede crear la actividad", "Favor de llenar todos los campos");
             }
         }else{
-            AlertPopUpGenerator.showCustomMessage(Alert.AlertType.WARNING, "No se puede crear la actividad", "Favor de seleccionar una fecha válida");
+            new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.WARNING, "No se puede crear la actividad", "Favor de seleccionar una fecha válida");
         }
     }
     private void loadHeader(){
@@ -90,7 +90,7 @@ public class CreateActivityController{
             headerPane.getChildren().add(header);
             
         }catch(IOException exception){
-            AlertPopUpGenerator.showMissingFilesMessage();
+            new AlertPopUpGenerator().showMissingFilesMessage();
         }
     }
     public void setResearchId(int researchId){

@@ -18,7 +18,7 @@ public class CourseDAOTest{
             expectedCourse.setNrc(10000);
             expectedCourse.setIdScholarPeriod(1);
             expectedCourse.setStaffNumber(100000000);
-            expectedCourse.setEEName("Proyecto Guiado");
+            expectedCourse.setName("Proyecto Guiado");
             expectedCourse.setSection(1);
             expectedCourse.setBlock(7);
             courseDAO.addCourseToDatabase(expectedCourse);
@@ -42,7 +42,7 @@ public class CourseDAOTest{
             expectedCourse.setNrc(10002);
             expectedCourse.setIdScholarPeriod(1);
             expectedCourse.setStaffNumber(100000001);
-            expectedCourse.setEEName("Experiencia Recepcional");
+            expectedCourse.setName("Experiencia Recepcional");
             expectedCourse.setSection(2);
             expectedCourse.setBlock(8);
             courseDAO.modifyCourseDataFromDatabase(expectedCourse, originalCourse);
@@ -66,7 +66,7 @@ public class CourseDAOTest{
             expectedCourse.setNrc(10001);
             expectedCourse.setIdScholarPeriod(1);
             expectedCourse.setStaffNumber(100000000);
-            expectedCourse.setEEName("Proyecto Guiado");
+            expectedCourse.setName("Proyecto Guiado");
             expectedCourse.setSection(2);
             expectedCourse.setBlock(7);
 
@@ -86,7 +86,7 @@ public class CourseDAOTest{
             expectedCourse.setNrc(10001);
             expectedCourse.setIdScholarPeriod(1);
             expectedCourse.setStaffNumber(100000000);
-            expectedCourse.setEEName("Proyecto Guiado");
+            expectedCourse.setName("Proyecto Guiado");
             expectedCourse.setSection(2);
             expectedCourse.setBlock(7);
 
@@ -103,7 +103,7 @@ public class CourseDAOTest{
             expectedCourse.setNrc(10001);
             expectedCourse.setIdScholarPeriod(1);
             expectedCourse.setStaffNumber(100000000);
-            expectedCourse.setEEName("Proyecto Guiado");
+            expectedCourse.setName("Proyecto Guiado");
             expectedCourse.setSection(2);
             expectedCourse.setBlock(7);
 
@@ -119,7 +119,7 @@ public class CourseDAOTest{
             expectedCourse.setNrc(10001);
             expectedCourse.setIdScholarPeriod(1);
             expectedCourse.setStaffNumber(100000000);
-            expectedCourse.setEEName("Proyecto Guiado");
+            expectedCourse.setName("Proyecto Guiado");
             expectedCourse.setSection(2);
             expectedCourse.setBlock(7);
 

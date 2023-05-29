@@ -53,7 +53,7 @@ public class ChronogramController{
                 stage.setScene(scene);
                 stage.show();
             }catch(IllegalStateException | IOException exception){
-                AlertPopUpGenerator.showMissingFilesMessage();
+                new AlertPopUpGenerator().showMissingFilesMessage();
             }
         }else{
             Alert warningMessage = new Alert(Alert.AlertType.WARNING);

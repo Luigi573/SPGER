@@ -39,7 +39,7 @@ public class MainMenuController{
             headerPane.getChildren().add(header);
             
         }catch(IOException exception){
-            AlertPopUpGenerator.showMissingFilesMessage();
+            new AlertPopUpGenerator().showMissingFilesMessage();
         }
     }
 }

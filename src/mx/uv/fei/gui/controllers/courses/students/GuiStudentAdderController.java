@@ -61,7 +61,7 @@ public class GuiStudentAdderController{
                             activeStudent.getFirstSurname() + " " + 
                             activeStudent.getSecondSurname()
                         );
-                        studentPaneController.setMatricle(activeStudent.getMatricule());
+                        studentPaneController.setMatricle(activeStudent.getMatricle());
                         studentsVBox.getChildren().add(studentPaneToAdd);
                         
                     }
@@ -75,7 +75,7 @@ public class GuiStudentAdderController{
                 for(Student activeStudent : availableStudents){
                     boolean activeStudentIsAlreadyRegistedIntoTheCourse = false;
                     for(String studentMatricle : studentMatricles){
-                        if(studentMatricle.equals(activeStudent.getMatricule())){
+                        if(studentMatricle.equals(activeStudent.getMatricle())){
                             activeStudentIsAlreadyRegistedIntoTheCourse = true;
                             break;
                         }
@@ -92,7 +92,7 @@ public class GuiStudentAdderController{
                             activeStudent.getFirstSurname() + " " + 
                             activeStudent.getSecondSurname()
                         );
-                        studentPaneController.setMatricle(activeStudent.getMatricule());
+                        studentPaneController.setMatricle(activeStudent.getMatricle());
                         studentsVBox.getChildren().add(studentPaneToAdd);
                     }
                 }
@@ -154,7 +154,7 @@ public class GuiStudentAdderController{
                             activeStudent.getFirstSurname() + " " + 
                             activeStudent.getSecondSurname()
                         );
-                        studentPaneController.setMatricle(activeStudent.getMatricule());
+                        studentPaneController.setMatricle(activeStudent.getMatricle());
                         studentsVBox.getChildren().add(studentPaneToAdd);
                         
                     }
@@ -168,7 +168,7 @@ public class GuiStudentAdderController{
                 for(Student activeStudent : availableStudents){
                     boolean activeStudentIsAlreadyRegistedIntoTheCourse = false;
                     for(String studentMatricle : studentMatricles){
-                        if(studentMatricle.equals(activeStudent.getMatricule())){
+                        if(studentMatricle.equals(activeStudent.getMatricle())){
                             activeStudentIsAlreadyRegistedIntoTheCourse = true;
                             break;
                         }
@@ -185,7 +185,7 @@ public class GuiStudentAdderController{
                             activeStudent.getFirstSurname() + " " + 
                             activeStudent.getSecondSurname()
                         );
-                        studentPaneController.setMatricle(activeStudent.getMatricule());
+                        studentPaneController.setMatricle(activeStudent.getMatricle());
                         studentsVBox.getChildren().add(studentPaneToAdd);
                     }
                 }
@@ -195,7 +195,6 @@ public class GuiStudentAdderController{
         }catch(DataRetrievalException e) {
             new AlertPopUpGenerator().showConnectionErrorMessage();
         }
-
     }
 
     public GuiUsersCourseController getGuiUsersCourseController(){

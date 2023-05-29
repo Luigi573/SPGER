@@ -163,7 +163,7 @@ public class CourseDAO implements ICourseDAO{
                 if(resultSet.getInt("NRC") == course.getNrc() &&
                    resultSet.getInt("IdPeriodoEscolar") == course.getIdScholarPeriod() &&
                    resultSet.getInt("NumPersonal") == course.getStaffNumber() &&
-                   resultSet.getString("nombreEE").equals(course.getEEName()) &&
+                   resultSet.getString("nombreEE").equals(course.getName()) &&
                    resultSet.getInt("sección") == course.getSection() &&
                    resultSet.getInt("bloque") == course.getBlock()){
                     

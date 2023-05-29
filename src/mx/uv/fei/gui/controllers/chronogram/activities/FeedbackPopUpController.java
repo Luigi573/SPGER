@@ -36,7 +36,7 @@ public class FeedbackPopUpController{
                     stage.close();
                 }
             }catch(DataInsertionException exception){
-                AlertPopUpGenerator.showConnectionErrorMessage();
+                new AlertPopUpGenerator().showConnectionErrorMessage();
             }
         }else{
             Alert warningMessage = new Alert(Alert.AlertType.WARNING);
