@@ -47,9 +47,15 @@ public class CreateNewKGALController {
     @FXML
     public void switchToKGALListScene(ActionEvent event) {
         try {
+<<<<<<< HEAD
             Parent root = FXMLLoader.load(getClass().getResource("/mx/uv/fei/gui/fxml/manageKGAL/KGALList.fxml"));
             Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
             Scene scene = new Scene(root);
+=======
+            root = FXMLLoader.load(getClass().getResource("/mx/uv/fei/gui/fxml/kgal/KGALList.fxml"));
+            stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+            scene = new Scene(root);
+>>>>>>> b76b93d15655b9f5dfd27c9fc867dc5e2c09b660
             stage.setScene(scene);
             stage.show();
         } catch (IOException e) {

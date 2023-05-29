@@ -1,5 +1,8 @@
 {
-    "java.project.sourcePaths": ["src"],
+    "java.project.sourcePaths": [
+        "src",
+        "test"
+    ],
     "java.project.outputPath": "bin",
     "java.project.referencedLibraries": [
         "lib/**/*.jar",
@@ -22,5 +25,19 @@
         "/home/luisalonso/Documentos/JavaDepencencies/itextpdf-5.5.0.jar",
         "/home/luisalonso/Documentos/JavaDepencencies/itext-2.1.7.js4.jar",
         "/home/luisalonso/Documentos/JavaDepencencies/jasperreports-6.14.0.jar"
+    ],
+    "sqltools.connections": [
+        {
+            "mysqlOptions": {
+                "authProtocol": "default"
+            },
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 3306,
+            "driver": "MySQL",
+            "database": "SPGER",
+            "username": "LuisAlonso",
+            "name": "SPGER"
+        }
     ]
 }

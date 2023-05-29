@@ -10,7 +10,7 @@ public class ResearchProject {
     private int id;
     int directorCount;
     private KGAL kgal;
-    private ResearchProjectStatus validationStatus;
+    private String validationStatus;
     private String description;
     private String expectedResult;
     private String requirements;
@@ -47,7 +47,7 @@ public class ResearchProject {
     public void setKgal(KGAL kgal) {
         this.kgal = kgal;
     }
-    public void setValidationStatus(ResearchProjectStatus validationStatus) {
+    public void setValidationStatus(String validationStatus) {
         this.validationStatus = validationStatus;
     }
     public void setDescription(String description) {
@@ -86,7 +86,7 @@ public class ResearchProject {
     public KGAL getKgal() {
         return kgal;
     }
-    public ResearchProjectStatus getValidationStatus() {
+    public String getValidationStatus() {
         return validationStatus;
     }
     public String getDescription() {

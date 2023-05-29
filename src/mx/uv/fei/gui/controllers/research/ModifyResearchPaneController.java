@@ -18,6 +18,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import mx.uv.fei.gui.AlertPopUpGenerator;
 import mx.uv.fei.logic.daos.DirectorDAO;
 import mx.uv.fei.logic.daos.KGALDAO;
 import mx.uv.fei.logic.daos.ResearchDAO;
@@ -67,9 +68,9 @@ public class ModifyResearchPaneController{
         try{
             ArrayList<Director> directorList = directorDAO.getDirectorList();
             ArrayList<KGAL> KGALList = kgalDAO.getKGALList();
-            ArrayList<Student> studentList = studentDAO.getStudentList();
+            ArrayList<Student> studentList = studentDAO.getStudentsFromDatabase();
             
-            directorComboBoxes = new ArrayList();
+            directorComboBoxes = new ArrayList<>();
             directorComboBoxes.add(director1ComboBox);
             directorComboBoxes.add(director2ComboBox);
             directorComboBoxes.add(director3ComboBox);
@@ -81,14 +82,11 @@ public class ModifyResearchPaneController{
             KGALComboBox.setItems(FXCollections.observableArrayList(KGALList));
             studentComboBox.setItems(FXCollections.observableArrayList(studentList));
         }catch(DataRetrievalException exception){
-            Alert errorMessage = new Alert(Alert.AlertType.ERROR);
-            errorMessage.setContentText(exception.getMessage());
-            errorMessage.showAndWait();
+            new AlertPopUpGenerator().showConnectionErrorMessage();
         }
     }
-    
     @FXML
-    void cancelChanges(ActionEvent event) {
+    private void cancelChanges(ActionEvent event){
         Alert confirmationMessage = new Alert(Alert.AlertType.CONFIRMATION);
         confirmationMessage.setHeaderText("Guardar cambios");
         confirmationMessage.setContentText("¿Está seguro que desea modificar la actividad y volver al cronograma?");
@@ -98,9 +96,8 @@ public class ModifyResearchPaneController{
             returnToResearchManager(event);
         }
     }
-
     @FXML
-    void saveChanges(ActionEvent event) {
+    private void saveChanges(ActionEvent event){
         Alert confirmationMessage = new Alert(Alert.AlertType.CONFIRMATION);
         confirmationMessage.setHeaderText("Descartar cambios");
         confirmationMessage.setContentText("¿Está seguro que cancelar la modificación del anteproeycto?");
@@ -143,11 +140,16 @@ public class ModifyResearchPaneController{
                             
                             returnToResearchManager(event);
                         }
+<<<<<<< HEAD
                     }catch(DataInsertionException exception){
                         Alert errorMessage = new Alert(Alert.AlertType.ERROR);
                         errorMessage.setContentText(exception.getMessage());
      
                    errorMessage.showAndWait();
+=======
+                    }catch(DataWritingException exception){
+                        new AlertPopUpGenerator().showConnectionErrorMessage();
+>>>>>>> b76b93d15655b9f5dfd27c9fc867dc5e2c09b660
                     }
                 }else{
                     Alert warningMessage = new Alert(Alert.AlertType.WARNING);
@@ -191,20 +193,20 @@ public class ModifyResearchPaneController{
         suggestedBibliographyTextArea.setText(research.getSuggestedBibliography());
         expectedResultTextArea.setText(research.getExpectedResult());
     }
+    
     private void returnToResearchManager(ActionEvent event){
         try{
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/research/ResearchManager.fxml"));
             Parent parent = loader.load();
-            Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
             Scene scene = new Scene(parent);
+            String css = this.getClass().getResource("/mx/uv/fei/gui/stylesfiles/Styles.css").toExternalForm();
+            scene.getStylesheets().add(css);
+            Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
             stage.setTitle("SPGER");
             stage.setScene(scene);
             stage.show();
         }catch(IllegalStateException | IOException exception){
-            Alert errorMessage = new Alert(Alert.AlertType.ERROR);
-            errorMessage.setTitle("Error");
-            errorMessage.setContentText("Hubo un error al cargar el gestor de anteproyectos, archivo no encontrado");
-            errorMessage.showAndWait();
+            new AlertPopUpGenerator().showMissingFilesMessage();
         }
     }
 }

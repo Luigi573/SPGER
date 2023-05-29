@@ -38,10 +38,15 @@ public class AdvanceDAO implements IAdvanceDAO{
     }
 
     @Override
+<<<<<<< HEAD
     public ArrayList<Advance> getAdvanceList(int activityId) throws DataRetrievalException {
         ArrayList<Advance> advanceList = new ArrayList();
         PreparedStatement statement;
         String query = "SELECT IdAvance, IdActividad, IdArchivo, título, fecha, comentario, retroalimentación FROM Avances WHERE IdActividad IN(?)";
+=======
+    public ArrayList<Advance> getAdvancesList() throws DataRetrievalException {
+        ArrayList<Advance> advancesList = new ArrayList<>();
+>>>>>>> b76b93d15655b9f5dfd27c9fc867dc5e2c09b660
         
         try {
             statement = dataBaseManager.getConnection().prepareStatement(query);
@@ -69,7 +74,11 @@ public class AdvanceDAO implements IAdvanceDAO{
 /*
     @Override
     public Advance getAdvanceByID(int advanceID) throws DataRetrievalException {
+<<<<<<< HEAD
         ArrayList<Advance> advancesList = new ArrayList(getAdvanceList());
+=======
+        ArrayList<Advance> advancesList = new ArrayList<>(getAdvancesList());
+>>>>>>> b76b93d15655b9f5dfd27c9fc867dc5e2c09b660
         Advance advanceByID = new Advance();
         int i = 0;
         boolean b = false;

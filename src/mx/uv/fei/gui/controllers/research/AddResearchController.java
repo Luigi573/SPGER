@@ -2,16 +2,20 @@ package mx.uv.fei.gui.controllers.research;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
+import mx.uv.fei.gui.AlertPopUpGenerator;
 import mx.uv.fei.logic.daos.DirectorDAO;
 import mx.uv.fei.logic.daos.KGALDAO;
 import mx.uv.fei.logic.daos.ResearchDAO;
@@ -20,12 +24,14 @@ import mx.uv.fei.logic.domain.Director;
 import mx.uv.fei.logic.domain.KGAL;
 import mx.uv.fei.logic.domain.ResearchProject;
 import mx.uv.fei.logic.domain.Student;
+import mx.uv.fei.logic.domain.statuses.ResearchProjectStatus;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
 import mx.uv.fei.logic.exceptions.DataInsertionException;
 
 public class AddResearchController{
     private ArrayList<ComboBox> directorComboBoxes;
-    
+    private ResearchManagerController researchManagerController;    
+
     @FXML
     private TextField titleTextField;
     @FXML
@@ -60,9 +66,9 @@ public class AddResearchController{
         try{
             ArrayList<Director> directorList = directorDAO.getDirectorList();
             ArrayList<KGAL> KGALList = kgalDAO.getKGALList();
-            ArrayList<Student> studentList = studentDAO.getStudentList();
+            ArrayList<Student> studentList = studentDAO.getStudentsFromDatabase();
             
-            directorComboBoxes = new ArrayList();
+            directorComboBoxes = new ArrayList<>();
             directorComboBoxes.add(director1ComboBox);
             directorComboBoxes.add(director2ComboBox);
             directorComboBoxes.add(director3ComboBox);
@@ -73,17 +79,14 @@ public class AddResearchController{
             
             KGALComboBox.setItems(FXCollections.observableArrayList(KGALList));
             studentComboBox.setItems(FXCollections.observableArrayList(studentList));
-        }catch(DataRetrievalException exception){
-            Alert errorMessage = new Alert(Alert.AlertType.ERROR);
-            errorMessage.setContentText(exception.getMessage());
-            errorMessage.showAndWait();
+        } catch(DataRetrievalException exception){
+            new AlertPopUpGenerator().showConnectionErrorMessage();
         }
     }
-    
     @FXML
-    private void addResearch(ActionEvent event) {
+    private void addResearch(ActionEvent event){
         //In case the date is NULL, setting other attributes is pointless
-        if(startDatePicker.getValue() != null && dueDatePicker.getValue() != null){
+        if(allFieldsContainsCorrectValues()){
             ResearchProject research = new ResearchProject();
             
             research.setStartDate(Date.valueOf(startDatePicker.getValue()));
@@ -108,6 +111,7 @@ public class AddResearchController{
             research.setRequirements(requirementsTextArea.getText().trim());
             research.setSuggestedBibliography(suggestedBibliographyTextArea.getText().trim());
             research.setExpectedResult(expectedResultTextArea.getText().trim());
+            research.setValidationStatus(ResearchProjectStatus.PROPOSED.getValue());
             
             ResearchDAO researchDAO = new ResearchDAO();
             
@@ -115,35 +119,49 @@ public class AddResearchController{
                 if(!researchDAO.isBlank(research)){
                     try{
                         if(researchDAO.addResearch(research) > 0){
-                            Alert successMessage = new Alert(Alert.AlertType.INFORMATION);
-                            successMessage.setHeaderText("Anteproyecto creado exitosamente");
-                            successMessage.showAndWait();
+                            new AlertPopUpGenerator().showCustomMessage(AlertType.INFORMATION, "Éxito", "Anteproyecto creado exitosamente");
                             
+                            researchManagerController.loadResearches(0);
                             Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
                             stage.close();
                         }
+<<<<<<< HEAD
                     }catch(DataInsertionException exception){
                         Alert errorMessage = new Alert(Alert.AlertType.ERROR);
                         errorMessage.setContentText(exception.getMessage());
                         errorMessage.showAndWait();
+=======
+                    }catch(DataWritingException exception){
+                        new AlertPopUpGenerator().showConnectionErrorMessage();
+>>>>>>> b76b93d15655b9f5dfd27c9fc867dc5e2c09b660
                     }
                 }else{
-                    Alert warningMessage = new Alert(Alert.AlertType.WARNING);
-                    warningMessage.setHeaderText("No se puede crear el anteproyecto");
-                    warningMessage.setContentText("Favor de llenar todos los campos");
-                    warningMessage.showAndWait();
+                    new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "No se puede crear el anteproyecto", "Favor de llenar todos los campos");
                 }
             }else{
-                Alert warningMessage = new Alert(Alert.AlertType.WARNING);
-                warningMessage.setHeaderText("No se puede crear el anteproyecto");
-                warningMessage.setContentText("Favor de introducir una fecha válida");
-                warningMessage.showAndWait();
+                new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "No se puede crear el anteproyecto", "Favor de introducir una fecha válida");
             }
         }else{
-            Alert warningMessage = new Alert(Alert.AlertType.WARNING);
-            warningMessage.setHeaderText("Datos inválidos");
-            warningMessage.setContentText("Favor de seleccionar una fecha válida");
-            warningMessage.showAndWait();
+            new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "Datos inválidos", "Favor de seleccionar una fecha válida");
         }
+    }
+
+    public ResearchManagerController getResearchManagerController(){
+        return researchManagerController;
+    }
+    public void setResearchManagerController(ResearchManagerController researchManagerController){
+        this.researchManagerController = researchManagerController;
+    }
+
+    private boolean allFieldsContainsCorrectValues(){
+        Pattern titlePattern = Pattern.compile("([A-Z][a-z]+)\\s?([A-Z][a-z]+)?\\s?([A-Z][a-z]+)?\\s?([A-Z][a-z]+)?");
+        Matcher titleMatcher = titlePattern.matcher(titleTextField.getText());
+
+        if(titleMatcher.find() && startDatePicker.getValue() != null && 
+           dueDatePicker.getValue() != null) {
+            return true;
+        }
+
+        return false;
     }
 }
