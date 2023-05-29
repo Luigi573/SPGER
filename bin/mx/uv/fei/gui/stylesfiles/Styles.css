@@ -2,11 +2,6 @@ Text {
     -fx-fill: white;
 }
 
-TextFlow {
-    -fx-background-color: #4a9639;
-    -fx-border-color: #4a9639;
-}
-
 .root {
     -fx-background-color: #31B189;
     /*-fx-background-color: #ff4800;*/
@@ -107,8 +102,8 @@ TextFlow {
 }
 
 .text-area .content {
-    -fx-background-color: #4a9639;
-    -fx-border-color: #4a9639;
+    -fx-background-color: #62ca4a;
+    -fx-border-color: #62ca4a;
 }
 
 .text-field {
@@ -133,12 +128,6 @@ TextFlow {
 
 #headerPane {
     -fx-background-color: #217258;
-}
-
-#researchPane {
-    -fx-background-radius: 5;
-    -fx-background-color: transparent;
-    -fx-border-color:#5a9e4b;
 }
 
 #researchButton {

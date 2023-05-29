@@ -16,6 +16,9 @@ public class Professor extends User{
     public String getStatus(){
         return this.status;
     }
+    public boolean isAssignable(Class cls){
+        return this.isAssignable(cls);
+    }
 
     @Override
     public boolean equals(Object professor) {
@@ -37,4 +40,6 @@ public class Professor extends User{
                this.staffNumber == p.staffNumber &&
                this.status.equals(p.status);
     }
+
+    
 }
