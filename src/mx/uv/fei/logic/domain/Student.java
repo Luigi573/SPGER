@@ -8,7 +8,7 @@ public class Student extends User{
     public void setMatricle(String matricle){
         this.matricle = matricle;
     }
-    public String getMatricule(){
+    public String getMatricle(){
         return matricle;
     }
     
@@ -18,5 +18,15 @@ public class Student extends User{
     
     public String getStatus() {
         return this.status;
+    }
+    
+    
+    @Override
+    public boolean equals(Object obj){
+        if(obj instanceof Student student){
+            return this.matricle.equals(student.getMatricle());
+        }
+        
+        return false;
     }
 }

@@ -123,7 +123,7 @@ public class ModifyUserInformationController {
         this.firstSurnameTextField.setText(firstSurname);
     }
 
-    public String getMatriculeOrPersonalNumber() {
+    public String getMatricleOrPersonalNumber() {
         return this.matricleOrPersonalNumberTextField.getText();
     }
 
@@ -279,7 +279,7 @@ public class ModifyUserInformationController {
         textFieldsData.add(this.userInformationController.getEmail());
         textFieldsData.add(this.userInformationController.getAlternateEmail());
         textFieldsData.add(this.userInformationController.getTelephoneNumber());
-        textFieldsData.add(this.userInformationController.getMatriculeOrPersonalNumber());
+        textFieldsData.add(this.userInformationController.getMatricleOrPersonalNumber());
         return textFieldsData;
     }
 */

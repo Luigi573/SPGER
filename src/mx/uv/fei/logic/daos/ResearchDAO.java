@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import mx.uv.fei.dataaccess.DataBaseManager;
 import mx.uv.fei.logic.daosinterfaces.IResearchDAO;
+import mx.uv.fei.logic.domain.Director;
 import mx.uv.fei.logic.domain.ResearchProject;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
 import mx.uv.fei.logic.exceptions.DataInsertionException;
@@ -44,14 +45,14 @@ public class ResearchDAO implements IResearchDAO{
             statement.setString(7, research.getSuggestedBibliography());
             statement.setString(8, research.getTitle());
             
-            if(research.getStudent().getMatricule() != null){
-                statement.setString(9, research.getStudent().getMatricule());
+            if(research.getStudent().getMatricle() != null){
+                statement.setString(9, research.getStudent().getMatricle());
             }else{
                 statement.setNull(9, java.sql.Types.VARCHAR);
             }
             
             for(int i = 0; i < 3; i++){
-                if(research.getDirector(i).getDirectorId() != 0){
+                if(research.getDirector(i) != null){
                     statement.setInt(i + 10, research.getDirector(i).getDirectorId());
                 }else{
                     statement.setNull(i + 10, java.sql.Types.INTEGER);
@@ -99,11 +100,13 @@ public class ResearchDAO implements IResearchDAO{
                 research.setStartDate(resultSet.getDate("a.fechaInicio"));
                 
                 //Concatenating column names since they're almost the same
-                for(int i = 0; i < 3; i++){
-                    research.getDirector(i).setDirectorId(resultSet.getInt("a.IdDirector"+ (i + 1)));
-                
+                for(int i = 1; i <= 3; i++){
+                    Director director = new Director();
+                    director.setDirectorId(resultSet.getInt("a.IdDirector"+ i));
+                    
                     if(!resultSet.wasNull()){
-                        research.getDirector(i).setName(resultSet.getString("nombreDirector" + (i + 1)));
+                        director.setName(resultSet.getString("nombreDirector" + i));
+                        research.addDirector(director);
                     }
                 }
                 
@@ -160,14 +163,14 @@ public class ResearchDAO implements IResearchDAO{
             statement.setString(7, research.getSuggestedBibliography());
             statement.setString(8, research.getTitle());
             
-            if(research.getStudent().getMatricule() != null){
-                statement.setString(9, research.getStudent().getMatricule());
+            if(research.getStudent().getMatricle() != null){
+                statement.setString(9, research.getStudent().getMatricle());
             }else{
                 statement.setNull(9, java.sql.Types.VARCHAR);
             }
             
             for(int i = 0; i < 3; i++){
-                if(research.getDirector(i).getDirectorId() != 0){
+                if(research.getDirector(i) != null){
                     statement.setInt(i + 10, research.getDirector(i).getDirectorId());
                 }else{
                     statement.setNull(i + 10, java.sql.Types.INTEGER);

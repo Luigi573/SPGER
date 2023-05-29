@@ -16,6 +16,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import mx.uv.fei.gui.AlertPopUpGenerator;
 import mx.uv.fei.gui.controllers.chronogram.advances.AdvanceVBoxPaneController;
 import mx.uv.fei.logic.daos.AdvanceDAO;
@@ -28,6 +29,7 @@ import mx.uv.fei.logic.exceptions.DataRetrievalException;
 public class ActivityInfoController{
     private Activity activity;
     private ArrayList<File> filesList;    
+    
     @FXML
     private Label titleLabel;
     @FXML
@@ -39,17 +41,15 @@ public class ActivityInfoController{
     @FXML
     private Text descriptionText;
     @FXML
-    private VBox ActivityFileListVBox;
+    private VBox fileVBox;
     @FXML
     private VBox advanceVBox;
-    
     
     @FXML
     public void initialize() {
         filesList = new ArrayList();
         loadHeader();
     }
-    
     @FXML
     private void editActivity(ActionEvent event) {
         try{
@@ -79,14 +79,13 @@ public class ActivityInfoController{
                 Pane pane = loader.load();
                 ActivityFileItemController controller = (ActivityFileItemController)loader.getController();
                 controller.setLabelText(file.getName());
-                ActivityFileListVBox.getChildren().add(pane);
+                fileVBox.getChildren().add(pane);
                 filesList.add(file);
             }catch(IOException | IllegalStateException exception) {
                 AlertPopUpGenerator.showMissingFilesMessage();
             }
         }
     }
-    
     @FXML
     private void deliverActivity(ActionEvent event) {
         int result;
@@ -119,10 +118,9 @@ public class ActivityInfoController{
     }
     @FXML
     public void removeFiles(ActionEvent event) {
-        ActivityFileListVBox.getChildren().clear();
+        fileVBox.getChildren().clear();
         filesList.clear();
     }
-    
     @FXML
     private void feedback(ActionEvent event){
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/activities/FeedbackPopUp.fxml"));
@@ -134,7 +132,10 @@ public class ActivityInfoController{
             
             Scene scene = new Scene(parent);
             Stage stage = new Stage();
+            
             stage.setScene(scene);
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner((Stage)((Node)event.getSource()).getScene().getWindow());
             stage.setResizable(false);
             
             stage.showAndWait();

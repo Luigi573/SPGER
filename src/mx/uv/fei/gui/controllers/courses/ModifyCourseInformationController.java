@@ -182,7 +182,7 @@ public class ModifyCourseInformationController {
                 CourseDAO courseDAO = new CourseDAO();
                 Course newCourseData = new Course();
                 Course oldCourseData = courseDAO.getCourseFromDatabase(this.courseInformationController.getNrc());
-                newCourseData.setEEName((String)this.educativeExperienceComboBox.getValue());
+                newCourseData.setName((String)this.educativeExperienceComboBox.getValue());
                 newCourseData.setNrc(Integer.parseInt(this.nrcTextField.getText()));
                 newCourseData.setSection(Integer.parseInt(this.sectionComboBox.getValue()));
                 newCourseData.setBlock(Integer.parseInt(this.blockComboBox.getValue()));

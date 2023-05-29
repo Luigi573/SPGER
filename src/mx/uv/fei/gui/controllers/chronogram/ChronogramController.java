@@ -24,7 +24,6 @@ import mx.uv.fei.logic.domain.ResearchProject;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
 
 public class ChronogramController{
-    
     @FXML
     private ComboBox<ResearchProject> studentChronogramComboBox;
     @FXML
@@ -54,10 +53,7 @@ public class ChronogramController{
                 stage.setScene(scene);
                 stage.show();
             }catch(IllegalStateException | IOException exception){
-                Alert errorMessage = new Alert(Alert.AlertType.ERROR);
-                errorMessage.setHeaderText("Error de carga");
-                errorMessage.setContentText("No se pudo abrir la ventana, verifique que el archivo .fxml esté en su ubicación correcta");
-                errorMessage.showAndWait();
+                AlertPopUpGenerator.showMissingFilesMessage();
             }
         }else{
             Alert warningMessage = new Alert(Alert.AlertType.WARNING);
@@ -69,6 +65,7 @@ public class ChronogramController{
     @FXML
     private void switchChronogram(ActionEvent event){
        if(studentChronogramComboBox.getValue() != null){
+           chronogramTitleLabel.setText("Cronograma de " + studentChronogramComboBox.getValue().getStudent().getName());
            loadActivities(studentChronogramComboBox.getValue().getId());
        }
     }
@@ -98,6 +95,7 @@ public class ChronogramController{
             }
         }catch(DataRetrievalException exception){
             //Log it
+            exception.printStackTrace();
         }
     }
     private void loadActivities(int researchId){

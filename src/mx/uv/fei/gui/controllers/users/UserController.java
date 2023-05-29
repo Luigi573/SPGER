@@ -52,7 +52,7 @@ public class UserController {
         return this.typeLabel.getText();
     }
 
-    String getMatriculeOrPersonalNumber() {
+    String getMatricleOrPersonalNumber() {
         return this.matricleOrPersonalNumberLabel.getText();
     }
 }

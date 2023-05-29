@@ -21,5 +21,13 @@ public class Professor extends User{
     public ProfessorStatus getStatus(){
         return this.status;
     }
-
+    
+    @Override
+    public boolean equals(Object obj){
+        if(obj instanceof Professor professor){
+            return staffNumber == professor.getStaffNumber();
+        }
+        
+        return false;
+    }
 }

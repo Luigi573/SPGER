@@ -34,11 +34,11 @@ public class CourseController {
         this.guiCoursesController = guiCoursesController;
     }
 
-    public String getEEName() {
+    public String getname() {
         return this.nameLabel.getText();
     }
 
-    public void setEEName(String name) {
+    public void setname(String name) {
         this.nameLabel.setText(name);
     }
 

@@ -5,6 +5,7 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
@@ -12,89 +13,133 @@
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.text.TextFlow?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.uv.fei.gui.controllers.chronogram.activities.ActivityInfoController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.uv.fei.gui.controllers.chronogram.activities.ActivityInfoController">
    <children>
-      <Pane fx:id="headerPane" layoutX="-3.0" prefHeight="67.0" prefWidth="606.0" />
-      <Pane fx:id="toolbarPane" layoutY="70.0" prefHeight="330.0" prefWidth="54.0" />
-      <TabPane layoutX="89.0" layoutY="76.0" prefHeight="310.0" prefWidth="457.0" tabClosingPolicy="UNAVAILABLE">
+      <Pane fx:id="headerPane" prefHeight="70.0" prefWidth="1024.0" />
+      <Pane fx:id="toolbarPane" layoutY="88.0" prefHeight="330.0" prefWidth="55.0" />
+      <TabPane layoutX="119.0" layoutY="94.0" prefHeight="513.0" prefWidth="822.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
-          <Tab text="Información">
+          <Tab closable="false" text="Información">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="281.0" prefWidth="424.0">
                      <children>
-                        <Pane prefHeight="70.0" prefWidth="457.0">
+                        <Pane prefHeight="70.0" prefWidth="822.0">
                            <children>
-                              <Label fx:id="titleLabel" layoutX="14.0" layoutY="1.0" prefHeight="35.0" prefWidth="354.0" text="Actividad:">
+                              <Label fx:id="titleLabel" layoutX="27.0" prefHeight="35.0" prefWidth="659.0" text="Actividad:">
                                  <font>
-                                    <Font size="24.0" />
+                                    <Font name="System Bold" size="25.0" />
                                  </font>
                               </Label>
-                              <Button fx:id="editButton" layoutX="384.0" layoutY="6.0" mnemonicParsing="false" onAction="#editActivity" prefHeight="25.0" prefWidth="59.0" text="Editar" />
-                              <Label fx:id="startDateLabel" layoutX="14.0" layoutY="36.0" prefHeight="19.0" prefWidth="158.0" text="Fecha Inicio: ">
+                              <Button fx:id="editButton" layoutX="713.0" layoutY="20.0" mnemonicParsing="false" onAction="#editActivity" prefHeight="9.0" prefWidth="70.0" text="Editar">
                                  <font>
-                                    <Font size="13.0" />
+                                    <Font size="16.0" />
+                                 </font></Button>
+                              <Label layoutX="27.0" layoutY="37.0" prefHeight="19.0" prefWidth="158.0" text="Fecha Inicio: ">
+                                 <font>
+                                    <Font size="16.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="dueDateLabel" layoutX="183.0" layoutY="36.0" prefHeight="19.0" prefWidth="153.0" text="Fecha Fin: ">
+                              <Label fx:id="startDateLabel" layoutX="122.0" layoutY="37.0" prefHeight="19.0" prefWidth="158.0">
                                  <font>
-                                    <Font size="13.0" />
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="288.0" layoutY="37.0" prefHeight="25.0" prefWidth="74.0" text="Fecha Fin: ">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="dueDateLabel" layoutX="362.0" layoutY="37.0" prefHeight="19.0" prefWidth="153.0">
+                                 <font>
+                                    <Font size="16.0" />
                                  </font>
                               </Label>
                            </children></Pane>
-                        <ScrollPane layoutX="1.0" layoutY="72.0" prefHeight="209.0" prefWidth="457.0">
+                        <ScrollPane hbarPolicy="NEVER" layoutX="39.0" layoutY="123.0" prefHeight="355.0" prefWidth="745.0">
                            <content>
-                              <TextFlow fx:id="descriptionTextFlow" lineSpacing="1.0" prefHeight="207.0" prefWidth="453.0">
+                              <TextFlow fx:id="descriptionTextFlow" lineSpacing="1.0" prefHeight="352.0" prefWidth="743.0">
                                  <children>
-                                    <Text fx:id="descriptionText" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="314.158203125" />
+                                    <Text fx:id="descriptionText" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="314.158203125">
+                                       <font>
+                                          <Font size="20.0" />
+                                       </font></Text>
                                  </children></TextFlow>
                            </content>
                         </ScrollPane>
+                        <Label fx:id="titleLabel1" layoutX="39.0" layoutY="87.0" prefHeight="36.0" prefWidth="311.0" text="Descripción de la actividad">
+                           <font>
+                              <Font size="25.0" />
+                           </font>
+                        </Label>
                      </children>
                   </AnchorPane>
             </content>
           </Tab>
-          <Tab text="Entrega">
+          <Tab closable="false" text="Entrega">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <Label prefHeight="35.0" prefWidth="448.0" text="Actividad: [Titulo]">
+                        <Label layoutX="19.0" layoutY="14.0" prefHeight="41.0" prefWidth="184.0" text="Comentario">
                            <font>
-                              <Font size="24.0" />
+                              <Font size="28.0" />
                            </font>
                         </Label>
-                        <ScrollPane hbarPolicy="NEVER" layoutX="4.0" layoutY="94.0" prefHeight="148.0" prefWidth="450.0">
+                        <ScrollPane hbarPolicy="NEVER" layoutX="16.0" layoutY="62.0" prefHeight="181.0" prefWidth="791.0">
                            <content>
-                              <VBox prefHeight="144.0" prefWidth="448.0" />
+                              <TextArea fx:id="commentTextArea" prefHeight="179.0" prefWidth="791.0" promptText="Comentario del estudiante">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font></TextArea>
                            </content>
                         </ScrollPane>
-                        <Pane layoutX="12.0" layoutY="35.0" prefHeight="54.0" prefWidth="434.0">
-                           <children>
-                              <Label layoutX="59.0" layoutY="19.0" prefHeight="17.0" prefWidth="213.0" text="Seleccione un archivo de su dispositivo" />
-                              <Label alignment="CENTER" layoutY="4.0" prefHeight="47.0" prefWidth="44.0" text="Icon" />
-                              <Button fx:id="uploadFile" layoutX="272.0" layoutY="15.0" mnemonicParsing="false" onAction="#uploadFileForDelivery" text="Cargar" />
-                           </children>
-                        </Pane>
-                        <Button fx:id="deliverActivity" layoutX="358.0" layoutY="252.0" mnemonicParsing="false" onAction="#deliverActivity" prefHeight="30.0" prefWidth="82.0" text="Entregar" />
-                        <Button fx:id="commentButton" layoutX="313.0" layoutY="250.0" mnemonicParsing="false" onAction="#feedback" prefHeight="30.0" prefWidth="130.0" text="Retroalimentar" />
-                        <Button fx:id="removeFiles" layoutX="14.0" layoutY="253.0" mnemonicParsing="false" onAction="#removeFiles" text="Quitar Archivos" />
+                        <ScrollPane hbarPolicy="NEVER" layoutX="17.0" layoutY="294.0" prefHeight="140.0" prefWidth="792.0">
+                           <content>
+                              <VBox fx:id="fileVBox" prefHeight="106.0" prefWidth="776.0" />
+                           </content>
+                        </ScrollPane>
+                        <Button fx:id="deliverActivity" layoutX="702.0" layoutY="434.0" mnemonicParsing="false" onAction="#deliverActivity" prefHeight="30.0" prefWidth="82.0" text="Entregar">
+                           <font>
+                              <Font size="16.0" />
+                           </font></Button>
+                        <Button fx:id="commentButton" layoutX="528.0" layoutY="434.0" mnemonicParsing="false" onAction="#feedback" prefHeight="30.0" prefWidth="130.0" text="Retroalimentar">
+                           <font>
+                              <Font size="16.0" />
+                           </font></Button>
+                        <Button fx:id="removeFiles" layoutX="677.0" layoutY="254.0" mnemonicParsing="false" onAction="#removeFiles" text="Quitar Archivos">
+                           <font>
+                              <Font size="16.0" />
+                           </font></Button>
+                        <Label layoutX="16.0" layoutY="251.0" prefHeight="41.0" prefWidth="458.0" text="Material adjunto:">
+                           <font>
+                              <Font size="28.0" />
+                           </font>
+                        </Label>
+                        <Button fx:id="uploadFile" layoutX="516.0" layoutY="254.0" mnemonicParsing="false" onAction="#uploadFileForDelivery" prefHeight="35.0" prefWidth="153.0" text="Agregar archivo">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Button>
                      </children></AnchorPane>
             </content>
           </Tab>        
-            <Tab text="Avances">
+            <Tab closable="false" text="Avances">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <Label prefHeight="35.0" prefWidth="354.0" text="Entregas de avance:">
+                        <Label layoutY="10.0" prefHeight="47.0" prefWidth="380.0" text="Entregas de avance:">
                            <font>
-                              <Font size="24.0" />
+                              <Font size="32.0" />
                            </font>
                         </Label>
-                        <ScrollPane hbarPolicy="NEVER" layoutY="41.0" prefHeight="202.0" prefWidth="457.0">
+                        <ScrollPane hbarPolicy="NEVER" layoutX="26.0" layoutY="72.0" prefHeight="406.0" prefWidth="774.0">
                            <content>
-                              <VBox fx:id="advanceVBox" prefHeight="200.0" prefWidth="457.0" />
+                              <VBox fx:id="advanceVBox" prefHeight="200.0" prefWidth="774.0" />
                            </content>
                         </ScrollPane>
-                        <Button layoutX="344.0" layoutY="255.0" mnemonicParsing="false" text="Agregar avance" />
+                        <Button layoutX="674.0" layoutY="18.0" mnemonicParsing="false" text="Agregar avance">
+                           <font>
+                              <Font size="15.0" />
+                           </font></Button>
                      </children>
                   </AnchorPane>
               </content>

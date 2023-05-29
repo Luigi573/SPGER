@@ -98,7 +98,7 @@ public class GuiCoursesController {
                 Button courseItemButton;
                 courseItemButton = courseItemControllerLoader.load();
                 CourseController courseController = courseItemControllerLoader.getController();
-                courseController.setEEName(course.getEEName());
+                courseController.setname(course.getName());
                 courseController.setNrc(Integer.toString(course.getNrc()));
                 courseController.setScholarPeriod(scholarPeriod.toString());
                 courseController.setGuiCoursesController(this);
@@ -123,7 +123,7 @@ public class GuiCoursesController {
         try {
             VBox courseInformationVBox = courseInformationControllerLoader.load();
             CourseInformationController courseInformationController = courseInformationControllerLoader.getController();
-            courseInformationController.setEducativeExperience(course.getEEName());
+            courseInformationController.setEducativeExperience(course.getName());
             courseInformationController.setNrc(Integer.toString(course.getNrc()));
             courseInformationController.setSection(Integer.toString(course.getSection()));
             courseInformationController.setBlock(Integer.toString(course.getBlock()));
@@ -152,7 +152,7 @@ public class GuiCoursesController {
         try {
             VBox modifyCourseInformationVBox = modifyCourseInformationControllerLoader.load();
             ModifyCourseInformationController modifyCourseInformationController = modifyCourseInformationControllerLoader.getController();
-            modifyCourseInformationController.setEducativeExperience(course.getEEName());
+            modifyCourseInformationController.setEducativeExperience(course.getName());
             modifyCourseInformationController.setNrc(Integer.toString(course.getNrc()));
             modifyCourseInformationController.setSection(Integer.toString(course.getSection()));
             modifyCourseInformationController.setBlock(Integer.toString(course.getBlock()));

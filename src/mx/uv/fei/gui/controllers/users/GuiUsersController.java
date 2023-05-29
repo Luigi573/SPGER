@@ -122,7 +122,7 @@ public class GuiUsersController {
                 UserController userController = userItemControllerLoader.getController();
                 userController.setName(student.getName());
                 userController.setType("Estudiante");
-                userController.setMatricleOrPersonalNumber(student.getMatricule());
+                userController.setMatricleOrPersonalNumber(student.getMatricle());
                 userController.setMatricleOrPersonalNumberText("Matrícula");
                 userController.setGuiUsersController(this);
                 this.usersVBox.getChildren().add(userItemButton);
@@ -217,35 +217,35 @@ public class GuiUsersController {
         switch(userController.getType()){
             case "Director": {
                 DirectorDAO directorDAO = new DirectorDAO();
-                Director director = directorDAO.getDirectorFromDatabase(Integer.parseInt(userController.getMatriculeOrPersonalNumber()));
+                Director director = directorDAO.getDirectorFromDatabase(Integer.parseInt(userController.getMatricleOrPersonalNumber()));
                 openPaneWithDirectorInformation(director);
                 break;
             }
 
             case "Miembro de Cuerpo Académico": {
                 AcademicBodyHeadDAO academicBodyHeadDAO = new AcademicBodyHeadDAO();
-                AcademicBodyHead academicBodyHead = academicBodyHeadDAO.getAcademicBodyHeadFromDatabase(Integer.parseInt(userController.getMatriculeOrPersonalNumber()));
+                AcademicBodyHead academicBodyHead = academicBodyHeadDAO.getAcademicBodyHeadFromDatabase(Integer.parseInt(userController.getMatricleOrPersonalNumber()));
                 openPaneWithAcademicBodyHeadInformation(academicBodyHead);
                 break;
             }
 
             case "Jefe de Carrera": {
                 DegreeBossDAO degreeBossDAO = new DegreeBossDAO();
-                DegreeBoss degreeBoss = degreeBossDAO.getDegreeBossFromDatabase(Integer.parseInt(userController.getMatriculeOrPersonalNumber()));
+                DegreeBoss degreeBoss = degreeBossDAO.getDegreeBossFromDatabase(Integer.parseInt(userController.getMatricleOrPersonalNumber()));
                 openPaneWithDegreeBossInformation(degreeBoss);
                 break;
             }
 
             case "Profesor": {
                 ProfessorDAO professorDAO = new ProfessorDAO();
-                Professor professor = professorDAO.getProfessorFromDatabase(Integer.parseInt(userController.getMatriculeOrPersonalNumber()));
+                Professor professor = professorDAO.getProfessorFromDatabase(Integer.parseInt(userController.getMatricleOrPersonalNumber()));
                 openPaneWithProfessorInformation(professor);
                 break;
             }
 
             case "Estudiante": {
                 StudentDAO studentDAO = new StudentDAO();
-                Student student = studentDAO.getStudentFromDatabase(userController.getMatriculeOrPersonalNumber());
+                Student student = studentDAO.getStudentFromDatabase(userController.getMatricleOrPersonalNumber());
                 openPaneWithStudentInformation(student);
                 break;
             }
@@ -371,7 +371,7 @@ public class GuiUsersController {
             userInformationController.setTelephoneNumber(student.getPhoneNumber());
             userInformationController.setUserType("Estudiante");
             userInformationController.setStatus(student.getStatus());
-            userInformationController.setMatricleOrPersonalNumber(student.getMatricule());
+            userInformationController.setMatricleOrPersonalNumber(student.getMatricle());
             userInformationController.setGuiUsersController(this);
             userInformationController.setMatricleOrPersonalNumberText();
             this.userInformationScrollPane.setContent(userInformationVBox);
@@ -396,7 +396,7 @@ public class GuiUsersController {
             modifyUserInformationController.setEmail(userInformationController.getEmail());
             modifyUserInformationController.setAlternateEmail(userInformationController.getAlternateEmail());
             modifyUserInformationController.setTelephoneNumber(userInformationController.getTelephoneNumber());
-            modifyUserInformationController.setMatricleOrPersonalNumber(userInformationController.getMatriculeOrPersonalNumber());
+            modifyUserInformationController.setMatricleOrPersonalNumber(userInformationController.getMatricleOrPersonalNumber());
             modifyUserInformationController.setStatus(userInformationController.getStatus());
             modifyUserInformationController.setGuiUsersController(this);
             modifyUserInformationController.setUserInformationController(userInformationController);

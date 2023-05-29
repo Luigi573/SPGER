@@ -56,7 +56,7 @@ public class StudentDAO implements IStudentDAO{
                 "INSERT INTO Estudiantes (" + studentTablesToConsult + ") VALUES (?, ?)";
             PreparedStatement preparedStatementToInsertStudentData = 
                 dataBaseManager.getConnection().prepareStatement(wholeQueryToInsertStudentData);
-            preparedStatementToInsertStudentData.setString(1, student.getMatricule());
+            preparedStatementToInsertStudentData.setString(1, student.getMatricle());
             preparedStatementToInsertStudentData.setInt(2, student.getUserId());
             preparedStatementToInsertStudentData.executeUpdate();
 
@@ -98,8 +98,8 @@ public class StudentDAO implements IStudentDAO{
             
             PreparedStatement preparedStatementForUpdateStudentData = 
                 dataBaseManager.getConnection().prepareStatement(queryForUpdateStudentData);
-            preparedStatementForUpdateStudentData.setString(1, newStudentData.getMatricule());
-            preparedStatementForUpdateStudentData.setString(2, newStudentData.getMatricule());
+            preparedStatementForUpdateStudentData.setString(1, newStudentData.getMatricle());
+            preparedStatementForUpdateStudentData.setString(2, newStudentData.getMatricle());
             preparedStatementForUpdateStudentData.executeUpdate();
         } catch(SQLException e){
             e.printStackTrace();
@@ -266,7 +266,7 @@ public class StudentDAO implements IStudentDAO{
             preparedStatement.setString(4, student.getEmailAddress());
             preparedStatement.setString(5, student.getAlternateEmail());
             preparedStatement.setString(6, student.getPhoneNumber());
-            preparedStatement.setString(7, student.getMatricule());
+            preparedStatement.setString(7, student.getMatricle());
 
             ResultSet resultSet = preparedStatement.executeQuery();
             

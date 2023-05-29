@@ -12,55 +12,63 @@
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.text.TextFlow?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.uv.fei.gui.controllers.chronogram.advances.AdvanceInfoController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.uv.fei.gui.controllers.chronogram.advances.AdvanceInfoController">
    <children>
-      <Pane fx:id="headerPane" prefHeight="67.0" prefWidth="606.0" />
-      <Pane fx:id="toolbarPane" layoutY="69.0" prefHeight="330.0" prefWidth="54.0" />
-      <TabPane layoutX="78.0" layoutY="79.0" prefHeight="310.0" prefWidth="500.0" tabClosingPolicy="UNAVAILABLE">
+      <Pane fx:id="headerPane" prefHeight="70.0" prefWidth="1024.0" />
+      <Pane fx:id="toolbarPane" layoutY="102.0" prefHeight="330.0" prefWidth="60.0" />
+      <TabPane layoutX="126.0" layoutY="102.0" prefHeight="463.0" prefWidth="786.0" tabClosingPolicy="UNAVAILABLE">
          <tabs>
             <Tab text="Información">
                <content>
-                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="281.0" prefWidth="424.0">
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="434.0" prefWidth="833.0">
                      <children>
-                        <Pane prefHeight="70.0" prefWidth="500.0">
+                        <Pane prefHeight="84.0" prefWidth="786.0">
                            <children>
-                              <Label fx:id="titleLabel" layoutX="14.0" layoutY="1.0" prefHeight="35.0" prefWidth="396.0" text="[Título de avance]">
+                              <Label fx:id="titleLabel" layoutX="14.0" layoutY="1.0" prefHeight="35.0" prefWidth="667.0" text="[Título de avance]">
                                  <font>
-                                    <Font size="24.0" />
+                                    <Font size="30.0" />
                                  </font>
                               </Label>
-                              <Button fx:id="editButton" layoutX="427.0" layoutY="6.0" mnemonicParsing="false" onAction="#editAdvance" prefHeight="25.0" prefWidth="59.0" text="Editar" />
-                              <Label layoutX="14.0" layoutY="36.0" prefHeight="19.0" prefWidth="113.0" text="Fecha de creación: ">
+                              <Button fx:id="editButton" layoutX="706.0" layoutY="14.0" mnemonicParsing="false" onAction="#editAdvance" prefHeight="25.0" prefWidth="59.0" text="Editar" />
+                              <Label layoutX="14.0" layoutY="49.0" prefHeight="25.0" prefWidth="143.0" text="Fecha de creación: ">
                                  <font>
-                                    <Font size="13.0" />
+                                    <Font size="16.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="dateLabel" layoutX="127.0" layoutY="36.0" prefHeight="19.0" prefWidth="131.0" text="DD/MM/AAAA">
+                              <Label fx:id="dateLabel" layoutX="157.0" layoutY="49.0" prefHeight="25.0" prefWidth="141.0" text="DD/MM/AAAA">
                                  <font>
-                                    <Font size="13.0" />
+                                    <Font size="16.0" />
                                  </font>
                               </Label>
-                              <Label layoutX="258.0" layoutY="36.0" prefHeight="19.0" prefWidth="47.0" text="Estado: ">
+                              <Label layoutX="306.0" layoutY="49.0" prefHeight="25.0" prefWidth="60.0" text="Estado: ">
                                  <font>
-                                    <Font size="13.0" />
+                                    <Font size="16.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="statusLabel" layoutX="312.0" layoutY="36.0" prefHeight="19.0" prefWidth="139.0" text="[Estado]">
+                              <Label fx:id="statusLabel" layoutX="366.0" layoutY="49.0" prefHeight="19.0" prefWidth="139.0" text="[Estado]">
                                  <font>
-                                    <Font size="13.0" />
+                                    <Font size="16.0" />
                                  </font>
                               </Label>
                            </children>
                         </Pane>
-                        <ScrollPane hbarPolicy="NEVER" layoutX="1.0" layoutY="72.0" prefHeight="180.0" prefWidth="495.0">
+                        <ScrollPane hbarPolicy="NEVER" layoutX="20.0" layoutY="125.0" prefHeight="292.0" prefWidth="747.0">
                            <content>
-                              <TextFlow lineSpacing="1.0" prefHeight="175.0" prefWidth="495.0">
+                              <TextFlow lineSpacing="1.0" prefHeight="289.0" prefWidth="744.0">
                                  <children>
-                                    <Text fx:id="descriptionText" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="314.158203125" />
+                                    <Text fx:id="descriptionText" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="314.158203125">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font></Text>
                                  </children>
                               </TextFlow>
                            </content>
                         </ScrollPane>
+                        <Label layoutX="20.0" layoutY="90.0" prefHeight="35.0" prefWidth="396.0" text="Comentario: ">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Label>
                      </children>
                   </AnchorPane>
                </content>
@@ -71,15 +79,15 @@
                      <children>
                         <Label prefHeight="35.0" prefWidth="500.0" text="Archivos entregados:">
                            <font>
-                              <Font size="24.0" />
+                              <Font size="30.0" />
                            </font>
                         </Label>
-                        <ScrollPane hbarPolicy="NEVER" layoutX="6.0" layoutY="40.0" prefHeight="201.0" prefWidth="492.0">
+                        <ScrollPane hbarPolicy="NEVER" layoutX="12.0" layoutY="47.0" prefHeight="341.0" prefWidth="763.0">
                            <content>
-                              <VBox prefHeight="195.0" prefWidth="489.0" />
+                              <VBox prefHeight="336.0" prefWidth="761.0" />
                            </content>
                         </ScrollPane>
-                        <Button fx:id="feedbackButton" layoutX="356.0" layoutY="251.0" mnemonicParsing="false" onAction="#feedback" prefHeight="30.0" prefWidth="130.0" text="Retroalimentar" />
+                        <Button fx:id="feedbackButton" layoutX="636.0" layoutY="398.0" mnemonicParsing="false" onAction="#feedback" prefHeight="30.0" prefWidth="130.0" text="Retroalimentar" />
                      </children>
                   </AnchorPane>
                </content>

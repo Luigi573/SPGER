@@ -10,6 +10,7 @@ import java.time.LocalDate;
 import java.time.Month;
 import mx.uv.fei.dataaccess.DataBaseManager;
 import mx.uv.fei.logic.domain.Activity;
+import mx.uv.fei.logic.domain.statuses.ActivityStatus;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -37,13 +38,14 @@ public class ActivityDAOTest {
                 researchId = generatedResearch.getInt(1);
             }
             
-            //Preload an activity for the getActivityList() and modifyActivity() methods
+            //Preload an activity for the getActivityListTest() and modifyActivityTest() tests
             preloadedActivity = new Activity();
             preloadedActivity.setResearchId(researchId);
             preloadedActivity.setTitle("Preloaded Activity");
             preloadedActivity.setDescription("This is a preloaded activity to test getActivityList() & modifyActivity() methods");
             preloadedActivity.setStartDate(Date.valueOf(LocalDate.of(2023, Month.MAY, 12)));
             preloadedActivity.setDueDate(Date.valueOf(LocalDate.of(2023, Month.MAY, 19)));
+            preloadedActivity.setStatus(ActivityStatus.ACTIVE);
             
             PreparedStatement activityStatement;
             String activityQuery = "INSERT INTO Actividades(IdAnteproyecto, título, descripción, fechaInicio, fechaFin) VALUES(?,?,?,?,?)";
@@ -98,6 +100,7 @@ public class ActivityDAOTest {
         activity.setStartDate(Date.valueOf(startDate));
         activity.setDueDate(Date.valueOf(dueDate));
         activity.setResearchId(researchId);
+        activity.setStatus(ActivityStatus.ACTIVE);
         
         ActivityDAO activityDAO = new ActivityDAO();
         
@@ -144,7 +147,7 @@ public class ActivityDAOTest {
         assertTrue(!instance.isBlank(preloadedActivity));
     }
     @Test
-    public void testIsBlank_WithInvalidData() {
+    public void testIsBlankFail() {
         System.out.println("isBlank() test with blank data");
         Activity activity = new Activity();
         activity.setTitle("Blank description activity");
@@ -158,7 +161,7 @@ public class ActivityDAOTest {
         assertTrue(instance.isBlank(activity));
     }
     @Test
-    public void testIsValidDate() {
+    public void testIsValidDateSuccess() {
         Activity activity = preloadedActivity;
         ActivityDAO instance = new ActivityDAO();
         
@@ -168,7 +171,7 @@ public class ActivityDAOTest {
         assertTrue(instance.isValidDate(activity));
     }
     @Test
-    public void testIsValidDate_WithInvalidData() {
+    public void testIsValidDateFail() {
         Activity activity = new Activity();
         ActivityDAO instance = new ActivityDAO();
         

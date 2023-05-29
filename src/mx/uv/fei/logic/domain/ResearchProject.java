@@ -1,14 +1,14 @@
 package mx.uv.fei.logic.domain;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import mx.uv.fei.logic.domain.statuses.ResearchProjectStatus;
 
 public class ResearchProject {
     private Date dueDate;
     private Date startDate;
-    private Director[] directors;
+    private ArrayList<Director> directors;
     private int id;
-    int directorCount;
     private KGAL kgal;
     private ResearchProjectStatus validationStatus;
     private String description;
@@ -19,13 +19,7 @@ public class ResearchProject {
     private Student student;
     
     public ResearchProject(){
-        directors = new Director[3];
-        
-        for(int i = 0; i < directors.length; i++){
-            directors[i] = new Director();
-        }
-        
-        directorCount = 0;
+        directors = new ArrayList();
         kgal = new KGAL();
         student = new Student();
     }
@@ -37,8 +31,8 @@ public class ResearchProject {
         this.startDate = startDate;
     }
     public void addDirector(Director director) {
-        if(directorCount < 3){
-            directors[directorCount] = director;
+        if(directors.size() <= 3){
+            directors.add(director);
         }
     }
     public void setId(int id) {
@@ -75,10 +69,11 @@ public class ResearchProject {
         return startDate;
     }
     public Director getDirector(int index) {
-        return directors[index];
-    }
-    public int getDirectorCount(){
-        return directorCount;
+        if(index > 0 && index <= directors.size()){
+            return directors.get(index);
+        }
+        
+        return null;
     }
     public int getId() {
         return id;
@@ -116,18 +111,25 @@ public class ResearchProject {
         System.out.println("Start Date: " + startDate.toString());
         System.out.println("Due Date: " + dueDate.toString());
         System.out.println("Expected Result: " + expectedResult);
-        System.out.println("Director Count: " + directorCount);
         System.out.println("Directors: ");
         
         for (Director director : directors) {
-            System.out.println("\t\t" + director.getName());
+            System.out.println("\t" + director.getName());
         }
         
         System.out.println("KGAL: " + kgal.getDescription());
         System.out.println("Student: " + student.getName());
     }
     @Override
+    public boolean equals(Object obj){
+        if(obj instanceof ResearchProject researchProject){
+            return researchProject.getId() == this.id;
+        }
+        
+        return false;
+    }
+    @Override
     public String toString(){
-        return "Cronograma de " + student.getName();
+        return title;
     }
 }

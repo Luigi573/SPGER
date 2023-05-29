@@ -95,7 +95,7 @@ public class GuiRegisterCourseController {
                 this.errorMessajeText.setVisible(false);
                 CourseDAO courseDAO = new CourseDAO();
                 Course course = new Course();
-                course.setEEName(this.educativeExperienceComboBox.getValue());
+                course.setName(this.educativeExperienceComboBox.getValue());
                 course.setNrc(Integer.parseInt(this.nrcTextField.getText()));
                 course.setSection(Integer.parseInt(this.sectionComboBox.getValue()));
                 course.setBlock(Integer.parseInt(this.blockComboBox.getValue()));

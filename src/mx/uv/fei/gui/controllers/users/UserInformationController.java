@@ -114,7 +114,7 @@ public class UserInformationController {
         this.userTypeLabel.setText(userType);
     }
 
-    public String getMatriculeOrPersonalNumber() {
+    public String getMatricleOrPersonalNumber() {
         return this.matricleOrPersonalNumberLabel.getText();
     }
 

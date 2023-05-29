@@ -11,4 +11,13 @@ public class AcademicBodyHead extends Professor{
     public void setacademicBodyHeadId(int academicBodyHeadId) {
         this.academicBodyHeadid = academicBodyHeadId;
     }
+    
+    @Override
+    public boolean equals(Object obj){
+        if(obj instanceof AcademicBodyHead academicBodyHead){
+            return this.staffNumber == academicBodyHead.getStaffNumber();
+        }
+        
+        return false;
+    }
 }
