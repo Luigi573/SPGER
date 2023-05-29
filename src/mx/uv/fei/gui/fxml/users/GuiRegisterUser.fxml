@@ -60,7 +60,7 @@
       </Text>
       <TextField fx:id="alternateEmailTextField" layoutX="524.0" layoutY="79.0" prefHeight="24.0" prefWidth="260.0" />
       <TextField fx:id="telephoneNumberTextField" layoutX="566.0" layoutY="120.0" prefHeight="24.0" prefWidth="217.0" />
-      <ComboBox fx:id="typeComboBox" layoutX="449.0" layoutY="199.0" onAction="#typeComboBoxController" prefHeight="24.0" prefWidth="333.0" />
+      <ComboBox fx:id="typeComboBox" layoutX="449.0" layoutY="199.0" onAction="#typeComboBoxController" prefHeight="24.0" prefWidth="333.0" promptText="--Seleccionar Tipo--" />
       <Button fx:id="registerButton" layoutX="625.0" layoutY="259.0" mnemonicParsing="false" onAction="#registerButtonController" prefHeight="48.0" prefWidth="128.0" text="Registrar" />
       <Text fx:id="errorMessajeText" fill="RED" layoutX="31.0" layoutY="288.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" visible="false">
          <font>

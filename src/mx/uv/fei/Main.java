@@ -4,7 +4,6 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 
 public class Main extends Application{
@@ -13,11 +12,11 @@ public class Main extends Application{
         Parent guiUsuarios;
         FXMLLoader loader = new FXMLLoader(
             //getClass().getResource("/mx/uv/fei/gui/fxml/kgal/KGALList.fxml")
-            //getClass().getResource("/mx/uv/fei/gui/fxml/research/ResearchManager.fxml")
+            getClass().getResource("/mx/uv/fei/gui/fxml/research/ResearchManager.fxml")
             //getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/ModifyActivity.fxml")// tha xavier gui
             //getClass().getResource("/mx/uv/fei/gui/fxml/courses/students/GuiUsersCourse.fxml")
             //getClass().getResource("/mx/uv/fei/gui/fxml/courses/GuiCourses.fxml")
-            getClass().getResource("/mx/uv/fei/gui/fxml/users/GuiUsers.fxml")
+            //getClass().getResource("/mx/uv/fei/gui/fxml/users/GuiUsers.fxml")
             //getClass().getResource("/mx/uv/fei/gui/fxml/reports/GuiResearchReport.fxml")
         );
         guiUsuarios = loader.load();

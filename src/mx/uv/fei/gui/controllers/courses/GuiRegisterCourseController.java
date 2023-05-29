@@ -88,21 +88,22 @@ public class GuiRegisterCourseController {
             }
             
         });
-        scholarPeriodComboBox.setValue(scholarPeriodComboBox.getItems().get(0));
 
         educativeExperienceComboBox.getItems().add("Proyecto Guiado");
         educativeExperienceComboBox.getItems().add("Experiencia Recepcional");
-        educativeExperienceComboBox.setValue("Proyecto Guiado");
         sectionComboBox.getItems().add("1");
         sectionComboBox.getItems().add("2");
-        sectionComboBox.setValue("1");
         blockComboBox.getItems().add("7");
         blockComboBox.getItems().add("8");
-        blockComboBox.setValue("7");
     }
     @FXML
     private void registerButtonController(ActionEvent event){
-        if(!nrcTextField.getText().trim().isEmpty()){
+        if(blockComboBox.getValue() != null &&
+           educativeExperienceComboBox.getValue() != null &&
+           !nrcTextField.getText().trim().isEmpty() &&
+           professorComboBox.getValue() != null &&
+           scholarPeriodComboBox.getValue() != null &&
+           sectionComboBox.getValue() != null){
 
             if(allTextFieldsContainsCorrectValues()){
                 errorMessajeText.setVisible(false);

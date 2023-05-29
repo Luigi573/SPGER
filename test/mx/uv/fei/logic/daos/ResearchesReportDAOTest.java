@@ -4,27 +4,27 @@ import org.junit.jupiter.api.Test;
 
 public class ResearchesReportDAOTest {
     @Test
-    void testGetNotValidatedResearchesFromDatabase() {
+    private void getNotValidatedResearchesFromDatabaseTest() {
 
     }
 
     @Test
-    void testGetResearchesFromDatabase() {
+    private void getResearchesFromDatabaseTest() {
 
     }
 
     @Test
-    void testGetSelectedResearchesFromDatabase() {
+    private void getSelectedResearchesFromDatabaseTest() {
 
     }
 
     @Test
-    void testGetValidatedAndNotValidatedResearchesFromDatabase() {
+    private void getValidatedAndNotValidatedResearchesFromDatabaseTest() {
 
     }
 
     @Test
-    void testGetValidatedResearchesFromDatabase() {
+    private void getValidatedResearchesFromDatabaseTest() {
 
     }
 }

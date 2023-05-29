@@ -107,13 +107,10 @@ public class ModifyCourseInformationController{
 
         educativeExperienceComboBox.getItems().add("Proyecto Guiado");
         educativeExperienceComboBox.getItems().add("Experiencia Recepcional");
-        educativeExperienceComboBox.setValue("Proyecto Guiado");
         sectionComboBox.getItems().add("1");
         sectionComboBox.getItems().add("2");
-        sectionComboBox.setValue("1");
         blockComboBox.getItems().add("7");
         blockComboBox.getItems().add("8");
-        blockComboBox.setValue("7");
     }
     @FXML
     private void exitButtonController(ActionEvent event){
@@ -123,7 +120,12 @@ public class ModifyCourseInformationController{
     private void modifyButtonController(ActionEvent event){
 
         try{
-            if(!nrcTextField.getText().trim().isEmpty()){
+            if(blockComboBox.getValue() != null &&
+               educativeExperienceComboBox.getValue() != null &&
+               !nrcTextField.getText().trim().isEmpty() &&
+               professorComboBox.getValue() != null &&
+               scholarPeriodComboBox.getValue() != null &&
+               sectionComboBox.getValue() != null){
     
                 if(allTextFieldsContainsCorrectValues()){
                     CourseDAO courseDAO = new CourseDAO();

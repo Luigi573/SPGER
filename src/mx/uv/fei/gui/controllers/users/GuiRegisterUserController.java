@@ -71,7 +71,8 @@ public class GuiRegisterUserController{
            !emailTextField.getText().trim().isEmpty() &&
            !alternateEmailTextField.getText().trim().isEmpty() &&
            !telephoneNumberTextField.getText().trim().isEmpty() &&
-           !matricleOrPersonalNumberTextField.getText().trim().isEmpty()){
+           !matricleOrPersonalNumberTextField.getText().trim().isEmpty() &&
+           typeComboBox.getValue() != null){
             if(allTextFieldsContainsCorrectValues()){
                 if(typeComboBox.getValue().equals(UserType.DIRECTOR.getValue())){
                     registerDirector();

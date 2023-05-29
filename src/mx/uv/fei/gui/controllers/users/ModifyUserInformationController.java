@@ -78,7 +78,8 @@ public class ModifyUserInformationController{
            !emailTextField.getText().trim().isEmpty() &&
            !alternateEmailTextField.getText().trim().isEmpty() &&
            !telephoneNumberTextField.getText().trim().isEmpty() &&
-           !matricleOrPersonalNumberTextField.getText().trim().isEmpty()){
+           !matricleOrPersonalNumberTextField.getText().trim().isEmpty() &&
+           statusComboBox.getValue() != null){
             if(allTextFieldsContainsCorrectValues()){
                 if(userInformationController.getUserType().equals(UserType.DIRECTOR.getValue())){
                     modifyDirector(event);

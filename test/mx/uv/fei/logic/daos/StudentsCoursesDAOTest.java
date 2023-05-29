@@ -14,6 +14,7 @@ public class StudentsCoursesDAOTest {
             String expectedMatricle = "zS10000001";
             String expectedNrc = "10001";
             studentCoursesDAO.addStudentCourseToDatabase(expectedMatricle, expectedNrc);
+            String actualMatricle = studentCoursesDAO.getStudentsMatriclesByCourseNRCFromDatabase(expectedNrc).get(0);
 
             Assertions.assertTrue(expectedMatricle.equals(actualMatricle));
         } catch (DataRetrievalException e) {
@@ -38,6 +39,18 @@ public class StudentsCoursesDAOTest {
 
     @Test
     void removeStudentCourseFromDatabaseTest() {
-
+        try {
+            StudentsCoursesDAO studentCoursesDAO = new StudentsCoursesDAO();
+            String expectedMatricle = "zS10000001";
+            String expectedNrc = "10001";
+            studentCoursesDAO.removeStudentCourseFromDatabase(expectedMatricle, expectedNrc);
+            
+            String actualMatricle = studentCoursesDAO.getStudentsMatriclesByCourseNRCFromDatabase("10001").get(0);
+            Assertions.assertFalse(expectedMatricle.equals(actualMatricle));
+        } catch (DataRetrievalException e) {
+            e.printStackTrace();
+        } catch (DataWritingException e) {
+            e.printStackTrace();
+        }
     }
 }
