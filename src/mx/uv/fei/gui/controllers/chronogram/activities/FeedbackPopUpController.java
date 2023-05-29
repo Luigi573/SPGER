@@ -6,6 +6,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.TextArea;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import mx.uv.fei.gui.AlertPopUpGenerator;
 import mx.uv.fei.logic.daos.ActivityDAO;
 import mx.uv.fei.logic.domain.Activity;
 import mx.uv.fei.logic.exceptions.DataInsertionException;
@@ -35,10 +36,7 @@ public class FeedbackPopUpController{
                     stage.close();
                 }
             }catch(DataInsertionException exception){
-                Alert errorMessage = new Alert(Alert.AlertType.ERROR);
-                errorMessage.setHeaderText("Error de conexión");
-                errorMessage.setContentText("Favor de verificar su conexión a internet e inténtelo de nuevo");
-                errorMessage.showAndWait();
+                AlertPopUpGenerator.showConnectionErrorMessage();
             }
         }else{
             Alert warningMessage = new Alert(Alert.AlertType.WARNING);

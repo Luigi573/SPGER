@@ -21,7 +21,7 @@ public class ActivityDAO implements IActivityDAO{
     public int addActivity(Activity activity) throws DataInsertionException{
         int generatedId = 0;
         PreparedStatement statement;
-        String query = "INSERT INTO Actividades(título, descripción, fechaInicio, fechaFin, IdAnteproyecto) VALUES (?,?,?,?,?)";
+        String query = "INSERT INTO Actividades(título, descripción, fechaInicio, fechaFin, IdAnteproyecto, estado) VALUES (?,?,?,?,?,?)";
         
         try{
             statement = dataBaseManager.getConnection().prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
@@ -31,6 +31,7 @@ public class ActivityDAO implements IActivityDAO{
             statement.setDate(3, activity.getStartDate());
             statement.setDate(4, activity.getDueDate());
             statement.setInt(5, activity.getResearchId());
+            statement.setString(6, activity.getStatus().getValue());
             
             statement.executeUpdate();
             ResultSet resultSet = statement.getGeneratedKeys();
@@ -174,5 +175,8 @@ public class ActivityDAO implements IActivityDAO{
 
     public boolean isValidDate(Activity activity){
         return activity.getStartDate().compareTo(activity.getDueDate()) <= 0;
+    }
+    public boolean isValidLength(Activity activity){
+        return activity.getTitle().length() <= 50;
     }
 }

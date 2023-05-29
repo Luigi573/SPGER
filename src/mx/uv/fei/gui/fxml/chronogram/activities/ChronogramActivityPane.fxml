@@ -6,39 +6,42 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="103.0" prefWidth="476.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.uv.fei.gui.controllers.chronogram.activities.ActivityPaneController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="120.0" prefWidth="728.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.uv.fei.gui.controllers.chronogram.activities.ActivityPaneController">
    <children>
-      <Label fx:id="titleLabel" layoutX="8.0" layoutY="1.0" prefHeight="27.0" prefWidth="454.0" text="Actividad: ">
+      <Label fx:id="titleLabel" layoutX="16.0" layoutY="1.0" prefHeight="32.0" prefWidth="707.0" text="Actividad: ">
          <font>
-            <Font name="System Bold" size="18.0" />
+            <Font name="System Bold" size="22.0" />
          </font>
       </Label>
-      <Label layoutY="29.0" prefHeight="19.0" prefWidth="94.0" text="Fecha de inicio: ">
+      <Label layoutX="16.0" layoutY="39.0" prefHeight="25.0" prefWidth="116.0" text="Fecha de inicio: ">
          <font>
-            <Font size="13.0" />
+            <Font size="16.0" />
          </font>
       </Label>
-      <Label fx:id="startDateLabel" layoutX="91.0" layoutY="29.0" prefHeight="19.0" prefWidth="107.0">
+      <Label fx:id="startDateLabel" layoutX="142.0" layoutY="39.0" prefHeight="25.0" prefWidth="153.0">
          <font>
-            <Font size="13.0" />
+            <Font size="16.0" />
          </font>
       </Label>
-      <Label layoutX="198.0" layoutY="30.0" prefHeight="19.0" prefWidth="107.0" text="Fecha de entrega: ">
+      <Label layoutX="304.0" layoutY="39.0" prefHeight="25.0" prefWidth="132.0" text="Fecha de entrega: ">
          <font>
-            <Font size="13.0" />
+            <Font size="16.0" />
          </font>
       </Label>
-      <Label fx:id="dueDateLabel" layoutX="308.0" layoutY="30.0" prefHeight="19.0" prefWidth="107.0">
+      <Label fx:id="dueDateLabel" layoutX="437.0" layoutY="40.0" prefHeight="25.0" prefWidth="161.0">
          <font>
-            <Font size="13.0" />
+            <Font size="16.0" />
          </font>
       </Label>
-      <Button fx:id="activityDetailButton" layoutX="384.0" layoutY="61.0" mnemonicParsing="false" onAction="#viewActivity" text="Ver detalles" />
-      <Label fx:id="statusLabel" alignment="CENTER_RIGHT" layoutX="269.0" layoutY="64.0" prefHeight="19.0" prefWidth="107.0" text="[Estado]" textAlignment="RIGHT">
+      <Button fx:id="activityDetailButton" layoutX="623.0" layoutY="73.0" mnemonicParsing="false" onAction="#viewActivity" text="Ver detalles">
          <font>
-            <Font size="13.0" />
+            <Font size="14.0" />
+         </font></Button>
+      <Label fx:id="statusLabel" alignment="CENTER_RIGHT" layoutX="429.0" layoutY="78.0" prefHeight="20.0" prefWidth="177.0" text="[Estado]" textAlignment="RIGHT">
+         <font>
+            <Font size="14.0" />
          </font>
       </Label>
-      <Separator layoutY="101.0" prefHeight="4.0" prefWidth="476.0" />
+      <Separator layoutX="-3.0" layoutY="118.0" prefHeight="3.0" prefWidth="840.0" />
    </children>
 </Pane>

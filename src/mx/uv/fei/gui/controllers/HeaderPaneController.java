@@ -7,62 +7,48 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import mx.uv.fei.gui.AlertPopUpGenerator;
+import mx.uv.fei.logic.domain.Course;
+import mx.uv.fei.logic.domain.User;
 
 public class HeaderPaneController{
-
+    private User user;
+    
     @FXML
-    private Pane headerPane;
+    private Label NRCLabel;
     @FXML
     private Label titleLabel;
     @FXML
-    private Label NRCLabel;
-
+    private Label usernameLabel;
+    
     @FXML
     private void goHome(ActionEvent event) {
         try{
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/Chronogram.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/MainMenu.fxml"));
             Parent parent = loader.load();
+            MainMenuController controller = (MainMenuController)loader.getController();
+            controller.setUser(user);            
             
-            Scene scene = new Scene(parent);
-            String css = this.getClass().getResource("/mx/uv/fei/gui/stylesfiles/Styles.css").toExternalForm();
-            scene.getStylesheets().add(css);
             Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+            Scene scene = new Scene(parent);
             stage.setTitle("SPGER");
             stage.setScene(scene);
             stage.show();
-        }catch(IllegalStateException | IOException exception){
-            Alert errorMessage = new Alert(Alert.AlertType.ERROR);
-            errorMessage.setHeaderText("Error de carga");
-            errorMessage.setContentText("No se pudo abrir la ventana, verifique que el archivo .fxml esté en su ubicación correcta");
-            errorMessage.showAndWait();
+        }catch(IOException exception){
+            AlertPopUpGenerator.showMissingFilesMessage();
         }
     }
-
-    public String getTitle() {
-        return titleLabel.getText();
+    
+    public void setUser(User user){
+        this.user = user;
+        
+        usernameLabel.setText(user.toString());
     }
-
-    public void setTitle(String title) {
-        this.titleLabel.setText(title);
+    
+    public void setCourse(Course course){
+        titleLabel.setText(course.getName());
+        NRCLabel.setText("NRC: " + course.getNrc());
     }
-
-    public String getNRC() {
-        return NRCLabel.getText();
-    }
-
-    public void setNRC(String nRC) {
-        NRCLabel.setText(nRC);
-    }
-
-    public void setVisibleNRCLabel(boolean setVisible) {
-        NRCLabel.setVisible(setVisible);
-    }
-
-    //public void setTitleSize() {
-    //    titleLabel.getText().set
-    //}
 }

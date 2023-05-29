@@ -3,7 +3,7 @@ package mx.uv.fei.logic.domain;
 public class Course {
     private int nrc;
     private int idScholarPeriod;
-    private String eeName;
+    private String name;
     private int section;
     private int block;
     private int personalNumber; //cambiar a Profesor
@@ -24,12 +24,12 @@ public class Course {
         this.idScholarPeriod = idScholarPeriod;
     }
 
-    public String getEEName() {
-        return this.eeName;
+    public String getName() {
+        return name;
     }
 
-    public void setEEName(String eeName) {
-        this.eeName = eeName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getSection() {

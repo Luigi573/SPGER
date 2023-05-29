@@ -10,5 +10,13 @@ public class DegreeBoss extends Professor{
     public void setIdDegreeBoss(int idDegreeBoss) {
         this.idDegreeBoss = idDegreeBoss;
     }
-
+    
+    @Override
+    public boolean equals(Object obj){
+        if(obj instanceof DegreeBoss degreeBoss){
+            return this.staffNumber == degreeBoss.getStaffNumber();
+        }
+        
+        return false;
+    }
 }

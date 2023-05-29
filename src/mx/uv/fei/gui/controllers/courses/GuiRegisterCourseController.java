@@ -7,18 +7,14 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.text.Text;
 import javafx.util.StringConverter;
-import mx.uv.fei.gui.AlertPopUpGenerator;
 import mx.uv.fei.logic.daos.CourseDAO;
 import mx.uv.fei.logic.daos.ProfessorDAO;
 import mx.uv.fei.logic.daos.ScholarPeriodDAO;
 import mx.uv.fei.logic.domain.Course;
 import mx.uv.fei.logic.domain.Professor;
 import mx.uv.fei.logic.domain.ScholarPeriod;
-import mx.uv.fei.logic.exceptions.DataRetrievalException;
-import mx.uv.fei.logic.exceptions.DataInsertionException;
 
 public class GuiRegisterCourseController {
     @FXML
@@ -37,15 +33,10 @@ public class GuiRegisterCourseController {
     private ComboBox<String> sectionComboBox;
     
     @FXML
-    private void initialize(){
+    void initialize() {
         ProfessorDAO professorDAO = new ProfessorDAO();
-        try{
-            professorComboBox.getItems().addAll(professorDAO.getProfessorsFromDatabase());
-        }catch(DataRetrievalException e){
-            new AlertPopUpGenerator().showConnectionErrorMessage();
-        }
-        
-        professorComboBox.setConverter(new StringConverter<Professor>(){
+        this.professorComboBox.getItems().addAll(professorDAO.getProfessorsFromDatabase());
+        this.professorComboBox.setConverter(new StringConverter<Professor>() {
 
             @Override
             public Professor fromString(String arg0) {
@@ -62,24 +53,19 @@ public class GuiRegisterCourseController {
             }
             
         });
-        professorComboBox.setValue(professorComboBox.getItems().get(0));
+        this.professorComboBox.setValue(this.professorComboBox.getItems().get(0));
 
         ScholarPeriodDAO scholarPeriodDAO = new ScholarPeriodDAO();
-        try{
-            scholarPeriodComboBox.getItems().addAll(scholarPeriodDAO.getScholarPeriodsFromDatabase());
-        }catch(DataRetrievalException e) {
-            new AlertPopUpGenerator().showConnectionErrorMessage();
-        }
-        
-        scholarPeriodComboBox.setConverter(new StringConverter<ScholarPeriod>(){
+        this.scholarPeriodComboBox.getItems().addAll(scholarPeriodDAO.getScholarPeriodsFromDatabase());
+        this.scholarPeriodComboBox.setConverter(new StringConverter<ScholarPeriod>() {
             
             @Override
-            public ScholarPeriod fromString(String arg0){
+            public ScholarPeriod fromString(String arg0) {
                 return null;
             }
             
             @Override
-            public String toString(ScholarPeriod arg0){
+            public String toString(ScholarPeriod arg0) {
                 if(arg0 != null){
                     return arg0.getStartDate() + " " + arg0.getEndDate();
                 }
@@ -88,59 +74,59 @@ public class GuiRegisterCourseController {
             }
             
         });
-        scholarPeriodComboBox.setValue(scholarPeriodComboBox.getItems().get(0));
+        this.scholarPeriodComboBox.setValue(this.scholarPeriodComboBox.getItems().get(0));
 
-        educativeExperienceComboBox.getItems().add("Proyecto Guiado");
-        educativeExperienceComboBox.getItems().add("Experiencia Recepcional");
-        educativeExperienceComboBox.setValue("Proyecto Guiado");
-        sectionComboBox.getItems().add("1");
-        sectionComboBox.getItems().add("2");
-        sectionComboBox.setValue("1");
-        blockComboBox.getItems().add("7");
-        blockComboBox.getItems().add("8");
-        blockComboBox.setValue("7");
+        this.educativeExperienceComboBox.getItems().add("Proyecto Guiado");
+        this.educativeExperienceComboBox.getItems().add("Experiencia Recepcional");
+        this.educativeExperienceComboBox.setValue("Proyecto Guiado");
+        this.sectionComboBox.getItems().add("7");
+        this.sectionComboBox.getItems().add("8");
+        this.sectionComboBox.setValue("7");
+        this.blockComboBox.getItems().add("1");
+        this.blockComboBox.getItems().add("2");
+        this.blockComboBox.setValue("1");
     }
+
     @FXML
-    private void registerButtonController(ActionEvent event){
-        if(!nrcTextField.getText().trim().isEmpty()){
+    void registerButtonController(ActionEvent event) {
+        if(!this.nrcTextField.getText().trim().isEmpty()) {
 
             if(allTextFieldsContainsCorrectValues()){
-                errorMessajeText.setVisible(false);
+                this.errorMessajeText.setVisible(false);
                 CourseDAO courseDAO = new CourseDAO();
                 Course course = new Course();
-                course.setEEName(educativeExperienceComboBox.getValue());
-                course.setNrc(Integer.parseInt(nrcTextField.getText()));
-                course.setSection(Integer.parseInt(sectionComboBox.getValue()));
-                course.setBlock(Integer.parseInt(blockComboBox.getValue()));
-                course.setStaffNumber(professorComboBox.getValue().getStaffNumber());
-                course.setIdScholarPeriod(scholarPeriodComboBox.getValue().getIdScholarPeriod());
+                course.setName(this.educativeExperienceComboBox.getValue());
+                course.setNrc(Integer.parseInt(this.nrcTextField.getText()));
+                course.setSection(Integer.parseInt(this.sectionComboBox.getValue()));
+                course.setBlock(Integer.parseInt(this.blockComboBox.getValue()));
+                course.setStaffNumber(this.professorComboBox.getValue().getStaffNumber());
+                course.setIdScholarPeriod(this.scholarPeriodComboBox.getValue().getIdScholarPeriod());
                 
-                try{
-                    if(courseDAO.theCourseIsAlreadyRegisted(course)){
-                        new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "Error", "El curso ya está registrado en el sistema");
-                        return;
-                    }
-                }catch(DataRetrievalException e){
-                    new AlertPopUpGenerator().showConnectionErrorMessage();
+                if(courseDAO.theCourseIsAlreadyRegisted(course)) {
+                    this.errorMessajeText.setText("El curso ya está registrado en el sistema");
+                    this.errorMessajeText.setVisible(true);
+                    return;
                 }
-                
-                try{
-                    courseDAO.addCourseToDatabase(course);
-                    new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "Éxito", "Curso registrado exitosamente");
-                }catch(DataInsertionException e) {
-                    new AlertPopUpGenerator().showConnectionErrorMessage();
-                }
-            }else{
-                new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "Error", "Algunos campos contienen datos inválidos");
+                courseDAO.addCourseToDatabase(course);
+                this.errorMessajeText.setText("Curso registrado exitosamente");
+                this.errorMessajeText.setVisible(true);
+            } else {
+                this.errorMessajeText.setText("Algunos campos contienen datos inválidos");
+                this.errorMessajeText.setVisible(true);
             }
-        }else{
-            new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "Error", "Faltan campos por llenar");
+
+        } else {
+            this.errorMessajeText.setText("Faltan campos por llenar");
+            this.errorMessajeText.setVisible(true);
         }
     }
 
     private boolean allTextFieldsContainsCorrectValues(){
         Pattern nrcPattern = Pattern.compile("^[0-9]{5}$");
-        Matcher nrcMatcher = nrcPattern.matcher(nrcTextField.getText());
+        Matcher nrcMatcher = nrcPattern.matcher(this.nrcTextField.getText());
+
         return nrcMatcher.find();
+        
     }
+
 }

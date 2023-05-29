@@ -10,6 +10,8 @@ import java.time.Month;
 import java.util.ArrayList;
 import mx.uv.fei.dataaccess.DataBaseManager;
 import mx.uv.fei.logic.domain.ResearchProject;
+import mx.uv.fei.logic.exceptions.DataInsertionException;
+import mx.uv.fei.logic.exceptions.DataRetrievalException;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -20,7 +22,7 @@ public class ResearchDAOTest {
     private static ResearchProject preloadedResearch;
     
     @BeforeClass
-    public static void setUpClass() {
+    public static void setUpClass(){
         preloadedResearch = new ResearchProject();
         preloadedResearch.setStartDate(Date.valueOf(LocalDate.of(2023, Month.MARCH, 19)));
         preloadedResearch.setDueDate(Date.valueOf(LocalDate.of(2023, Month.DECEMBER, 2)));
@@ -34,8 +36,8 @@ public class ResearchDAOTest {
         PreparedStatement statement;
         
         String query = "INSERT INTO Anteproyectos(fechaFin, fechaInicio, título, descripción, "
-                + "resultadosEsperados, requisitos, bibliografíaRecomendada) "
-                + "VALUES(?,?,?,?,?,?,?);";
+                + "resultadosEsperados, requisitos) "
+                + "VALUES(?,?,?,?,?,?);";
         
         try{
             statement = dataBaseManager.getConnection().prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
@@ -46,7 +48,6 @@ public class ResearchDAOTest {
             statement.setString(4, preloadedResearch.getDescription());
             statement.setString(5, preloadedResearch.getExpectedResult());
             statement.setString(6, preloadedResearch.getRequirements());
-            statement.setString(7, preloadedResearch.getSuggestedBibliography());
             
             statement.executeUpdate();
             ResultSet generatedKeys = statement.getGeneratedKeys();
@@ -78,7 +79,7 @@ public class ResearchDAOTest {
     }
 
     @Test
-    public void testAddResearch() throws Exception {
+    public void testAddResearch() throws DataInsertionException {
         System.out.println("addResearch");
         ResearchProject research = new ResearchProject();
         research.setStartDate(Date.valueOf(LocalDate.of(2023, Month.MARCH, 19)));
@@ -93,21 +94,18 @@ public class ResearchDAOTest {
         ResearchDAO instance = new ResearchDAO();
         int result = instance.addResearch(research);
         assertTrue(result > 0);
-        fail("The test case is a prototype.");
     }
 
     @Test
-    public void testGetResearchProjectList() throws Exception {
-        System.out.println("getResearchProjectList");
+    public void testGetResearchProjectList() throws DataRetrievalException {
         ResearchDAO instance = new ResearchDAO();
-        ArrayList<ResearchProject> expResult = null;
         ArrayList<ResearchProject> result = instance.getResearchProjectList();
-        assertEquals(expResult, result);
-        fail("The test case is a prototype.");
+        
+        assertTrue(result.contains(preloadedResearch));
     }
 
     @Test
-    public void testModifyResearch() throws Exception {
+    public void testModifyResearch() throws DataInsertionException {
         System.out.println("Testing modifyResearch");
         preloadedResearch.setTitle("Modified research project");
         preloadedResearch.setDescription("I modified the preloaded research so it now has this description");
@@ -127,23 +125,30 @@ public class ResearchDAOTest {
        
         System.out.println("This method is a combination of isBlank() and isValidDate(), if it passes both, it should pass this one");
         assertTrue(instance.assertResearch(preloadedResearch));
-        fail("The test case is a prototype.");
     }
 
     @Test
-    public void testIsBlank() {
-        System.out.println("isBlank");
-        ResearchProject research = null;
+    public void testIsBlank(){
+        System.out.println("\nTesting 'isBlank()' with no empty required fields");
+        ResearchProject research = new ResearchProject();
+        research.setTitle("");
+        research.setDescription("");
         ResearchDAO instance = new ResearchDAO();
-        boolean expResult = false;
-        boolean result = instance.isBlank(research);
-        assertEquals(expResult, result);
-        fail("The test case is a prototype.");
+        
+        assertTrue(instance.isBlank(research));
+    }
+    @Test
+    public void testIsBlankFail(){
+        System.out.println("\nTesting 'isBlank()' with at least one blank required field");
+        ResearchProject research = preloadedResearch;
+        ResearchDAO instance = new ResearchDAO();
+        
+        assertTrue(!instance.isBlank(research));
     }
 
     @Test
-    public void testIsValidDate() {
-        System.out.println("Testing 'isValidDate()' with valid input");
+    public void testIsValidDate(){
+        System.out.println("\nTesting 'isValidDate()' with valid input");
         ResearchDAO instance = new ResearchDAO();
         
         System.out.println("Start Date: " + preloadedResearch.getStartDate());
@@ -152,8 +157,8 @@ public class ResearchDAOTest {
         assertTrue(instance.isValidDate(preloadedResearch));
     }
     @Test
-    public void testIsValidDate_WithInvalidInput(){
-        System.out.println("Testing 'isValidDate' with invalid input");
+    public void testIsValidDateFail(){
+        System.out.println("\nTesting 'isValidDate' with invalid input");
         ResearchProject research = new ResearchProject();
         research.setStartDate(Date.valueOf(LocalDate.of(2024, Month.DECEMBER, 31)));
         research.setDueDate(Date.valueOf(LocalDate.of(2023, Month.MAY, 19)));
