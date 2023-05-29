@@ -83,7 +83,7 @@ public class GuiResearchReportController {
         ResearchesReportDAO researchesReportDAO = new ResearchesReportDAO();
         ArrayList<Research> researches = new ArrayList<>();
         try{
-            researches = researchesReportDAO.getResearchesFromDatabase(findByTitleTextField.getText(), "");
+            researches = researchesReportDAO.getResearches(findByTitleTextField.getText(), "");
         }catch(DataRetrievalException e) {
             new AlertPopUpGenerator().showConnectionErrorMessage();
         }
@@ -124,7 +124,7 @@ public class GuiResearchReportController {
 
         try{
             ResearchesReportDAO researchesReportDAO = new ResearchesReportDAO();
-            ArrayList<Research> researches = researchesReportDAO.getSelectedResearchesFromDatabase(selectedResearches);
+            ArrayList<Research> researches = researchesReportDAO.getSelectedResearches(selectedResearches);
 
             Path path = Paths.get("src/dependencies/resources/jasperreports/ResearchReport.jasper");
             InputStream inputStream = Files.newInputStream(path.toAbsolutePath());
@@ -158,22 +158,22 @@ public class GuiResearchReportController {
         try{
             if(!showNotValidatedToggleButton.isSelected() &&
                !showValidatedToggleButton.isSelected()){
-                researches = researchesReportDAO.getResearchesFromDatabase(findByTitleTextField.getText(), "");
+                researches = researchesReportDAO.getResearches(findByTitleTextField.getText(), "");
             }
         
             if(!showNotValidatedToggleButton.isSelected() &&
                showValidatedToggleButton.isSelected()){
-                researches = researchesReportDAO.getValidatedResearchesFromDatabase(findByTitleTextField.getText());
+                researches = researchesReportDAO.getValidatedResearches(findByTitleTextField.getText());
             }
         
             if(showNotValidatedToggleButton.isSelected() &&
                !showValidatedToggleButton.isSelected()){
-                researches = researchesReportDAO.getNotValidatedResearchesFromDatabase(findByTitleTextField.getText());
+                researches = researchesReportDAO.getNotValidatedResearches(findByTitleTextField.getText());
             }
         
             if(showNotValidatedToggleButton.isSelected() &&
                showValidatedToggleButton.isSelected()){
-                researches = researchesReportDAO.getValidatedAndNotValidatedResearchesFromDatabase(findByTitleTextField.getText());
+                researches = researchesReportDAO.getValidatedAndNotValidatedResearches(findByTitleTextField.getText());
             }
 
         }catch(DataRetrievalException e){
@@ -285,8 +285,8 @@ public class GuiResearchReportController {
             header.getStyleClass().add("/mx/uv/fei/gui/stylesfiles/Styles.css");
             backgroundPane.getChildren().add(header);
             HeaderPaneController headerPaneController = headerLoader.getController();
-            headerPaneController.setTitle("Generar Reporte de Anteproshectos");
-            headerPaneController.setVisibleNRCLabel(false);
+            //headerPaneController.setTitle("Generar Reporte de Anteproshectos");
+            //headerPaneController.setVisibleNRCLabel(false);
             
         }catch(IOException exception){
             new AlertPopUpGenerator().showMissingFilesMessage();

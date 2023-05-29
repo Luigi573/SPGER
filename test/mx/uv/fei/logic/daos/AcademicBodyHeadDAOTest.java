@@ -13,22 +13,22 @@ public class AcademicBodyHeadDAOTest {
     }
 
     @Test
-    void testGetAcademicBodyHeadFromDatabase() {
+    void testGetAcademicBodyHead() {
 
     }
 
     @Test
-    void testGetAcademicBodyHeadsFromDatabase() {
+    void testGetAcademicBodyHeads() {
 
     }
 
     @Test
-    void testGetSpecifiedAcademicBodyHeadsFromDatabase() {
+    void testGetSpecifiedAcademicBodyHeads() {
 
     }
 
     @Test
-    void testModifyAcademicBodyHeadDataFromDatabase() {
+    void testModifyAcademicBodyHeadData() {
 
     }
 

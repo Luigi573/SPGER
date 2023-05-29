@@ -25,7 +25,7 @@ public class UserPaneController{
     private void deleteButtonController(ActionEvent event){
         StudentsCoursesDAO studentsCoursesDAO = new StudentsCoursesDAO();
         try{
-            studentsCoursesDAO.removeStudentCourseFromDatabase(
+            studentsCoursesDAO.removeStudentCourse(
                 matricleOrPersonalNumberLabel.getText(),
                 guiUsersCourseController.getCourseInformationController().getNrc()
             );

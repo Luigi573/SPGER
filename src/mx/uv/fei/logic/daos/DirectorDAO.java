@@ -109,7 +109,7 @@ public class DirectorDAO implements IDirectorDAO{
     }
 
     @Override
-    public void modifyDirectorDataFromDatabase(Director newDirectorData, Director originalDirectorData) throws DataInsertionException{
+    public void modifyDirectorData(Director newDirectorData, Director originalDirectorData) throws DataInsertionException{
         try{
             String queryForUpdateUserData = "UPDATE Usuarios SET nombre = ?, " + 
                            "apellidoPaterno = ?, apellidoMaterno = ?, correo = ?, " + 
@@ -189,7 +189,7 @@ public class DirectorDAO implements IDirectorDAO{
     }
     
     @Override
-    public ArrayList<Director> getDirectorsFromDatabase() throws DataRetrievalException{
+    public ArrayList<Director> getDirectors() throws DataRetrievalException{
         ArrayList<Director> directors = new ArrayList<>();
 
         try{
@@ -221,7 +221,7 @@ public class DirectorDAO implements IDirectorDAO{
     }
 
     @Override
-    public ArrayList<Director> getSpecifiedDirectorsFromDatabase(String directorName) throws DataRetrievalException{
+    public ArrayList<Director> getSpecifiedDirectors(String directorName) throws DataRetrievalException{
         ArrayList<Director> directors = new ArrayList<>();
 
         try{
@@ -254,7 +254,7 @@ public class DirectorDAO implements IDirectorDAO{
     }
 
     @Override
-    public Director getDirectorFromDatabase(int personalNumber) throws DataRetrievalException{
+    public Director getDirector(int personalNumber) throws DataRetrievalException{
         Director director = new Director();
 
         try{

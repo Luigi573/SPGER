@@ -15,50 +15,47 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import mx.uv.fei.gui.AlertPopUpGenerator;
 import mx.uv.fei.logic.daos.CourseDAO;
 import mx.uv.fei.logic.daos.ProfessorDAO;
 import mx.uv.fei.logic.daos.ScholarPeriodDAO;
 import mx.uv.fei.logic.domain.Course;
 import mx.uv.fei.logic.domain.Professor;
 import mx.uv.fei.logic.domain.ScholarPeriod;
+import mx.uv.fei.logic.exceptions.DataRetrievalException;
 
 public class GuiCoursesController {
 
     @FXML
     private ScrollPane courseInformationScrollPane;
-
     @FXML
     private VBox coursesVBox;
-
     @FXML
     private Button registerCourseButton;
-
     @FXML
     private Button searchByNrcButton;
-
     @FXML
     private TextField searchByNrcTextField;
-
     @FXML
     private ImageView spgerLogo;
-
     @FXML
     private Text spgerText;
-
     @FXML
     private ImageView userLogo;
-
     @FXML
     private Text userNameText;
-
     @FXML
     private Text windowText;
 
     @FXML
     void initialize() {
-        CourseDAO courseDAO = new CourseDAO();
-        ArrayList<Course> courses = courseDAO.getCoursesFromDatabase();
-        this.courseButtonMaker(courses);
+        try{
+            CourseDAO courseDAO = new CourseDAO();
+            ArrayList<Course> courses = courseDAO.getCourses();
+            this.courseButtonMaker(courses);
+        }catch(DataRetrievalException exception){
+            new AlertPopUpGenerator().showConnectionErrorMessage();
+        }
     }
 
     @FXML
@@ -81,20 +78,22 @@ public class GuiCoursesController {
 
     @FXML
     void searchByNrcButtonController(ActionEvent event) {
-        this.coursesVBox.getChildren().removeAll(this.coursesVBox.getChildren());
-        CourseDAO courseDAO = new CourseDAO();
-        ArrayList<Course> courses = courseDAO.getSpecifiedCoursesFromDatabase(this.searchByNrcTextField.getText());
-        this.courseButtonMaker(courses);
+        try{
+            this.coursesVBox.getChildren().removeAll(this.coursesVBox.getChildren());
+            CourseDAO courseDAO = new CourseDAO();
+            ArrayList<Course> courses = courseDAO.getSpecifiedCourses(this.searchByNrcTextField.getText());
+            this.courseButtonMaker(courses);
+        }catch(DataRetrievalException exception){
+            new AlertPopUpGenerator().showConnectionErrorMessage();
+        }
     }
 
     private void courseButtonMaker(ArrayList<Course> courses){
         try {
             for(Course course : courses){
-                FXMLLoader courseItemControllerLoader = new FXMLLoader(
-                    getClass().getResource("/mx/uv/fei/gui/fxmlfiles/guicourses/Course.fxml")
-                );
+                FXMLLoader courseItemControllerLoader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxmlfiles/guicourses/Course.fxml"));
                 ScholarPeriodDAO scholarPeriodDAO = new ScholarPeriodDAO();
-                ScholarPeriod scholarPeriod = scholarPeriodDAO.getScholarPeriodFromDatabase(course.getIdScholarPeriod());
+                ScholarPeriod scholarPeriod = scholarPeriodDAO.getScholarPeriod(course.getIdScholarPeriod());
                 Button courseItemButton;
                 courseItemButton = courseItemControllerLoader.load();
                 CourseController courseController = courseItemControllerLoader.getController();
@@ -104,66 +103,74 @@ public class GuiCoursesController {
                 courseController.setGuiCoursesController(this);
                 this.coursesVBox.getChildren().add(courseItemButton);
             }
-        } catch (IOException e) {
+        } catch (DataRetrievalException | IOException e) {
             e.printStackTrace();
         }    
     }
 
     //This method only should be used by the CourseController Class.
     void openPaneWithCourseInformation(String courseNRC){
-        CourseDAO courseDAO = new CourseDAO();
-        Course course = courseDAO.getCourseFromDatabase(courseNRC);
-        ScholarPeriodDAO scholarPeriodDAO = new ScholarPeriodDAO();
-        ScholarPeriod scholarPeriod = scholarPeriodDAO.getScholarPeriodFromDatabase(course.getIdScholarPeriod());
-        ProfessorDAO professorDAO = new ProfessorDAO();
-        Professor professor = professorDAO.getProfessorFromDatabase(course.getStaffNumber());
-        FXMLLoader courseInformationControllerLoader = new FXMLLoader(
-            getClass().getResource("/mx/uv/fei/gui/fxmlfiles/guicourses/CourseInformation.fxml")
-        );
-        try {
-            VBox courseInformationVBox = courseInformationControllerLoader.load();
-            CourseInformationController courseInformationController = courseInformationControllerLoader.getController();
-            courseInformationController.setEducativeExperience(course.getName());
-            courseInformationController.setNrc(Integer.toString(course.getNrc()));
-            courseInformationController.setSection(Integer.toString(course.getSection()));
-            courseInformationController.setBlock(Integer.toString(course.getBlock()));
-            courseInformationController.setProfessor(professor.getName());
-            courseInformationController.setScholarPeriod(scholarPeriod.toString());
-            courseInformationController.setGuiCoursesController(this);
-            this.courseInformationScrollPane.setContent(courseInformationVBox);
-            
-        } catch (IOException e){
-            e.printStackTrace();
+        try{
+            CourseDAO courseDAO = new CourseDAO();
+            Course course = courseDAO.getCourse(courseNRC);
+            ScholarPeriodDAO scholarPeriodDAO = new ScholarPeriodDAO();
+            ScholarPeriod scholarPeriod = scholarPeriodDAO.getScholarPeriod(course.getIdScholarPeriod());
+            ProfessorDAO professorDAO = new ProfessorDAO();
+            Professor professor = professorDAO.getProfessor(course.getStaffNumber());
+            FXMLLoader courseInformationControllerLoader = new FXMLLoader(
+                getClass().getResource("/mx/uv/fei/gui/fxmlfiles/guicourses/CourseInformation.fxml")
+            );
+            try {
+                VBox courseInformationVBox = courseInformationControllerLoader.load();
+                CourseInformationController courseInformationController = courseInformationControllerLoader.getController();
+                courseInformationController.setEducativeExperience(course.getName());
+                courseInformationController.setNrc(Integer.toString(course.getNrc()));
+                courseInformationController.setSection(Integer.toString(course.getSection()));
+                courseInformationController.setBlock(Integer.toString(course.getBlock()));
+                courseInformationController.setProfessor(professor.getName());
+                courseInformationController.setScholarPeriod(scholarPeriod.toString());
+                courseInformationController.setGuiCoursesController(this);
+                this.courseInformationScrollPane.setContent(courseInformationVBox);
+
+            } catch (IOException e){
+                e.printStackTrace();
+            }
+        }catch(DataRetrievalException exception){
+            new AlertPopUpGenerator().showConnectionErrorMessage();
         }
     }
 
     //This method only should be used by the CourseInformationController Class.
     void openModifyCoursePane(CourseInformationController courseInformationController){
-        CourseDAO courseDAO = new CourseDAO();
-        Course course = courseDAO.getCourseFromDatabase(courseInformationController.getNrc());
-        ScholarPeriodDAO scholarPeriodDAO = new ScholarPeriodDAO();
-        ScholarPeriod scholarPeriod = scholarPeriodDAO.getScholarPeriodFromDatabase(course.getIdScholarPeriod());
-        ProfessorDAO professorDAO = new ProfessorDAO();
-        Professor professor = professorDAO.getProfessorFromDatabase(course.getStaffNumber());
-        FXMLLoader modifyCourseInformationControllerLoader = new FXMLLoader(
-            getClass().getResource("/mx/uv/fei/gui/fxmlfiles/guicourses/ModifyCourseInformation.fxml")
-        );
+        try{
+            CourseDAO courseDAO = new CourseDAO();
+            Course course = courseDAO.getCourse(courseInformationController.getNrc());
+            ScholarPeriodDAO scholarPeriodDAO = new ScholarPeriodDAO();
+            ScholarPeriod scholarPeriod = scholarPeriodDAO.getScholarPeriod(course.getIdScholarPeriod());
+            ProfessorDAO professorDAO = new ProfessorDAO();
+            Professor professor = professorDAO.getProfessor(course.getStaffNumber());
+            FXMLLoader modifyCourseInformationControllerLoader = new FXMLLoader(
+                getClass().getResource("/mx/uv/fei/gui/fxmlfiles/guicourses/ModifyCourseInformation.fxml")
+            );
 
-        try {
-            VBox modifyCourseInformationVBox = modifyCourseInformationControllerLoader.load();
-            ModifyCourseInformationController modifyCourseInformationController = modifyCourseInformationControllerLoader.getController();
-            modifyCourseInformationController.setEducativeExperience(course.getName());
-            modifyCourseInformationController.setNrc(Integer.toString(course.getNrc()));
-            modifyCourseInformationController.setSection(Integer.toString(course.getSection()));
-            modifyCourseInformationController.setBlock(Integer.toString(course.getBlock()));
-            modifyCourseInformationController.setProfessor(professor);
-            modifyCourseInformationController.setScholarPeriod(scholarPeriod);
-            modifyCourseInformationController.setGuiCoursesController(this);
-            modifyCourseInformationController.setCourseInformationController(courseInformationController);
-            this.courseInformationScrollPane.setContent(modifyCourseInformationVBox);
-            
-        } catch (IOException e){
-            e.printStackTrace();
+            try {
+                VBox modifyCourseInformationVBox = modifyCourseInformationControllerLoader.load();
+                ModifyCourseInformationController modifyCourseInformationController = modifyCourseInformationControllerLoader.getController();
+                modifyCourseInformationController.setEducativeExperience(course.getName());
+                modifyCourseInformationController.setNrc(Integer.toString(course.getNrc()));
+                modifyCourseInformationController.setSection(Integer.toString(course.getSection()));
+                modifyCourseInformationController.setBlock(Integer.toString(course.getBlock()));
+                modifyCourseInformationController.setProfessor(professor);
+                modifyCourseInformationController.setScholarPeriod(scholarPeriod);
+                modifyCourseInformationController.setGuiCoursesController(this);
+                modifyCourseInformationController.setCourseInformationController(courseInformationController);
+                this.courseInformationScrollPane.setContent(modifyCourseInformationVBox);
+
+            } catch (IOException e){
+                e.printStackTrace();
+            }
+        }catch(DataRetrievalException exception){
+            new AlertPopUpGenerator().showConnectionErrorMessage();
         }
     }
 

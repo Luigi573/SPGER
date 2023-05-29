@@ -10,12 +10,15 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import javafx.util.StringConverter;
+import mx.uv.fei.gui.AlertPopUpGenerator;
 import mx.uv.fei.logic.daos.CourseDAO;
 import mx.uv.fei.logic.daos.ProfessorDAO;
 import mx.uv.fei.logic.daos.ScholarPeriodDAO;
 import mx.uv.fei.logic.domain.Course;
 import mx.uv.fei.logic.domain.Professor;
 import mx.uv.fei.logic.domain.ScholarPeriod;
+import mx.uv.fei.logic.exceptions.DataInsertionException;
+import mx.uv.fei.logic.exceptions.DataRetrievalException;
 
 public class ModifyCourseInformationController {
 
@@ -118,55 +121,59 @@ public class ModifyCourseInformationController {
 
     @FXML
     void initialize() {
-        ProfessorDAO professorDAO = new ProfessorDAO();
-        this.professorComboBox.getItems().addAll(professorDAO.getProfessorsFromDatabase());
-        this.professorComboBox.setConverter(new StringConverter<Professor>() {
+        try{
+            ProfessorDAO professorDAO = new ProfessorDAO();
+            this.professorComboBox.getItems().addAll(professorDAO.getProfessors());
+            this.professorComboBox.setConverter(new StringConverter<Professor>() {
 
-            @Override
-            public Professor fromString(String arg0) {
-                return null;
-            }
-
-            @Override
-            public String toString(Professor arg0) {
-                if(arg0 != null){
-                    return arg0.getName();
+                @Override
+                public Professor fromString(String arg0) {
+                    return null;
                 }
-                
-                return null;  
-            }
-            
-        });
 
-        ScholarPeriodDAO scholarPeriodDAO = new ScholarPeriodDAO();
-        this.scholarPeriodComboBox.getItems().addAll(scholarPeriodDAO.getScholarPeriodsFromDatabase());
-        this.scholarPeriodComboBox.setConverter(new StringConverter<ScholarPeriod>() {
-            
-            @Override
-            public ScholarPeriod fromString(String arg0) {
-                return null;
-            }
-            
-            @Override
-            public String toString(ScholarPeriod arg0) {
-                if(arg0 != null){
-                    return arg0.getStartDate() + " " + arg0.getEndDate();
+                @Override
+                public String toString(Professor arg0) {
+                    if(arg0 != null){
+                        return arg0.getName();
+                    }
+
+                    return null;  
                 }
-                
-                return null;
-            }
-            
-        });
 
-        this.educativeExperienceComboBox.getItems().add("Proyecto Guiado");
-        this.educativeExperienceComboBox.getItems().add("Experiencia Recepcional");
-        this.educativeExperienceComboBox.setValue("Proyecto Guiado");
-        this.sectionComboBox.getItems().add("7");
-        this.sectionComboBox.getItems().add("8");
-        this.sectionComboBox.setValue("7");
-        this.blockComboBox.getItems().add("1");
-        this.blockComboBox.getItems().add("2");
-        this.blockComboBox.setValue("1");
+            });
+
+            ScholarPeriodDAO scholarPeriodDAO = new ScholarPeriodDAO();
+            this.scholarPeriodComboBox.getItems().addAll(scholarPeriodDAO.getScholarPeriods());
+            this.scholarPeriodComboBox.setConverter(new StringConverter<ScholarPeriod>() {
+
+                @Override
+                public ScholarPeriod fromString(String arg0) {
+                    return null;
+                }
+
+                @Override
+                public String toString(ScholarPeriod arg0) {
+                    if(arg0 != null){
+                        return arg0.getStartDate() + " " + arg0.getEndDate();
+                    }
+
+                    return null;
+                }
+
+            });
+
+            this.educativeExperienceComboBox.getItems().add("Proyecto Guiado");
+            this.educativeExperienceComboBox.getItems().add("Experiencia Recepcional");
+            this.educativeExperienceComboBox.setValue("Proyecto Guiado");
+            this.sectionComboBox.getItems().add("7");
+            this.sectionComboBox.getItems().add("8");
+            this.sectionComboBox.setValue("7");
+            this.blockComboBox.getItems().add("1");
+            this.blockComboBox.getItems().add("2");
+            this.blockComboBox.setValue("1");
+        }catch(DataRetrievalException exception){
+            new AlertPopUpGenerator().showConnectionErrorMessage();
+        }
     }
 
     @FXML
@@ -176,33 +183,36 @@ public class ModifyCourseInformationController {
 
     @FXML
     void modifyButtonController(ActionEvent event) {
-        if(!this.nrcTextField.getText().trim().isEmpty()) {
-
-            if(allTextFieldsContainsCorrectValues()){
-                CourseDAO courseDAO = new CourseDAO();
-                Course newCourseData = new Course();
-                Course oldCourseData = courseDAO.getCourseFromDatabase(this.courseInformationController.getNrc());
-                newCourseData.setName((String)this.educativeExperienceComboBox.getValue());
-                newCourseData.setNrc(Integer.parseInt(this.nrcTextField.getText()));
-                newCourseData.setSection(Integer.parseInt(this.sectionComboBox.getValue()));
-                newCourseData.setBlock(Integer.parseInt(this.blockComboBox.getValue()));
-                newCourseData.setStaffNumber(this.professorComboBox.getValue().getStaffNumber());
-                newCourseData.setIdScholarPeriod(this.scholarPeriodComboBox.getValue().getIdScholarPeriod());
-                if(courseDAO.theCourseIsAlreadyRegisted(newCourseData)) {
-                    this.errorMessageText.setText("El curso ya está registrado en el sistema");
+        try{
+            if(!this.nrcTextField.getText().trim().isEmpty()) {
+                if(allTextFieldsContainsCorrectValues()){
+                    CourseDAO courseDAO = new CourseDAO();
+                    Course newCourseData = new Course();
+                    Course oldCourseData = courseDAO.getCourse(this.courseInformationController.getNrc());
+                    newCourseData.setName((String)this.educativeExperienceComboBox.getValue());
+                    newCourseData.setNrc(Integer.parseInt(this.nrcTextField.getText()));
+                    newCourseData.setSection(Integer.parseInt(this.sectionComboBox.getValue()));
+                    newCourseData.setBlock(Integer.parseInt(this.blockComboBox.getValue()));
+                    newCourseData.setStaffNumber(this.professorComboBox.getValue().getStaffNumber());
+                    newCourseData.setIdScholarPeriod(this.scholarPeriodComboBox.getValue().getIdScholarPeriod());
+                    if(courseDAO.theCourseIsAlreadyRegisted(newCourseData)) {
+                        this.errorMessageText.setText("El curso ya está registrado en el sistema");
+                        this.errorMessageText.setVisible(true);
+                        return;
+                    }
+                    courseDAO.modifyCourseData(newCourseData, oldCourseData);
+                    this.errorMessageText.setText("Usuario modificado exitosamente");
                     this.errorMessageText.setVisible(true);
-                    return;
+                } else {
+                    this.errorMessageText.setText("Algunos campos contienen datos inválidos");
+                    this.errorMessageText.setVisible(true);
                 }
-                courseDAO.modifyCourseDataFromDatabase(newCourseData, oldCourseData);
-                this.errorMessageText.setText("Usuario modificado exitosamente");
-                this.errorMessageText.setVisible(true);
             } else {
-                this.errorMessageText.setText("Algunos campos contienen datos inválidos");
+                this.errorMessageText.setText("Faltan campos por llenar");
                 this.errorMessageText.setVisible(true);
             }
-        } else {
-            this.errorMessageText.setText("Faltan campos por llenar");
-            this.errorMessageText.setVisible(true);
+        }catch(DataInsertionException | DataRetrievalException exception){
+            new AlertPopUpGenerator().showConnectionErrorMessage();
         }
     }
 

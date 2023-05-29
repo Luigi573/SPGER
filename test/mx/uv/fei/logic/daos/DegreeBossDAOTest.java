@@ -12,22 +12,22 @@ public class DegreeBossDAOTest {
     }
 
     @Test
-    void testGetDegreeBossFromDatabase() {
+    void testGetDegreeBoss() {
 
     }
 
     @Test
-    void testGetDegreeBossesFromDatabase() {
+    void testGetDegreeBosses() {
 
     }
 
     @Test
-    void testGetSpecifiedDegreeBossesFromDatabase() {
+    void testGetSpecifiedDegreeBosses() {
 
     }
 
     @Test
-    void testModifyDegreeBossDataFromDatabase() {
+    void testModifyDegreeBossData() {
 
     }
 

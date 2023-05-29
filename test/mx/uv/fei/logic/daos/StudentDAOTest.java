@@ -24,7 +24,7 @@ public class StudentDAOTest {
             expectedStudent.setStatus("Graduado");
             studentDAO.addStudentToDatabase(expectedStudent);
             
-            Student actualStudent = studentDAO.getStudentFromDatabase(expectedStudent.getMatricle());     
+            Student actualStudent = studentDAO.getStudent(expectedStudent.getMatricle());     
             
             assertTrue(expectedStudent.equals(actualStudent));
         } catch (DataInsertionException e) {
@@ -35,10 +35,10 @@ public class StudentDAOTest {
     }
     
     @Test
-    public void modifyStudentDataFromDatabaseTest(){
+    public void modifyStudentDataTest(){
         try {
             StudentDAO studentDAO = new StudentDAO();
-            Student originalStudent = studentDAO.getStudentFromDatabase("zS53943219");
+            Student originalStudent = studentDAO.getStudent("zS53943219");
             Student expectedStudent = new Student();
             expectedStudent.setName("Felixiano");
             expectedStudent.setFirstSurname("Carranza");
@@ -48,9 +48,9 @@ public class StudentDAOTest {
             expectedStudent.setPhoneNumber("2283457810");
             expectedStudent.setMatricle("zS53943219");
             expectedStudent.setStatus("Graduado");
-            studentDAO.modifyStudentDataFromDatabase(expectedStudent, originalStudent);
+            studentDAO.modifyStudentData(expectedStudent, originalStudent);
             
-            Student actualStudent = studentDAO.getStudentFromDatabase(expectedStudent.getMatricle());     
+            Student actualStudent = studentDAO.getStudent(expectedStudent.getMatricle());     
             assertTrue(expectedStudent.equals(actualStudent));
         } catch (DataInsertionException e) {
             e.printStackTrace();
@@ -60,7 +60,7 @@ public class StudentDAOTest {
     }
 
     @Test
-    public void getStudentsFromDatabaseTest() {
+    public void getStudentsTest() {
         
     }
 
@@ -70,22 +70,22 @@ public class StudentDAOTest {
     }
 
     @Test
-    public void getActiveStudentsFromDatabaseTest() {
+    public void getActiveStudentsTest() {
         
     }
 
     @Test
-    public void getSpecifiedActiveStudentsFromDatabaseTest() {
+    public void getSpecifiedActiveStudentsTest() {
         
     }
 
     @Test
-    public void getSpecifiedStudentsFromDatabaseTest() {
+    public void getSpecifiedStudentsTest() {
         
     }
 
     @Test
-    public void getStudentFromDatabaseTest() {
+    public void getStudentTest() {
         try {
             StudentDAO studentDAO = new StudentDAO();
             Student expectedStudent = new Student();
@@ -97,7 +97,7 @@ public class StudentDAOTest {
             expectedStudent.setPhoneNumber("2283457810");
             expectedStudent.setMatricle("zS53943219");
             expectedStudent.setStatus("Graduado");
-            Student actualStudent = studentDAO.getStudentFromDatabase(expectedStudent.getMatricle());     
+            Student actualStudent = studentDAO.getStudent(expectedStudent.getMatricle());     
             assertTrue(expectedStudent.equals(actualStudent));
         } catch (DataRetrievalException e) {
             e.printStackTrace();

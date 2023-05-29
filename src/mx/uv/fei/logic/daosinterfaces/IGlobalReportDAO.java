@@ -6,6 +6,6 @@ import mx.uv.fei.logic.domain.Course;
 import mx.uv.fei.logic.domain.Student;
 
 public interface IGlobalReportDAO {
-    public abstract ArrayList<Course> getCoursesFromDatabase (int nrc);
-    public abstract ArrayList<Student> getStudentsFromDatabase (String matricle);
+    public abstract ArrayList<Course> getCourses (int nrc);
+    public abstract ArrayList<Student> getStudents (String matricle);
 }

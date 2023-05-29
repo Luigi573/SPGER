@@ -12,22 +12,22 @@ public class ProfessorDAOTest {
     }
 
     @Test
-    void testGetProfessorFromDatabase() {
+    void testGetProfessor() {
 
     }
 
     @Test
-    void testGetProfessorsFromDatabase() {
+    void testGetProfessors() {
 
     }
 
     @Test
-    void testGetSpecifiedProfessorsFromDatabase() {
+    void testGetSpecifiedProfessors() {
 
     }
 
     @Test
-    void testModifyProfessorDataFromDatabase() {
+    void testModifyProfessorData() {
 
     }
 

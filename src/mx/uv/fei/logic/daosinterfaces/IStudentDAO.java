@@ -7,13 +7,13 @@ import mx.uv.fei.logic.exceptions.DataInsertionException;
 
 public interface IStudentDAO {
     public void addStudentToDatabase(Student student) throws DataInsertionException;
-    public void modifyStudentDataFromDatabase(Student newStudentData, Student originalStudentData) throws DataInsertionException;
-    public ArrayList<Student> getStudentsFromDatabase() throws DataRetrievalException;
+    public void modifyStudentData(Student newStudentData, Student originalStudentData) throws DataInsertionException;
+    public ArrayList<Student> getStudents() throws DataRetrievalException;
     public ArrayList<Student> getStudentList() throws DataRetrievalException;
-    public ArrayList<Student> getAvailableStudentsFromDatabase() throws DataRetrievalException;
-    public ArrayList<Student> getSpecifiedAvailableStudentsFromDatabase(String studentName) throws DataRetrievalException;
-    public ArrayList<Student> getActiveStudentsFromDatabase() throws DataRetrievalException;
-    public ArrayList<Student> getSpecifiedActiveStudentsFromDatabase(String studentName) throws DataRetrievalException;
-    public ArrayList<Student> getSpecifiedStudentsFromDatabase(String studentName) throws DataRetrievalException;
-    public Student getStudentFromDatabase(String matricle) throws DataRetrievalException;
+    public ArrayList<Student> getAvailableStudents() throws DataRetrievalException;
+    public ArrayList<Student> getSpecifiedAvailableStudents(String studentName) throws DataRetrievalException;
+    public ArrayList<Student> getActiveStudents() throws DataRetrievalException;
+    public ArrayList<Student> getSpecifiedActiveStudents(String studentName) throws DataRetrievalException;
+    public ArrayList<Student> getSpecifiedStudents(String studentName) throws DataRetrievalException;
+    public Student getStudent(String matricle) throws DataRetrievalException;
 }

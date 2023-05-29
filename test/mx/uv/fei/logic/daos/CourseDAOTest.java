@@ -23,7 +23,7 @@ public class CourseDAOTest{
             expectedCourse.setBlock(7);
             courseDAO.addCourseToDatabase(expectedCourse);
             
-            Course actualCourse = courseDAO.getCourseFromDatabase(Integer.toString(expectedCourse.getNrc()));     
+            Course actualCourse = courseDAO.getCourse(Integer.toString(expectedCourse.getNrc()));     
             assertTrue(expectedCourse.equals(actualCourse));
         } catch (DataInsertionException e) {
             e.printStackTrace();
@@ -34,10 +34,10 @@ public class CourseDAOTest{
     }
 
     @Test
-    public void modifyCourseDataFromDatabaseTest() {
+    public void modifyCourseDataTest() {
         try {
             CourseDAO courseDAO = new CourseDAO();
-            Course originalCourse = courseDAO.getCourseFromDatabase("10000");
+            Course originalCourse = courseDAO.getCourse("10000");
             Course expectedCourse = new Course();
             expectedCourse.setNrc(10002);
             expectedCourse.setIdScholarPeriod(1);
@@ -45,9 +45,9 @@ public class CourseDAOTest{
             expectedCourse.setName("Experiencia Recepcional");
             expectedCourse.setSection(2);
             expectedCourse.setBlock(8);
-            courseDAO.modifyCourseDataFromDatabase(expectedCourse, originalCourse);
+            courseDAO.modifyCourseData(expectedCourse, originalCourse);
 
-            Course actualCourse = courseDAO.getCourseFromDatabase(Integer.toString(expectedCourse.getNrc()));             
+            Course actualCourse = courseDAO.getCourse(Integer.toString(expectedCourse.getNrc()));             
             assertTrue(expectedCourse.equals(actualCourse));
         } catch (DataInsertionException e) {
             e.printStackTrace();
@@ -57,10 +57,10 @@ public class CourseDAOTest{
     }
 
     @Test
-    public void getCoursesFromDatabaseTest() {
+    public void getCoursesTest() {
         try {
             CourseDAO courseDAO = new CourseDAO();
-            Course actualCourse = courseDAO.getCoursesFromDatabase().get(0);
+            Course actualCourse = courseDAO.getCourses().get(0);
 
             Course expectedCourse = new Course();
             expectedCourse.setNrc(10001);
@@ -77,10 +77,10 @@ public class CourseDAOTest{
     }
 
     @Test
-    public void getSpecifiedCoursesFromDatabaseTest() {
+    public void getSpecifiedCoursesTest() {
         try {
             CourseDAO courseDAO = new CourseDAO();
-            Course actualCourse = courseDAO.getSpecifiedCoursesFromDatabase("1").get(1);
+            Course actualCourse = courseDAO.getSpecifiedCourses("1").get(1);
 
             Course expectedCourse = new Course();
             expectedCourse.setNrc(10001);
@@ -97,7 +97,7 @@ public class CourseDAOTest{
     }
 
     @Test
-    public void getCourseFromDatabaseTest() throws DataRetrievalException{  
+    public void getCourseTest() throws DataRetrievalException{  
             CourseDAO courseDAO = new CourseDAO();
             Course expectedCourse = new Course();
             expectedCourse.setNrc(10001);
@@ -107,7 +107,7 @@ public class CourseDAOTest{
             expectedCourse.setSection(2);
             expectedCourse.setBlock(7);
 
-            Course actualCourse = courseDAO.getCourseFromDatabase(Integer.toString(expectedCourse.getNrc()));             
+            Course actualCourse = courseDAO.getCourse(Integer.toString(expectedCourse.getNrc()));             
             assertTrue(expectedCourse.equals(actualCourse));
     }
 

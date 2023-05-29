@@ -84,12 +84,12 @@ public class GuiUsersCourseController{
         StudentsCoursesDAO studentCoursesDAO = new StudentsCoursesDAO();
         StudentDAO studentDAO = new StudentDAO();
         try {
-            ArrayList<String> students = studentCoursesDAO.getStudentsMatriclesByCourseNRCFromDatabase(
+            ArrayList<String> students = studentCoursesDAO.getStudentsMatriclesByCourseNRC(
                 courseInformationController.getNrc()
             );
 
             for(String studentMatricle : students){
-                Student student = studentDAO.getStudentFromDatabase(studentMatricle);
+                Student student = studentDAO.getStudent(studentMatricle);
                 FXMLLoader studentPaneControllerLoader = new FXMLLoader(
                     getClass().getResource("/mx/uv/fei/gui/fxml/courses/students/UserPane.fxml")
                 );

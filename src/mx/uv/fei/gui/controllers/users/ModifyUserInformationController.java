@@ -186,7 +186,7 @@ public class ModifyUserInformationController {
             this.errorMessageText.setVisible(true);
             return;
         }
-        //studentDAO.modifyStudentDataFromDatabase(student, this.getAllLabelsDataFromUserInformationPane());
+        //studentDAO.modifyStudentData(student, this.getAllLabelsDataFromUserInformationPane());
         //this.errorMessageText.setText("Usuario registrado exitosamente");
         //this.errorMessageText.setVisible(true);
     
@@ -206,7 +206,7 @@ public class ModifyUserInformationController {
             this.errorMessageText.setVisible(true);
             return;
         }
-        professorDAO.modifyProfessorDataFromDatabase(professor, this.getAllLabelsDataFromUserInformationPane());
+        professorDAO.modifyProfessorData(professor, this.getAllLabelsDataFromUserInformationPane());
         this.errorMessageText.setText("Usuario registrado exitosamente");
         this.errorMessageText.setVisible(true);
     }
@@ -226,7 +226,7 @@ public class ModifyUserInformationController {
             this.errorMessageText.setVisible(true);
             return;
         }
-        directorDAO.modifyDirectorDataFromDatabase(director, this.getAllLabelsDataFromUserInformationPane());
+        directorDAO.modifyDirectorData(director, this.getAllLabelsDataFromUserInformationPane());
         this.errorMessageText.setText("Usuario registrado exitosamente");
         this.errorMessageText.setVisible(true);
     }
@@ -246,7 +246,7 @@ public class ModifyUserInformationController {
             this.errorMessageText.setVisible(true);
             return;
         }
-        academicBodyHeadDAO.modifyAcademicBodyHeadDataFromDatabase(academicBodyHead, this.getAllLabelsDataFromUserInformationPane());
+        academicBodyHeadDAO.modifyAcademicBodyHeadData(academicBodyHead, this.getAllLabelsDataFromUserInformationPane());
         this.errorMessageText.setText("Usuario registrado exitosamente");
         this.errorMessageText.setVisible(true);
     }
@@ -266,7 +266,7 @@ public class ModifyUserInformationController {
             this.errorMessageText.setVisible(true);
             return;
         }
-        degreeBossDAO.modifyDegreeBossDataFromDatabase(degreeBoss, this.getAllLabelsDataFromUserInformationPane());
+        degreeBossDAO.modifyDegreeBossData(degreeBoss, this.getAllLabelsDataFromUserInformationPane());
         this.errorMessageText.setText("Usuario registrado exitosamente");
         this.errorMessageText.setVisible(true);
     }

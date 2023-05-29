@@ -12,12 +12,12 @@ public class StudentsCoursesDAOTest {
     }
 
     @Test
-    void getStudentsMatriclesByCourseNRCFromDatabaseTest() {
+    void getStudentsMatriclesByCourseNRCTest() {
 
     }
 
     @Test
-    void removeStudentCourseFromDatabaseTest() {
+    void removeStudentCourseTest() {
 
     }
 }

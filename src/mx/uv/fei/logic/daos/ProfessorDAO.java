@@ -77,7 +77,7 @@ public class ProfessorDAO implements IProfessorDAO{
     }
 
     @Override
-    public void modifyProfessorDataFromDatabase(Professor newProfessorData, Professor originalProfessorData) throws DataInsertionException{
+    public void modifyProfessorData(Professor newProfessorData, Professor originalProfessorData) throws DataInsertionException{
         try{
             newProfessorData.setUserId(getUserIdFromProfessor(originalProfessorData));
             String queryForUpdateUserData = "UPDATE Usuarios SET nombre = ?, " + 
@@ -123,7 +123,7 @@ public class ProfessorDAO implements IProfessorDAO{
     }
 
     @Override
-    public ArrayList<Professor> getProfessorsFromDatabase() throws DataRetrievalException{
+    public ArrayList<Professor> getProfessors() throws DataRetrievalException{
         ArrayList<Professor> professors = new ArrayList<>();
         
         try{
@@ -155,7 +155,7 @@ public class ProfessorDAO implements IProfessorDAO{
     }
 
     @Override
-    public ArrayList<Professor> getSpecifiedProfessorsFromDatabase(String professorName) throws DataRetrievalException{
+    public ArrayList<Professor> getSpecifiedProfessors(String professorName) throws DataRetrievalException{
         ArrayList<Professor> professors = new ArrayList<>();
         
         try{
@@ -189,7 +189,7 @@ public class ProfessorDAO implements IProfessorDAO{
     }
 
     @Override
-    public Professor getProfessorFromDatabase(int personalNumber) throws DataRetrievalException{
+    public Professor getProfessor(int personalNumber) throws DataRetrievalException{
         Professor professor = new Professor();
 
         try{

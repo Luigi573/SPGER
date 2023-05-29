@@ -110,7 +110,7 @@ public class DegreeBossDAO implements IDegreeBossDAO{
     }
 
     @Override
-    public void modifyDegreeBossDataFromDatabase(DegreeBoss newDegreeBossData, DegreeBoss originalDegreeBossData) throws DataInsertionException{
+    public void modifyDegreeBossData(DegreeBoss newDegreeBossData, DegreeBoss originalDegreeBossData) throws DataInsertionException{
         try{
             String query = "UPDATE Usuarios SET nombre = ?, " + 
                            "apellidoPaterno = ?, apellidoMaterno = ?, correo = ?, " + 
@@ -160,7 +160,7 @@ public class DegreeBossDAO implements IDegreeBossDAO{
     }
 
     @Override
-    public ArrayList<DegreeBoss> getDegreeBossesFromDatabase() throws DataRetrievalException{
+    public ArrayList<DegreeBoss> getDegreeBosses() throws DataRetrievalException{
         ArrayList<DegreeBoss> degreeBosses = new ArrayList<>();
 
         try{
@@ -196,7 +196,7 @@ public class DegreeBossDAO implements IDegreeBossDAO{
     }
 
     @Override
-    public ArrayList<DegreeBoss> getSpecifiedDegreeBossesFromDatabase(String degreeBossName) throws DataRetrievalException{
+    public ArrayList<DegreeBoss> getSpecifiedDegreeBosses(String degreeBossName) throws DataRetrievalException{
         ArrayList<DegreeBoss> degreeBosses = new ArrayList<>();
         String query = "SELECT * FROM Usuarios U INNER JOIN Profesores P ON U.IdUsuario = P.IdUsuario INNER JOIN JefesCarrera JC ON P.NumPersonal = JC.NumPersonal WHERE U.Nombre LIKE ?";
 
@@ -230,7 +230,7 @@ public class DegreeBossDAO implements IDegreeBossDAO{
     }
 
     @Override
-    public DegreeBoss getDegreeBossFromDatabase(int personalNumber) throws DataRetrievalException{
+    public DegreeBoss getDegreeBoss(int personalNumber) throws DataRetrievalException{
         DegreeBoss degreeBoss = new DegreeBoss();
 
         try{

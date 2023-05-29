@@ -7,6 +7,6 @@ import mx.uv.fei.logic.exceptions.DataInsertionException;
 
 public interface IStudentsCoursesDAO {
     public void addStudentCourseToDatabase(String studentMatricle, String courseNRC) throws DataInsertionException;
-    public ArrayList<String> getStudentsMatriclesByCourseNRCFromDatabase(String courseNRC) throws DataRetrievalException;
-    public void removeStudentCourseFromDatabase(String studentMatricle, String courseNRC) throws DataInsertionException;
+    public ArrayList<String> getStudentsMatriclesByCourseNRC(String courseNRC) throws DataRetrievalException;
+    public void removeStudentCourse(String studentMatricle, String courseNRC) throws DataInsertionException;
 }

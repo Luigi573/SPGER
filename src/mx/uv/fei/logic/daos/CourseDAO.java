@@ -44,7 +44,7 @@ public class CourseDAO implements ICourseDAO{
     }
 
     @Override
-    public void modifyCourseDataFromDatabase(Course newCourseData, Course originalCourseData) throws DataInsertionException{
+    public void modifyCourseData(Course newCourseData, Course originalCourseData) throws DataInsertionException{
         try{
             String query = "UPDATE Cursos SET NRC = ?, " + 
                            "IdPeriodoEscolar = ?, NumPersonal = ?, nombreEE = ?, " + 
@@ -66,7 +66,7 @@ public class CourseDAO implements ICourseDAO{
     }
 
     @Override
-    public ArrayList<Course> getCoursesFromDatabase() throws DataRetrievalException{
+    public ArrayList<Course> getCourses() throws DataRetrievalException{
         ArrayList<Course> courses = new ArrayList<>();
 
         try{
@@ -96,7 +96,7 @@ public class CourseDAO implements ICourseDAO{
     }
 
     @Override
-    public ArrayList<Course> getSpecifiedCoursesFromDatabase(String courseName) throws DataRetrievalException{
+    public ArrayList<Course> getSpecifiedCourses(String courseName) throws DataRetrievalException{
         ArrayList<Course> courses = new ArrayList<>();
 
         try{
@@ -126,7 +126,7 @@ public class CourseDAO implements ICourseDAO{
     }
 
     @Override
-    public Course getCourseFromDatabase(String courseNrc) throws DataRetrievalException{
+    public Course getCourse(String courseNrc) throws DataRetrievalException{
         Course course = new Course();
 
         try{

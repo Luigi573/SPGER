@@ -16,7 +16,7 @@ public class DirectorDAOTest {
     }
 
     @Test
-    void testGetDirectorFromDatabase() {
+    void testGetDirector() {
         
     }
 
@@ -29,17 +29,17 @@ public class DirectorDAOTest {
     }
 
     @Test
-    void testGetDirectorsFromDatabase() {
+    void testGetDirectors() {
         
     }
     
     @Test
-    void testGetSpecifiedDirectorsFromDatabase() {
+    void testGetSpecifiedDirectors() {
         
     }
     
     @Test
-    void testModifyDirectorDataFromDatabase() {
+    void testModifyDirectorData() {
         
     }
     

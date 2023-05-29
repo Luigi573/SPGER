@@ -94,7 +94,7 @@ public class GuiRegisterUserController{
                 }
 
                 new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "Éxito", "Usuario registrado exitosamente");
-                guiUsersController.loadUserButtons();
+                //guiUsersController.loadUserButtons();
                 Stage stage = (Stage) registerButton.getScene().getWindow();
                 stage.close();
             }else{
@@ -215,7 +215,6 @@ public class GuiRegisterUserController{
         }
     }
     private void registerStudent(){
-        try {
             StudentDAO studentDAO = new StudentDAO();
             Student student = new Student();
             student.setName(namesTextField.getText());
@@ -226,16 +225,11 @@ public class GuiRegisterUserController{
             student.setPhoneNumber(telephoneNumberTextField.getText());
             student.setStatus(StudentStatus.AVAILABLE.getValue());
             student.setMatricle(matricleOrPersonalNumberTextField.getText());
-            if(studentDAO.theStudentIsAlreadyRegisted(student)){
+            if(studentDAO.theStudentIsAlreadyRegisted(student.toString())){
                 new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "Error", "El usuario ya está registrado en el sistema");
                 return;
             }
             studentDAO.addStudentToDatabase(student);
-        }catch(DataRetrievalException e){
-            new AlertPopUpGenerator().showConnectionErrorMessage();
-        }catch(DataInsertionException e){
-            new AlertPopUpGenerator().showConnectionErrorMessage();
-        }
     }
     private boolean allTextFieldsContainsCorrectValues(){
         Pattern namesPattern = Pattern.compile("([A-Z][a-z]+)\\s?([A-Z][a-z]+)?\\s?([A-Z][a-z]+)?\\s?([A-Z][a-z]+)?"),

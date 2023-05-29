@@ -106,7 +106,7 @@ public class AcademicBodyHeadDAO implements IAcademicBodyHeadDAO{
     }
 
     @Override
-    public void modifyAcademicBodyHeadDataFromDatabase(AcademicBodyHead newAcademicBodyHeadData, AcademicBodyHead originalAcademicBodyHeadData) throws DataInsertionException{
+    public void modifyAcademicBodyHeadData(AcademicBodyHead newAcademicBodyHeadData, AcademicBodyHead originalAcademicBodyHeadData) throws DataInsertionException{
         try{
             String queryForUpdateUserData = "UPDATE Usuarios SET nombre = ?, " + 
                            "apellidoPaterno = ?, apellidoMaterno = ?, correo = ?, " + 
@@ -155,7 +155,7 @@ public class AcademicBodyHeadDAO implements IAcademicBodyHeadDAO{
     }
 
     @Override
-    public ArrayList<AcademicBodyHead> getAcademicBodyHeadsFromDatabase() throws DataRetrievalException{
+    public ArrayList<AcademicBodyHead> getAcademicBodyHeads() throws DataRetrievalException{
         ArrayList<AcademicBodyHead> academicBodyHeads = new ArrayList<>();
 
         try{
@@ -187,7 +187,7 @@ public class AcademicBodyHeadDAO implements IAcademicBodyHeadDAO{
     }
 
     @Override
-    public ArrayList<AcademicBodyHead> getSpecifiedAcademicBodyHeadsFromDatabase(String academicBodyHeadName) throws DataRetrievalException{
+    public ArrayList<AcademicBodyHead> getSpecifiedAcademicBodyHeads(String academicBodyHeadName) throws DataRetrievalException{
         ArrayList<AcademicBodyHead> academicBodyHeads = new ArrayList<>();
 
         try{
@@ -220,7 +220,7 @@ public class AcademicBodyHeadDAO implements IAcademicBodyHeadDAO{
     }
 
     @Override
-    public AcademicBodyHead getAcademicBodyHeadFromDatabase(int personalNumber) throws DataRetrievalException{
+    public AcademicBodyHead getAcademicBodyHead(int personalNumber) throws DataRetrievalException{
         AcademicBodyHead academicBodyHead = new AcademicBodyHead();
 
         try {

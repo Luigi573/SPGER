@@ -34,7 +34,7 @@ public class StudentsCoursesDAO implements IStudentsCoursesDAO{
     }
 
     @Override
-    public ArrayList<String> getStudentsMatriclesByCourseNRCFromDatabase(String courseNRC) throws DataRetrievalException{
+    public ArrayList<String> getStudentsMatriclesByCourseNRC(String courseNRC) throws DataRetrievalException{
         ArrayList<String> studentsMatricles = new ArrayList<>();
         
         try {
@@ -57,7 +57,7 @@ public class StudentsCoursesDAO implements IStudentsCoursesDAO{
     }
 
     @Override
-    public void removeStudentCourseFromDatabase(String studentMatricle, String courseNRC) throws DataInsertionException{
+    public void removeStudentCourse(String studentMatricle, String courseNRC) throws DataInsertionException{
         try{
             String query = "DELETE FROM EstudiantesCurso WHERE Matrícula = ? && NRC = ?";
             PreparedStatement preparedStatement = 

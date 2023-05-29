@@ -7,27 +7,27 @@ import static org.junit.Assert.*;
 
 public class ResearchesReportDAOTest {
     @Test
-    void testGetNotValidatedResearchesFromDatabase() {
+    void testGetNotValidatedResearches() {
 
     }
 
     @Test
-    void testGetResearchesFromDatabase() {
+    void testGetResearches() {
 
     }
 
     @Test
-    void testGetSelectedResearchesFromDatabase() {
+    void testGetSelectedResearches() {
 
     }
 
     @Test
-    void testGetValidatedAndNotValidatedResearchesFromDatabase() {
+    void testGetValidatedAndNotValidatedResearches() {
 
     }
 
     @Test
-    void testGetValidatedResearchesFromDatabase() {
+    void testGetValidatedResearches() {
 
     }
 }

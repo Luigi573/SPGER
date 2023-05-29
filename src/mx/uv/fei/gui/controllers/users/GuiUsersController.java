@@ -2,6 +2,8 @@ package mx.uv.fei.gui.controllers.users;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -16,6 +18,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import mx.uv.fei.gui.AlertPopUpGenerator;
 import mx.uv.fei.logic.daos.AcademicBodyHeadDAO;
 import mx.uv.fei.logic.daos.DegreeBossDAO;
 import mx.uv.fei.logic.daos.DirectorDAO;
@@ -26,6 +29,7 @@ import mx.uv.fei.logic.domain.DegreeBoss;
 import mx.uv.fei.logic.domain.Director;
 import mx.uv.fei.logic.domain.Professor;
 import mx.uv.fei.logic.domain.Student;
+import mx.uv.fei.logic.exceptions.DataRetrievalException;
 
 public class GuiUsersController {
     @FXML
@@ -53,22 +57,26 @@ public class GuiUsersController {
     
     @FXML
     void initialize() {
-        StudentDAO studentDAO = new StudentDAO();
-        ProfessorDAO professorDAO = new ProfessorDAO();
-        DirectorDAO directorDAO = new DirectorDAO();
-        AcademicBodyHeadDAO academicBodyHeadDAO = new AcademicBodyHeadDAO();
-        DegreeBossDAO degreeBossDAO = new DegreeBossDAO();
-        ArrayList<Student> students = studentDAO.getStudentsFromDatabase();
-        ArrayList<Professor> professors = professorDAO.getProfessorsFromDatabase();
-        ArrayList<Director> directors = directorDAO.getDirectorsFromDatabase();
-        ArrayList<AcademicBodyHead> academicBodyHeads = academicBodyHeadDAO.getAcademicBodyHeadsFromDatabase();
-        ArrayList<DegreeBoss> degreeBosses = degreeBossDAO.getDegreeBossesFromDatabase();
-        
-        this.directorButtonMaker(directors);
-        this.academicBodyHeadButtonMaker(academicBodyHeads);
-        this.degreeBossButtonMaker(degreeBosses);
-        this.professorButtonMaker(professors);
-        this.studentButtonMaker(students);
+        try{
+            StudentDAO studentDAO = new StudentDAO();
+            ProfessorDAO professorDAO = new ProfessorDAO();
+            DirectorDAO directorDAO = new DirectorDAO();
+            AcademicBodyHeadDAO academicBodyHeadDAO = new AcademicBodyHeadDAO();
+            DegreeBossDAO degreeBossDAO = new DegreeBossDAO();
+            ArrayList<Student> students = studentDAO.getStudents();
+            ArrayList<Professor> professors = professorDAO.getProfessors();
+            ArrayList<Director> directors = directorDAO.getDirectors();
+            ArrayList<AcademicBodyHead> academicBodyHeads = academicBodyHeadDAO.getAcademicBodyHeads();
+            ArrayList<DegreeBoss> degreeBosses = degreeBossDAO.getDegreeBosses();
+
+            this.directorButtonMaker(directors);
+            this.academicBodyHeadButtonMaker(academicBodyHeads);
+            this.degreeBossButtonMaker(degreeBosses);
+            this.professorButtonMaker(professors);
+            this.studentButtonMaker(students);
+        }catch(DataRetrievalException exception){
+            new AlertPopUpGenerator().showConnectionErrorMessage();
+        }
         
     }
 
@@ -86,29 +94,33 @@ public class GuiUsersController {
             stage.setScene(scene);
             stage.show();
         } catch (IOException e) {
-            e.printStackTrace();
+            new AlertPopUpGenerator().showMissingFilesMessage();
         }   
     }
 
     @FXML
     void searchByNameButtonController(ActionEvent event) {
-        this.usersVBox.getChildren().removeAll(this.usersVBox.getChildren());
-        StudentDAO studentDAO = new StudentDAO();
-        ProfessorDAO professorDAO = new ProfessorDAO();
-        DirectorDAO directorDAO = new DirectorDAO();
-        AcademicBodyHeadDAO academicBodyHeadDAO = new AcademicBodyHeadDAO();
-        DegreeBossDAO degreeBossDAO = new DegreeBossDAO();
-        ArrayList<Student> students = studentDAO.getSpecifiedStudentsFromDatabase(this.searchByNameTextField.getText());
-        ArrayList<Professor> professors = professorDAO.getSpecifiedProfessorsFromDatabase(this.searchByNameTextField.getText());
-        ArrayList<Director> directors = directorDAO.getSpecifiedDirectorsFromDatabase(this.searchByNameTextField.getText());
-        ArrayList<AcademicBodyHead> academicBodyHeads = academicBodyHeadDAO.getSpecifiedAcademicBodyHeadsFromDatabase(this.searchByNameTextField.getText());
-        ArrayList<DegreeBoss> degreeBosses = degreeBossDAO.getSpecifiedDegreeBossesFromDatabase(this.searchByNameTextField.getText());
-
-        this.directorButtonMaker(directors);
-        this.academicBodyHeadButtonMaker(academicBodyHeads);
-        this.degreeBossButtonMaker(degreeBosses);
-        this.professorButtonMaker(professors);
-        this.studentButtonMaker(students);
+        try {
+            this.usersVBox.getChildren().removeAll(this.usersVBox.getChildren());
+            StudentDAO studentDAO = new StudentDAO();
+            ProfessorDAO professorDAO = new ProfessorDAO();
+            DirectorDAO directorDAO = new DirectorDAO();
+            AcademicBodyHeadDAO academicBodyHeadDAO = new AcademicBodyHeadDAO();
+            DegreeBossDAO degreeBossDAO = new DegreeBossDAO();
+            ArrayList<Student> students = studentDAO.getSpecifiedStudents(this.searchByNameTextField.getText());
+            ArrayList<Professor> professors = professorDAO.getSpecifiedProfessors(this.searchByNameTextField.getText());
+            ArrayList<Director> directors = directorDAO.getSpecifiedDirectors(this.searchByNameTextField.getText());
+            ArrayList<AcademicBodyHead> academicBodyHeads = academicBodyHeadDAO.getSpecifiedAcademicBodyHeads(this.searchByNameTextField.getText());
+            ArrayList<DegreeBoss> degreeBosses = degreeBossDAO.getSpecifiedDegreeBosses(this.searchByNameTextField.getText());
+            
+            this.directorButtonMaker(directors);
+            this.academicBodyHeadButtonMaker(academicBodyHeads);
+            this.degreeBossButtonMaker(degreeBosses);
+            this.professorButtonMaker(professors);
+            this.studentButtonMaker(students);
+        } catch (DataRetrievalException ex) {
+            new AlertPopUpGenerator().showConnectionErrorMessage();
+        }
     }
 
     private void studentButtonMaker(ArrayList<Student> students){
@@ -214,41 +226,45 @@ public class GuiUsersController {
 
     //This method only should be used by the UserController Class.
     void openPaneWithUserInformation(UserController userController){
-        switch(userController.getType()){
-            case "Director": {
-                DirectorDAO directorDAO = new DirectorDAO();
-                Director director = directorDAO.getDirectorFromDatabase(Integer.parseInt(userController.getMatricleOrPersonalNumber()));
-                openPaneWithDirectorInformation(director);
-                break;
-            }
+        try{
+            switch(userController.getType()){
+                case "Director": {
+                    DirectorDAO directorDAO = new DirectorDAO();
+                    Director director = directorDAO.getDirector(Integer.parseInt(userController.getMatricleOrPersonalNumber()));
+                    openPaneWithDirectorInformation(director);
+                    break;
+                }
 
-            case "Miembro de Cuerpo Académico": {
-                AcademicBodyHeadDAO academicBodyHeadDAO = new AcademicBodyHeadDAO();
-                AcademicBodyHead academicBodyHead = academicBodyHeadDAO.getAcademicBodyHeadFromDatabase(Integer.parseInt(userController.getMatricleOrPersonalNumber()));
-                openPaneWithAcademicBodyHeadInformation(academicBodyHead);
-                break;
-            }
+                case "Miembro de Cuerpo Académico": {
+                    AcademicBodyHeadDAO academicBodyHeadDAO = new AcademicBodyHeadDAO();
+                    AcademicBodyHead academicBodyHead = academicBodyHeadDAO.getAcademicBodyHead(Integer.parseInt(userController.getMatricleOrPersonalNumber()));
+                    openPaneWithAcademicBodyHeadInformation(academicBodyHead);
+                    break;
+                }
 
-            case "Jefe de Carrera": {
-                DegreeBossDAO degreeBossDAO = new DegreeBossDAO();
-                DegreeBoss degreeBoss = degreeBossDAO.getDegreeBossFromDatabase(Integer.parseInt(userController.getMatricleOrPersonalNumber()));
-                openPaneWithDegreeBossInformation(degreeBoss);
-                break;
-            }
+                case "Jefe de Carrera": {
+                    DegreeBossDAO degreeBossDAO = new DegreeBossDAO();
+                    DegreeBoss degreeBoss = degreeBossDAO.getDegreeBoss(Integer.parseInt(userController.getMatricleOrPersonalNumber()));
+                    openPaneWithDegreeBossInformation(degreeBoss);
+                    break;
+                }
 
-            case "Profesor": {
-                ProfessorDAO professorDAO = new ProfessorDAO();
-                Professor professor = professorDAO.getProfessorFromDatabase(Integer.parseInt(userController.getMatricleOrPersonalNumber()));
-                openPaneWithProfessorInformation(professor);
-                break;
-            }
+                case "Profesor": {
+                    ProfessorDAO professorDAO = new ProfessorDAO();
+                    Professor professor = professorDAO.getProfessor(Integer.parseInt(userController.getMatricleOrPersonalNumber()));
+                    openPaneWithProfessorInformation(professor);
+                    break;
+                }
 
-            case "Estudiante": {
-                StudentDAO studentDAO = new StudentDAO();
-                Student student = studentDAO.getStudentFromDatabase(userController.getMatricleOrPersonalNumber());
-                openPaneWithStudentInformation(student);
-                break;
+                case "Estudiante": {
+                    StudentDAO studentDAO = new StudentDAO();
+                    Student student = studentDAO.getStudent(userController.getMatricleOrPersonalNumber());
+                    openPaneWithStudentInformation(student);
+                    break;
+                }
             }
+        }catch(DataRetrievalException exception){
+            new AlertPopUpGenerator().showConnectionErrorMessage();
         }
     }
 
@@ -266,14 +282,14 @@ public class GuiUsersController {
             userInformationController.setAlternateEmail(director.getAlternateEmail());
             userInformationController.setTelephoneNumber(director.getPhoneNumber());
             userInformationController.setUserType("Director");
-            userInformationController.setStatus(director.getStatus().getValue());
+            //userInformationController.setStatus(director.getStatus().getValue());
             userInformationController.setMatricleOrPersonalNumber(Integer.toString(director.getStaffNumber()));
             userInformationController.setGuiUsersController(this);
             userInformationController.setMatricleOrPersonalNumberText();
             this.userInformationScrollPane.setContent(userInformationVBox);
             
         } catch (IOException e){
-            e.printStackTrace();
+            new AlertPopUpGenerator().showMissingFilesMessage();
         }
     }
 
@@ -292,7 +308,7 @@ public class GuiUsersController {
             userInformationController.setAlternateEmail(academicBodyHead.getAlternateEmail());
             userInformationController.setTelephoneNumber(academicBodyHead.getPhoneNumber());
             userInformationController.setUserType("Miembro de Cuerpo Académico");
-            userInformationController.setStatus(academicBodyHead.getStatus().getValue());
+            //userInformationController.setStatus(academicBodyHead.getStatus().getValue());
             userInformationController.setMatricleOrPersonalNumber(Integer.toString(academicBodyHead.getStaffNumber()));
             userInformationController.setGuiUsersController(this);
             userInformationController.setMatricleOrPersonalNumberText();
@@ -318,7 +334,7 @@ public class GuiUsersController {
             userInformationController.setAlternateEmail(degreeBoss.getAlternateEmail());
             userInformationController.setTelephoneNumber(degreeBoss.getPhoneNumber());
             userInformationController.setUserType("Jefe de Carrera");
-            userInformationController.setStatus(degreeBoss.getStatus().getValue());
+            //userInformationController.setStatus(degreeBoss.getStatus().getValue());
             userInformationController.setMatricleOrPersonalNumber(Integer.toString(degreeBoss.getStaffNumber()));
             userInformationController.setGuiUsersController(this);
             userInformationController.setMatricleOrPersonalNumberText();
@@ -344,7 +360,7 @@ public class GuiUsersController {
             userInformationController.setAlternateEmail(professor.getAlternateEmail());
             userInformationController.setTelephoneNumber(professor.getPhoneNumber());
             userInformationController.setUserType("Profesor");
-            userInformationController.setStatus(professor.getStatus().getValue());
+            //userInformationController.setStatus(professor.getStatus().getValue());
             userInformationController.setMatricleOrPersonalNumber(Integer.toString(professor.getStaffNumber()));
             userInformationController.setGuiUsersController(this);
             userInformationController.setMatricleOrPersonalNumberText();

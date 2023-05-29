@@ -9,14 +9,14 @@ import org.junit.Test;
 
 public class ScholarPeriodDAOTest{
     @Test
-    void getScholarPeriodFromDatabaseTest(){
+    void getScholarPeriodTest(){
         try {    
             ScholarPeriodDAO scholarPeriodDAO = new ScholarPeriodDAO();
             ScholarPeriod expectedScholarPeriod = new ScholarPeriod();
             expectedScholarPeriod.setStartDate("2018-02-07");
             expectedScholarPeriod.setEndDate("2018-06-02");
 
-            ScholarPeriod actualScholarPeriod = scholarPeriodDAO.getScholarPeriodFromDatabase(1);
+            ScholarPeriod actualScholarPeriod = scholarPeriodDAO.getScholarPeriod(1);
             assertTrue(expectedScholarPeriod.equals(actualScholarPeriod));
         } catch (DataRetrievalException e) {
             e.printStackTrace();
@@ -24,10 +24,10 @@ public class ScholarPeriodDAOTest{
     }
 
     @Test
-    void getScholarPeriodsFromDatabaseTest(){
+    void getScholarPeriodsTest(){
         try {
             ScholarPeriodDAO scholarPeriodDAO = new ScholarPeriodDAO();
-            ScholarPeriod actualScholarPeriod = scholarPeriodDAO.getScholarPeriodsFromDatabase().get(0);
+            ScholarPeriod actualScholarPeriod = scholarPeriodDAO.getScholarPeriods().get(0);
 
             ScholarPeriod expectedScholarPeriod = new ScholarPeriod();
             expectedScholarPeriod.setStartDate("2018-02-07");

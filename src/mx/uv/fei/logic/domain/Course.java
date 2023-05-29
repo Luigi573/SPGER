@@ -57,22 +57,13 @@ public class Course {
     }
 
     @Override
-    public boolean equals(Object course) {
-        if (this == course)
-            return true;
-        if (course == null)
-            return false;
-        if (this.getClass() != course.getClass())
+    public boolean equals(Object obj) {
+        if(obj instanceof Course course){
+            return this.nrc == course.nrc  && this.idScholarPeriod == course.idScholarPeriod && this.section == course.section &&
+               this.block == course.block;
+        }        
+
         return false;
-
-        Course c = (Course)course;
-
-        return this.nrc == c.nrc  &&
-               this.idScholarPeriod == c.idScholarPeriod &&
-               this.Name.equals(c.Name) &&
-               this.section == c.section &&
-               this.block == c.block &&
-               this.personalNumber == c.personalNumber;
     }
     
 }

@@ -6,6 +6,6 @@ import mx.uv.fei.logic.domain.ScholarPeriod;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
 
 public interface IScholarPeriodDAO {
-    public ArrayList<ScholarPeriod> getScholarPeriodsFromDatabase() throws DataRetrievalException;
-    public ScholarPeriod getScholarPeriodFromDatabase(int idScholarPeriod) throws DataRetrievalException;
+    public ArrayList<ScholarPeriod> getScholarPeriods() throws DataRetrievalException;
+    public ScholarPeriod getScholarPeriod(int idScholarPeriod) throws DataRetrievalException;
 }

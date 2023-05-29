@@ -8,8 +8,8 @@ import mx.uv.fei.logic.exceptions.DataInsertionException;
 
 public interface IProfessorDAO {
     public void addProfessorToDatabase(Professor professor) throws DataInsertionException;
-    public void modifyProfessorDataFromDatabase(Professor newProfessorData, Professor originalProfessorData) throws DataInsertionException;
-    public ArrayList<Professor> getProfessorsFromDatabase() throws DataRetrievalException;
-    public ArrayList<Professor> getSpecifiedProfessorsFromDatabase(String professorName) throws DataRetrievalException;
-    public Professor getProfessorFromDatabase(int personalNumber) throws DataRetrievalException;
+    public void modifyProfessorData(Professor newProfessorData, Professor originalProfessorData) throws DataInsertionException;
+    public ArrayList<Professor> getProfessors() throws DataRetrievalException;
+    public ArrayList<Professor> getSpecifiedProfessors(String professorName) throws DataRetrievalException;
+    public Professor getProfessor(int personalNumber) throws DataRetrievalException;
 }

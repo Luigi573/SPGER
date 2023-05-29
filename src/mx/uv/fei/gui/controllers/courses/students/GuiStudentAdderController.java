@@ -40,13 +40,13 @@ public class GuiStudentAdderController{
     private void initialize(){
         try{
             StudentsCoursesDAO studentsCoursesDAO = new StudentsCoursesDAO();
-            ArrayList<String> studentMatricles = studentsCoursesDAO.getStudentsMatriclesByCourseNRCFromDatabase(
+            ArrayList<String> studentMatricles = studentsCoursesDAO.getStudentsMatriclesByCourseNRC(
                 guiUsersCourseController.getCourseInformationController().getNrc()
             );
 
         
             StudentDAO studentDAO = new StudentDAO();
-            ArrayList<Student> availableStudents = studentDAO.getAvailableStudentsFromDatabase();
+            ArrayList<Student> availableStudents = studentDAO.getAvailableStudents();
             if(studentMatricles.isEmpty()) {
                 try{
                     for(Student activeStudent : availableStudents){
@@ -134,12 +134,12 @@ public class GuiStudentAdderController{
         try{
             studentsVBox.getChildren().clear();
             StudentsCoursesDAO studentsCoursesDAO = new StudentsCoursesDAO();
-            ArrayList<String> studentMatricles = studentsCoursesDAO.getStudentsMatriclesByCourseNRCFromDatabase(
+            ArrayList<String> studentMatricles = studentsCoursesDAO.getStudentsMatriclesByCourseNRC(
                 guiUsersCourseController.getCourseInformationController().getNrc()
             );
             
             StudentDAO studentDAO = new StudentDAO();
-            ArrayList<Student> availableStudents = studentDAO.getSpecifiedAvailableStudentsFromDatabase(showByMatricleTextField.getText());
+            ArrayList<Student> availableStudents = studentDAO.getSpecifiedAvailableStudents(showByMatricleTextField.getText());
             if(studentMatricles.isEmpty()){
                 try{
                     for(Student activeStudent : availableStudents){
