@@ -1,11 +1,12 @@
 package mx.uv.fei.logic.daos;
 
-import org.junit.Test;
-import org.junit.jupiter.api.Assertions;
-
 import mx.uv.fei.logic.domain.Course;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
-import mx.uv.fei.logic.exceptions.DataWritingException;
+import mx.uv.fei.logic.exceptions.DataInsertionException;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import static org.junit.Assert.*;
 
 public class CourseDAOTest{
     
@@ -23,8 +24,8 @@ public class CourseDAOTest{
             courseDAO.addCourseToDatabase(expectedCourse);
             
             Course actualCourse = courseDAO.getCourseFromDatabase(Integer.toString(expectedCourse.getNrc()));     
-            Assertions.assertTrue(expectedCourse.equals(actualCourse));
-        } catch (DataWritingException e) {
+            assertTrue(expectedCourse.equals(actualCourse));
+        } catch (DataInsertionException e) {
             e.printStackTrace();
         } catch (DataRetrievalException e) {
             e.printStackTrace();
@@ -47,8 +48,8 @@ public class CourseDAOTest{
             courseDAO.modifyCourseDataFromDatabase(expectedCourse, originalCourse);
 
             Course actualCourse = courseDAO.getCourseFromDatabase(Integer.toString(expectedCourse.getNrc()));             
-            Assertions.assertTrue(expectedCourse.equals(actualCourse));
-        } catch (DataWritingException e) {
+            assertTrue(expectedCourse.equals(actualCourse));
+        } catch (DataInsertionException e) {
             e.printStackTrace();
         } catch (DataRetrievalException e) {
             e.printStackTrace();
@@ -69,7 +70,7 @@ public class CourseDAOTest{
             expectedCourse.setSection(2);
             expectedCourse.setBlock(7);
 
-            Assertions.assertTrue(expectedCourse.equals(actualCourse));
+            assertTrue(expectedCourse.equals(actualCourse));
         } catch (DataRetrievalException e) {
             e.printStackTrace();
         }
@@ -89,15 +90,14 @@ public class CourseDAOTest{
             expectedCourse.setSection(2);
             expectedCourse.setBlock(7);
 
-            Assertions.assertTrue(expectedCourse.equals(actualCourse));
+            assertTrue(expectedCourse.equals(actualCourse));
         } catch (DataRetrievalException e) {
             e.printStackTrace();
         }
     }
 
     @Test
-    public void getCourseFromDatabaseTest() {
-        try {    
+    public void getCourseFromDatabaseTest() throws DataRetrievalException{  
             CourseDAO courseDAO = new CourseDAO();
             Course expectedCourse = new Course();
             expectedCourse.setNrc(10001);
@@ -108,10 +108,7 @@ public class CourseDAOTest{
             expectedCourse.setBlock(7);
 
             Course actualCourse = courseDAO.getCourseFromDatabase(Integer.toString(expectedCourse.getNrc()));             
-            Assertions.assertTrue(expectedCourse.equals(actualCourse));
-        } catch (DataRetrievalException e) {
-            e.printStackTrace();
-        }
+            assertTrue(expectedCourse.equals(actualCourse));
     }
 
     @Test
@@ -126,7 +123,7 @@ public class CourseDAOTest{
             expectedCourse.setSection(2);
             expectedCourse.setBlock(7);
 
-            Assertions.assertTrue(courseDAO.theCourseIsAlreadyRegisted(expectedCourse));
+            assertTrue(courseDAO.theCourseIsAlreadyRegisted(expectedCourse));
         } catch (DataRetrievalException e) {
             e.printStackTrace();
         }

@@ -11,7 +11,7 @@ import mx.uv.fei.dataaccess.DataBaseManager;
 import mx.uv.fei.logic.daosinterfaces.IStudentDAO;
 import mx.uv.fei.logic.domain.Student;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
-import mx.uv.fei.logic.exceptions.DataWritingException;
+import mx.uv.fei.logic.exceptions.DataInsertionException;
 
 public class StudentDAO implements IStudentDAO{
     private final DataBaseManager dataBaseManager;
@@ -21,7 +21,7 @@ public class StudentDAO implements IStudentDAO{
     }
 
     @Override
-    public void addStudentToDatabase(Student student) throws DataWritingException{
+    public void addStudentToDatabase(Student student) throws DataInsertionException{
         try{
             String queryToInsertUserData = "INSERT INTO Usuarios (nombre, apellidoPaterno, apellidoMaterno, correo, " +
                 "correoAlterno, númeroTeléfono, estado) VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -67,16 +67,16 @@ public class StudentDAO implements IStudentDAO{
 
         }catch(SQLIntegrityConstraintViolationException e){
             deleteStudentFromUsersTable(student);
-            throw new DataWritingException("Error al agregar estudiante. Verifique su conexion e intentelo de nuevo");
+            throw new DataInsertionException("Error al agregar estudiante. Verifique su conexion e intentelo de nuevo");
         }catch(SQLException e){
-            throw new DataWritingException("Error al agregar estudiante. Verifique su conexion e intentelo de nuevo");
+            throw new DataInsertionException("Error al agregar estudiante. Verifique su conexion e intentelo de nuevo");
         }finally{
             dataBaseManager.closeConnection();
         }
     }
     
     @Override
-    public void modifyStudentDataFromDatabase(Student newStudentData, Student originalStudentData) throws DataWritingException{
+    public void modifyStudentDataFromDatabase(Student newStudentData, Student originalStudentData) throws DataInsertionException{
         try{
             newStudentData.setUserId(this.getUserIdFromStudent(originalStudentData));
             String queryForUpdateUserData = "UPDATE Usuarios SET nombre = ?, " + 
@@ -111,9 +111,9 @@ public class StudentDAO implements IStudentDAO{
             preparedStatementForUpdateStudentData.setInt(2, newStudentData.getUserId());
             preparedStatementForUpdateStudentData.executeUpdate();
         }catch(SQLException e){
-            throw new DataWritingException("Error al agregar estudiante. Verifique su conexion e intentelo de nuevo");
+            throw new DataInsertionException("Error al agregar estudiante. Verifique su conexion e intentelo de nuevo");
         }catch(DataRetrievalException e){
-            throw new DataWritingException("Error al agregar estudiante. Verifique su conexion e intentelo de nuevo");
+            throw new DataInsertionException("Error al agregar estudiante. Verifique su conexion e intentelo de nuevo");
         }finally{
             dataBaseManager.closeConnection();
         }
@@ -458,7 +458,7 @@ public class StudentDAO implements IStudentDAO{
 
         return userId;
     }
-    private void deleteStudentFromUsersTable(Student student) throws DataWritingException{
+    private void deleteStudentFromUsersTable(Student student) throws DataInsertionException{
         String queryToInsertUserData = "DELETE FROM Usuarios WHERE nombre = ? && apellidoPaterno = ? && apellidoMaterno = ? && " +
             "correo = ? && correoAlterno = ? && númeroTeléfono = ? && estado = ?";
         try{
@@ -473,7 +473,7 @@ public class StudentDAO implements IStudentDAO{
             preparedStatementToInsertUserData.setString(7, student.getStatus());
             preparedStatementToInsertUserData.executeUpdate();
         }catch(SQLException e){
-            throw new DataWritingException("Error al eliminar estudiante de la tabla usuarios");
+            throw new DataInsertionException("Error al eliminar estudiante de la tabla usuarios");
         }
     }
 }

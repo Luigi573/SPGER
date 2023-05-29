@@ -19,13 +19,8 @@ public class ResearchDAO implements IResearchDAO{
         dataBaseManager = new DataBaseManager();
     }
     @Override
-<<<<<<< HEAD
     public int addResearch(ResearchProject research) throws DataInsertionException {
         int generatedId = 0;
-=======
-    public int addResearch(ResearchProject research) throws DataWritingException{
-        int result = 0;
->>>>>>> b76b93d15655b9f5dfd27c9fc867dc5e2c09b660
         PreparedStatement statement;
         String query = "INSERT INTO Anteproyectos(fechaFin, fechaInicio, IdLGAC, descripción, "
                 + "resultadosEsperados, requisitos, bibliografíaRecomendada, título, Matrícula, "
@@ -72,12 +67,7 @@ public class ResearchDAO implements IResearchDAO{
                 generatedId = generatedKeys.getInt(1);
             }
         }catch(SQLException exception){
-<<<<<<< HEAD
             throw new DataInsertionException("Error de conexión. Verifique su conexion e intentelo de nuevo");
-=======
-            exception.printStackTrace();
-            throw new DataWritingException("Error de conexión. Verifique su conexion e intentelo de nuevo");
->>>>>>> b76b93d15655b9f5dfd27c9fc867dc5e2c09b660
         }finally{
             dataBaseManager.closeConnection();
         }
@@ -149,11 +139,7 @@ public class ResearchDAO implements IResearchDAO{
         
         return researchProjectList;
     }
-
-    @Override
-<<<<<<< HEAD
-    public int modifyResearch(ResearchProject research) throws DataInsertionException {
-=======
+    
     public ArrayList<ResearchProject> getSpecifiedResearchProjectList(String researchName) throws DataRetrievalException{
         ArrayList<ResearchProject> researchProjectList = new ArrayList<>();
         PreparedStatement statement;
@@ -219,7 +205,6 @@ public class ResearchDAO implements IResearchDAO{
         return researchProjectList;
     }
 
-    @Override
     public ArrayList<ResearchProject> getSpecifiedValidatedResearchProjectList(String researchName) throws DataRetrievalException{
         ArrayList<ResearchProject> researchProjectList = new ArrayList<>();
         PreparedStatement statement;
@@ -286,7 +271,6 @@ public class ResearchDAO implements IResearchDAO{
         return researchProjectList;
     }
 
-    @Override
     public ArrayList<ResearchProject> getSpecifiedNotValidatedResearchProjectList(String researchName) throws DataRetrievalException{
         ArrayList<ResearchProject> researchProjectList = new ArrayList<>();
         PreparedStatement statement;
@@ -353,7 +337,6 @@ public class ResearchDAO implements IResearchDAO{
         return researchProjectList;
     }
 
-    @Override
     public ArrayList<ResearchProject> getSpecifiedValidatedAndNotValidatedResearchProjectList(String researchName) throws DataRetrievalException{
         ArrayList<ResearchProject> researchProjectList = new ArrayList<>();
         PreparedStatement statement;
@@ -421,8 +404,7 @@ public class ResearchDAO implements IResearchDAO{
     }
 
     @Override
-    public int modifyResearch(ResearchProject research) throws DataWritingException{
->>>>>>> b76b93d15655b9f5dfd27c9fc867dc5e2c09b660
+    public int modifyResearch(ResearchProject research) throws DataInsertionException{
         int result = 0;
         PreparedStatement statement;
         String query = "UPDATE Anteproyectos SET fechaFin = ?, fechaInicio = ?, IdLGAC = ?, descripción = ?, "
@@ -474,7 +456,7 @@ public class ResearchDAO implements IResearchDAO{
     }
 
     @Override
-    public void validateResearch(ResearchProject researchProject) throws DataWritingException{
+    public void validateResearch(ResearchProject researchProject) throws DataInsertionException{
         PreparedStatement statement;
         String query = "UPDATE Anteproyectos SET V°B° = ? WHERE IdAnteproyecto = ?";
         
@@ -486,7 +468,7 @@ public class ResearchDAO implements IResearchDAO{
             statement.executeUpdate();
         }catch(SQLException exception){
             exception.printStackTrace();
-            throw new DataWritingException("Error de conexión. Verifique su conexion e intentelo de nuevo");
+            throw new DataInsertionException("Error de conexión. Verifique su conexion e intentelo de nuevo");
         }finally{
             dataBaseManager.closeConnection();
         }

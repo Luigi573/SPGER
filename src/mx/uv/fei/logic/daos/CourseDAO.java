@@ -10,7 +10,7 @@ import mx.uv.fei.dataaccess.DataBaseManager;
 import mx.uv.fei.logic.daosinterfaces.ICourseDAO;
 import mx.uv.fei.logic.domain.Course;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
-import mx.uv.fei.logic.exceptions.DataWritingException;
+import mx.uv.fei.logic.exceptions.DataInsertionException;
 
 public class CourseDAO implements ICourseDAO{
 
@@ -21,7 +21,7 @@ public class CourseDAO implements ICourseDAO{
     }
     
     @Override
-    public void addCourseToDatabase(Course course) throws DataWritingException{
+    public void addCourseToDatabase(Course course) throws DataInsertionException{
         try{
             String query = 
                 "INSERT INTO Cursos (NRC, IdPeriodoEscolar, NumPersonal, nombreEE, sección, bloque)" +
@@ -37,14 +37,14 @@ public class CourseDAO implements ICourseDAO{
             preparedStatement.executeUpdate();
 
         }catch(SQLException e){
-            throw new DataWritingException("Error al agregar curso. Verifique su conexion e intentelo de nuevo");
+            throw new DataInsertionException("Error al agregar curso. Verifique su conexion e intentelo de nuevo");
         }finally{
             dataBaseManager.closeConnection();
         }
     }
 
     @Override
-    public void modifyCourseDataFromDatabase(Course newCourseData, Course originalCourseData) throws DataWritingException{
+    public void modifyCourseDataFromDatabase(Course newCourseData, Course originalCourseData) throws DataInsertionException{
         try{
             String query = "UPDATE Cursos SET NRC = ?, " + 
                            "IdPeriodoEscolar = ?, NumPersonal = ?, nombreEE = ?, " + 
@@ -59,7 +59,7 @@ public class CourseDAO implements ICourseDAO{
             preparedStatement.setInt(7, originalCourseData.getNrc());
             preparedStatement.executeUpdate();
         }catch(SQLException e){
-            throw new DataWritingException("Error al modificar curso. Verifique su conexion e intentelo de nuevo");
+            throw new DataInsertionException("Error al modificar curso. Verifique su conexion e intentelo de nuevo");
         }finally{
             dataBaseManager.closeConnection();
         }

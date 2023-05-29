@@ -11,7 +11,7 @@ import mx.uv.fei.dataaccess.DataBaseManager;
 import mx.uv.fei.logic.daosinterfaces.IDirectorDAO;
 import mx.uv.fei.logic.domain.Director;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
-import mx.uv.fei.logic.exceptions.DataWritingException;
+import mx.uv.fei.logic.exceptions.DataInsertionException;
 
 public class DirectorDAO implements IDirectorDAO{
     private final DataBaseManager dataBaseManager;
@@ -21,7 +21,7 @@ public class DirectorDAO implements IDirectorDAO{
     }
 
     @Override
-    public void addDirectorToDatabase(Director director) throws DataWritingException{
+    public void addDirectorToDatabase(Director director) throws DataInsertionException{
         try{
             String queryToInsertDirectorDataToUserColumns = 
                 "INSERT INTO Usuarios (nombre, apellidoPaterno, apellidoMaterno, correo, correoAlterno, númeroTeléfono, estado) VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -99,17 +99,17 @@ public class DirectorDAO implements IDirectorDAO{
 
         }catch(SQLIntegrityConstraintViolationException e){
             deleteDirectorFromUsersTable(director);
-            throw new DataWritingException("Error al agregar estudiante. Verifique su conexion e intentelo de nuevo");
+            throw new DataInsertionException("Error al agregar estudiante. Verifique su conexion e intentelo de nuevo");
         }catch(SQLException e){
             e.printStackTrace();
-            throw new DataWritingException("Error al agregar director. Verifique su conexion e intentelo de nuevo");
+            throw new DataInsertionException("Error al agregar director. Verifique su conexion e intentelo de nuevo");
         }finally{
             dataBaseManager.closeConnection();
         }
     }
 
     @Override
-    public void modifyDirectorDataFromDatabase(Director newDirectorData, Director originalDirectorData) throws DataWritingException{
+    public void modifyDirectorDataFromDatabase(Director newDirectorData, Director originalDirectorData) throws DataInsertionException{
         try{
             String queryForUpdateUserData = "UPDATE Usuarios SET nombre = ?, " + 
                            "apellidoPaterno = ?, apellidoMaterno = ?, correo = ?, " + 
@@ -151,7 +151,7 @@ public class DirectorDAO implements IDirectorDAO{
             preparedStatementForUpdateDirectorData.setInt(2, originalDirectorData.getStaffNumber());
             preparedStatementForUpdateDirectorData.executeUpdate();
         }catch(SQLException e){
-            throw new DataWritingException("Error al agregar director. Verifique su conexion e intentelo de nuevo");
+            throw new DataInsertionException("Error al agregar director. Verifique su conexion e intentelo de nuevo");
         }finally{
             dataBaseManager.closeConnection();
         }
@@ -319,7 +319,7 @@ public class DirectorDAO implements IDirectorDAO{
 
         return false;
     }
-    private void deleteDirectorFromUsersTable(Director director) throws DataWritingException{
+    private void deleteDirectorFromUsersTable(Director director) throws DataInsertionException{
         String queryToInsertUserData = "DELETE FROM Usuarios WHERE nombre = ? && apellidoPaterno = ? && apellidoMaterno = ? && " +
             "correo = ? && correoAlterno = ? && númeroTeléfono = ? && estado = ?";
         try{
@@ -334,7 +334,7 @@ public class DirectorDAO implements IDirectorDAO{
             preparedStatementToInsertUserData.setString(7, director.getStatus());
             preparedStatementToInsertUserData.executeUpdate();
         }catch(SQLException e){
-            throw new DataWritingException("Error al eliminar profesor de la tabla usuarios");
+            throw new DataInsertionException("Error al eliminar profesor de la tabla usuarios");
         }
     }   
 }

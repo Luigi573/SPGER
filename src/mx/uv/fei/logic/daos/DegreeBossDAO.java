@@ -11,7 +11,7 @@ import mx.uv.fei.dataaccess.DataBaseManager;
 import mx.uv.fei.logic.daosinterfaces.IDegreeBossDAO;
 import mx.uv.fei.logic.domain.DegreeBoss;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
-import mx.uv.fei.logic.exceptions.DataWritingException;
+import mx.uv.fei.logic.exceptions.DataInsertionException;
 
 public class DegreeBossDAO implements IDegreeBossDAO{
     private final DataBaseManager dataBaseManager;
@@ -21,7 +21,7 @@ public class DegreeBossDAO implements IDegreeBossDAO{
     }
 
     @Override
-    public void addDegreeBossToDatabase(DegreeBoss degreeBoss) throws DataWritingException{
+    public void addDegreeBossToDatabase(DegreeBoss degreeBoss) throws DataInsertionException{
         try{
             String wholeQueryToInsertDegreeBossDataToUserColumns = 
                 "INSERT INTO Usuarios (nombre, apellidoPaterno, apellidoMaterno, correo, correoAlterno, númeroTeléfono, estado) " + 
@@ -100,17 +100,17 @@ public class DegreeBossDAO implements IDegreeBossDAO{
 
         }catch(SQLIntegrityConstraintViolationException e){
             deleteDegreeBossFromUsersTable(degreeBoss);
-            throw new DataWritingException("Error al agregar estudiante. Verifique su conexion e intentelo de nuevo");
+            throw new DataInsertionException("Error al agregar estudiante. Verifique su conexion e intentelo de nuevo");
         }catch(SQLException e){
             e.printStackTrace();
-            throw new DataWritingException("Error al agregar jefe de carrera. Verifique su conexion e intentelo de nuevo");
+            throw new DataInsertionException("Error al agregar jefe de carrera. Verifique su conexion e intentelo de nuevo");
         }finally{
             dataBaseManager.closeConnection();
         }
     }
 
     @Override
-    public void modifyDegreeBossDataFromDatabase(DegreeBoss newDegreeBossData, DegreeBoss originalDegreeBossData) throws DataWritingException{
+    public void modifyDegreeBossDataFromDatabase(DegreeBoss newDegreeBossData, DegreeBoss originalDegreeBossData) throws DataInsertionException{
         try{
             String query = "UPDATE Usuarios SET nombre = ?, " + 
                            "apellidoPaterno = ?, apellidoMaterno = ?, correo = ?, " + 
@@ -153,7 +153,7 @@ public class DegreeBossDAO implements IDegreeBossDAO{
             preparedStatementForUpdateDegreeBossData.setInt(2, originalDegreeBossData.getStaffNumber());
             preparedStatementForUpdateDegreeBossData.executeUpdate();
         }catch(SQLException e){
-            throw new DataWritingException("Error al agregar jefe de carrera. Verifique su conexion e intentelo de nuevo");
+            throw new DataInsertionException("Error al agregar jefe de carrera. Verifique su conexion e intentelo de nuevo");
         }finally{
             dataBaseManager.closeConnection();
         }
@@ -299,7 +299,7 @@ public class DegreeBossDAO implements IDegreeBossDAO{
 
         return false;
     }
-    private void deleteDegreeBossFromUsersTable(DegreeBoss degreeBoss) throws DataWritingException{
+    private void deleteDegreeBossFromUsersTable(DegreeBoss degreeBoss) throws DataInsertionException{
         String queryToInsertUserData = "DELETE FROM Usuarios WHERE nombre = ? && apellidoPaterno = ? && apellidoMaterno = ? && " +
             "correo = ? && correoAlterno = ? && númeroTeléfono = ? && estado = ?";
         try{
@@ -314,7 +314,7 @@ public class DegreeBossDAO implements IDegreeBossDAO{
             preparedStatementToInsertUserData.setString(7, degreeBoss.getStatus());
             preparedStatementToInsertUserData.executeUpdate();
         }catch(SQLException e){
-            throw new DataWritingException("Error al eliminar profesor de la tabla usuarios");
+            throw new DataInsertionException("Error al eliminar profesor de la tabla usuarios");
         }
     }
 }

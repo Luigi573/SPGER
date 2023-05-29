@@ -3,11 +3,11 @@ package mx.uv.fei.logic.daosinterfaces;
 import java.util.ArrayList;
 import mx.uv.fei.logic.domain.Student;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
-import mx.uv.fei.logic.exceptions.DataWritingException;
+import mx.uv.fei.logic.exceptions.DataInsertionException;
 
 public interface IStudentDAO {
-    public void addStudentToDatabase(Student student) throws DataWritingException;
-    public void modifyStudentDataFromDatabase(Student newStudentData, Student originalStudentData) throws DataWritingException;
+    public void addStudentToDatabase(Student student) throws DataInsertionException;
+    public void modifyStudentDataFromDatabase(Student newStudentData, Student originalStudentData) throws DataInsertionException;
     public ArrayList<Student> getStudentsFromDatabase() throws DataRetrievalException;
     public ArrayList<Student> getStudentList() throws DataRetrievalException;
     public ArrayList<Student> getAvailableStudentsFromDatabase() throws DataRetrievalException;

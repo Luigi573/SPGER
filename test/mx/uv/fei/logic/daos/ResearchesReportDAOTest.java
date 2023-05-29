@@ -1,6 +1,9 @@
 package mx.uv.fei.logic.daos;
 
-import org.junit.jupiter.api.Test;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import static org.junit.Assert.*;
 
 public class ResearchesReportDAOTest {
     @Test

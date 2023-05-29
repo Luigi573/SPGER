@@ -63,8 +63,8 @@ public class ActivityInfoController{
             stage.setTitle("SPGER");
             stage.setScene(scene);
             stage.show();
-        }catch(IllegalStateException | IOException exception){
-            AlertPopUpGenerator.showMissingFilesMessage();
+        }catch(IOException exception){
+            new AlertPopUpGenerator().showMissingFilesMessage();
         }
     }
     @FXML
@@ -81,8 +81,8 @@ public class ActivityInfoController{
                 controller.setLabelText(file.getName());
                 ActivityFileListVBox.getChildren().add(pane);
                 filesList.add(file);
-            }catch(IOException | IllegalStateException exception) {
-                AlertPopUpGenerator.showMissingFilesMessage();
+            }catch(IOException exception) {
+                new AlertPopUpGenerator().showMissingFilesMessage();
             }
         }
     }
@@ -100,7 +100,7 @@ public class ActivityInfoController{
                     if (result > 0) {
                         successfulSaves = successfulSaves + 1;
                     }
-                } catch (DataInsertionException die) {
+                } catch (DataInsertionException exception) {
                     failedSaves.add(file.getName());
                 }
             }
@@ -139,7 +139,7 @@ public class ActivityInfoController{
             
             stage.showAndWait();
         }catch(IOException exception){
-            AlertPopUpGenerator.showMissingFilesMessage();
+            new AlertPopUpGenerator().showMissingFilesMessage();
         }
     }
     
@@ -151,7 +151,7 @@ public class ActivityInfoController{
             headerPane.getChildren().add(header);
             
         }catch(IOException exception){
-            AlertPopUpGenerator.showMissingFilesMessage();
+            new AlertPopUpGenerator().showMissingFilesMessage();
         }
     }
     public void setActivity(Activity activity){
@@ -179,11 +179,11 @@ public class ActivityInfoController{
                     
                     advanceVBox.getChildren().add(advancePane);
                 }catch(IOException exception){
-                    AlertPopUpGenerator.showMissingFilesMessage();
+                    new AlertPopUpGenerator().showMissingFilesMessage();
                 }
             }
         }catch(DataRetrievalException exception){
-            AlertPopUpGenerator.showConnectionErrorMessage();
+            new AlertPopUpGenerator().showConnectionErrorMessage();
         }
     }
 }

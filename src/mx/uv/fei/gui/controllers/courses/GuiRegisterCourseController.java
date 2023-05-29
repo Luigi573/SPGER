@@ -18,7 +18,7 @@ import mx.uv.fei.logic.domain.Course;
 import mx.uv.fei.logic.domain.Professor;
 import mx.uv.fei.logic.domain.ScholarPeriod;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
-import mx.uv.fei.logic.exceptions.DataWritingException;
+import mx.uv.fei.logic.exceptions.DataInsertionException;
 
 public class GuiRegisterCourseController {
     @FXML
@@ -127,7 +127,7 @@ public class GuiRegisterCourseController {
                 try{
                     courseDAO.addCourseToDatabase(course);
                     new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "Éxito", "Curso registrado exitosamente");
-                }catch(DataWritingException e) {
+                }catch(DataInsertionException e) {
                     new AlertPopUpGenerator().showConnectionErrorMessage();
                 }
             }else{

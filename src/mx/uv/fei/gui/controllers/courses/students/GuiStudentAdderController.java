@@ -20,7 +20,7 @@ import mx.uv.fei.logic.daos.StudentDAO;
 import mx.uv.fei.logic.daos.StudentsCoursesDAO;
 import mx.uv.fei.logic.domain.Student;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
-import mx.uv.fei.logic.exceptions.DataWritingException;
+import mx.uv.fei.logic.exceptions.DataInsertionException;
 
 public class GuiStudentAdderController{
     private GuiUsersCourseController guiUsersCourseController;
@@ -115,7 +115,7 @@ public class GuiStudentAdderController{
                         ((Label)((Pane)studentPane).getChildren().get(3)).getText(), 
                         guiUsersCourseController.getCourseInformationController().getNrc()
                     );
-                }catch(DataWritingException e){
+                }catch(DataInsertionException e){
                     new AlertPopUpGenerator().showConnectionErrorMessage();
                 }
             }

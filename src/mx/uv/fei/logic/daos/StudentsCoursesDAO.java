@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import mx.uv.fei.dataaccess.DataBaseManager;
 import mx.uv.fei.logic.daosinterfaces.IStudentsCoursesDAO;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
-import mx.uv.fei.logic.exceptions.DataWritingException;
+import mx.uv.fei.logic.exceptions.DataInsertionException;
 
 public class StudentsCoursesDAO implements IStudentsCoursesDAO{
     private final DataBaseManager dataBaseManager;
@@ -18,7 +18,7 @@ public class StudentsCoursesDAO implements IStudentsCoursesDAO{
     }
 
     @Override
-    public void addStudentCourseToDatabase(String studentMatricle, String courseNRC) throws DataWritingException{
+    public void addStudentCourseToDatabase(String studentMatricle, String courseNRC) throws DataInsertionException{
         try{
             String query = "INSERT INTO EstudiantesCurso (Matrícula, NRC) VALUES (?, ?)";
             PreparedStatement preparedStatement = 
@@ -27,7 +27,7 @@ public class StudentsCoursesDAO implements IStudentsCoursesDAO{
             preparedStatement.setInt(2, Integer.parseInt(courseNRC));
             preparedStatement.executeUpdate();
         }catch(SQLException e){
-            throw new DataWritingException("Fallo al registrar estudiantes al curso. Verifique su conexion e intentelo de nuevo");
+            throw new DataInsertionException("Fallo al registrar estudiantes al curso. Verifique su conexion e intentelo de nuevo");
         }finally{
             dataBaseManager.closeConnection();
         }
@@ -57,7 +57,7 @@ public class StudentsCoursesDAO implements IStudentsCoursesDAO{
     }
 
     @Override
-    public void removeStudentCourseFromDatabase(String studentMatricle, String courseNRC) throws DataWritingException{
+    public void removeStudentCourseFromDatabase(String studentMatricle, String courseNRC) throws DataInsertionException{
         try{
             String query = "DELETE FROM EstudiantesCurso WHERE Matrícula = ? && NRC = ?";
             PreparedStatement preparedStatement = 
@@ -66,7 +66,7 @@ public class StudentsCoursesDAO implements IStudentsCoursesDAO{
             preparedStatement.setInt(2, Integer.parseInt(courseNRC));
             preparedStatement.executeUpdate();
         }catch(SQLException e){
-            throw new DataWritingException("Fallo al eliminar el estudiante del curso. Verifique su conexion e intentelo de nuevo");
+            throw new DataInsertionException("Fallo al eliminar el estudiante del curso. Verifique su conexion e intentelo de nuevo");
         }finally{
             dataBaseManager.closeConnection();
         }

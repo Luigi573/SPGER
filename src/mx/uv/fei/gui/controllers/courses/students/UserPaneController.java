@@ -7,7 +7,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import mx.uv.fei.gui.AlertPopUpGenerator;
 import mx.uv.fei.logic.daos.StudentsCoursesDAO;
-import mx.uv.fei.logic.exceptions.DataWritingException;
+import mx.uv.fei.logic.exceptions.DataInsertionException;
 
 public class UserPaneController{
     private GuiUsersCourseController guiUsersCourseController;
@@ -29,7 +29,7 @@ public class UserPaneController{
                 matricleOrPersonalNumberLabel.getText(),
                 guiUsersCourseController.getCourseInformationController().getNrc()
             );
-        }catch(DataWritingException e){
+        }catch(DataInsertionException e){
             new AlertPopUpGenerator().showConnectionErrorMessage();
         }
         guiUsersCourseController.refreshStudents();

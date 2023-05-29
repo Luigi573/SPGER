@@ -34,7 +34,7 @@ import mx.uv.fei.logic.domain.UserType;
 import mx.uv.fei.logic.domain.statuses.ProfessorStatus;
 import mx.uv.fei.logic.domain.statuses.StudentStatus;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
-import mx.uv.fei.logic.exceptions.DataWritingException;
+import mx.uv.fei.logic.exceptions.DataInsertionException;
 
 public class ModifyUserInformationController{
     private UserInformationController userInformationController;
@@ -221,7 +221,7 @@ public class ModifyUserInformationController{
             studentDAO.modifyStudentDataFromDatabase(newStudentData, originalStudentData);
             new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "Éxito", "Usuario modificado exitosamente");
             returnToGuiUsers(event);
-        }catch(DataWritingException e){
+        }catch(DataInsertionException e){
             new AlertPopUpGenerator().showConnectionErrorMessage();
         }
     }
@@ -259,7 +259,7 @@ public class ModifyUserInformationController{
             professorDAO.modifyProfessorDataFromDatabase(newProfessorData, originalProfessorData);
             new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "Éxito", "Usuario modificado exitosamente");
             returnToGuiUsers(event);
-        }catch (DataWritingException e){
+        }catch (DataInsertionException e){
             new AlertPopUpGenerator().showConnectionErrorMessage();
         }
     }
@@ -296,7 +296,7 @@ public class ModifyUserInformationController{
             directorDAO.modifyDirectorDataFromDatabase(newDirectorData, originalDirectorData);
             new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "Éxito", "Usuario modificado exitosamente");
             returnToGuiUsers(event);
-        }catch(DataWritingException e) {
+        }catch(DataInsertionException e) {
             new AlertPopUpGenerator().showConnectionErrorMessage();
         }
     }
@@ -335,7 +335,7 @@ public class ModifyUserInformationController{
 
             new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "Éxito", "Usuario modificado exitosamente");
             returnToGuiUsers(event);
-        }catch(DataWritingException e){
+        }catch(DataInsertionException e){
             new AlertPopUpGenerator().showConnectionErrorMessage();
         }
     }
@@ -374,7 +374,7 @@ public class ModifyUserInformationController{
 
             new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "Éxito", "Usuario modificado exitosamente");
             returnToGuiUsers(event);
-        }catch(DataWritingException e){
+        }catch(DataInsertionException e){
             new AlertPopUpGenerator().showConnectionErrorMessage();
         }
     }
@@ -435,7 +435,7 @@ public class ModifyUserInformationController{
             stage.show();
         }catch(IllegalStateException | IOException exception){
             AlertPopUpGenerator alertPopUpGenerator = new AlertPopUpGenerator();
-            alertPopUpGenerator.showMissingFilesMessage();
+            new AlertPopUpGenerator().showMissingFilesMessage();
         }
     }
 }

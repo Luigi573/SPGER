@@ -26,7 +26,7 @@ import mx.uv.fei.logic.domain.Course;
 import mx.uv.fei.logic.domain.Professor;
 import mx.uv.fei.logic.domain.ScholarPeriod;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
-import mx.uv.fei.logic.exceptions.DataWritingException;
+import mx.uv.fei.logic.exceptions.DataInsertionException;
 
 public class ModifyCourseInformationController{
     private CourseInformationController courseInformationController;
@@ -150,7 +150,7 @@ public class ModifyCourseInformationController{
             }
         }catch(DataRetrievalException e){
             new AlertPopUpGenerator().showConnectionErrorMessage();
-        }catch(DataWritingException e){
+        }catch(DataInsertionException e){
             new AlertPopUpGenerator().showConnectionErrorMessage();
         }
     }

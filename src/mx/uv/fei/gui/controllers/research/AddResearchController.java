@@ -125,15 +125,9 @@ public class AddResearchController{
                             Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
                             stage.close();
                         }
-<<<<<<< HEAD
+
                     }catch(DataInsertionException exception){
-                        Alert errorMessage = new Alert(Alert.AlertType.ERROR);
-                        errorMessage.setContentText(exception.getMessage());
-                        errorMessage.showAndWait();
-=======
-                    }catch(DataWritingException exception){
                         new AlertPopUpGenerator().showConnectionErrorMessage();
->>>>>>> b76b93d15655b9f5dfd27c9fc867dc5e2c09b660
                     }
                 }else{
                     new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "No se puede crear el anteproyecto", "Favor de llenar todos los campos");

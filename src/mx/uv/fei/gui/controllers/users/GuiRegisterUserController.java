@@ -26,7 +26,7 @@ import mx.uv.fei.logic.domain.UserType;
 import mx.uv.fei.logic.domain.statuses.ProfessorStatus;
 import mx.uv.fei.logic.domain.statuses.StudentStatus;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
-import mx.uv.fei.logic.exceptions.DataWritingException;
+import mx.uv.fei.logic.exceptions.DataInsertionException;
 
 public class GuiRegisterUserController{
     private GuiUsersController guiUsersController;
@@ -140,7 +140,7 @@ public class GuiRegisterUserController{
             directorDAO.addDirectorToDatabase(director);
         }catch(DataRetrievalException e){
             new AlertPopUpGenerator().showConnectionErrorMessage();
-        }catch(DataWritingException e){
+        }catch(DataInsertionException e){
             new AlertPopUpGenerator().showConnectionErrorMessage();
         }
     }
@@ -163,7 +163,7 @@ public class GuiRegisterUserController{
             academicBodyHeadDAO.addAcademicBodyHeadToDatabase(academicBodyHead);
         }catch(DataRetrievalException e){
             new AlertPopUpGenerator().showConnectionErrorMessage();
-        }catch(DataWritingException e){
+        }catch(DataInsertionException e){
             new AlertPopUpGenerator().showConnectionErrorMessage();
         }
     }
@@ -186,7 +186,7 @@ public class GuiRegisterUserController{
             degreeBossDAO.addDegreeBossToDatabase(degreeBoss);
         }catch(DataRetrievalException e){
             new AlertPopUpGenerator().showConnectionErrorMessage();
-        }catch(DataWritingException e){
+        }catch(DataInsertionException e){
             new AlertPopUpGenerator().showConnectionErrorMessage();
         }
         
@@ -210,7 +210,7 @@ public class GuiRegisterUserController{
             professorDAO.addProfessorToDatabase(professor);
         }catch(DataRetrievalException e){
             new AlertPopUpGenerator().showConnectionErrorMessage();
-        }catch(DataWritingException e){
+        }catch(DataInsertionException e){
             new AlertPopUpGenerator().showConnectionErrorMessage();
         }
     }
@@ -233,7 +233,7 @@ public class GuiRegisterUserController{
             studentDAO.addStudentToDatabase(student);
         }catch(DataRetrievalException e){
             new AlertPopUpGenerator().showConnectionErrorMessage();
-        }catch(DataWritingException e){
+        }catch(DataInsertionException e){
             new AlertPopUpGenerator().showConnectionErrorMessage();
         }
     }

@@ -29,16 +29,16 @@ public class FeedbackPopUpController{
             AdvanceDAO advanceDAO = new AdvanceDAO();
             try{
                 if(advanceDAO.setFeedback(advance) > 0){
-                    AlertPopUpGenerator.showCustomMessage(Alert.AlertType.INFORMATION, "Mensaje de éxito", "Retroalimentación guardada exitosamente");
+                    new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.INFORMATION, "Mensaje de éxito", "Retroalimentación guardada exitosamente");
                 }
                 
                 Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
                 stage.close();
             }catch(DataInsertionException exception){
-                AlertPopUpGenerator.showConnectionErrorMessage();
+                new AlertPopUpGenerator().showConnectionErrorMessage();
             }
         }else{
-            AlertPopUpGenerator.showCustomMessage(Alert.AlertType.WARNING, "No se pudo agregar la retroalimentacion", "Favor de insertar texto");
+            new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.WARNING, "No se pudo agregar la retroalimentacion", "Favor de insertar texto");
         }
     }
     

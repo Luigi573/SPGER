@@ -157,10 +157,7 @@ public class ActivityDAO implements IActivityDAO{
     }
 
     public boolean isBlank(Activity activity){
-<<<<<<< HEAD
         return activity.getTitle().isBlank() || activity.getDescription().isBlank();
-=======
-        return activity.getTitle().isBlank() && activity.getDescription().isBlank();
     }
     
     public boolean isNull(Activity activity){
@@ -173,7 +170,6 @@ public class ActivityDAO implements IActivityDAO{
         }
         
         return true;
->>>>>>> b76b93d15655b9f5dfd27c9fc867dc5e2c09b660
     }
 
     public boolean isValidDate(Activity activity){

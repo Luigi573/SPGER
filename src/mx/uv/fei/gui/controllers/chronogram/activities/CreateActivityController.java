@@ -64,7 +64,7 @@ public class CreateActivityController{
                         returnToChronogram(event);
                     }
                 }catch(DataInsertionException exception){
-                    AlertPopUpGenerator.showConnectionErrorMessage();
+                    new AlertPopUpGenerator().showConnectionErrorMessage();
                 }
             }else{
                 Alert warningMessage = new Alert(Alert.AlertType.WARNING);
@@ -90,7 +90,7 @@ public class CreateActivityController{
             stage.setScene(scene);
             stage.show();
         }catch(IllegalStateException | IOException exception){
-            AlertPopUpGenerator.showMissingFilesMessage();
+            new AlertPopUpGenerator().showMissingFilesMessage();
         }
     }
     private void loadHeader(){
@@ -101,7 +101,7 @@ public class CreateActivityController{
             headerPane.getChildren().add(header);
             
         }catch(IOException exception){
-            AlertPopUpGenerator.showMissingFilesMessage();
+            new AlertPopUpGenerator().showMissingFilesMessage();
         }
     }
     public void setResearchId(int researchId){

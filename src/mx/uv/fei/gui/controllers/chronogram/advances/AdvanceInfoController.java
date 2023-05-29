@@ -55,7 +55,7 @@ public class AdvanceInfoController{
             
             stage.showAndWait();
         }catch(IOException exception){
-            AlertPopUpGenerator.showMissingFilesMessage();
+            new AlertPopUpGenerator().showMissingFilesMessage();
         }
     }
     private void loadHeader(){
@@ -66,7 +66,7 @@ public class AdvanceInfoController{
             headerPane.getChildren().add(header);
             
         }catch(IOException exception){
-            AlertPopUpGenerator.showMissingFilesMessage();
+            new AlertPopUpGenerator().showMissingFilesMessage();
         }
     }
     protected void setAdvance(Advance advance){

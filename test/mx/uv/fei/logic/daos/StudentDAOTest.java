@@ -1,11 +1,12 @@
 package mx.uv.fei.logic.daos;
 
-import org.junit.Test;
-import org.junit.jupiter.api.Assertions;
-
 import mx.uv.fei.logic.domain.Student;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
-import mx.uv.fei.logic.exceptions.DataWritingException;
+import mx.uv.fei.logic.exceptions.DataInsertionException;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import static org.junit.Assert.*;
 
 public class StudentDAOTest {
     @Test
@@ -24,8 +25,9 @@ public class StudentDAOTest {
             studentDAO.addStudentToDatabase(expectedStudent);
             
             Student actualStudent = studentDAO.getStudentFromDatabase(expectedStudent.getMatricule());     
-            Assertions.assertTrue(expectedStudent.equals(actualStudent));
-        } catch (DataWritingException e) {
+            
+            assertTrue(expectedStudent.equals(actualStudent));
+        } catch (DataInsertionException e) {
             e.printStackTrace();
         } catch (DataRetrievalException e) {
             e.printStackTrace();
@@ -49,8 +51,8 @@ public class StudentDAOTest {
             studentDAO.modifyStudentDataFromDatabase(expectedStudent, originalStudent);
             
             Student actualStudent = studentDAO.getStudentFromDatabase(expectedStudent.getMatricule());     
-            Assertions.assertTrue(expectedStudent.equals(actualStudent));
-        } catch (DataWritingException e) {
+            assertTrue(expectedStudent.equals(actualStudent));
+        } catch (DataInsertionException e) {
             e.printStackTrace();
         } catch (DataRetrievalException e) {
             e.printStackTrace();
@@ -96,7 +98,7 @@ public class StudentDAOTest {
             expectedStudent.setMatricle("zS53943219");
             expectedStudent.setStatus("Graduado");
             Student actualStudent = studentDAO.getStudentFromDatabase(expectedStudent.getMatricule());     
-            Assertions.assertTrue(expectedStudent.equals(actualStudent));
+            assertTrue(expectedStudent.equals(actualStudent));
         } catch (DataRetrievalException e) {
             e.printStackTrace();
         }
@@ -116,7 +118,7 @@ public class StudentDAOTest {
             expectedStudent.setMatricle("zS53943219");
             expectedStudent.setStatus("Graduado");
 
-            Assertions.assertTrue(studentDAO.theStudentIsAlreadyRegisted(expectedStudent));
+            assertTrue(studentDAO.theStudentIsAlreadyRegisted(expectedStudent));
         } catch (DataRetrievalException e) {
             e.printStackTrace();
         }

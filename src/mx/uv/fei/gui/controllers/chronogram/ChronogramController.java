@@ -116,11 +116,11 @@ public class ChronogramController{
                     
                     activityListVBox.getChildren().add(activityPane);
                 }catch(IllegalStateException | IOException exception){
-                    AlertPopUpGenerator.showMissingFilesMessage();
+                    new AlertPopUpGenerator().showMissingFilesMessage();
                 }
             }
         }catch(DataRetrievalException exception){
-            AlertPopUpGenerator.showConnectionErrorMessage();
+            new AlertPopUpGenerator().showConnectionErrorMessage();
         }
     }
 }

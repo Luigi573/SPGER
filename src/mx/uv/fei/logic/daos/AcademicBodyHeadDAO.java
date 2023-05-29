@@ -11,7 +11,7 @@ import mx.uv.fei.dataaccess.DataBaseManager;
 import mx.uv.fei.logic.daosinterfaces.IAcademicBodyHeadDAO;
 import mx.uv.fei.logic.domain.AcademicBodyHead;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
-import mx.uv.fei.logic.exceptions.DataWritingException;
+import mx.uv.fei.logic.exceptions.DataInsertionException;
 
 public class AcademicBodyHeadDAO implements IAcademicBodyHeadDAO{
     private final DataBaseManager dataBaseManager;
@@ -21,7 +21,7 @@ public class AcademicBodyHeadDAO implements IAcademicBodyHeadDAO{
     }
     
     @Override
-    public void addAcademicBodyHeadToDatabase(AcademicBodyHead academicBodyHead) throws DataWritingException{
+    public void addAcademicBodyHeadToDatabase(AcademicBodyHead academicBodyHead) throws DataInsertionException{
         try{
             String wholeQueryToInsertAcademicBodyHeadDataToUserColumns = 
                 "INSERT INTO Usuarios (nombre, apellidoPaterno, apellidoMaterno, correo, correoAlterno, númeroTeléfono, estado) VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -96,17 +96,17 @@ public class AcademicBodyHeadDAO implements IAcademicBodyHeadDAO{
 
         }catch(SQLIntegrityConstraintViolationException e){
             deleteAcademicBodyHeadFromUsersTable(academicBodyHead);
-            throw new DataWritingException("Error al agregar estudiante. Verifique su conexion e intentelo de nuevo");
+            throw new DataInsertionException("Error al agregar estudiante. Verifique su conexion e intentelo de nuevo");
         }catch(SQLException e){
             e.printStackTrace();
-            throw new DataWritingException("Error al agregar miembro del cuerpo académico. Verifique su conexion e intentelo de nuevo");
+            throw new DataInsertionException("Error al agregar miembro del cuerpo académico. Verifique su conexion e intentelo de nuevo");
         }finally{
             dataBaseManager.closeConnection();
         }
     }
 
     @Override
-    public void modifyAcademicBodyHeadDataFromDatabase(AcademicBodyHead newAcademicBodyHeadData, AcademicBodyHead originalAcademicBodyHeadData) throws DataWritingException{
+    public void modifyAcademicBodyHeadDataFromDatabase(AcademicBodyHead newAcademicBodyHeadData, AcademicBodyHead originalAcademicBodyHeadData) throws DataInsertionException{
         try{
             String queryForUpdateUserData = "UPDATE Usuarios SET nombre = ?, " + 
                            "apellidoPaterno = ?, apellidoMaterno = ?, correo = ?, " + 
@@ -148,7 +148,7 @@ public class AcademicBodyHeadDAO implements IAcademicBodyHeadDAO{
             preparedStatementForUpdateAcademicBodyHeadData.setInt(2, originalAcademicBodyHeadData.getStaffNumber());
             preparedStatementForUpdateAcademicBodyHeadData.executeUpdate();
         }catch(SQLException e){
-            throw new DataWritingException("Error al agregar miembro del cuerpo académico. Verifique su conexion e intentelo de nuevo");
+            throw new DataInsertionException("Error al agregar miembro del cuerpo académico. Verifique su conexion e intentelo de nuevo");
         }finally{
             dataBaseManager.closeConnection();
         }
@@ -284,7 +284,7 @@ public class AcademicBodyHeadDAO implements IAcademicBodyHeadDAO{
 
         return false;
     }
-    private void deleteAcademicBodyHeadFromUsersTable(AcademicBodyHead academicBodyHead) throws DataWritingException{
+    private void deleteAcademicBodyHeadFromUsersTable(AcademicBodyHead academicBodyHead) throws DataInsertionException{
         String queryToInsertUserData = "DELETE FROM Usuarios WHERE nombre = ? && apellidoPaterno = ? && apellidoMaterno = ? && " +
             "correo = ? && correoAlterno = ? && númeroTeléfono = ? && estado = ?";
         try{
@@ -299,7 +299,7 @@ public class AcademicBodyHeadDAO implements IAcademicBodyHeadDAO{
             preparedStatementToInsertUserData.setString(7, academicBodyHead.getStatus());
             preparedStatementToInsertUserData.executeUpdate();
         }catch(SQLException e){
-            throw new DataWritingException("Error al eliminar profesor de la tabla usuarios");
+            throw new DataInsertionException("Error al eliminar profesor de la tabla usuarios");
         }
     }
 }

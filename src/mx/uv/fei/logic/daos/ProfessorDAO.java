@@ -11,7 +11,7 @@ import mx.uv.fei.dataaccess.DataBaseManager;
 import mx.uv.fei.logic.daosinterfaces.IProfessorDAO;
 import mx.uv.fei.logic.domain.Professor;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
-import mx.uv.fei.logic.exceptions.DataWritingException;
+import mx.uv.fei.logic.exceptions.DataInsertionException;
 
 public class ProfessorDAO implements IProfessorDAO{
     private final DataBaseManager dataBaseManager;
@@ -21,7 +21,7 @@ public class ProfessorDAO implements IProfessorDAO{
     }
 
     @Override
-    public void addProfessorToDatabase(Professor professor) throws DataWritingException{
+    public void addProfessorToDatabase(Professor professor) throws DataInsertionException{
         try{
             String query = "INSERT INTO Usuarios (nombre, apellidoPaterno, apellidoMaterno, correo, correoAlterno, " +
                             "númeroTeléfono, estado) VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -67,17 +67,17 @@ public class ProfessorDAO implements IProfessorDAO{
 
         }catch(SQLIntegrityConstraintViolationException e){
             deleteProfessorFromUsersTable(professor);
-            throw new DataWritingException("Error al agregar estudiante. Verifique su conexion e intentelo de nuevo");
+            throw new DataInsertionException("Error al agregar estudiante. Verifique su conexion e intentelo de nuevo");
         }catch(SQLException e){
             e.printStackTrace();
-            throw new DataWritingException("Fallo al recuperar la informacion. Verifique su conexion e intentelo de nuevo");
+            throw new DataInsertionException("Fallo al recuperar la informacion. Verifique su conexion e intentelo de nuevo");
         }finally{
             dataBaseManager.closeConnection();
         }
     }
 
     @Override
-    public void modifyProfessorDataFromDatabase(Professor newProfessorData, Professor originalProfessorData) throws DataWritingException{
+    public void modifyProfessorDataFromDatabase(Professor newProfessorData, Professor originalProfessorData) throws DataInsertionException{
         try{
             newProfessorData.setUserId(getUserIdFromProfessor(originalProfessorData));
             String queryForUpdateUserData = "UPDATE Usuarios SET nombre = ?, " + 
@@ -113,10 +113,10 @@ public class ProfessorDAO implements IProfessorDAO{
             preparedStatementForUpdateProfessorData.executeUpdate();
         }catch(SQLException e){
             e.printStackTrace();
-            throw new DataWritingException("Fallo al recuperar la informacion. Verifique su conexion e intentelo de nuevo");
+            throw new DataInsertionException("Fallo al recuperar la informacion. Verifique su conexion e intentelo de nuevo");
         }catch(DataRetrievalException e){
             e.printStackTrace();
-            throw new DataWritingException("Fallo al recuperar la informacion. Verifique su conexion e intentelo de nuevo");
+            throw new DataInsertionException("Fallo al recuperar la informacion. Verifique su conexion e intentelo de nuevo");
         }finally{
             dataBaseManager.closeConnection();
         }
@@ -287,7 +287,7 @@ public class ProfessorDAO implements IProfessorDAO{
 
         return UserId;
     }
-    private void deleteProfessorFromUsersTable(Professor professor) throws DataWritingException{
+    private void deleteProfessorFromUsersTable(Professor professor) throws DataInsertionException{
         String queryToInsertUserData = "DELETE FROM Usuarios WHERE nombre = ? && apellidoPaterno = ? && apellidoMaterno = ? && " +
             "correo = ? && correoAlterno = ? && númeroTeléfono = ? && estado = ?";
         try{
@@ -302,7 +302,7 @@ public class ProfessorDAO implements IProfessorDAO{
             preparedStatementToInsertUserData.setString(7, professor.getStatus());
             preparedStatementToInsertUserData.executeUpdate();
         }catch(SQLException e){
-            throw new DataWritingException("Error al eliminar profesor de la tabla usuarios");
+            throw new DataInsertionException("Error al eliminar profesor de la tabla usuarios");
         }
     }
 }
