@@ -102,7 +102,7 @@ public class GuiUsersCourseController{
                     student.getSecondSurname()
                 );
 
-                studentPaneController.setMatricleOrPersonalNumber(studentMatricle);
+                studentPaneController.setMatricleOrStaffNumber(studentMatricle);
                 studentPaneController.setGuiUsersCourseController(this);
                 
                 if(this.students % 7 == 0){

@@ -3,12 +3,17 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/src/mx/uv/fei/gui/controllers/chronogram/activities/ActivityPaneController.java</file>
-            <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/src/mx/uv/fei/gui/AlertPopUpGenerator.java</file>
-            <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/src/mx/uv/fei/logic/daosinterfaces/IStudentDAO.java</file>
-            <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/src/mx/uv/fei/logic/daos/LoginDAO.java</file>
-            <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/src/mx/uv/fei/logic/daos/StudentDAO.java</file>
+            <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/src/mx/uv/fei/logic/domain/AcademicBodyHead.java</file>
+            <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/src/mx/uv/fei/logic/daos/FileDAO.java</file>
+            <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/src/mx/uv/fei/gui/controllers/CourseHBoxPaneController.java</file>
+            <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/src/mx/uv/fei/gui/controllers/AcademicBodyHeadVBoxPaneController.java</file>
+            <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/src/mx/uv/fei/logic/domain/ScholarPeriod.java</file>
+            <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/src/mx/uv/fei/logic/daos/CourseDAO.java</file>
+            <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/src/mx/uv/fei/gui/controllers/AdminMenuPaneController.java</file>
+            <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/src/mx/uv/fei/gui/controllers/chronogram/activities/ActivityInfoController.java</file>
             <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/src/mx/uv/fei/gui/SPGER.java</file>
+            <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/src/mx/uv/fei/gui/controllers/users/GuiRegisterUserController.java</file>
+            <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/src/mx/uv/fei/gui/controllers/MainMenuController.java</file>
         </group>
     </open-files>
 </project-private>

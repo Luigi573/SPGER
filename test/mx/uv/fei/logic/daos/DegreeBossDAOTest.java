@@ -7,7 +7,7 @@ import static org.junit.Assert.*;
 
 public class DegreeBossDAOTest {
     @Test
-    void testAddDegreeBossToDatabase() {
+    void testAddDegreeBoss () {
 
     }
 

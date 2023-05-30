@@ -71,7 +71,7 @@ public class LoginDAOTest {
             preloadedProfessor.setName("Juan Carlos");
             preloadedProfessor.setFirstSurname("Pérez");
             preloadedProfessor.setSecondSurname("Arriaga");
-            preloadedProfessor.setEmailAddress("elrevo@uv.mx");
+            preloadedProfessor.setEmailAddress("elrevo@uv.com");
             preloadedProfessor.setStaffNumber(64582);
             
             userStatement.setString(1, preloadedProfessor.getName());
@@ -208,12 +208,12 @@ public class LoginDAOTest {
     @Test
     public void testLogInprofessor() throws LoginException{
         LoginDAO instance = new LoginDAO();
-        Professor result = instance.logInProfessor("elrevo@uv.mx", "password");
+        Professor result = instance.logInProfessor("elrevo@uv.com", "password");
         
         System.out.println("Expected data: ");
-        System.out.println("Professor name: " + preloadedAdmin);
-        System.out.println("Staff Number: " + preloadedAdmin.getStaffNumber());
-        System.out.println("Email Address: " + preloadedAdmin.getEmailAddress());
+        System.out.println("Professor name: " + preloadedProfessor);
+        System.out.println("Staff Number: " + preloadedProfessor.getStaffNumber());
+        System.out.println("Email Address: " + preloadedProfessor.getEmailAddress());
         
         System.out.println("\nActual data: ");
         System.out.println("Admin name: " + result);

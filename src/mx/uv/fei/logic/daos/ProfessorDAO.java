@@ -21,7 +21,7 @@ public class ProfessorDAO implements IProfessorDAO{
     }
 
     @Override
-    public void addProfessorToDatabase(Professor professor) throws DataInsertionException{
+    public void addProfessor (Professor professor) throws DataInsertionException{
         try{
             String query = "INSERT INTO Usuarios (nombre, apellidoPaterno, apellidoMaterno, correo, correoAlterno, " +
                             "númeroTeléfono, estado) VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -189,13 +189,13 @@ public class ProfessorDAO implements IProfessorDAO{
     }
 
     @Override
-    public Professor getProfessor(int personalNumber) throws DataRetrievalException{
+    public Professor getProfessor(int staffNumber) throws DataRetrievalException{
         Professor professor = new Professor();
 
         try{
             String query = "SELECT * FROM Usuarios U INNER JOIN Profesores P ON U.IdUsuario = P.IdUsuario WHERE P.NumPersonal = ?";
             PreparedStatement preparedStatement = dataBaseManager.getConnection().prepareStatement(query);
-            preparedStatement.setInt(1, personalNumber);
+            preparedStatement.setInt(1, staffNumber);
             ResultSet resultSet = preparedStatement.executeQuery();
             if(resultSet.next()){
                 professor.setName(resultSet.getString("nombre"));

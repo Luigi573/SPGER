@@ -93,7 +93,8 @@ public class GuiCoursesController {
             for(Course course : courses){
                 FXMLLoader courseItemControllerLoader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxmlfiles/guicourses/Course.fxml"));
                 ScholarPeriodDAO scholarPeriodDAO = new ScholarPeriodDAO();
-                ScholarPeriod scholarPeriod = scholarPeriodDAO.getScholarPeriod(course.getIdScholarPeriod());
+                ScholarPeriod scholarPeriod = scholarPeriodDAO.getScholarPeriod(course.getScholarPeriod().getScholarPeriodId());
+                
                 Button courseItemButton;
                 courseItemButton = courseItemControllerLoader.load();
                 CourseController courseController = courseItemControllerLoader.getController();
@@ -114,9 +115,9 @@ public class GuiCoursesController {
             CourseDAO courseDAO = new CourseDAO();
             Course course = courseDAO.getCourse(courseNRC);
             ScholarPeriodDAO scholarPeriodDAO = new ScholarPeriodDAO();
-            ScholarPeriod scholarPeriod = scholarPeriodDAO.getScholarPeriod(course.getIdScholarPeriod());
+            ScholarPeriod scholarPeriod = scholarPeriodDAO.getScholarPeriod(course.getScholarPeriod().getScholarPeriodId());
             ProfessorDAO professorDAO = new ProfessorDAO();
-            Professor professor = professorDAO.getProfessor(course.getStaffNumber());
+            Professor professor = professorDAO.getProfessor(course.getProfessor().getStaffNumber());
             FXMLLoader courseInformationControllerLoader = new FXMLLoader(
                 getClass().getResource("/mx/uv/fei/gui/fxmlfiles/guicourses/CourseInformation.fxml")
             );
@@ -146,9 +147,9 @@ public class GuiCoursesController {
             CourseDAO courseDAO = new CourseDAO();
             Course course = courseDAO.getCourse(courseInformationController.getNrc());
             ScholarPeriodDAO scholarPeriodDAO = new ScholarPeriodDAO();
-            ScholarPeriod scholarPeriod = scholarPeriodDAO.getScholarPeriod(course.getIdScholarPeriod());
+            ScholarPeriod scholarPeriod = scholarPeriodDAO.getScholarPeriod(course.getScholarPeriod().getScholarPeriodId());
             ProfessorDAO professorDAO = new ProfessorDAO();
-            Professor professor = professorDAO.getProfessor(course.getStaffNumber());
+            Professor professor = professorDAO.getProfessor(course.getProfessor().getStaffNumber());
             FXMLLoader modifyCourseInformationControllerLoader = new FXMLLoader(
                 getClass().getResource("/mx/uv/fei/gui/fxmlfiles/guicourses/ModifyCourseInformation.fxml")
             );

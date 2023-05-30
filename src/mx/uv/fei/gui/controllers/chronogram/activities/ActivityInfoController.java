@@ -91,6 +91,7 @@ public class ActivityInfoController{
         int result;
         int successfulSaves = 0;
         ArrayList<String> failedSaves = new ArrayList();
+        
         for (File file : filesList) {
             if (file != null) {
                 FileDAO fileDAO = new FileDAO();

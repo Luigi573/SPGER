@@ -2,26 +2,26 @@ package mx.uv.fei.logic.domain;
 
 public class Course {
     private int nrc;
-    private int idScholarPeriod;
+    private ScholarPeriod scholarPeriod;
     private String name;
     private int section;
     private int block;
-    private int personalNumber; //cambiar a Profesor
-
-    public int getNrc() {
-        return this.nrc;
-    }
+    private Professor professor; //cambiar a Profesor
 
     public void setNrc(int nrc) {
         this.nrc = nrc;
     }
 
-    public int getIdScholarPeriod() {
-        return idScholarPeriod;
+    public int getNrc() {
+        return this.nrc;
     }
 
-    public void setIdScholarPeriod(int idScholarPeriod) {
-        this.idScholarPeriod = idScholarPeriod;
+    public ScholarPeriod getScholarPeriod() {
+        return scholarPeriod;
+    }
+
+    public void setScholarPeriod(ScholarPeriod period) {
+        this.scholarPeriod = period;
     }
 
     public String getName() {
@@ -48,18 +48,18 @@ public class Course {
         this.block = block;
     }
 
-    public int getStaffNumber() {
-        return this.personalNumber;
+    public void setProfessor(Professor professor) {
+        this.professor = professor;
     }
 
-    public void setStaffNumber(int personalNumber) {
-        this.personalNumber = personalNumber;
+    public Professor getProfessor() {
+        return professor;
     }
 
     @Override
     public boolean equals(Object obj) {
         if(obj instanceof Course course){
-            return this.nrc == course.nrc  && this.idScholarPeriod == course.idScholarPeriod && this.section == course.section &&
+            return this.nrc == course.nrc  && scholarPeriod.equals(course.scholarPeriod)  && this.section == course.section &&
                this.block == course.block;
         }        
 

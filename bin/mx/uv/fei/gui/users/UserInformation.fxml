@@ -68,8 +68,8 @@
       <HBox prefHeight="25.0" prefWidth="369.0">
          <children>
             <Label prefHeight="25.0" prefWidth="10.0" />
-            <Label fx:id="matricleOrPersonalNumberText" prefHeight="25.0" prefWidth="108.0" text="N° de Personal: " />
-            <Label fx:id="matricleOrPersonalNumberLabel" prefHeight="25.0" prefWidth="250.0" text="Label" />
+            <Label fx:id="matricleOrStaffNumberText" prefHeight="25.0" prefWidth="108.0" text="N° de Personal: " />
+            <Label fx:id="matricleOrStaffNumberLabel" prefHeight="25.0" prefWidth="250.0" text="Label" />
          </children>
       </HBox>
       <HBox prefHeight="25.0" prefWidth="369.0">

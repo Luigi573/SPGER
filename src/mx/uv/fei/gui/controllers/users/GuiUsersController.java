@@ -134,8 +134,8 @@ public class GuiUsersController {
                 UserController userController = userItemControllerLoader.getController();
                 userController.setName(student.getName());
                 userController.setType("Estudiante");
-                userController.setMatricleOrPersonalNumber(student.getMatricle());
-                userController.setMatricleOrPersonalNumberText("Matrícula");
+                userController.setMatricleOrStaffNumber(student.getMatricle());
+                userController.setMatricleOrStaffNumberText("Matrícula");
                 userController.setGuiUsersController(this);
                 this.usersVBox.getChildren().add(userItemButton);
             }
@@ -154,8 +154,8 @@ public class GuiUsersController {
                 UserController userController = userItemControllerLoader.getController();
                 userController.setName(professor.getName());
                 userController.setType("Profesor");
-                userController.setMatricleOrPersonalNumber(Integer.toString(professor.getStaffNumber()));
-                userController.setMatricleOrPersonalNumberText("Número de Personal");
+                userController.setMatricleOrStaffNumber(Integer.toString(professor.getStaffNumber()));
+                userController.setMatricleOrStaffNumberText("Número de Personal");
                 userController.setGuiUsersController(this);
                 this.usersVBox.getChildren().add(userItemButton);
             }
@@ -174,8 +174,8 @@ public class GuiUsersController {
                 UserController userController = userItemControllerLoader.getController();
                 userController.setName(director.getName());
                 userController.setType("Director");
-                userController.setMatricleOrPersonalNumber(Integer.toString(director.getStaffNumber()));
-                userController.setMatricleOrPersonalNumberText("Número de Personal");
+                userController.setMatricleOrStaffNumber(Integer.toString(director.getStaffNumber()));
+                userController.setMatricleOrStaffNumberText("Número de Personal");
                 userController.setGuiUsersController(this);
                 this.usersVBox.getChildren().add(userItemButton);
             }
@@ -194,8 +194,8 @@ public class GuiUsersController {
                 UserController userController = userItemControllerLoader.getController();
                 userController.setName(academicBodyHead.getName());
                 userController.setType("Miembro de Cuerpo Académico");
-                userController.setMatricleOrPersonalNumber(Integer.toString(academicBodyHead.getStaffNumber()));
-                userController.setMatricleOrPersonalNumberText("Número de Personal");
+                userController.setMatricleOrStaffNumber(Integer.toString(academicBodyHead.getStaffNumber()));
+                userController.setMatricleOrStaffNumberText("Número de Personal");
                 userController.setGuiUsersController(this);
                 this.usersVBox.getChildren().add(userItemButton);
             }
@@ -214,8 +214,8 @@ public class GuiUsersController {
                 UserController userController = userItemControllerLoader.getController();
                 userController.setName(degreeBoss.getName());
                 userController.setType("Jefe de Carrera");
-                userController.setMatricleOrPersonalNumber(Integer.toString(degreeBoss.getStaffNumber()));
-                userController.setMatricleOrPersonalNumberText("Número de Personal");
+                userController.setMatricleOrStaffNumber(Integer.toString(degreeBoss.getStaffNumber()));
+                userController.setMatricleOrStaffNumberText("Número de Personal");
                 userController.setGuiUsersController(this);
                 this.usersVBox.getChildren().add(userItemButton);
             }
@@ -230,35 +230,35 @@ public class GuiUsersController {
             switch(userController.getType()){
                 case "Director": {
                     DirectorDAO directorDAO = new DirectorDAO();
-                    Director director = directorDAO.getDirector(Integer.parseInt(userController.getMatricleOrPersonalNumber()));
+                    Director director = directorDAO.getDirector(Integer.parseInt(userController.getMatricleOrStaffNumber()));
                     openPaneWithDirectorInformation(director);
                     break;
                 }
 
                 case "Miembro de Cuerpo Académico": {
                     AcademicBodyHeadDAO academicBodyHeadDAO = new AcademicBodyHeadDAO();
-                    AcademicBodyHead academicBodyHead = academicBodyHeadDAO.getAcademicBodyHead(Integer.parseInt(userController.getMatricleOrPersonalNumber()));
+                    AcademicBodyHead academicBodyHead = academicBodyHeadDAO.getAcademicBodyHead(Integer.parseInt(userController.getMatricleOrStaffNumber()));
                     openPaneWithAcademicBodyHeadInformation(academicBodyHead);
                     break;
                 }
 
                 case "Jefe de Carrera": {
                     DegreeBossDAO degreeBossDAO = new DegreeBossDAO();
-                    DegreeBoss degreeBoss = degreeBossDAO.getDegreeBoss(Integer.parseInt(userController.getMatricleOrPersonalNumber()));
+                    DegreeBoss degreeBoss = degreeBossDAO.getDegreeBoss(Integer.parseInt(userController.getMatricleOrStaffNumber()));
                     openPaneWithDegreeBossInformation(degreeBoss);
                     break;
                 }
 
                 case "Profesor": {
                     ProfessorDAO professorDAO = new ProfessorDAO();
-                    Professor professor = professorDAO.getProfessor(Integer.parseInt(userController.getMatricleOrPersonalNumber()));
+                    Professor professor = professorDAO.getProfessor(Integer.parseInt(userController.getMatricleOrStaffNumber()));
                     openPaneWithProfessorInformation(professor);
                     break;
                 }
 
                 case "Estudiante": {
                     StudentDAO studentDAO = new StudentDAO();
-                    Student student = studentDAO.getStudent(userController.getMatricleOrPersonalNumber());
+                    Student student = studentDAO.getStudent(userController.getMatricleOrStaffNumber());
                     openPaneWithStudentInformation(student);
                     break;
                 }
@@ -283,9 +283,9 @@ public class GuiUsersController {
             userInformationController.setTelephoneNumber(director.getPhoneNumber());
             userInformationController.setUserType("Director");
             //userInformationController.setStatus(director.getStatus().getValue());
-            userInformationController.setMatricleOrPersonalNumber(Integer.toString(director.getStaffNumber()));
+            userInformationController.setMatricleOrStaffNumber(Integer.toString(director.getStaffNumber()));
             userInformationController.setGuiUsersController(this);
-            userInformationController.setMatricleOrPersonalNumberText();
+            userInformationController.setMatricleOrStaffNumberText();
             this.userInformationScrollPane.setContent(userInformationVBox);
             
         } catch (IOException e){
@@ -309,9 +309,9 @@ public class GuiUsersController {
             userInformationController.setTelephoneNumber(academicBodyHead.getPhoneNumber());
             userInformationController.setUserType("Miembro de Cuerpo Académico");
             //userInformationController.setStatus(academicBodyHead.getStatus().getValue());
-            userInformationController.setMatricleOrPersonalNumber(Integer.toString(academicBodyHead.getStaffNumber()));
+            userInformationController.setMatricleOrStaffNumber(Integer.toString(academicBodyHead.getStaffNumber()));
             userInformationController.setGuiUsersController(this);
-            userInformationController.setMatricleOrPersonalNumberText();
+            userInformationController.setMatricleOrStaffNumberText();
             this.userInformationScrollPane.setContent(userInformationVBox);
             
         } catch (IOException e){
@@ -335,9 +335,9 @@ public class GuiUsersController {
             userInformationController.setTelephoneNumber(degreeBoss.getPhoneNumber());
             userInformationController.setUserType("Jefe de Carrera");
             //userInformationController.setStatus(degreeBoss.getStatus().getValue());
-            userInformationController.setMatricleOrPersonalNumber(Integer.toString(degreeBoss.getStaffNumber()));
+            userInformationController.setMatricleOrStaffNumber(Integer.toString(degreeBoss.getStaffNumber()));
             userInformationController.setGuiUsersController(this);
-            userInformationController.setMatricleOrPersonalNumberText();
+            userInformationController.setMatricleOrStaffNumberText();
             this.userInformationScrollPane.setContent(userInformationVBox);
             
         } catch (IOException e){
@@ -361,9 +361,9 @@ public class GuiUsersController {
             userInformationController.setTelephoneNumber(professor.getPhoneNumber());
             userInformationController.setUserType("Profesor");
             //userInformationController.setStatus(professor.getStatus().getValue());
-            userInformationController.setMatricleOrPersonalNumber(Integer.toString(professor.getStaffNumber()));
+            userInformationController.setMatricleOrStaffNumber(Integer.toString(professor.getStaffNumber()));
             userInformationController.setGuiUsersController(this);
-            userInformationController.setMatricleOrPersonalNumberText();
+            userInformationController.setMatricleOrStaffNumberText();
             this.userInformationScrollPane.setContent(userInformationVBox);
             
         } catch (IOException e){
@@ -387,9 +387,9 @@ public class GuiUsersController {
             userInformationController.setTelephoneNumber(student.getPhoneNumber());
             userInformationController.setUserType("Estudiante");
             userInformationController.setStatus(student.getStatus());
-            userInformationController.setMatricleOrPersonalNumber(student.getMatricle());
+            userInformationController.setMatricleOrStaffNumber(student.getMatricle());
             userInformationController.setGuiUsersController(this);
-            userInformationController.setMatricleOrPersonalNumberText();
+            userInformationController.setMatricleOrStaffNumberText();
             this.userInformationScrollPane.setContent(userInformationVBox);
             
         } catch (IOException e){
@@ -412,7 +412,7 @@ public class GuiUsersController {
             modifyUserInformationController.setEmail(userInformationController.getEmail());
             modifyUserInformationController.setAlternateEmail(userInformationController.getAlternateEmail());
             modifyUserInformationController.setTelephoneNumber(userInformationController.getTelephoneNumber());
-            modifyUserInformationController.setMatricleOrPersonalNumber(userInformationController.getMatricleOrPersonalNumber());
+            modifyUserInformationController.setMatricleOrStaffNumber(userInformationController.getMatricleOrStaffNumber());
             modifyUserInformationController.setStatus(userInformationController.getStatus());
             modifyUserInformationController.setGuiUsersController(this);
             modifyUserInformationController.setUserInformationController(userInformationController);

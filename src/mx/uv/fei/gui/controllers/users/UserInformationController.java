@@ -21,10 +21,10 @@ public class UserInformationController {
     private Label firstSurnameLabel;
 
     @FXML
-    private Label matricleOrPersonalNumberLabel;
+    private Label matricleOrStaffNumberLabel;
 
     @FXML
-    private Label matricleOrPersonalNumberText;
+    private Label matricleOrStaffNumberText;
 
     @FXML
     private Label namesLabel;
@@ -114,23 +114,23 @@ public class UserInformationController {
         this.userTypeLabel.setText(userType);
     }
 
-    public String getMatricleOrPersonalNumber() {
-        return this.matricleOrPersonalNumberLabel.getText();
+    public String getMatricleOrStaffNumber() {
+        return this.matricleOrStaffNumberLabel.getText();
     }
 
-    public void setMatricleOrPersonalNumber(String type) {
-        this.matricleOrPersonalNumberLabel.setText(type);
+    public void setMatricleOrStaffNumber(String type) {
+        this.matricleOrStaffNumberLabel.setText(type);
     }
 
     public void setGuiUsersController(GuiUsersController guiUsersController){
         this.guiUsersController = guiUsersController;
     }
 
-    public void setMatricleOrPersonalNumberText(){
+    public void setMatricleOrStaffNumberText(){
         if(this.userTypeLabel.getText() == "Estudiante"){
-            this.matricleOrPersonalNumberText.setText("Matrícula");
+            this.matricleOrStaffNumberText.setText("Matrícula");
         } else {
-            this.matricleOrPersonalNumberText.setText("Número de Personal");
+            this.matricleOrStaffNumberText.setText("Número de Personal");
         }
     }
 

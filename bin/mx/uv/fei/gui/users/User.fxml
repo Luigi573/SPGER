@@ -23,8 +23,8 @@
             </HBox>
             <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Label fx:id="matricleOrPersonalNumberText" prefHeight="27.0" prefWidth="143.0" text="Numero de Personal: " />
-                  <Label fx:id="matricleOrPersonalNumberLabel" prefHeight="27.0" prefWidth="208.0" />
+                  <Label fx:id="matricleOrStaffNumberText" prefHeight="27.0" prefWidth="143.0" text="Numero de Personal: " />
+                  <Label fx:id="matricleOrStaffNumberLabel" prefHeight="27.0" prefWidth="208.0" />
                </children>
             </HBox>
          </children>

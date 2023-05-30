@@ -10,53 +10,38 @@ import static org.junit.Assert.*;
 
 public class StudentDAOTest {
     @Test
-    public void addStudentToDatabaseTest() {
-        try {
-            StudentDAO studentDAO = new StudentDAO();
-            Student expectedStudent = new Student();
-            expectedStudent.setName("Felixiano");
-            expectedStudent.setFirstSurname("Carranza");
-            expectedStudent.setSecondSurname("Loeda");
-            expectedStudent.setEmailAddress("fexcarloa345@gmail.com");
-            expectedStudent.setAlternateEmail("fexcarloa349@gmail.com");
-            expectedStudent.setPhoneNumber("2283457810");
-            expectedStudent.setMatricle("zS53943219");
-            expectedStudent.setStatus("Graduado");
-            studentDAO.addStudentToDatabase(expectedStudent);
-            
-            Student actualStudent = studentDAO.getStudent(expectedStudent.getMatricle());     
-            
-            assertTrue(expectedStudent.equals(actualStudent));
-        } catch (DataInsertionException e) {
-            e.printStackTrace();
-        } catch (DataRetrievalException e) {
-            e.printStackTrace();
-        }
+    public void addStudent Test() {
+        StudentDAO studentDAO = new StudentDAO();
+        Student expectedStudent = new Student();
+        expectedStudent.setName("Felixiano");
+        expectedStudent.setFirstSurname("Carranza");
+        expectedStudent.setSecondSurname("Loeda");
+        expectedStudent.setEmailAddress("fexcarloa345@gmail.com");
+        expectedStudent.setAlternateEmail("fexcarloa349@gmail.com");
+        expectedStudent.setPhoneNumber("2283457810");
+        expectedStudent.setMatricle("zS53943219");
+        expectedStudent.setStatus("Graduado");
+        studentDAO.addStudent (expectedStudent);
+        Student actualStudent = studentDAO.getStudent(expectedStudent.getMatricle());
+        assertTrue(expectedStudent.equals(actualStudent));
     }
     
     @Test
     public void modifyStudentDataTest(){
-        try {
-            StudentDAO studentDAO = new StudentDAO();
-            Student originalStudent = studentDAO.getStudent("zS53943219");
-            Student expectedStudent = new Student();
-            expectedStudent.setName("Felixiano");
-            expectedStudent.setFirstSurname("Carranza");
-            expectedStudent.setSecondSurname("Loeda");
-            expectedStudent.setEmailAddress("fexcarloa345@gmail.com");
-            expectedStudent.setAlternateEmail("fexcarloa399@gmail.com");
-            expectedStudent.setPhoneNumber("2283457810");
-            expectedStudent.setMatricle("zS53943219");
-            expectedStudent.setStatus("Graduado");
-            studentDAO.modifyStudentData(expectedStudent, originalStudent);
-            
-            Student actualStudent = studentDAO.getStudent(expectedStudent.getMatricle());     
-            assertTrue(expectedStudent.equals(actualStudent));
-        } catch (DataInsertionException e) {
-            e.printStackTrace();
-        } catch (DataRetrievalException e) {
-            e.printStackTrace();
-        }
+        StudentDAO studentDAO = new StudentDAO();
+        Student originalStudent = studentDAO.getStudent("zS53943219");
+        Student expectedStudent = new Student();
+        expectedStudent.setName("Felixiano");
+        expectedStudent.setFirstSurname("Carranza");
+        expectedStudent.setSecondSurname("Loeda");
+        expectedStudent.setEmailAddress("fexcarloa345@gmail.com");
+        expectedStudent.setAlternateEmail("fexcarloa399@gmail.com");
+        expectedStudent.setPhoneNumber("2283457810");
+        expectedStudent.setMatricle("zS53943219");
+        expectedStudent.setStatus("Graduado");
+        studentDAO.modifyStudentData(expectedStudent, originalStudent);
+        Student actualStudent = studentDAO.getStudent(expectedStudent.getMatricle());
+        assertTrue(expectedStudent.equals(actualStudent));
     }
 
     @Test
@@ -86,7 +71,6 @@ public class StudentDAOTest {
 
     @Test
     public void getStudentTest() {
-        try {
             StudentDAO studentDAO = new StudentDAO();
             Student expectedStudent = new Student();
             expectedStudent.setName("Felixiano");
@@ -99,29 +83,21 @@ public class StudentDAOTest {
             expectedStudent.setStatus("Graduado");
             Student actualStudent = studentDAO.getStudent(expectedStudent.getMatricle());     
             assertTrue(expectedStudent.equals(actualStudent));
-        } catch (DataRetrievalException e) {
-            e.printStackTrace();
-        }
     }
 
     @Test
     public void theStudentIsAlreadyRegistedTest() {
-        try {
-            StudentDAO studentDAO = new StudentDAO();
-            Student expectedStudent = new Student();
-            expectedStudent.setName("Felixiano");
-            expectedStudent.setFirstSurname("Carranza");
-            expectedStudent.setSecondSurname("Loeda");
-            expectedStudent.setEmailAddress("fexcarloa345@gmail.com");
-            expectedStudent.setAlternateEmail("fexcarloa399@gmail.com");
-            expectedStudent.setPhoneNumber("2283457810");
-            expectedStudent.setMatricle("zS53943219");
-            expectedStudent.setStatus("Graduado");
-
-            assertTrue(studentDAO.theStudentIsAlreadyRegisted(expectedStudent));
-        } catch (DataRetrievalException e) {
-            e.printStackTrace();
-        }
+        StudentDAO studentDAO = new StudentDAO();
+        Student expectedStudent = new Student();
+        expectedStudent.setName("Felixiano");
+        expectedStudent.setFirstSurname("Carranza");
+        expectedStudent.setSecondSurname("Loeda");
+        expectedStudent.setEmailAddress("fexcarloa345@gmail.com");
+        expectedStudent.setAlternateEmail("fexcarloa399@gmail.com");
+        expectedStudent.setPhoneNumber("2283457810");
+        expectedStudent.setMatricle("zS53943219");
+        expectedStudent.setStatus("Graduado");
+        assertTrue(studentDAO.theStudentIsAlreadyRegisted(expectedStudent.toString()));
     }
 
     @Test

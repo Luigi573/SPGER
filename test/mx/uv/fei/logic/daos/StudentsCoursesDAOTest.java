@@ -7,7 +7,7 @@ import org.junit.Test;
 
 public class StudentsCoursesDAOTest {
     @Test
-    void addStudentCourseToDatabaseTest() {
+    void addStudentCourse Test() {
 
     }
 

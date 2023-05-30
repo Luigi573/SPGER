@@ -21,7 +21,7 @@ public class AcademicBodyHeadDAO implements IAcademicBodyHeadDAO{
     }
     
     @Override
-    public void addAcademicBodyHeadToDatabase(AcademicBodyHead academicBodyHead) throws DataInsertionException{
+    public void addAcademicBodyHead (AcademicBodyHead academicBodyHead) throws DataInsertionException{
         try{
             String wholeQueryToInsertAcademicBodyHeadDataToUserColumns = 
                 "INSERT INTO Usuarios (nombre, apellidoPaterno, apellidoMaterno, correo, correoAlterno, númeroTeléfono, estado) VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -220,13 +220,13 @@ public class AcademicBodyHeadDAO implements IAcademicBodyHeadDAO{
     }
 
     @Override
-    public AcademicBodyHead getAcademicBodyHead(int personalNumber) throws DataRetrievalException{
+    public AcademicBodyHead getAcademicBodyHead(int staffNumber) throws DataRetrievalException{
         AcademicBodyHead academicBodyHead = new AcademicBodyHead();
 
         try {
             String query = "SELECT * FROM Usuarios U INNER JOIN Profesores P ON U.IdUsuario = P.IdUsuario INNER JOIN ResponsablesCA RCA ON P.NumPersonal = RCA.NumPersonal WHERE RCA.NumPersonal = ?";
             PreparedStatement preparedStatement = dataBaseManager.getConnection().prepareStatement(query);
-            preparedStatement.setInt(1, personalNumber);
+            preparedStatement.setInt(1, staffNumber);
             ResultSet resultSet = preparedStatement.executeQuery();
             if(resultSet.next()){
                 academicBodyHead.setName(resultSet.getString("nombre"));

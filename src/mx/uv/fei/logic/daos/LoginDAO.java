@@ -31,14 +31,12 @@ public class LoginDAO implements ILoginDAO{
             statement.setString(2, password);
             
             ResultSet resultSet = statement.executeQuery();
-            
             if(resultSet.next()){
                 student.setUserId(resultSet.getInt("u.IdUsuario"));
                 student.setName(resultSet.getString("u.nombre"));
                 student.setFirstSurname(resultSet.getString("u.apellidoPaterno"));
                 student.setSecondSurname(resultSet.getString("u.apellidoMaterno"));
                 student.setEmailAddress(resultSet.getString("u.correo"));
-                
                 student.setMatricle(resultSet.getString("e.Matrícula"));
             }
             
@@ -61,7 +59,7 @@ public class LoginDAO implements ILoginDAO{
         
         try{
             statement = dataBaseManager.getConnection().prepareStatement(query);
-            statement.setString(1, emailAddress);
+            statement.setString(1, emailAddress + "@uv.mx");
             statement.setString(2, password);
             
             ResultSet resultSet = statement.executeQuery();
@@ -94,7 +92,7 @@ public class LoginDAO implements ILoginDAO{
         try{
             statement = dataBaseManager.getConnection().prepareStatement(query);
             
-            statement.setString(1, emailAddress);
+            statement.setString(1, emailAddress + "@uv.mx");
             statement.setString(2, password);
             
             ResultSet resultSet = statement.executeQuery();
@@ -126,7 +124,7 @@ public class LoginDAO implements ILoginDAO{
         
         try{
             statement = dataBaseManager.getConnection().prepareStatement(query);
-            statement.setString(1, emailAddress);
+            statement.setString(1, emailAddress + "@uv.mx");
             statement.setString(2, password);
             
             ResultSet resultSet = statement.executeQuery();
@@ -146,10 +144,5 @@ public class LoginDAO implements ILoginDAO{
         
         return academicBodyHead;
     }
-    
-    public boolean isValidMatricle(String matricle){
-        return matricle.matches("^zS\\d{8}$");
-    }
-
     
 }

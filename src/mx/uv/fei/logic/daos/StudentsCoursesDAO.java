@@ -18,7 +18,7 @@ public class StudentsCoursesDAO implements IStudentsCoursesDAO{
     }
 
     @Override
-    public void addStudentCourseToDatabase(String studentMatricle, String courseNRC) throws DataInsertionException{
+    public void addStudentCourse (String studentMatricle, String courseNRC) throws DataInsertionException{
         try{
             String query = "INSERT INTO EstudiantesCurso (Matrícula, NRC) VALUES (?, ?)";
             PreparedStatement preparedStatement = 

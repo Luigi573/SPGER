@@ -8,7 +8,7 @@ import static org.junit.Assert.*;
 public class AcademicBodyHeadDAOTest {
     
     @Test
-    void testAddAcademicBodyHeadToDatabase() {
+    void testAddAcademicBodyHead () {
 
     }
 

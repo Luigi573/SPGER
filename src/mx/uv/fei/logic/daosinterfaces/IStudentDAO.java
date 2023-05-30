@@ -6,7 +6,7 @@ import mx.uv.fei.logic.exceptions.DataRetrievalException;
 import mx.uv.fei.logic.exceptions.DataInsertionException;
 
 public interface IStudentDAO {
-    public void addStudentToDatabase(Student student) throws DataInsertionException;
+    public void addStudent (Student student) throws DataInsertionException;
     public void modifyStudentData(Student newStudentData, Student originalStudentData) throws DataInsertionException;
     public ArrayList<Student> getStudents() throws DataRetrievalException;
     public ArrayList<Student> getStudentList() throws DataRetrievalException;

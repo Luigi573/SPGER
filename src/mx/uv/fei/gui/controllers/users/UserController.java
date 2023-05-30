@@ -9,10 +9,10 @@ public class UserController {
     GuiUsersController guiUsersController;
 
     @FXML
-    private Label matricleOrPersonalNumberLabel;
+    private Label matricleOrStaffNumberLabel;
 
     @FXML
-    private Label matricleOrPersonalNumberText;
+    private Label matricleOrStaffNumberText;
 
     @FXML
     private Label nameLabel;
@@ -40,19 +40,19 @@ public class UserController {
         this.typeLabel.setText(type);
     }
 
-    void setMatricleOrPersonalNumber(String matricleOrPersonalNumber) {
-        this.matricleOrPersonalNumberLabel.setText(matricleOrPersonalNumber);
+    void setMatricleOrStaffNumber(String matricleOrStaffNumber) {
+        this.matricleOrStaffNumberLabel.setText(matricleOrStaffNumber);
     }
 
-    void setMatricleOrPersonalNumberText(String matricleOrPersonalNumber) {
-        this.matricleOrPersonalNumberText.setText(matricleOrPersonalNumber);
+    void setMatricleOrStaffNumberText(String matricleOrStaffNumber) {
+        this.matricleOrStaffNumberText.setText(matricleOrStaffNumber);
     }
 
     String getType() {
         return this.typeLabel.getText();
     }
 
-    String getMatricleOrPersonalNumber() {
-        return this.matricleOrPersonalNumberLabel.getText();
+    String getMatricleOrStaffNumber() {
+        return this.matricleOrStaffNumberLabel.getText();
     }
 }

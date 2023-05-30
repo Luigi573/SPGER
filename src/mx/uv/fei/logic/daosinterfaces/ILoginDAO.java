@@ -11,5 +11,4 @@ public interface ILoginDAO {
     public Professor logInProfessor(String emailAddress, String password) throws LoginException;
     public DegreeBoss logInAdmin(String emailAddress, String password) throws LoginException;
     public AcademicBodyHead logInAcademicBodyHead(String emailAddress, String password) throws LoginException;
-    public boolean isValidMatricle(String matricle);
 }

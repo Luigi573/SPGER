@@ -59,7 +59,6 @@ public class LoginController{
                         }else{
                             professor = loginDAO.logInAdmin(idTextField.getText(), passwordField.getText());
 
-                            System.out.println(professor.getStaffNumber());
                             if((professor.getStaffNumber() > 0)){
                                 openMainMenu(event, professor);
                             }else{
@@ -71,7 +70,6 @@ public class LoginController{
             }catch(LoginException exception){
                 new AlertPopUpGenerator().showConnectionErrorMessage();
             }
-            
         }else{
             errorLabel.setText("Faltan campos por llenar");
         }

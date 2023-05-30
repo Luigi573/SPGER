@@ -21,7 +21,7 @@ public class DirectorDAO implements IDirectorDAO{
     }
 
     @Override
-    public void addDirectorToDatabase(Director director) throws DataInsertionException{
+    public void addDirector (Director director) throws DataInsertionException{
         try{
             String queryToInsertDirectorDataToUserColumns = 
                 "INSERT INTO Usuarios (nombre, apellidoPaterno, apellidoMaterno, correo, correoAlterno, númeroTeléfono, estado) VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -254,13 +254,13 @@ public class DirectorDAO implements IDirectorDAO{
     }
 
     @Override
-    public Director getDirector(int personalNumber) throws DataRetrievalException{
+    public Director getDirector(int staffNumber) throws DataRetrievalException{
         Director director = new Director();
 
         try{
             String query = "SELECT * FROM Usuarios U INNER JOIN Profesores P ON U.IdUsuario = P.IdUsuario INNER JOIN Directores D ON P.NumPersonal = D.NumPersonal WHERE D.NumPersonal = ?";
             PreparedStatement preparedStatement = dataBaseManager.getConnection().prepareStatement(query);
-            preparedStatement.setInt(1, personalNumber);
+            preparedStatement.setInt(1, staffNumber);
             ResultSet resultSet = preparedStatement.executeQuery();
             if(resultSet.next()) {
                 director.setName(resultSet.getString("nombre"));

@@ -11,17 +11,17 @@ import static org.junit.Assert.*;
 public class CourseDAOTest{
     
     @Test
-    public void addCourseToDatabaseTest() {
+    public void addCourse Test() {
         try {
             CourseDAO courseDAO = new CourseDAO();
             Course expectedCourse = new Course();
             expectedCourse.setNrc(10000);
-            expectedCourse.setIdScholarPeriod(1);
+            expectedCourse.setScholarPeriodId(1);
             expectedCourse.setStaffNumber(100000000);
             expectedCourse.setName("Proyecto Guiado");
             expectedCourse.setSection(1);
             expectedCourse.setBlock(7);
-            courseDAO.addCourseToDatabase(expectedCourse);
+            courseDAO.addCourse (expectedCourse);
             
             Course actualCourse = courseDAO.getCourse(Integer.toString(expectedCourse.getNrc()));     
             assertTrue(expectedCourse.equals(actualCourse));
@@ -40,7 +40,7 @@ public class CourseDAOTest{
             Course originalCourse = courseDAO.getCourse("10000");
             Course expectedCourse = new Course();
             expectedCourse.setNrc(10002);
-            expectedCourse.setIdScholarPeriod(1);
+            expectedCourse.setScholarPeriodId(1);
             expectedCourse.setStaffNumber(100000001);
             expectedCourse.setName("Experiencia Recepcional");
             expectedCourse.setSection(2);
@@ -64,7 +64,7 @@ public class CourseDAOTest{
 
             Course expectedCourse = new Course();
             expectedCourse.setNrc(10001);
-            expectedCourse.setIdScholarPeriod(1);
+            expectedCourse.setScholarPeriodId(1);
             expectedCourse.setStaffNumber(100000000);
             expectedCourse.setName("Proyecto Guiado");
             expectedCourse.setSection(2);
@@ -84,7 +84,7 @@ public class CourseDAOTest{
 
             Course expectedCourse = new Course();
             expectedCourse.setNrc(10001);
-            expectedCourse.setIdScholarPeriod(1);
+            expectedCourse.setScholarPeriodId(1);
             expectedCourse.setStaffNumber(100000000);
             expectedCourse.setName("Proyecto Guiado");
             expectedCourse.setSection(2);
@@ -101,7 +101,7 @@ public class CourseDAOTest{
             CourseDAO courseDAO = new CourseDAO();
             Course expectedCourse = new Course();
             expectedCourse.setNrc(10001);
-            expectedCourse.setIdScholarPeriod(1);
+            expectedCourse.setScholarPeriodId(1);
             expectedCourse.setStaffNumber(100000000);
             expectedCourse.setName("Proyecto Guiado");
             expectedCourse.setSection(2);
@@ -117,7 +117,7 @@ public class CourseDAOTest{
             CourseDAO courseDAO = new CourseDAO();
             Course expectedCourse = new Course();
             expectedCourse.setNrc(10001);
-            expectedCourse.setIdScholarPeriod(1);
+            expectedCourse.setScholarPeriodId(1);
             expectedCourse.setStaffNumber(100000000);
             expectedCourse.setName("Proyecto Guiado");
             expectedCourse.setSection(2);

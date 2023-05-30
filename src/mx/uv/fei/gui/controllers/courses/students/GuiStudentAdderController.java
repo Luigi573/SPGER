@@ -111,7 +111,7 @@ public class GuiStudentAdderController{
         for(Node studentPane : studentsVBox.getChildren()){
             if( ((RadioButton)((Pane)studentPane).getChildren().get(4)).isSelected() ){
                 try{
-                    studentCoursesDAO.addStudentCourseToDatabase(
+                    studentCoursesDAO.addStudentCourse (
                         ((Label)((Pane)studentPane).getChildren().get(3)).getText(), 
                         guiUsersCourseController.getCourseInformationController().getNrc()
                     );

@@ -19,7 +19,7 @@ public class StudentDAO implements IStudentDAO{
     }
 
     @Override
-    public void addStudentToDatabase(Student student) {
+    public void addStudent (Student student) {
         try {
             String userTablesToConsult = 
                 "nombre, apellidoPaterno, apellidoMaterno, correo, correoAlterno, númeroTeléfono";

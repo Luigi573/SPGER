@@ -107,15 +107,15 @@ public class GuiRegisterCourseController {
                     course.setNrc(Integer.parseInt(this.nrcTextField.getText()));
                     course.setSection(Integer.parseInt(this.sectionComboBox.getValue()));
                     course.setBlock(Integer.parseInt(this.blockComboBox.getValue()));
-                    course.setStaffNumber(this.professorComboBox.getValue().getStaffNumber());
-                    course.setIdScholarPeriod(this.scholarPeriodComboBox.getValue().getIdScholarPeriod());
+                    course.setProfessor(professorComboBox.getValue());
+                    course.setScholarPeriod(scholarPeriodComboBox.getValue());
 
                     if(courseDAO.theCourseIsAlreadyRegisted(course)) {
                         this.errorMessajeText.setText("El curso ya está registrado en el sistema");
                         this.errorMessajeText.setVisible(true);
                         return;
                     }
-                    courseDAO.addCourseToDatabase(course);
+                    courseDAO.addCourse (course);
                     this.errorMessajeText.setText("Curso registrado exitosamente");
                     this.errorMessajeText.setVisible(true);
                 } else {

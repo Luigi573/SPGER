@@ -7,7 +7,7 @@ import static org.junit.Assert.*;
 
 public class ProfessorDAOTest {
     @Test
-    void testAddProfessorToDatabase() {
+    void testAddProfessor () {
 
     }
 

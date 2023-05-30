@@ -21,7 +21,7 @@ public class DegreeBossDAO implements IDegreeBossDAO{
     }
 
     @Override
-    public void addDegreeBossToDatabase(DegreeBoss degreeBoss) throws DataInsertionException{
+    public void addDegreeBoss (DegreeBoss degreeBoss) throws DataInsertionException{
         try{
             String wholeQueryToInsertDegreeBossDataToUserColumns = 
                 "INSERT INTO Usuarios (nombre, apellidoPaterno, apellidoMaterno, correo, correoAlterno, númeroTeléfono, estado) " + 
@@ -230,13 +230,13 @@ public class DegreeBossDAO implements IDegreeBossDAO{
     }
 
     @Override
-    public DegreeBoss getDegreeBoss(int personalNumber) throws DataRetrievalException{
+    public DegreeBoss getDegreeBoss(int staffNumber) throws DataRetrievalException{
         DegreeBoss degreeBoss = new DegreeBoss();
 
         try{
             String query = "SELECT * FROM Usuarios U INNER JOIN Profesores P ON U.IdUsuario = P.IdUsuario INNER JOIN JefesCarrera JC ON P.NumPersonal = JC.NumPersonal WHERE JC.NumPersonal = ?";
             PreparedStatement preparedStatement = dataBaseManager.getConnection().prepareStatement(query);
-            preparedStatement.setInt(1, personalNumber);
+            preparedStatement.setInt(1, staffNumber);
             
             ResultSet resultSet = preparedStatement.executeQuery();
             

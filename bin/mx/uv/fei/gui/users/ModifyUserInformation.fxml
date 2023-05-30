@@ -75,8 +75,8 @@
       <HBox prefHeight="25.0" prefWidth="369.0">
          <children>
             <Label prefHeight="25.0" prefWidth="10.0" />
-            <Label fx:id="matricleOrPersonalNumberText" prefHeight="25.0" prefWidth="107.0" text="N° de Personal:" />
-            <TextField fx:id="matricleOrPersonalNumberTextField" prefHeight="25.0" prefWidth="245.0" />
+            <Label fx:id="matricleOrStaffNumberText" prefHeight="25.0" prefWidth="107.0" text="N° de Personal:" />
+            <TextField fx:id="matricleOrStaffNumberTextField" prefHeight="25.0" prefWidth="245.0" />
          </children>
       </HBox>
       <HBox prefHeight="25.0" prefWidth="369.0">
