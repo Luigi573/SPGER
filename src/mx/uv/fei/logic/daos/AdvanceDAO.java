@@ -106,7 +106,7 @@ public class AdvanceDAO implements IAdvanceDAO{
             
             result = statement.executeUpdate();
         }catch(SQLException exception){
-            throw new DataInsertionException("Error de conexión. Verifique su conexiión a internet e inténtelo de nuevo");
+            throw new DataInsertionException("Error de conexión. Verifique su conexiión a  la base de datos e inténtelo de nuevo");
         }finally{
             dataBaseManager.closeConnection();
         }

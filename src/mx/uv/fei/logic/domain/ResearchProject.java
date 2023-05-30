@@ -2,7 +2,6 @@ package mx.uv.fei.logic.domain;
 
 import java.sql.Date;
 import java.util.ArrayList;
-import mx.uv.fei.logic.domain.statuses.ResearchProjectStatus;
 
 public class ResearchProject {
     private Date dueDate;

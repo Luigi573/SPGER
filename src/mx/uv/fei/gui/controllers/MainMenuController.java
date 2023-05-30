@@ -74,8 +74,7 @@ public class MainMenuController{
         }
         
         for(Course course: courseList){
-            if(Professor.class.isAssignableFrom(user.getClass())){
-                System.out.println("Course: " + course.getName());
+            if(Professor.class.isAssignableFrom(user.getClass()) && course.getProfessor().equals(user)){
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/CourseHBoxPane.fxml"));
                 
                 try{

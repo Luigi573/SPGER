@@ -14,7 +14,7 @@
                   <Font name="System Bold" size="24.0" />
                </font>
             </Label>
-            <Label layoutX="53.0" layoutY="71.0" text="NRC: ">
+            <Label layoutX="46.0" layoutY="71.0" text="NRC: ">
                <font>
                   <Font size="18.0" />
                </font>
@@ -31,7 +31,7 @@
             </Label>
             <Label fx:id="startDateLabel" alignment="CENTER" layoutX="97.0" layoutY="108.0" prefHeight="27.0" prefWidth="195.0" text="[DD/MM/AAAA]">
                <font>
-                  <Font size="16.0" />
+                  <Font size="18.0" />
                </font>
             </Label>
             <Label layoutX="33.0" layoutY="146.0" text="End Fin:">
@@ -41,10 +41,10 @@
             </Label>
             <Label fx:id="endDateLabel" alignment="CENTER" layoutX="97.0" layoutY="145.0" prefHeight="27.0" prefWidth="195.0" text="[DD/MM/AAAA]">
                <font>
-                  <Font size="16.0" />
+                  <Font size="18.0" />
                </font>
             </Label>
-            <Label layoutX="20.0" layoutY="183.0" text="Profesor: ">
+            <Label layoutX="27.0" layoutY="183.0" text="Profesor: ">
                <font>
                   <Font size="16.0" />
                </font>
@@ -54,7 +54,7 @@
                   <Font size="14.0" />
                </font>
             </Label>
-            <Button layoutX="106.0" layoutY="217.0" mnemonicParsing="false" text="Acceder">
+            <Button layoutX="106.0" layoutY="217.0" mnemonicParsing="false" onAction="#goToChronogram" text="Acceder">
                <font>
                   <Font size="18.0" />
                </font>

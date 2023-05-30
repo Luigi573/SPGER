@@ -10,10 +10,10 @@ import mx.uv.fei.logic.daosinterfaces.IResearchesReportDAO;
 import mx.uv.fei.logic.domain.Research;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
 
-public class ResearchesReportDAO implements IResearchesReportDAO{
+public class ResearchReportDAO implements IResearchesReportDAO{
     private final DataBaseManager dataBaseManager;
 
-    public ResearchesReportDAO(){
+    public ResearchReportDAO(){
         dataBaseManager = new DataBaseManager();
     }
 

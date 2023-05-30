@@ -54,7 +54,7 @@ public class ModifyActivityController{
                 }catch(DataInsertionException exception){
                     Alert errorMessage = new Alert(Alert.AlertType.ERROR);
                     errorMessage.setHeaderText("Error de conexión");
-                    errorMessage.setContentText("Favor de verificar su conexión a internet e inténtelo de nuevo");
+                    errorMessage.setContentText("Favor de verificar su conexión con la base de datos e inténtelo de nuevo");
                     errorMessage.showAndWait();
                 }
             }else{

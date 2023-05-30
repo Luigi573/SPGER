@@ -11,7 +11,7 @@ import static org.junit.Assert.*;
 public class CourseDAOTest{
     
     @Test
-    public void addCourse Test() {
+    public void addCourseTest() {
         try {
             CourseDAO courseDAO = new CourseDAO();
             Course expectedCourse = new Course();

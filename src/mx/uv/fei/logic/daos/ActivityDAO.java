@@ -124,7 +124,7 @@ public class ActivityDAO implements IActivityDAO{
             
             result = statement.executeUpdate();
         }catch(SQLException exception){
-            throw new DataInsertionException("Error de conexión. Favor de revisar su conexión a internet e inténtelo de nuevo");
+            throw new DataInsertionException("Error de conexión. Favor de revisar su conexión con la base de datos e inténtelo de nuevo");
         }finally{
             dataBaseManager.closeConnection();
         }
@@ -145,7 +145,7 @@ public class ActivityDAO implements IActivityDAO{
             
             result = statement.executeUpdate();
         }catch(SQLException exception){
-            throw new DataInsertionException("Error de conexión. Favor de revisar su conexión a internet e inténtelo de nuevo");
+            throw new DataInsertionException("Error de conexión. Favor de revisar su conexión con la base de datos e inténtelo de nuevo");
         }finally{
             dataBaseManager.closeConnection();
         }

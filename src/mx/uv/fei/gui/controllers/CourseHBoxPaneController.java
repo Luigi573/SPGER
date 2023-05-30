@@ -1,5 +1,6 @@
 package mx.uv.fei.gui.controllers;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import mx.uv.fei.logic.domain.Course;
@@ -25,6 +26,11 @@ public class CourseHBoxPaneController{
     private void initialize() {
         // TODO
     }    
+    
+    @FXML
+    private void goToChronogram(ActionEvent actionEvent){
+        
+    }
     
     public void setCourse(Course course){
         this.course = course;

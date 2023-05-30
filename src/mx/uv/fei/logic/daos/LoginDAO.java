@@ -137,7 +137,7 @@ public class LoginDAO implements ILoginDAO{
                 academicBodyHead.setStaffNumber(resultSet.getInt("p.NumPersonal"));
             }
         }catch(SQLException exception){
-            throw new LoginException("Error de conexion. Verifique su conectividad a internet e inténtelo de nuevo");
+            throw new LoginException("Error de conexion. Verifique su conectividad a  la base de datos e inténtelo de nuevo");
         }finally{
             dataBaseManager.closeConnection();
         }

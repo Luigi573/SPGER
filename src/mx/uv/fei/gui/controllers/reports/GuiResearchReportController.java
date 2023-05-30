@@ -29,7 +29,7 @@ import javafx.scene.text.Text;
 import javafx.stage.DirectoryChooser;
 import mx.uv.fei.gui.AlertPopUpGenerator;
 import mx.uv.fei.gui.controllers.HeaderPaneController;
-import mx.uv.fei.logic.daos.ResearchesReportDAO;
+import mx.uv.fei.logic.daos.ResearchReportDAO;
 import mx.uv.fei.logic.domain.Research;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
 import net.sf.jasperreports.engine.JRException;
@@ -80,7 +80,7 @@ public class GuiResearchReportController {
         loadHeader();
 
         researchesVBox.getChildren().clear();
-        ResearchesReportDAO researchesReportDAO = new ResearchesReportDAO();
+        ResearchReportDAO researchesReportDAO = new ResearchReportDAO();
         ArrayList<Research> researches = new ArrayList<>();
         try{
             researches = researchesReportDAO.getResearches(findByTitleTextField.getText(), "");
@@ -123,7 +123,7 @@ public class GuiResearchReportController {
         }
 
         try{
-            ResearchesReportDAO researchesReportDAO = new ResearchesReportDAO();
+            ResearchReportDAO researchesReportDAO = new ResearchReportDAO();
             ArrayList<Research> researches = researchesReportDAO.getSelectedResearches(selectedResearches);
 
             Path path = Paths.get("src/dependencies/resources/jasperreports/ResearchReport.jasper");
@@ -153,7 +153,7 @@ public class GuiResearchReportController {
     @FXML
     private void searchResearchesButtonController(ActionEvent event){
         researchesVBox.getChildren().removeAll(researchesVBox.getChildren());
-        ResearchesReportDAO researchesReportDAO = new ResearchesReportDAO();
+        ResearchReportDAO researchesReportDAO = new ResearchReportDAO();
         ArrayList<Research> researches = new ArrayList<>();
         try{
             if(!showNotValidatedToggleButton.isSelected() &&

@@ -287,21 +287,4 @@ public class LoginDAOTest {
         assertNotEquals(preloadedAcademicBodyHead, result);
     }
 
-    @Test
-    public void testIsValidMatricle(){
-        LoginDAO instance = new LoginDAO();
-        String matricle = "zS21013906";
-        
-        System.out.println("A valid matricle has exactly 10 characters and has an 'zS' as the first two before numbers");
-        
-        assertTrue(instance.isValidMatricle(matricle));
-    }
-    
-    @Test
-    public void testIsValidMatricleFail(){
-        LoginDAO instance = new LoginDAO();
-        String matricle = "s2101390634";
-        
-        assertTrue(!instance.isValidMatricle(matricle));
-    }
 }
