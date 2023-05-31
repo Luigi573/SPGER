@@ -12,7 +12,7 @@ import mx.uv.fei.logic.domain.User;
 public class UserDAO implements IUserDAO{
 
     @Override
-    public void addUser(User user) {
+    public int addUser(User user) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 

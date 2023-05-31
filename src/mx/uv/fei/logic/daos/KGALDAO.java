@@ -33,7 +33,7 @@ public class KGALDAO implements IKGALDAO {
 
     @Override
     public ArrayList<KGAL> getKGALList() throws DataRetrievalException {
-        ArrayList<KGAL> kgalList = new ArrayList();
+        ArrayList<KGAL> kgalList = new ArrayList<>();
         
         String query = "select * from LGAC";
         try {
@@ -103,7 +103,7 @@ public class KGALDAO implements IKGALDAO {
     @Override
     public ArrayList<KGAL> getKGALListByDescription(String description) throws DataRetrievalException {
         String query = "select * from LGAC where descripción like ?";
-        ArrayList<KGAL> kgalList = new ArrayList();
+        ArrayList<KGAL> kgalList = new ArrayList<>();
         try {
             dataBaseManager = new DataBaseManager();
             Connection connection = dataBaseManager.getConnection();

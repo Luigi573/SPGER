@@ -86,7 +86,7 @@ public class UserInformationController{
     public void setUserType(String userType){
         userTypeLabel.setText(userType);
     }
-    public String getMatriculeOrPersonalNumber(){
+    public String getMatricleOrPersonalNumber(){
         return matricleOrPersonalNumberLabel.getText();
     }
     public void setMatricleOrPersonalNumber(String type){

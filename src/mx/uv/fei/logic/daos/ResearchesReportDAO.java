@@ -18,7 +18,7 @@ public class ResearchesReportDAO implements IResearchesReportDAO{
     }
 
     @Override
-    public ArrayList<Research> getResearchesFromDatabase(String title, String query) throws DataRetrievalException{
+    public ArrayList<Research> getResearches(String title, String query) throws DataRetrievalException{
         ArrayList<Research> researches = new ArrayList<>();
 
         try{
@@ -56,31 +56,31 @@ public class ResearchesReportDAO implements IResearchesReportDAO{
     }
 
     @Override
-    public ArrayList<Research> getValidatedResearchesFromDatabase(String title) throws DataRetrievalException{
+    public ArrayList<Research> getValidatedResearches(String title) throws DataRetrievalException{
         ArrayList<Research> validatedResearches;
         String query = "SELECT * FROM Anteproyectos WHERE título LIKE ? && V°B° = 'Validado'";
-        validatedResearches = getResearchesFromDatabase(title, query);
+        validatedResearches = getResearches(title, query);
         return validatedResearches;
     }
 
     @Override
-    public ArrayList<Research> getNotValidatedResearchesFromDatabase(String title) throws DataRetrievalException{
+    public ArrayList<Research> getNotValidatedResearches(String title) throws DataRetrievalException{
         ArrayList<Research> notValidatedResearches;
         String query = "SELECT * FROM Anteproyectos WHERE título LIKE ? && V°B° = 'No Validado'";
-        notValidatedResearches = getResearchesFromDatabase(title, query);
+        notValidatedResearches = getResearches(title, query);
         return notValidatedResearches;
     }
 
     @Override
-    public ArrayList<Research> getValidatedAndNotValidatedResearchesFromDatabase(String title) throws DataRetrievalException{
+    public ArrayList<Research> getValidatedAndNotValidatedResearches(String title) throws DataRetrievalException{
         ArrayList<Research> validatedAndNotValidatedResearches;
         String query = "SELECT * FROM Anteproyectos WHERE título LIKE ? && (V°B° = 'Validado' || V°B° = 'No Validado')";
-        validatedAndNotValidatedResearches = getResearchesFromDatabase(title, query);
+        validatedAndNotValidatedResearches = getResearches(title, query);
         return validatedAndNotValidatedResearches;
     }
 
     @Override
-    public ArrayList<Research> getSelectedResearchesFromDatabase(ArrayList<String> selectedResearchesTitles) throws DataRetrievalException{
+    public ArrayList<Research> getSelectedResearches(ArrayList<String> selectedResearchesTitles) throws DataRetrievalException{
         DataBaseManager dataBaseManager = new DataBaseManager();
         ArrayList<Research> selectedResearches = new ArrayList<>();
 

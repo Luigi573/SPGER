@@ -10,15 +10,12 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import mx.uv.fei.gui.AlertPopUpGenerator;
 import mx.uv.fei.logic.daos.KGALDAO;
 import mx.uv.fei.logic.domain.KGAL;
 import mx.uv.fei.logic.exceptions.DataInsertionException;
 
 public class CreateNewKGALController {
-
-    private Stage stage;
-    private Scene scene;
-    private Parent root;
     
     @FXML
     private TextField tfDescription;
@@ -51,16 +48,15 @@ public class CreateNewKGALController {
     @FXML
     public void switchToKGALListScene(ActionEvent event) {
         try {
-            root = FXMLLoader.load(getClass().getResource("/mx/uv/fei/gui/fxml/kgal/KGALList.fxml"));
-            stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-            scene = new Scene(root);
+
+            Parent root = FXMLLoader.load(getClass().getResource("/mx/uv/fei/gui/fxml/kgal/KGALList.fxml"));
+            Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root);
+            
             stage.setScene(scene);
             stage.show();
         } catch (IOException e) {
-            Alert errorMessage = new Alert(Alert.AlertType.ERROR);
-            errorMessage.setHeaderText("Error al mostrar la información");
-            errorMessage.setContentText(e.getMessage());
-            errorMessage.showAndWait();
+            new AlertPopUpGenerator().showMissingFilesMessage();
         }
     }
 

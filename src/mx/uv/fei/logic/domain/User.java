@@ -1,14 +1,14 @@
 package mx.uv.fei.logic.domain;
 
 public abstract class User {
-    protected int userId;
-    protected String name;
-    protected String firstSurname;
-    protected String secondSurname;
-    protected String emailAddress;
-    protected String password;
-    protected String alternateEmail;
-    protected String phoneNumber;
+    int userId;
+    String name;
+    String firstSurname;
+    String secondSurname;
+    String emailAddress;
+    String password;
+    String alternateEmail;
+    String phoneNumber;
     
     public void setUserId(int userId){
         this.userId = userId;

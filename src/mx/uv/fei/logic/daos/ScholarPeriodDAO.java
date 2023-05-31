@@ -19,7 +19,7 @@ public class ScholarPeriodDAO implements IScholarPeriodDAO{
     }
 
     @Override
-    public ArrayList<ScholarPeriod> getScholarPeriodsFromDatabase() throws DataRetrievalException{
+    public ArrayList<ScholarPeriod> getScholarPeriods() throws DataRetrievalException{
         ArrayList<ScholarPeriod> scholarPeriods = new ArrayList<>();
 
         try{
@@ -45,7 +45,7 @@ public class ScholarPeriodDAO implements IScholarPeriodDAO{
     }
 
     @Override
-    public ScholarPeriod getScholarPeriodFromDatabase(int idScholarPeriod) throws DataRetrievalException{
+    public ScholarPeriod getScholarPeriod(int idScholarPeriod) throws DataRetrievalException{
         ScholarPeriod scholarPeriod = new ScholarPeriod();
 
         try{

@@ -1,8 +1,10 @@
 package mx.uv.fei.logic.domain;
 
 import java.sql.Date;
+import mx.uv.fei.logic.domain.statuses.ActivityStatus;
 
 public class Activity {
+    private ActivityStatus status;
     private Date startDate;
     private Date dueDate;
     private int id;
@@ -12,6 +14,9 @@ public class Activity {
     private String feedback;
     private String title;
     
+    public void setStatus(ActivityStatus status){
+        this.status = status;
+    }
     public void setStartDate(Date startDate) {
         this.startDate = startDate;
     }
@@ -37,6 +42,9 @@ public class Activity {
         this.title = title;
     }
     
+    public ActivityStatus getStatus(){
+        return status;
+    }
     public Date getStartDate() {
         return startDate;
     }

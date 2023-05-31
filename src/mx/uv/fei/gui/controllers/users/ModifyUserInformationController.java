@@ -34,7 +34,7 @@ import mx.uv.fei.logic.domain.UserType;
 import mx.uv.fei.logic.domain.statuses.ProfessorStatus;
 import mx.uv.fei.logic.domain.statuses.StudentStatus;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
-import mx.uv.fei.logic.exceptions.DataWritingException;
+import mx.uv.fei.logic.exceptions.DataInsertionException;
 
 public class ModifyUserInformationController{
     private UserInformationController userInformationController;
@@ -124,7 +124,7 @@ public class ModifyUserInformationController{
     public void setFirstSurname(String firstSurname){
         firstSurnameTextField.setText(firstSurname);
     }
-    public String getMatriculeOrPersonalNumber(){
+    public String getMatricleOrPersonalNumber(){
         return matricleOrPersonalNumberTextField.getText();
     }
     public void setMatricleOrPersonalNumber(String matricleOrPersonalNumber){
@@ -219,10 +219,10 @@ public class ModifyUserInformationController{
             new AlertPopUpGenerator().showConnectionErrorMessage();
         }
         try{
-            studentDAO.modifyStudentDataFromDatabase(newStudentData, originalStudentData);
+            studentDAO.modifyStudentData(newStudentData, originalStudentData);
             new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "Éxito", "Usuario modificado exitosamente");
             returnToGuiUsers(event);
-        }catch(DataWritingException e){
+        }catch(DataInsertionException e){
             new AlertPopUpGenerator().showConnectionErrorMessage();
         }
     }
@@ -257,10 +257,10 @@ public class ModifyUserInformationController{
         }
 
         try{
-            professorDAO.modifyProfessorDataFromDatabase(newProfessorData, originalProfessorData);
+            professorDAO.modifyProfessorData(newProfessorData, originalProfessorData);
             new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "Éxito", "Usuario modificado exitosamente");
             returnToGuiUsers(event);
-        }catch (DataWritingException e){
+        }catch (DataInsertionException e){
             new AlertPopUpGenerator().showConnectionErrorMessage();
         }
     }
@@ -294,10 +294,10 @@ public class ModifyUserInformationController{
             new AlertPopUpGenerator().showConnectionErrorMessage();
         }
         try{
-            directorDAO.modifyDirectorDataFromDatabase(newDirectorData, originalDirectorData);
+            directorDAO.modifyDirectorData(newDirectorData, originalDirectorData);
             new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "Éxito", "Usuario modificado exitosamente");
             returnToGuiUsers(event);
-        }catch(DataWritingException e) {
+        }catch(DataInsertionException e) {
             new AlertPopUpGenerator().showConnectionErrorMessage();
         }
     }
@@ -332,11 +332,11 @@ public class ModifyUserInformationController{
             new AlertPopUpGenerator().showConnectionErrorMessage();
         }
         try{
-            academicBodyHeadDAO.modifyAcademicBodyHeadDataFromDatabase(newAcademicBodyHeadData, originalAcademicBodyHeadData);
+            academicBodyHeadDAO.modifyAcademicBodyHeadData(newAcademicBodyHeadData, originalAcademicBodyHeadData);
 
             new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "Éxito", "Usuario modificado exitosamente");
             returnToGuiUsers(event);
-        }catch(DataWritingException e){
+        }catch(DataInsertionException e){
             new AlertPopUpGenerator().showConnectionErrorMessage();
         }
     }
@@ -371,11 +371,11 @@ public class ModifyUserInformationController{
             new AlertPopUpGenerator().showConnectionErrorMessage();
         }
         try{
-            degreeBossDAO.modifyDegreeBossDataFromDatabase(newDegreeBossData, originalDegreeBossData);
+            degreeBossDAO.modifyDegreeBossData(newDegreeBossData, originalDegreeBossData);
 
             new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "Éxito", "Usuario modificado exitosamente");
             returnToGuiUsers(event);
-        }catch(DataWritingException e){
+        }catch(DataInsertionException e){
             new AlertPopUpGenerator().showConnectionErrorMessage();
         }
     }
@@ -388,7 +388,7 @@ public class ModifyUserInformationController{
         userInformationPaneData.add(userInformationController.getAlternateEmail());
         userInformationPaneData.add(userInformationController.getTelephoneNumber());
         userInformationPaneData.add(userInformationController.getStatus());
-        userInformationPaneData.add(userInformationController.getMatriculeOrPersonalNumber());
+        userInformationPaneData.add(userInformationController.getMatricleOrPersonalNumber());
         return userInformationPaneData;
     }
     private boolean allTextFieldsContainsCorrectValues(){

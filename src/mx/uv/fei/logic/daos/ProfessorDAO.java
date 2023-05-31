@@ -11,7 +11,7 @@ import mx.uv.fei.dataaccess.DataBaseManager;
 import mx.uv.fei.logic.daosinterfaces.IProfessorDAO;
 import mx.uv.fei.logic.domain.Professor;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
-import mx.uv.fei.logic.exceptions.DataWritingException;
+import mx.uv.fei.logic.exceptions.DataInsertionException;
 
 public class ProfessorDAO implements IProfessorDAO{
     private final DataBaseManager dataBaseManager;
@@ -21,109 +21,90 @@ public class ProfessorDAO implements IProfessorDAO{
     }
 
     @Override
-    public void addProfessorToDatabase(Professor professor) throws DataWritingException{
+    public int addProfessor(Professor professor) throws DataInsertionException{
+        int generatedId = 0;
         try{
-            String query = "INSERT INTO Usuarios (nombre, apellidoPaterno, apellidoMaterno, correo, correoAlterno, " +
+            String queryToInsertProfessorDataToUsersColumns = "INSERT INTO Usuarios (nombre, apellidoPaterno, apellidoMaterno, correo, correoAlterno, " +
                             "númeroTeléfono, estado) VALUES (?, ?, ?, ?, ?, ?, ?)";
-            PreparedStatement preparedStatementToInsertUserData = 
-                dataBaseManager.getConnection().prepareStatement(query);
-            preparedStatementToInsertUserData.setString(1, professor.getName());
-            preparedStatementToInsertUserData.setString(2, professor.getFirstSurname());
-            preparedStatementToInsertUserData.setString(3, professor.getSecondSurname());
-            preparedStatementToInsertUserData.setString(4, professor.getEmailAddress());
-            preparedStatementToInsertUserData.setString(5, professor.getAlternateEmail());
-            preparedStatementToInsertUserData.setString(6, professor.getPhoneNumber());
-            preparedStatementToInsertUserData.setString(7, professor.getStatus());
-            preparedStatementToInsertUserData.executeUpdate();
+            PreparedStatement preparedStatementToInsertProfessorDataToUsersColumns = 
+                dataBaseManager.getConnection().prepareStatement(queryToInsertProfessorDataToUsersColumns, PreparedStatement.RETURN_GENERATED_KEYS);
+            preparedStatementToInsertProfessorDataToUsersColumns.setString(1, professor.getName());
+            preparedStatementToInsertProfessorDataToUsersColumns.setString(2, professor.getFirstSurname());
+            preparedStatementToInsertProfessorDataToUsersColumns.setString(3, professor.getSecondSurname());
+            preparedStatementToInsertProfessorDataToUsersColumns.setString(4, professor.getEmailAddress());
+            preparedStatementToInsertProfessorDataToUsersColumns.setString(5, professor.getAlternateEmail());
+            preparedStatementToInsertProfessorDataToUsersColumns.setString(6, professor.getPhoneNumber());
+            preparedStatementToInsertProfessorDataToUsersColumns.setString(7, professor.getStatus());
+            preparedStatementToInsertProfessorDataToUsersColumns.executeUpdate();
 
-            String queryForAssignUserIdToProfessor =
-                "SELECT IdUsuario FROM Usuarios WHERE nombre = ? && " +
-                "apellidoPaterno = ? && apellidoMaterno = ? && correo = ? && " +
-                "correoAlterno = ? && númeroTeléfono = ? && estado = ?";
-            PreparedStatement preparedStatementForAssignUserIdToProfessor = 
-                dataBaseManager.getConnection().prepareStatement(queryForAssignUserIdToProfessor);
-            preparedStatementForAssignUserIdToProfessor.setString(1, professor.getName());
-            preparedStatementForAssignUserIdToProfessor.setString(2, professor.getFirstSurname());
-            preparedStatementForAssignUserIdToProfessor.setString(3, professor.getSecondSurname());
-            preparedStatementForAssignUserIdToProfessor.setString(4, professor.getEmailAddress());
-            preparedStatementForAssignUserIdToProfessor.setString(5, professor.getAlternateEmail());
-            preparedStatementForAssignUserIdToProfessor.setString(6, professor.getPhoneNumber());
-            preparedStatementForAssignUserIdToProfessor.setString(7, professor.getStatus());
-            ResultSet resultSet = preparedStatementForAssignUserIdToProfessor.executeQuery();
+            ResultSet resultSet = preparedStatementToInsertProfessorDataToUsersColumns.getGeneratedKeys();
             if(resultSet.next()){
-                professor.setUserId(resultSet.getInt("IdUsuario"));
+                generatedId = resultSet.getInt(1);
+                professor.setUserId(generatedId);
             }
 
-            String wholeQueryToInsertProfessorData = 
+            String queryToInsertProfessorDataToProfessorColumns = 
                 "INSERT INTO Profesores (NumPersonal, IdUsuario) VALUES (?, ?)";
-            PreparedStatement preparedStatementToInsertProfessorData = 
-                dataBaseManager.getConnection().prepareStatement(wholeQueryToInsertProfessorData);
-            preparedStatementToInsertProfessorData.setInt(1, professor.getStaffNumber());
-            preparedStatementToInsertProfessorData.setInt(2, professor.getUserId());
-            preparedStatementToInsertProfessorData.executeUpdate();
+            PreparedStatement preparedStatementToInsertProfessorDataToProfessorColumns = 
+                dataBaseManager.getConnection().prepareStatement(queryToInsertProfessorDataToProfessorColumns);
+            preparedStatementToInsertProfessorDataToProfessorColumns.setInt(1, professor.getStaffNumber());
+            preparedStatementToInsertProfessorDataToProfessorColumns.setInt(2, professor.getUserId());
+            preparedStatementToInsertProfessorDataToProfessorColumns.executeUpdate();
 
-            preparedStatementToInsertProfessorData.close();
+            preparedStatementToInsertProfessorDataToProfessorColumns.close();
             dataBaseManager.getConnection().close();
 
         }catch(SQLIntegrityConstraintViolationException e){
             deleteProfessorFromUsersTable(professor);
-            throw new DataWritingException("Error al agregar estudiante. Verifique su conexion e intentelo de nuevo");
+            throw new DataInsertionException("Error al agregar estudiante. Verifique su conexion e intentelo de nuevo");
         }catch(SQLException e){
             e.printStackTrace();
-            throw new DataWritingException("Fallo al recuperar la informacion. Verifique su conexion e intentelo de nuevo");
+            throw new DataInsertionException("Fallo al recuperar la informacion. Verifique su conexion e intentelo de nuevo");
         }finally{
             dataBaseManager.closeConnection();
         }
+        return generatedId;
     }
 
     @Override
-    public void modifyProfessorDataFromDatabase(Professor newProfessorData, Professor originalProfessorData) throws DataWritingException{
+    public int modifyProfessorData(Professor professor) throws DataInsertionException{
+        int result = 0;
         try{
-            newProfessorData.setUserId(getUserIdFromProfessor(originalProfessorData));
             String queryForUpdateUserData = "UPDATE Usuarios SET nombre = ?, " + 
                            "apellidoPaterno = ?, apellidoMaterno = ?, correo = ?, " + 
                            "correoAlterno = ?, númeroTeléfono = ?, estado = ? " +
-                           "WHERE nombre = ? && apellidoPaterno = ? && apellidoMaterno = ? && " + 
-                           "correo = ? && correoAlterno = ? && númeroTeléfono = ? && estado = ?";
+                           "WHERE IdUsuario = ?";
             PreparedStatement preparedStatement = 
                 dataBaseManager.getConnection().prepareStatement(queryForUpdateUserData);
-            preparedStatement.setString(1, newProfessorData.getName());
-            preparedStatement.setString(2, newProfessorData.getFirstSurname());
-            preparedStatement.setString(3, newProfessorData.getSecondSurname());
-            preparedStatement.setString(4, newProfessorData.getEmailAddress());
-            preparedStatement.setString(5, newProfessorData.getAlternateEmail());
-            preparedStatement.setString(6, newProfessorData.getPhoneNumber());
-            preparedStatement.setString(7, newProfessorData.getStatus());
-            preparedStatement.setString(8, originalProfessorData.getName());
-            preparedStatement.setString(9, originalProfessorData.getFirstSurname());
-            preparedStatement.setString(10, originalProfessorData.getSecondSurname());
-            preparedStatement.setString(11, originalProfessorData.getEmailAddress());
-            preparedStatement.setString(12, originalProfessorData.getAlternateEmail());
-            preparedStatement.setString(13, originalProfessorData.getPhoneNumber());
-            preparedStatement.setString(14, originalProfessorData.getStatus());
-            preparedStatement.executeUpdate();
+            preparedStatement.setString(1, professor.getName());
+            preparedStatement.setString(2, professor.getFirstSurname());
+            preparedStatement.setString(3, professor.getSecondSurname());
+            preparedStatement.setString(4, professor.getEmailAddress());
+            preparedStatement.setString(5, professor.getAlternateEmail());
+            preparedStatement.setString(6, professor.getPhoneNumber());
+            preparedStatement.setString(7, professor.getStatus());
+            preparedStatement.setInt(8, professor.getUserId());
+            result = preparedStatement.executeUpdate();
 
             String queryForUpdateProfessorData = "UPDATE Profesores SET NumPersonal = ? " + 
                            "WHERE IdUsuario = ?";
             
             PreparedStatement preparedStatementForUpdateProfessorData = 
                 dataBaseManager.getConnection().prepareStatement(queryForUpdateProfessorData);
-            preparedStatementForUpdateProfessorData.setInt(1, newProfessorData.getStaffNumber());
-            preparedStatementForUpdateProfessorData.setInt(2, newProfessorData.getUserId());
+            preparedStatementForUpdateProfessorData.setInt(1, professor.getStaffNumber());
+            preparedStatementForUpdateProfessorData.setInt(2, professor.getUserId());
             preparedStatementForUpdateProfessorData.executeUpdate();
         }catch(SQLException e){
-            e.printStackTrace();
-            throw new DataWritingException("Fallo al recuperar la informacion. Verifique su conexion e intentelo de nuevo");
-        }catch(DataRetrievalException e){
-            e.printStackTrace();
-            throw new DataWritingException("Fallo al recuperar la informacion. Verifique su conexion e intentelo de nuevo");
+            throw new DataInsertionException("Fallo al recuperar la informacion. Verifique su conexion e intentelo de nuevo");
         }finally{
             dataBaseManager.closeConnection();
         }
+
+        return result;
     }
 
     @Override
-    public ArrayList<Professor> getProfessorsFromDatabase() throws DataRetrievalException{
+    public ArrayList<Professor> getProfessors() throws DataRetrievalException{
         ArrayList<Professor> professors = new ArrayList<>();
         
         try{
@@ -155,7 +136,7 @@ public class ProfessorDAO implements IProfessorDAO{
     }
 
     @Override
-    public ArrayList<Professor> getSpecifiedProfessorsFromDatabase(String professorName) throws DataRetrievalException{
+    public ArrayList<Professor> getSpecifiedProfessors(String professorName) throws DataRetrievalException{
         ArrayList<Professor> professors = new ArrayList<>();
         
         try{
@@ -189,7 +170,7 @@ public class ProfessorDAO implements IProfessorDAO{
     }
 
     @Override
-    public Professor getProfessorFromDatabase(int personalNumber) throws DataRetrievalException{
+    public Professor getProfessor(int personalNumber) throws DataRetrievalException{
         Professor professor = new Professor();
 
         try{
@@ -252,42 +233,8 @@ public class ProfessorDAO implements IProfessorDAO{
 
         return false;
     }
-
-    private int getUserIdFromProfessor(Professor originalProfessorData) throws DataRetrievalException{
-        int UserId = 0;
-
-        try{
-            String query = "SELECT U.IdUsuario FROM Usuarios U INNER JOIN Profesores P ON " + 
-                           "U.IdUsuario = P.IdUsuario WHERE U.nombre = ? && " +
-                           "U.apellidoPaterno = ? && U.apellidoMaterno = ? && U.correo = ? && " +
-                           "U.correoAlterno = ? && U.númeroTeléfono = ? && U.estado = ? && P.NumPersonal = ?";
-            PreparedStatement preparedStatement = dataBaseManager.getConnection().prepareStatement(query);
-            preparedStatement.setString(1, originalProfessorData.getName());
-            preparedStatement.setString(2, originalProfessorData.getFirstSurname());
-            preparedStatement.setString(3, originalProfessorData.getSecondSurname());
-            preparedStatement.setString(4, originalProfessorData.getEmailAddress());
-            preparedStatement.setString(5, originalProfessorData.getAlternateEmail());
-            preparedStatement.setString(6, originalProfessorData.getPhoneNumber());
-            preparedStatement.setString(7, originalProfessorData.getStatus());
-            preparedStatement.setInt(8, originalProfessorData.getStaffNumber());
-
-            ResultSet resultSet = preparedStatement.executeQuery();
-            if(resultSet.next()) {
-                UserId = resultSet.getInt("IdUsuario");
-            }
-            
-            resultSet.close();
-            dataBaseManager.getConnection().close();
-        }catch(SQLException e){
-            e.printStackTrace();
-            throw new DataRetrievalException("Fallo al recuperar la informacion. Verifique su conexion e intentelo de nuevo");
-        }finally{
-            dataBaseManager.closeConnection();
-        }
-
-        return UserId;
-    }
-    private void deleteProfessorFromUsersTable(Professor professor) throws DataWritingException{
+    
+    private void deleteProfessorFromUsersTable(Professor professor) throws DataInsertionException{
         String queryToInsertUserData = "DELETE FROM Usuarios WHERE nombre = ? && apellidoPaterno = ? && apellidoMaterno = ? && " +
             "correo = ? && correoAlterno = ? && númeroTeléfono = ? && estado = ?";
         try{
@@ -302,7 +249,7 @@ public class ProfessorDAO implements IProfessorDAO{
             preparedStatementToInsertUserData.setString(7, professor.getStatus());
             preparedStatementToInsertUserData.executeUpdate();
         }catch(SQLException e){
-            throw new DataWritingException("Error al eliminar profesor de la tabla usuarios");
+            throw new DataInsertionException("Error al eliminar profesor de la tabla usuarios");
         }
     }
 }

@@ -38,7 +38,7 @@ public class AcademicBodyDAO implements IAcademicBodyDAO{
 
     @Override
     public ArrayList<AcademicBody> getAcademicBodiesList() throws DataRetrievalException {
-        ArrayList<AcademicBody> academicBodiesList = new ArrayList();
+        ArrayList<AcademicBody> academicBodiesList = new ArrayList<>();
         
         String query = "select * from CuerposAcademicos";
         try {
@@ -63,7 +63,7 @@ public class AcademicBodyDAO implements IAcademicBodyDAO{
 
     @Override
     public AcademicBody getAcademicBodyByID(int academicBodyID) throws DataRetrievalException {     
-        ArrayList<AcademicBody> academicBodiesList = new ArrayList(getAcademicBodiesList());
+        ArrayList<AcademicBody> academicBodiesList = new ArrayList<>(getAcademicBodiesList());
         AcademicBody academicBodyByID = new AcademicBody();
         int i = 0;
         boolean b = false;

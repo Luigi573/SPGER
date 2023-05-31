@@ -46,7 +46,7 @@ public class UserController{
     public String getType(){
         return typeLabel.getText();
     }
-    public String getMatriculeOrPersonalNumber(){
+    public String getMatricleOrPersonalNumber(){
         return matricleOrPersonalNumberLabel.getText();
     }
     public void setLabelsCorrectBounds(String userType){

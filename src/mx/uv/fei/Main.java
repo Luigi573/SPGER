@@ -11,8 +11,9 @@ public class Main extends Application{
     public void start(Stage arg0) throws Exception{
         Parent guiUsuarios;
         FXMLLoader loader = new FXMLLoader(
+            getClass().getResource("/mx/uv/fei/gui/fxml/Login.fxml")
             //getClass().getResource("/mx/uv/fei/gui/fxml/kgal/KGALList.fxml")
-            getClass().getResource("/mx/uv/fei/gui/fxml/research/ResearchManager.fxml")
+            //getClass().getResource("/mx/uv/fei/gui/fxml/research/ResearchManager.fxml")
             //getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/ModifyActivity.fxml")// tha xavier gui
             //getClass().getResource("/mx/uv/fei/gui/fxml/courses/students/GuiUsersCourse.fxml")
             //getClass().getResource("/mx/uv/fei/gui/fxml/courses/GuiCourses.fxml")
@@ -20,7 +21,7 @@ public class Main extends Application{
             //getClass().getResource("/mx/uv/fei/gui/fxml/reports/GuiResearchReport.fxml")
         );
         guiUsuarios = loader.load();
-
+        
         //TODO
         //Nombres y apellidos en userspanes y studentadder en GuiUsersCourse y GuiStudentAdder GG
         //Mostrar estatus de usuarios en comboboxes para registrar usuarios en GuiRegisterUsers y ModifyUserPane GG
@@ -48,7 +49,5 @@ public class Main extends Application{
     }
     public static void main (String args[]) {
         launch(args);
-
-   
     }
 }

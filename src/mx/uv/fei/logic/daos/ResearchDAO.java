@@ -2,14 +2,16 @@ package mx.uv.fei.logic.daos;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import mx.uv.fei.dataaccess.DataBaseManager;
 import mx.uv.fei.logic.daosinterfaces.IResearchDAO;
+import mx.uv.fei.logic.domain.Director;
 import mx.uv.fei.logic.domain.ResearchProject;
 import mx.uv.fei.logic.domain.statuses.ResearchProjectStatus;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
-import mx.uv.fei.logic.exceptions.DataWritingException;
+import mx.uv.fei.logic.exceptions.DataInsertionException;
 
 public class ResearchDAO implements IResearchDAO{
     private final DataBaseManager dataBaseManager;
@@ -18,15 +20,15 @@ public class ResearchDAO implements IResearchDAO{
         dataBaseManager = new DataBaseManager();
     }
     @Override
-    public int addResearch(ResearchProject research) throws DataWritingException{
-        int result = 0;
+    public int addResearch(ResearchProject research) throws DataInsertionException {
+        int generatedId = 0;
         PreparedStatement statement;
         String query = "INSERT INTO Anteproyectos(fechaFin, fechaInicio, IdLGAC, descripción, "
                 + "resultadosEsperados, requisitos, bibliografíaRecomendada, título, Matrícula, "
                 + "IdDirector1, IdDirector2, IdDirector3, V°B°) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?);";
         
         try{
-            statement = dataBaseManager.getConnection().prepareStatement(query);
+            statement = dataBaseManager.getConnection().prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             
             statement.setDate(1, research.getDueDate());
             statement.setDate(2, research.getStartDate());
@@ -43,14 +45,14 @@ public class ResearchDAO implements IResearchDAO{
             statement.setString(7, research.getSuggestedBibliography());
             statement.setString(8, research.getTitle());
             
-            if(research.getStudent().getMatricule() != null){
-                statement.setString(9, research.getStudent().getMatricule());
+            if(research.getStudent().getMatricle() != null){
+                statement.setString(9, research.getStudent().getMatricle());
             }else{
                 statement.setNull(9, java.sql.Types.VARCHAR);
             }
             
             for(int i = 0; i < 3; i++){
-                if(research.getDirector(i).getDirectorId() != 0){
+                if(research.getDirector(i) != null){
                     statement.setInt(i + 10, research.getDirector(i).getDirectorId());
                 }else{
                     statement.setNull(i + 10, java.sql.Types.INTEGER);
@@ -59,15 +61,19 @@ public class ResearchDAO implements IResearchDAO{
 
             statement.setString(13, research.getValidationStatus());
             
-            result = statement.executeUpdate();
+            statement.executeUpdate();
+            ResultSet generatedKeys = statement.getGeneratedKeys();
+            
+            if(generatedKeys.next()){
+                generatedId = generatedKeys.getInt(1);
+            }
         }catch(SQLException exception){
-            exception.printStackTrace();
-            throw new DataWritingException("Error de conexión. Verifique su conexion e intentelo de nuevo");
+            throw new DataInsertionException("Error de conexión. Verifique su conexion e intentelo de nuevo");
         }finally{
             dataBaseManager.closeConnection();
         }
         
-        return result;
+        return generatedId;
     }
 
     @Override
@@ -97,11 +103,13 @@ public class ResearchDAO implements IResearchDAO{
                 research.setStartDate(resultSet.getDate("a.fechaInicio"));
                 
                 //Concatenating column names since they're almost the same
-                for(int i = 0; i < 3; i++){
-                    research.getDirector(i).setDirectorId(resultSet.getInt("a.IdDirector"+ (i + 1)));
-                
+                for(int i = 1; i <= 3; i++){
+                    Director director = new Director();
+                    director.setDirectorId(resultSet.getInt("a.IdDirector"+ i));
+                    
                     if(!resultSet.wasNull()){
-                        research.getDirector(i).setName(resultSet.getString("nombreDirector" + (i + 1)));
+                        director.setName(resultSet.getString("nombreDirector" + i));
+                        research.addDirector(director);
                     }
                 }
                 
@@ -134,8 +142,7 @@ public class ResearchDAO implements IResearchDAO{
         
         return researchProjectList;
     }
-
-    @Override
+    
     public ArrayList<ResearchProject> getSpecifiedResearchProjectList(String researchName) throws DataRetrievalException{
         ArrayList<ResearchProject> researchProjectList = new ArrayList<>();
         PreparedStatement statement;
@@ -201,7 +208,6 @@ public class ResearchDAO implements IResearchDAO{
         return researchProjectList;
     }
 
-    @Override
     public ArrayList<ResearchProject> getSpecifiedValidatedResearchProjectList(String researchName) throws DataRetrievalException{
         ArrayList<ResearchProject> researchProjectList = new ArrayList<>();
         PreparedStatement statement;
@@ -268,7 +274,6 @@ public class ResearchDAO implements IResearchDAO{
         return researchProjectList;
     }
 
-    @Override
     public ArrayList<ResearchProject> getSpecifiedNotValidatedResearchProjectList(String researchName) throws DataRetrievalException{
         ArrayList<ResearchProject> researchProjectList = new ArrayList<>();
         PreparedStatement statement;
@@ -335,7 +340,6 @@ public class ResearchDAO implements IResearchDAO{
         return researchProjectList;
     }
 
-    @Override
     public ArrayList<ResearchProject> getSpecifiedValidatedAndNotValidatedResearchProjectList(String researchName) throws DataRetrievalException{
         ArrayList<ResearchProject> researchProjectList = new ArrayList<>();
         PreparedStatement statement;
@@ -403,7 +407,7 @@ public class ResearchDAO implements IResearchDAO{
     }
 
     @Override
-    public int modifyResearch(ResearchProject research) throws DataWritingException{
+    public int modifyResearch(ResearchProject research) throws DataInsertionException{
         int result = 0;
         PreparedStatement statement;
         String query = "UPDATE Anteproyectos SET fechaFin = ?, fechaInicio = ?, IdLGAC = ?, descripción = ?, "
@@ -428,14 +432,14 @@ public class ResearchDAO implements IResearchDAO{
             statement.setString(7, research.getSuggestedBibliography());
             statement.setString(8, research.getTitle());
             
-            if(research.getStudent().getMatricule() != null){
-                statement.setString(9, research.getStudent().getMatricule());
+            if(research.getStudent().getMatricle() != null){
+                statement.setString(9, research.getStudent().getMatricle());
             }else{
                 statement.setNull(9, java.sql.Types.VARCHAR);
             }
             
             for(int i = 0; i < 3; i++){
-                if(research.getDirector(i).getDirectorId() != 0){
+                if(research.getDirector(i) != null){
                     statement.setInt(i + 10, research.getDirector(i).getDirectorId());
                 }else{
                     statement.setNull(i + 10, java.sql.Types.INTEGER);
@@ -446,7 +450,7 @@ public class ResearchDAO implements IResearchDAO{
             
             result = statement.executeUpdate();
         }catch(SQLException exception){
-            throw new DataWritingException("Error de conexión. Verifique su conexion e intentelo de nuevo");
+            throw new DataInsertionException("Error de conexión. Verifique su conexion e intentelo de nuevo");
         }finally{
             dataBaseManager.closeConnection();
         }
@@ -455,7 +459,7 @@ public class ResearchDAO implements IResearchDAO{
     }
 
     @Override
-    public void validateResearch(ResearchProject researchProject) throws DataWritingException{
+    public void validateResearch(ResearchProject researchProject) throws DataInsertionException{
         PreparedStatement statement;
         String query = "UPDATE Anteproyectos SET V°B° = ? WHERE IdAnteproyecto = ?";
         
@@ -467,7 +471,7 @@ public class ResearchDAO implements IResearchDAO{
             statement.executeUpdate();
         }catch(SQLException exception){
             exception.printStackTrace();
-            throw new DataWritingException("Error de conexión. Verifique su conexion e intentelo de nuevo");
+            throw new DataInsertionException("Error de conexión. Verifique su conexion e intentelo de nuevo");
         }finally{
             dataBaseManager.closeConnection();
         }

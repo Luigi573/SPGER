@@ -1,30 +1,33 @@
 package mx.uv.fei.logic.daos;
 
-import org.junit.jupiter.api.Test;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import static org.junit.Assert.*;
 
 public class ResearchesReportDAOTest {
     @Test
-    private void getNotValidatedResearchesFromDatabaseTest() {
+    void testGetNotValidatedResearches() {
 
     }
 
     @Test
-    private void getResearchesFromDatabaseTest() {
+    void testGetResearches() {
 
     }
 
     @Test
-    private void getSelectedResearchesFromDatabaseTest() {
+    void testGetSelectedResearches() {
 
     }
 
     @Test
-    private void getValidatedAndNotValidatedResearchesFromDatabaseTest() {
+    void testGetValidatedAndNotValidatedResearches() {
 
     }
 
     @Test
-    private void getValidatedResearchesFromDatabaseTest() {
+    void testGetValidatedResearches() {
 
     }
 }

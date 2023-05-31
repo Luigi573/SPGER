@@ -1,5 +1,7 @@
 package mx.uv.fei.gui.controllers.chronogram;
 
+import mx.uv.fei.gui.controllers.chronogram.activities.CreateActivityController;
+import mx.uv.fei.gui.controllers.chronogram.activities.ActivityPaneController;
 import java.io.IOException;
 import java.util.ArrayList;
 import javafx.event.ActionEvent;
@@ -14,6 +16,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import mx.uv.fei.gui.AlertPopUpGenerator;
 import mx.uv.fei.logic.daos.ActivityDAO;
 import mx.uv.fei.logic.daos.ResearchDAO;
 import mx.uv.fei.logic.domain.Activity;
@@ -21,10 +24,6 @@ import mx.uv.fei.logic.domain.ResearchProject;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
 
 public class ChronogramController{
-    private Stage stage;
-    private Scene scene;
-    private Parent parent;
-    
     @FXML
     private ComboBox<ResearchProject> studentChronogramComboBox;
     @FXML
@@ -37,27 +36,24 @@ public class ChronogramController{
     @FXML
     public void initialize(){
         loadHeader();
-        loadResearch();
+        loadComboBoxResearch();
     }
     @FXML
     private void createActivity(ActionEvent event){
         if(studentChronogramComboBox.getValue() != null){
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/CreateActivity.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/activities/CreateActivity.fxml"));
             try{
-                parent = loader.load();
+                Parent parent = loader.load();
                 CreateActivityController controller = (CreateActivityController)loader.getController();
                 controller.setResearchId(studentChronogramComboBox.getValue().getId());
                 
-                stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-                scene = new Scene(parent);
+                Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+                Scene scene = new Scene(parent);
                 stage.setTitle("SPGER");
                 stage.setScene(scene);
                 stage.show();
             }catch(IllegalStateException | IOException exception){
-                Alert errorMessage = new Alert(Alert.AlertType.ERROR);
-                errorMessage.setHeaderText("Error de carga");
-                errorMessage.setContentText("No se pudo abrir la ventana, verifique que el archivo .fxml esté en su ubicación correcta");
-                errorMessage.showAndWait();
+                new AlertPopUpGenerator().showMissingFilesMessage();
             }
         }else{
             Alert warningMessage = new Alert(Alert.AlertType.WARNING);
@@ -65,12 +61,11 @@ public class ChronogramController{
             warningMessage.setContentText("Favor de seleccionar un cronograma antes de crear una actividad");
             warningMessage.showAndWait();
         }
-        
-        
     }
     @FXML
     private void switchChronogram(ActionEvent event){
        if(studentChronogramComboBox.getValue() != null){
+           chronogramTitleLabel.setText("Cronograma de " + studentChronogramComboBox.getValue().getStudent().getName());
            loadActivities(studentChronogramComboBox.getValue().getId());
        }
     }
@@ -87,7 +82,7 @@ public class ChronogramController{
             errorMessage.showAndWait();
         }
     }
-    private void loadResearch(){
+    private void loadComboBoxResearch(){
         ResearchDAO researchDAO = new ResearchDAO();
         
         try{
@@ -100,6 +95,7 @@ public class ChronogramController{
             }
         }catch(DataRetrievalException exception){
             //Log it
+            exception.printStackTrace();
         }
     }
     private void loadActivities(int researchId){
@@ -109,7 +105,7 @@ public class ChronogramController{
             ArrayList<Activity> activityList = activityDAO.getActivityList(researchId);
             
             for(Activity activity : activityList){
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/ChronogramActivityPane.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/activities/ChronogramActivityPane.fxml"));
                 
                 try{
                     Pane activityPane = loader.load();
@@ -118,17 +114,11 @@ public class ChronogramController{
                     
                     activityListVBox.getChildren().add(activityPane);
                 }catch(IllegalStateException | IOException exception){
-                    Alert errorMessage = new Alert(Alert.AlertType.ERROR);
-                    errorMessage.setHeaderText("Error de carga");
-                    errorMessage.setContentText("No se pudo abrir la ventana, verifique que el archivo .fxml esté en su ubicación correcta");
-                    errorMessage.showAndWait();
+                    new AlertPopUpGenerator().showMissingFilesMessage();
                 }
             }
         }catch(DataRetrievalException exception){
-            Alert errorMessage = new Alert(Alert.AlertType.ERROR);
-            errorMessage.setHeaderText("Error de conexión");
-            errorMessage.setContentText("Favor de verificar su conexión a internet e inténtelo de nuevo");
-            errorMessage.showAndWait();
+            new AlertPopUpGenerator().showConnectionErrorMessage();
         }
     }
 }

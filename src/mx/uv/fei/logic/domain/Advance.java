@@ -1,60 +1,64 @@
-
 package mx.uv.fei.logic.domain;
 
-public class Advance {
-    private int advanceID;
-    private String studentID;
-    private int directorID;
-    private String title;
-    private String comments;
+import java.sql.Date;
 
-    public Advance() {}
+public class Advance {
+    private int id;
+    private int activityId;
+    private Date date;
+    private String title;
+    private String comment;
+    private String feedback;
+
+    public Advance() {
+        
+    }
     
     public Advance(String studentID, int directorID, String title, String comments) {
-        this.studentID = studentID;
-        this.directorID = directorID;
         this.title = title;
-        this.comments = comments;
+        this.comment = comments;
     }
     
-    public void setAdvanceID(int advanceID) {
-        this.advanceID = advanceID;
+    public void setId(int id) {
+        this.id = id;
     }
-    
-    public void setMatricle(String studentID) {
-        this.studentID = studentID;
+    public void setActivityId(int activityId){
+        this.activityId = activityId;
     }
-    
-    public void setDirectorID(int directorID) {
-        this.directorID = directorID;
+    public void setDate(Date date){
+        this.date = date;
     }
     
     public void setTitle(String title) {
         this.title = title;
     }
     
-    public void setComments(String comments) {
-        this.comments = comments;
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+    public void setFeedback(String feedback){
+        this.feedback = feedback;
     }
     
-    public int getAdvanceID() {
-        return this.advanceID;
+    public int getId() {
+        return id;
     }
-    
-    public String getMatricule() {
-        return this.studentID;
+    public int getActivityId(){
+        return activityId;
     }
-    
-    public int getDirectorID() {
-        return this.directorID;
+    public Date getDate(){
+        return date;
     }
     
     public String getTitle() {
-        return this.title;
+        return title;
     }
     
-    public String getComments() {
-        return this.comments;
+    public String getComment() {
+        return comment;
+    }
+    public String getFeedback(){
+        return feedback;
     }
     
     @Override
@@ -63,11 +67,11 @@ public class Advance {
             return false;
         }
             Advance advance = (Advance) o;
-            return (this.studentID == advance.getMatricule()) && (this.directorID == advance.getDirectorID() && (this.title.equals(advance.getTitle())) && (this.comments.equals(advance.getComments())));
+            return ((title.equals(advance.getTitle())) && (comment.equals(advance.getComment())));
     }
 
     @Override
     public String toString() {
-        return "ID Avance: " + this.advanceID + " ID Estudiante: " + this.studentID + " ID Director: " + this.directorID + " Titulo: " + this.title + " Comentarios: " + this.comments;
+        return "ID Avance: "  + " Titulo: " + title + " Comentario: " + comment + "Fecha: " + date;
     }
 }

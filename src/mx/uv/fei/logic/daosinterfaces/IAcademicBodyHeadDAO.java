@@ -4,12 +4,12 @@ import java.util.ArrayList;
 
 import mx.uv.fei.logic.domain.AcademicBodyHead;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
-import mx.uv.fei.logic.exceptions.DataWritingException;
+import mx.uv.fei.logic.exceptions.DataInsertionException;
 
 public interface IAcademicBodyHeadDAO {
-    public void addAcademicBodyHeadToDatabase(AcademicBodyHead academicBodyHead) throws DataWritingException;
-    public void modifyAcademicBodyHeadDataFromDatabase(AcademicBodyHead newAcademicBodyHeadData, AcademicBodyHead originalAcademicBodyHeadData) throws DataWritingException;
-    public ArrayList<AcademicBodyHead> getAcademicBodyHeadsFromDatabase() throws DataRetrievalException;
-    public ArrayList<AcademicBodyHead> getSpecifiedAcademicBodyHeadsFromDatabase(String academicBodyHeadName) throws DataRetrievalException;
-    public AcademicBodyHead getAcademicBodyHeadFromDatabase(int personalNumber) throws DataRetrievalException;
+    public int addAcademicBodyHead(AcademicBodyHead academicBodyHead) throws DataInsertionException;
+    public int modifyAcademicBodyHeadData(AcademicBodyHead academicBodyHead) throws DataInsertionException;
+    public ArrayList<AcademicBodyHead> getAcademicBodyHeads() throws DataRetrievalException;
+    public ArrayList<AcademicBodyHead> getSpecifiedAcademicBodyHeads(String academicBodyHeadName) throws DataRetrievalException;
+    public AcademicBodyHead getAcademicBodyHead(int personalNumber) throws DataRetrievalException;
 }

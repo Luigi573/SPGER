@@ -4,12 +4,12 @@ import java.util.ArrayList;
 
 import mx.uv.fei.logic.domain.Professor;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
-import mx.uv.fei.logic.exceptions.DataWritingException;
+import mx.uv.fei.logic.exceptions.DataInsertionException;
 
 public interface IProfessorDAO {
-    public void addProfessorToDatabase(Professor professor) throws DataWritingException;
-    public void modifyProfessorDataFromDatabase(Professor newProfessorData, Professor originalProfessorData) throws DataWritingException;
-    public ArrayList<Professor> getProfessorsFromDatabase() throws DataRetrievalException;
-    public ArrayList<Professor> getSpecifiedProfessorsFromDatabase(String professorName) throws DataRetrievalException;
-    public Professor getProfessorFromDatabase(int personalNumber) throws DataRetrievalException;
+    public int addProfessor(Professor professor) throws DataInsertionException;
+    public int modifyProfessorData(Professor professor) throws DataInsertionException;
+    public ArrayList<Professor> getProfessors() throws DataRetrievalException;
+    public ArrayList<Professor> getSpecifiedProfessors(String professorName) throws DataRetrievalException;
+    public Professor getProfessor(int personalNumber) throws DataRetrievalException;
 }

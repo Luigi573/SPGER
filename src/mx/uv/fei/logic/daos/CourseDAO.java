@@ -10,7 +10,7 @@ import mx.uv.fei.dataaccess.DataBaseManager;
 import mx.uv.fei.logic.daosinterfaces.ICourseDAO;
 import mx.uv.fei.logic.domain.Course;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
-import mx.uv.fei.logic.exceptions.DataWritingException;
+import mx.uv.fei.logic.exceptions.DataInsertionException;
 
 public class CourseDAO implements ICourseDAO{
 
@@ -21,64 +21,71 @@ public class CourseDAO implements ICourseDAO{
     }
     
     @Override
-    public void addCourseToDatabase(Course course) throws DataWritingException{
+    public int addCourse(Course course) throws DataInsertionException{
+        int generatedId = 0;
+        String query = 
+        "INSERT INTO Cursos (NRC, IdPeriodoEscolar, NumPersonal, nombreEE, sección, bloque)" +
+        " VALUES (?, ?, ?, ?, ?, ?)";
         try{
-            String query = 
-                "INSERT INTO Cursos (NRC, IdPeriodoEscolar, NumPersonal, nombreEE, sección, bloque)" +
-                " VALUES (?, ?, ?, ?, ?, ?)";
             PreparedStatement preparedStatement = 
-                dataBaseManager.getConnection().prepareStatement(query);
+                dataBaseManager.getConnection().prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
             preparedStatement.setInt(1, course.getNrc());
-            preparedStatement.setInt(2, course.getIdScholarPeriod());
-            preparedStatement.setInt(3, course.getStaffNumber());
-            preparedStatement.setString(4, course.getEEName());
+            preparedStatement.setInt(2, course.getScholarPeriod().getIdScholarPeriod());
+            preparedStatement.setInt(3, course.getProfessor().getStaffNumber());
+            preparedStatement.setString(4, course.getName());
             preparedStatement.setInt(5, course.getSection());
             preparedStatement.setInt(6, course.getBlock());
             preparedStatement.executeUpdate();
+            ResultSet resultSet = preparedStatement.getGeneratedKeys();
+            if(resultSet.next()){
+                generatedId = resultSet.getInt(1);
+            }
 
         }catch(SQLException e){
-            throw new DataWritingException("Error al agregar curso. Verifique su conexion e intentelo de nuevo");
+            throw new DataInsertionException("Error al agregar curso. Verifique su conexion e intentelo de nuevo");
         }finally{
             dataBaseManager.closeConnection();
         }
+        return generatedId;
     }
 
     @Override
-    public void modifyCourseDataFromDatabase(Course newCourseData, Course originalCourseData) throws DataWritingException{
+    public int modifyCourseData(Course course) throws DataInsertionException{
         try{
             String query = "UPDATE Cursos SET NRC = ?, " + 
                            "IdPeriodoEscolar = ?, NumPersonal = ?, nombreEE = ?, " + 
                            "sección = ?, bloque = ? WHERE NRC = ?";
             PreparedStatement preparedStatement = dataBaseManager.getConnection().prepareStatement(query);
-            preparedStatement.setInt(1, newCourseData.getNrc());
-            preparedStatement.setInt(2, newCourseData.getIdScholarPeriod());
-            preparedStatement.setInt(3, newCourseData.getStaffNumber());
-            preparedStatement.setString(4, newCourseData.getEEName());
-            preparedStatement.setInt(5, newCourseData.getSection());
-            preparedStatement.setInt(6, newCourseData.getBlock());
-            preparedStatement.setInt(7, originalCourseData.getNrc());
+            preparedStatement.setInt(1, course.getNrc());
+            preparedStatement.setInt(2, course.getIdScholarPeriod());
+            preparedStatement.setInt(3, course.getStaffNumber());
+            preparedStatement.setString(4, course.getName());
+            preparedStatement.setInt(5, course.getSection());
+            preparedStatement.setInt(6, course.getBlock());
+            preparedStatement.setInt(7, course.getNrc());
             preparedStatement.executeUpdate();
         }catch(SQLException e){
-            throw new DataWritingException("Error al modificar curso. Verifique su conexion e intentelo de nuevo");
+            throw new DataInsertionException("Error al modificar curso. Verifique su conexion e intentelo de nuevo");
         }finally{
             dataBaseManager.closeConnection();
         }
     }
 
     @Override
-    public ArrayList<Course> getCoursesFromDatabase() throws DataRetrievalException{
+    public ArrayList<Course> getCourses() throws DataRetrievalException{
         ArrayList<Course> courses = new ArrayList<>();
 
         try{
             Statement statement = dataBaseManager.getConnection().createStatement();
             String query = "SELECT * FROM Cursos";
+            
             ResultSet resultSet = statement.executeQuery(query);
             while(resultSet.next()){
                 Course course = new Course();
                 course.setNrc(resultSet.getInt("NRC"));
                 course.setIdScholarPeriod(resultSet.getInt("IdPeriodoEscolar"));
                 course.setStaffNumber(resultSet.getInt("NumPersonal"));
-                course.setEEName(resultSet.getString("nombreEE"));
+                course.setName(resultSet.getString("nombreEE"));
                 course.setSection(resultSet.getInt("sección"));
                 course.setBlock(resultSet.getInt("bloque"));
                 courses.add(course);
@@ -95,7 +102,7 @@ public class CourseDAO implements ICourseDAO{
     }
 
     @Override
-    public ArrayList<Course> getSpecifiedCoursesFromDatabase(String courseName) throws DataRetrievalException{
+    public ArrayList<Course> getSpecifiedCourses(String courseName) throws DataRetrievalException{
         ArrayList<Course> courses = new ArrayList<>();
 
         try{
@@ -108,7 +115,7 @@ public class CourseDAO implements ICourseDAO{
                 course.setNrc(resultSet.getInt("NRC"));
                 course.setIdScholarPeriod(resultSet.getInt("IdPeriodoEscolar"));
                 course.setStaffNumber(resultSet.getInt("NumPersonal"));
-                course.setEEName(resultSet.getString("nombreEE"));
+                course.setName(resultSet.getString("nombreEE"));
                 course.setSection(resultSet.getInt("sección"));
                 course.setBlock(resultSet.getInt("bloque"));
                 courses.add(course);
@@ -125,7 +132,7 @@ public class CourseDAO implements ICourseDAO{
     }
 
     @Override
-    public Course getCourseFromDatabase(String courseNrc) throws DataRetrievalException{
+    public Course getCourse(String courseNrc) throws DataRetrievalException{
         Course course = new Course();
 
         try{
@@ -137,7 +144,7 @@ public class CourseDAO implements ICourseDAO{
                 course.setNrc(resultSet.getInt("NRC"));
                 course.setIdScholarPeriod(resultSet.getInt("IdPeriodoEscolar"));
                 course.setStaffNumber(resultSet.getInt("NumPersonal"));
-                course.setEEName(resultSet.getString("nombreEE"));
+                course.setName(resultSet.getString("nombreEE"));
                 course.setSection(resultSet.getInt("sección"));
                 course.setBlock(resultSet.getInt("bloque"));
             }
@@ -162,7 +169,7 @@ public class CourseDAO implements ICourseDAO{
                 if(resultSet.getInt("NRC") == course.getNrc() &&
                    resultSet.getInt("IdPeriodoEscolar") == course.getIdScholarPeriod() &&
                    resultSet.getInt("NumPersonal") == course.getStaffNumber() &&
-                   resultSet.getString("nombreEE").equals(course.getEEName()) &&
+                   resultSet.getString("nombreEE").equals(course.getName()) &&
                    resultSet.getInt("sección") == course.getSection() &&
                    resultSet.getInt("bloque") == course.getBlock()){
                     

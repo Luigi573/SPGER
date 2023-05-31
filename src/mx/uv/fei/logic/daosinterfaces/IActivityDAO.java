@@ -4,13 +4,13 @@ import java.util.ArrayList;
 
 import mx.uv.fei.logic.domain.Activity;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
-import mx.uv.fei.logic.exceptions.DataWritingException;
+import mx.uv.fei.logic.exceptions.DataInsertionException;
 
 public interface IActivityDAO {
-    public int addActivity(Activity activity) throws DataWritingException;
+    public int addActivity(Activity activity) throws DataInsertionException;
     public ArrayList<Activity> getActivityList(int researchId) throws DataRetrievalException;
-    public int modifyActivity(Activity activity) throws DataWritingException;
+    public int modifyActivity(Activity activity) throws DataInsertionException;
     public boolean assertActivity(Activity activity);
-    public int setComment(String comment, int activityId) throws DataWritingException;
-    public int setFeedback(String feedback, int activityId) throws DataWritingException;
+    public int setComment(String comment, int activityId) throws DataInsertionException;
+    public int setFeedback(String feedback, int activityId) throws DataInsertionException;
 }

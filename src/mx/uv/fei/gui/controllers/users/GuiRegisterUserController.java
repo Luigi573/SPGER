@@ -26,7 +26,7 @@ import mx.uv.fei.logic.domain.UserType;
 import mx.uv.fei.logic.domain.statuses.ProfessorStatus;
 import mx.uv.fei.logic.domain.statuses.StudentStatus;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
-import mx.uv.fei.logic.exceptions.DataWritingException;
+import mx.uv.fei.logic.exceptions.DataInsertionException;
 
 public class GuiRegisterUserController{
     private GuiUsersController guiUsersController;
@@ -71,8 +71,7 @@ public class GuiRegisterUserController{
            !emailTextField.getText().trim().isEmpty() &&
            !alternateEmailTextField.getText().trim().isEmpty() &&
            !telephoneNumberTextField.getText().trim().isEmpty() &&
-           !matricleOrPersonalNumberTextField.getText().trim().isEmpty() &&
-           typeComboBox.getValue() != null){
+           !matricleOrPersonalNumberTextField.getText().trim().isEmpty()){
             if(allTextFieldsContainsCorrectValues()){
                 if(typeComboBox.getValue().equals(UserType.DIRECTOR.getValue())){
                     registerDirector();
@@ -138,10 +137,10 @@ public class GuiRegisterUserController{
                 new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "Error", "El usuario ya está registrado en el sistema");
                 return;
             }
-            directorDAO.addDirectorToDatabase(director);
+            directorDAO.addDirector(director);
         }catch(DataRetrievalException e){
             new AlertPopUpGenerator().showConnectionErrorMessage();
-        }catch(DataWritingException e){
+        }catch(DataInsertionException e){
             new AlertPopUpGenerator().showConnectionErrorMessage();
         }
     }
@@ -161,10 +160,10 @@ public class GuiRegisterUserController{
                 new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "Error", "El usuario ya está registrado en el sistema");
                 return;
             }
-            academicBodyHeadDAO.addAcademicBodyHeadToDatabase(academicBodyHead);
+            academicBodyHeadDAO.addAcademicBodyHead(academicBodyHead);
         }catch(DataRetrievalException e){
             new AlertPopUpGenerator().showConnectionErrorMessage();
-        }catch(DataWritingException e){
+        }catch(DataInsertionException e){
             new AlertPopUpGenerator().showConnectionErrorMessage();
         }
     }
@@ -184,10 +183,10 @@ public class GuiRegisterUserController{
                 new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "Error", "El usuario ya está registrado en el sistema");
                 return;
             }
-            degreeBossDAO.addDegreeBossToDatabase(degreeBoss);
+            degreeBossDAO.addDegreeBoss(degreeBoss);
         }catch(DataRetrievalException e){
             new AlertPopUpGenerator().showConnectionErrorMessage();
-        }catch(DataWritingException e){
+        }catch(DataInsertionException e){
             new AlertPopUpGenerator().showConnectionErrorMessage();
         }
         
@@ -208,10 +207,10 @@ public class GuiRegisterUserController{
                 new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "Error", "El usuario ya está registrado en el sistema");
                 return;
             }
-            professorDAO.addProfessorToDatabase(professor);
+            professorDAO.addProfessor(professor);
         }catch(DataRetrievalException e){
             new AlertPopUpGenerator().showConnectionErrorMessage();
-        }catch(DataWritingException e){
+        }catch(DataInsertionException e){
             new AlertPopUpGenerator().showConnectionErrorMessage();
         }
     }
@@ -227,14 +226,12 @@ public class GuiRegisterUserController{
             student.setPhoneNumber(telephoneNumberTextField.getText());
             student.setStatus(StudentStatus.AVAILABLE.getValue());
             student.setMatricle(matricleOrPersonalNumberTextField.getText());
-            if(studentDAO.theStudentIsAlreadyRegisted(student)){
+            if(studentDAO.theStudentIsAlreadyRegisted(student.toString())){
                 new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "Error", "El usuario ya está registrado en el sistema");
                 return;
             }
-            studentDAO.addStudentToDatabase(student);
-        }catch(DataRetrievalException e){
-            new AlertPopUpGenerator().showConnectionErrorMessage();
-        }catch(DataWritingException e){
+            studentDAO.addStudent(student);
+        } catch (DataInsertionException e) {
             new AlertPopUpGenerator().showConnectionErrorMessage();
         }
     }

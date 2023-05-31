@@ -1,116 +1,114 @@
 package mx.uv.fei.logic.daos;
 
-import org.junit.Test;
-import org.junit.jupiter.api.Assertions;
-
 import mx.uv.fei.logic.domain.Course;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
-import mx.uv.fei.logic.exceptions.DataWritingException;
+import mx.uv.fei.logic.exceptions.DataInsertionException;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import static org.junit.Assert.*;
 
-public class CourseDAOTest {
+public class CourseDAOTest{
     
     @Test
-    public void addCourseToDatabaseTest() {
+    public void addCourseTest() {
         try {
             CourseDAO courseDAO = new CourseDAO();
             Course expectedCourse = new Course();
-            expectedCourse.setNrc(11000);
+            expectedCourse.setNrc(10000);
             expectedCourse.setIdScholarPeriod(1);
-            expectedCourse.setStaffNumber(100000001);
-            expectedCourse.setEEName("Proyecto Guiado");
+            expectedCourse.setStaffNumber(100000000);
+            expectedCourse.setName("Proyecto Guiado");
             expectedCourse.setSection(1);
             expectedCourse.setBlock(7);
-            courseDAO.addCourseToDatabase(expectedCourse);
+            courseDAO.addCourse(expectedCourse);
             
-            Course actualCourse = courseDAO.getCourseFromDatabase(Integer.toString(expectedCourse.getNrc()));     
-            Assertions.assertTrue(expectedCourse.equals(actualCourse));
-        } catch (DataWritingException e) {
-            e.printStackTrace();
+            Course actualCourse = courseDAO.getCourse(Integer.toString(expectedCourse.getNrc()));     
+            assertTrue(expectedCourse.equals(actualCourse));
+        } catch (DataInsertionException e) {
+            ();
         } catch (DataRetrievalException e) {
-            e.printStackTrace();
+            ();
         }
+
     }
 
     @Test
-    public void modifyCourseDataFromDatabaseTest() {
+    public int modifyCourseDataTest() {
         try {
             CourseDAO courseDAO = new CourseDAO();
-            Course originalCourse = courseDAO.getCourseFromDatabase("11000");
+            Course originalCourse = courseDAO.getCourse("10000");
             Course expectedCourse = new Course();
-            expectedCourse.setNrc(11001);
+            expectedCourse.setNrc(10002);
             expectedCourse.setIdScholarPeriod(1);
             expectedCourse.setStaffNumber(100000001);
-            expectedCourse.setEEName("Experiencia Recepcional");
+            expectedCourse.setName("Experiencia Recepcional");
             expectedCourse.setSection(2);
             expectedCourse.setBlock(8);
-            courseDAO.modifyCourseDataFromDatabase(expectedCourse, originalCourse);
+            courseDAO.modifyCourseData(expectedCourse, originalCourse);
 
-            Course actualCourse = courseDAO.getCourseFromDatabase(Integer.toString(expectedCourse.getNrc()));             
-            Assertions.assertTrue(expectedCourse.equals(actualCourse));
-        } catch (DataWritingException e) {
-            e.printStackTrace();
+            Course actualCourse = courseDAO.getCourse(Integer.toString(expectedCourse.getNrc()));             
+            assertTrue(expectedCourse.equals(actualCourse));
+        } catch (DataInsertionException e) {
+            ();
         } catch (DataRetrievalException e) {
-            e.printStackTrace();
+            ();
         }
     }
 
     @Test
-    public void getCoursesFromDatabaseTest() {
+    public void getCoursesTest() {
         try {
             CourseDAO courseDAO = new CourseDAO();
-            Course actualCourse = courseDAO.getCoursesFromDatabase().get(0);
+            Course actualCourse = courseDAO.getCourses().get(0);
 
             Course expectedCourse = new Course();
             expectedCourse.setNrc(10001);
             expectedCourse.setIdScholarPeriod(1);
-            expectedCourse.setStaffNumber(100000001);
-            expectedCourse.setEEName("Proyecto Guiado");
+            expectedCourse.setStaffNumber(100000000);
+            expectedCourse.setName("Proyecto Guiado");
             expectedCourse.setSection(2);
             expectedCourse.setBlock(7);
 
-            Assertions.assertTrue(expectedCourse.equals(actualCourse));
+            assertTrue(expectedCourse.equals(actualCourse));
         } catch (DataRetrievalException e) {
-            e.printStackTrace();
+            ();
         }
     }
 
     @Test
-    public void getSpecifiedCoursesFromDatabaseTest() {
+    public void getSpecifiedCoursesTest() {
         try {
             CourseDAO courseDAO = new CourseDAO();
-            Course actualCourse = courseDAO.getSpecifiedCoursesFromDatabase("1").get(0);
+            Course actualCourse = courseDAO.getSpecifiedCourses("1").get(1);
 
             Course expectedCourse = new Course();
             expectedCourse.setNrc(10001);
             expectedCourse.setIdScholarPeriod(1);
-            expectedCourse.setStaffNumber(100000001);
-            expectedCourse.setEEName("Proyecto Guiado");
+            expectedCourse.setStaffNumber(100000000);
+            expectedCourse.setName("Proyecto Guiado");
             expectedCourse.setSection(2);
             expectedCourse.setBlock(7);
 
-            Assertions.assertTrue(expectedCourse.equals(actualCourse));
+            assertTrue(expectedCourse.equals(actualCourse));
         } catch (DataRetrievalException e) {
-            e.printStackTrace();
+            ();
         }
     }
 
     @Test
-    public void getCourseFromDatabaseTest() {
-        try {    
+    public void getCourseTest() throws DataRetrievalException{  
             CourseDAO courseDAO = new CourseDAO();
             Course expectedCourse = new Course();
             expectedCourse.setNrc(10001);
             expectedCourse.setIdScholarPeriod(1);
-            expectedCourse.setStaffNumber(100000001);
-            expectedCourse.setEEName("Proyecto Guiado");
+            expectedCourse.setStaffNumber(100000000);
+            expectedCourse.setName("Proyecto Guiado");
             expectedCourse.setSection(2);
             expectedCourse.setBlock(7);
 
-            Course actualCourse = courseDAO.getCourseFromDatabase(Integer.toString(expectedCourse.getNrc()));             
-            Assertions.assertTrue(expectedCourse.equals(actualCourse));
-        } catch (DataRetrievalException e) {
-            e.printStackTrace();
-        }
+            Course actualCourse = courseDAO.getCourse(Integer.toString(expectedCourse.getNrc()));             
+            assertTrue(expectedCourse.equals(actualCourse));
     }
 
     @Test
@@ -120,14 +118,14 @@ public class CourseDAOTest {
             Course expectedCourse = new Course();
             expectedCourse.setNrc(10001);
             expectedCourse.setIdScholarPeriod(1);
-            expectedCourse.setStaffNumber(100000001);
-            expectedCourse.setEEName("Proyecto Guiado");
+            expectedCourse.setStaffNumber(100000000);
+            expectedCourse.setName("Proyecto Guiado");
             expectedCourse.setSection(2);
             expectedCourse.setBlock(7);
 
-            Assertions.assertTrue(courseDAO.theCourseIsAlreadyRegisted(expectedCourse));
+            assertTrue(courseDAO.theCourseIsAlreadyRegisted(expectedCourse));
         } catch (DataRetrievalException e) {
-            e.printStackTrace();
+            ();
         }
     }
 }

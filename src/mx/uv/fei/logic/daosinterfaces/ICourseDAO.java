@@ -4,12 +4,12 @@ import java.util.ArrayList;
 
 import mx.uv.fei.logic.domain.Course;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
-import mx.uv.fei.logic.exceptions.DataWritingException;
+import mx.uv.fei.logic.exceptions.DataInsertionException;
 
 public interface ICourseDAO {
-    public void addCourseToDatabase(Course course) throws DataWritingException;
-    public void modifyCourseDataFromDatabase(Course newCourseData, Course originalCourseData) throws DataWritingException;
-    public ArrayList<Course> getCoursesFromDatabase() throws DataRetrievalException;
-    public ArrayList<Course> getSpecifiedCoursesFromDatabase(String courseName) throws DataRetrievalException;
-    public Course getCourseFromDatabase(String courseName) throws DataRetrievalException;
+    public int addCourse(Course course) throws DataInsertionException;
+    public int modifyCourseData(Course course) throws DataInsertionException;
+    public ArrayList<Course> getCourses() throws DataRetrievalException;
+    public ArrayList<Course> getSpecifiedCourses(String courseName) throws DataRetrievalException;
+    public Course getCourse(String courseName) throws DataRetrievalException;
 }

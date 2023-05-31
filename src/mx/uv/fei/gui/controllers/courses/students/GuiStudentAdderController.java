@@ -20,7 +20,7 @@ import mx.uv.fei.logic.daos.StudentDAO;
 import mx.uv.fei.logic.daos.StudentsCoursesDAO;
 import mx.uv.fei.logic.domain.Student;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
-import mx.uv.fei.logic.exceptions.DataWritingException;
+import mx.uv.fei.logic.exceptions.DataInsertionException;
 
 public class GuiStudentAdderController{
     private GuiUsersCourseController guiUsersCourseController;
@@ -40,13 +40,13 @@ public class GuiStudentAdderController{
     private void initialize(){
         try{
             StudentsCoursesDAO studentsCoursesDAO = new StudentsCoursesDAO();
-            ArrayList<String> studentMatricles = studentsCoursesDAO.getStudentsMatriclesByCourseNRCFromDatabase(
+            ArrayList<String> studentMatricles = studentsCoursesDAO.getStudentsMatriclesByCourseNRC(
                 guiUsersCourseController.getCourseInformationController().getNrc()
             );
 
         
             StudentDAO studentDAO = new StudentDAO();
-            ArrayList<Student> availableStudents = studentDAO.getAvailableStudentsFromDatabase();
+            ArrayList<Student> availableStudents = studentDAO.getAvailableStudents();
             if(studentMatricles.isEmpty()) {
                 try{
                     for(Student activeStudent : availableStudents){
@@ -61,7 +61,7 @@ public class GuiStudentAdderController{
                             activeStudent.getFirstSurname() + " " + 
                             activeStudent.getSecondSurname()
                         );
-                        studentPaneController.setMatricle(activeStudent.getMatricule());
+                        studentPaneController.setMatricle(activeStudent.getMatricle());
                         studentsVBox.getChildren().add(studentPaneToAdd);
                         
                     }
@@ -75,7 +75,7 @@ public class GuiStudentAdderController{
                 for(Student activeStudent : availableStudents){
                     boolean activeStudentIsAlreadyRegistedIntoTheCourse = false;
                     for(String studentMatricle : studentMatricles){
-                        if(studentMatricle.equals(activeStudent.getMatricule())){
+                        if(studentMatricle.equals(activeStudent.getMatricle())){
                             activeStudentIsAlreadyRegistedIntoTheCourse = true;
                             break;
                         }
@@ -92,7 +92,7 @@ public class GuiStudentAdderController{
                             activeStudent.getFirstSurname() + " " + 
                             activeStudent.getSecondSurname()
                         );
-                        studentPaneController.setMatricle(activeStudent.getMatricule());
+                        studentPaneController.setMatricle(activeStudent.getMatricle());
                         studentsVBox.getChildren().add(studentPaneToAdd);
                     }
                 }
@@ -111,11 +111,11 @@ public class GuiStudentAdderController{
         for(Node studentPane : studentsVBox.getChildren()){
             if( ((RadioButton)((Pane)studentPane).getChildren().get(4)).isSelected() ){
                 try{
-                    studentCoursesDAO.addStudentCourseToDatabase(
+                    studentCoursesDAO.addStudentCourse(
                         ((Label)((Pane)studentPane).getChildren().get(3)).getText(), 
                         guiUsersCourseController.getCourseInformationController().getNrc()
                     );
-                }catch(DataWritingException e){
+                }catch(DataInsertionException e){
                     new AlertPopUpGenerator().showConnectionErrorMessage();
                 }
             }
@@ -134,12 +134,12 @@ public class GuiStudentAdderController{
         try{
             studentsVBox.getChildren().clear();
             StudentsCoursesDAO studentsCoursesDAO = new StudentsCoursesDAO();
-            ArrayList<String> studentMatricles = studentsCoursesDAO.getStudentsMatriclesByCourseNRCFromDatabase(
+            ArrayList<String> studentMatricles = studentsCoursesDAO.getStudentsMatriclesByCourseNRC(
                 guiUsersCourseController.getCourseInformationController().getNrc()
             );
             
             StudentDAO studentDAO = new StudentDAO();
-            ArrayList<Student> availableStudents = studentDAO.getSpecifiedAvailableStudentsFromDatabase(showByMatricleTextField.getText());
+            ArrayList<Student> availableStudents = studentDAO.getSpecifiedAvailableStudents(showByMatricleTextField.getText());
             if(studentMatricles.isEmpty()){
                 try{
                     for(Student activeStudent : availableStudents){
@@ -154,7 +154,7 @@ public class GuiStudentAdderController{
                             activeStudent.getFirstSurname() + " " + 
                             activeStudent.getSecondSurname()
                         );
-                        studentPaneController.setMatricle(activeStudent.getMatricule());
+                        studentPaneController.setMatricle(activeStudent.getMatricle());
                         studentsVBox.getChildren().add(studentPaneToAdd);
                         
                     }
@@ -168,7 +168,7 @@ public class GuiStudentAdderController{
                 for(Student activeStudent : availableStudents){
                     boolean activeStudentIsAlreadyRegistedIntoTheCourse = false;
                     for(String studentMatricle : studentMatricles){
-                        if(studentMatricle.equals(activeStudent.getMatricule())){
+                        if(studentMatricle.equals(activeStudent.getMatricle())){
                             activeStudentIsAlreadyRegistedIntoTheCourse = true;
                             break;
                         }
@@ -185,7 +185,7 @@ public class GuiStudentAdderController{
                             activeStudent.getFirstSurname() + " " + 
                             activeStudent.getSecondSurname()
                         );
-                        studentPaneController.setMatricle(activeStudent.getMatricule());
+                        studentPaneController.setMatricle(activeStudent.getMatricle());
                         studentsVBox.getChildren().add(studentPaneToAdd);
                     }
                 }
@@ -195,7 +195,6 @@ public class GuiStudentAdderController{
         }catch(DataRetrievalException e) {
             new AlertPopUpGenerator().showConnectionErrorMessage();
         }
-
     }
 
     public GuiUsersCourseController getGuiUsersCourseController(){

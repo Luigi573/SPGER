@@ -26,7 +26,7 @@ import mx.uv.fei.logic.domain.ResearchProject;
 import mx.uv.fei.logic.domain.Student;
 import mx.uv.fei.logic.domain.statuses.ResearchProjectStatus;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
-import mx.uv.fei.logic.exceptions.DataWritingException;
+import mx.uv.fei.logic.exceptions.DataInsertionException;
 
 public class AddResearchController{
     private ArrayList<ComboBox> directorComboBoxes;
@@ -66,7 +66,7 @@ public class AddResearchController{
         try{
             ArrayList<Director> directorList = directorDAO.getDirectorList();
             ArrayList<KGAL> KGALList = kgalDAO.getKGALList();
-            ArrayList<Student> studentList = studentDAO.getStudentsFromDatabase();
+            ArrayList<Student> studentList = studentDAO.getStudents();
             
             directorComboBoxes = new ArrayList<>();
             directorComboBoxes.add(director1ComboBox);
@@ -125,7 +125,8 @@ public class AddResearchController{
                             Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
                             stage.close();
                         }
-                    }catch(DataWritingException exception){
+
+                    }catch(DataInsertionException exception){
                         new AlertPopUpGenerator().showConnectionErrorMessage();
                     }
                 }else{

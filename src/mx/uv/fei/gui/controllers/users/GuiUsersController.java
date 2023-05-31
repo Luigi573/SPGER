@@ -49,8 +49,6 @@ public class GuiUsersController{
     @FXML
     private VBox usersVBox;
     
-    
-
     @FXML
     private void initialize(){
         loadHeader();
@@ -88,11 +86,11 @@ public class GuiUsersController{
         AcademicBodyHeadDAO academicBodyHeadDAO = new AcademicBodyHeadDAO();
         DegreeBossDAO degreeBossDAO = new DegreeBossDAO();
         try{
-            ArrayList<Student> students = studentDAO.getSpecifiedStudentsFromDatabase(searchByNameTextField.getText());
-            ArrayList<Professor> professors = professorDAO.getSpecifiedProfessorsFromDatabase(searchByNameTextField.getText());
-            ArrayList<Director> directors = directorDAO.getSpecifiedDirectorsFromDatabase(searchByNameTextField.getText());
-            ArrayList<AcademicBodyHead> academicBodyHeads = academicBodyHeadDAO.getSpecifiedAcademicBodyHeadsFromDatabase(searchByNameTextField.getText());
-            ArrayList<DegreeBoss> degreeBosses = degreeBossDAO.getSpecifiedDegreeBossesFromDatabase(searchByNameTextField.getText());
+            ArrayList<Student> students = studentDAO.getSpecifiedStudents(searchByNameTextField.getText());
+            ArrayList<Professor> professors = professorDAO.getSpecifiedProfessors(searchByNameTextField.getText());
+            ArrayList<Director> directors = directorDAO.getSpecifiedDirectors(searchByNameTextField.getText());
+            ArrayList<AcademicBodyHead> academicBodyHeads = academicBodyHeadDAO.getSpecifiedAcademicBodyHeads(searchByNameTextField.getText());
+            ArrayList<DegreeBoss> degreeBosses = degreeBossDAO.getSpecifiedDegreeBosses(searchByNameTextField.getText());
     
             directorButtonMaker(directors);
             academicBodyHeadButtonMaker(academicBodyHeads);
@@ -112,11 +110,11 @@ public class GuiUsersController{
         AcademicBodyHeadDAO academicBodyHeadDAO = new AcademicBodyHeadDAO();
         DegreeBossDAO degreeBossDAO = new DegreeBossDAO();
         try {
-            ArrayList<Student> students = studentDAO.getStudentsFromDatabase();
-            ArrayList<Professor> professors = professorDAO.getProfessorsFromDatabase();
-            ArrayList<Director> directors = directorDAO.getDirectorsFromDatabase();
-            ArrayList<AcademicBodyHead> academicBodyHeads = academicBodyHeadDAO.getAcademicBodyHeadsFromDatabase();
-            ArrayList<DegreeBoss> degreeBosses = degreeBossDAO.getDegreeBossesFromDatabase();
+            ArrayList<Student> students = studentDAO.getStudents();
+            ArrayList<Professor> professors = professorDAO.getProfessors();
+            ArrayList<Director> directors = directorDAO.getDirectors();
+            ArrayList<AcademicBodyHead> academicBodyHeads = academicBodyHeadDAO.getAcademicBodyHeads();
+            ArrayList<DegreeBoss> degreeBosses = degreeBossDAO.getDegreeBosses();
             
             directorButtonMaker(directors);
             academicBodyHeadButtonMaker(academicBodyHeads);
@@ -142,7 +140,7 @@ public class GuiUsersController{
             modifyUserInformationController.setEmail(userInformationController.getEmail());
             modifyUserInformationController.setAlternateEmail(userInformationController.getAlternateEmail());
             modifyUserInformationController.setTelephoneNumber(userInformationController.getTelephoneNumber());
-            modifyUserInformationController.setMatricleOrPersonalNumber(userInformationController.getMatriculeOrPersonalNumber());
+            modifyUserInformationController.setMatricleOrPersonalNumber(userInformationController.getMatricleOrPersonalNumber());
             modifyUserInformationController.setStatus(userInformationController.getStatus());
             modifyUserInformationController.setDataToStatusCombobox(userInformationController.getUserType());
             modifyUserInformationController.setLabelsCorrectBounds(userInformationController.getUserType());
@@ -158,40 +156,40 @@ public class GuiUsersController{
         try{
             if(userController.getType().equals(UserType.DIRECTOR.getValue())){
                 DirectorDAO directorDAO = new DirectorDAO();
-                Director director = directorDAO.getDirectorFromDatabase(
-                    Integer.parseInt(userController.getMatriculeOrPersonalNumber())
+                Director director = directorDAO.getDirector(
+                    Integer.parseInt(userController.getMatricleOrPersonalNumber())
                 );
                 openPaneWithDirectorInformation(director);
             }
             
             if(userController.getType().equals(UserType.ACADEMIC_BODY_HEAD.getValue())){
                 AcademicBodyHeadDAO academicBodyHeadDAO = new AcademicBodyHeadDAO();
-                AcademicBodyHead academicBodyHead = academicBodyHeadDAO.getAcademicBodyHeadFromDatabase(
-                    Integer.parseInt(userController.getMatriculeOrPersonalNumber())
+                AcademicBodyHead academicBodyHead = academicBodyHeadDAO.getAcademicBodyHead(
+                    Integer.parseInt(userController.getMatricleOrPersonalNumber())
                 );
                 openPaneWithAcademicBodyHeadInformation(academicBodyHead);
             }
             
             if(userController.getType().equals(UserType.DEGREE_BOSS.getValue())){
                 DegreeBossDAO degreeBossDAO = new DegreeBossDAO();
-                DegreeBoss degreeBoss = degreeBossDAO.getDegreeBossFromDatabase(
-                    Integer.parseInt(userController.getMatriculeOrPersonalNumber())
+                DegreeBoss degreeBoss = degreeBossDAO.getDegreeBoss(
+                    Integer.parseInt(userController.getMatricleOrPersonalNumber())
                 );
                 openPaneWithDegreeBossInformation(degreeBoss);
             }
 
             if(userController.getType().equals(UserType.PROFESSOR.getValue())){
                 ProfessorDAO professorDAO = new ProfessorDAO();
-                Professor professor = professorDAO.getProfessorFromDatabase(
-                    Integer.parseInt(userController.getMatriculeOrPersonalNumber())
+                Professor professor = professorDAO.getProfessor(
+                    Integer.parseInt(userController.getMatricleOrPersonalNumber())
                 );
                 openPaneWithProfessorInformation(professor);
             }
 
             if(userController.getType().equals(UserType.STUDENT.getValue())){
                 StudentDAO studentDAO = new StudentDAO();
-                Student student = studentDAO.getStudentFromDatabase(
-                    userController.getMatriculeOrPersonalNumber()
+                Student student = studentDAO.getStudent(
+                    userController.getMatricleOrPersonalNumber()
                 );
                 openPaneWithStudentInformation(student);
             }
@@ -224,7 +222,7 @@ public class GuiUsersController{
                 UserController userController = userItemControllerLoader.getController();
                 userController.setName(student.getName() + " " + student.getFirstSurname() + " " + student.getSecondSurname());
                 userController.setType("Estudiante");
-                userController.setMatricleOrPersonalNumber(student.getMatricule());
+                userController.setMatricleOrPersonalNumber(student.getMatricle());
                 userController.setMatricleOrPersonalNumberText("Matrícula: ");
                 userController.setLabelsCorrectBounds("Estudiante");
                 userController.setGuiUsersController(this);
@@ -441,7 +439,7 @@ public class GuiUsersController{
             userInformationController.setTelephoneNumber(student.getPhoneNumber());
             userInformationController.setUserType("Estudiante");
             userInformationController.setStatus(student.getStatus());
-            userInformationController.setMatricleOrPersonalNumber(student.getMatricule());
+            userInformationController.setMatricleOrPersonalNumber(student.getMatricle());
             userInformationController.setGuiUsersController(this);
             userInformationController.setMatricleOrPersonalNumberText();
             userInformationScrollPane.setContent(userInformationVBox);

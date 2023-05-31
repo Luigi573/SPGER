@@ -14,7 +14,7 @@ import javafx.scene.text.Text;
 import mx.uv.fei.gui.AlertPopUpGenerator;
 import mx.uv.fei.logic.daos.ResearchDAO;
 import mx.uv.fei.logic.domain.ResearchProject;
-import mx.uv.fei.logic.exceptions.DataWritingException;
+import mx.uv.fei.logic.exceptions.DataInsertionException;
 
 public class ResearchInfoPaneController{
     private ResearchManagerController researchManagerController;
@@ -80,7 +80,7 @@ public class ResearchInfoPaneController{
             validateButton.setVisible(false);
             modifyButton.setVisible(false);
             new AlertPopUpGenerator().showCustomMessage(AlertType.INFORMATION, "Listo","Anteproyecto validado exitosamente");
-        }catch(DataWritingException e){
+        }catch(DataInsertionException e){
             new AlertPopUpGenerator().showConnectionErrorMessage();
         }
 

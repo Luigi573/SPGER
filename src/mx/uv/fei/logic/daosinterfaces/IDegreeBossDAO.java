@@ -4,12 +4,12 @@ import java.util.ArrayList;
 
 import mx.uv.fei.logic.domain.DegreeBoss;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
-import mx.uv.fei.logic.exceptions.DataWritingException;
+import mx.uv.fei.logic.exceptions.DataInsertionException;
 
 public interface IDegreeBossDAO {
-    public void addDegreeBossToDatabase(DegreeBoss degreeBoss) throws DataWritingException;
-    public void modifyDegreeBossDataFromDatabase(DegreeBoss newDegreeBossData, DegreeBoss originalDegreeBossData) throws DataWritingException;
-    public ArrayList<DegreeBoss> getDegreeBossesFromDatabase() throws DataRetrievalException;
-    public ArrayList<DegreeBoss> getSpecifiedDegreeBossesFromDatabase(String degreeBossName) throws DataRetrievalException;
-    public DegreeBoss getDegreeBossFromDatabase(int personalNumber) throws DataRetrievalException;
+    public int addDegreeBoss(DegreeBoss degreeBoss) throws DataInsertionException;
+    public int modifyDegreeBossData(DegreeBoss degreeBoss) throws DataInsertionException;
+    public ArrayList<DegreeBoss> getDegreeBosses() throws DataRetrievalException;
+    public ArrayList<DegreeBoss> getSpecifiedDegreeBosses(String degreeBossName) throws DataRetrievalException;
+    public DegreeBoss getDegreeBoss(int personalNumber) throws DataRetrievalException;
 }

@@ -4,16 +4,12 @@ import java.util.ArrayList;
 
 import mx.uv.fei.logic.domain.ResearchProject;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
-import mx.uv.fei.logic.exceptions.DataWritingException;
+import mx.uv.fei.logic.exceptions.DataInsertionException;
 
 public interface IResearchDAO {
-    public int addResearch(ResearchProject research) throws DataWritingException;
-    public ArrayList<ResearchProject> getSpecifiedResearchProjectList(String researchName) throws DataRetrievalException;
-    public ArrayList<ResearchProject> getSpecifiedValidatedResearchProjectList(String researchName) throws DataRetrievalException;
-    public ArrayList<ResearchProject> getSpecifiedNotValidatedResearchProjectList(String researchName) throws DataRetrievalException;
-    public ArrayList<ResearchProject> getSpecifiedValidatedAndNotValidatedResearchProjectList(String researchName) throws DataRetrievalException;
+    public int addResearch(ResearchProject research) throws DataInsertionException;
     public ArrayList<ResearchProject> getResearchProjectList() throws DataRetrievalException;
-    public int modifyResearch(ResearchProject research) throws DataWritingException;
+    public int modifyResearch(ResearchProject research) throws DataInsertionException;
     public boolean assertResearch(ResearchProject research);
-    public void validateResearch(ResearchProject researchProject) throws DataWritingException;
+    public void validateResearch(ResearchProject researchProject) throws DataInsertionException;
 }

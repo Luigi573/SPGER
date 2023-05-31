@@ -2,11 +2,11 @@ package mx.uv.fei.logic.domain;
 
 public class Course {
     private int nrc;
-    private int idScholarPeriod;
-    private String eeName;
+    private ScholarPeriod scholarPeriod;
+    private String name;
     private int section;
     private int block;
-    private int personalNumber; //cambiar a Profesor
+    private Professor professor;
 
     public int getNrc() {
         return this.nrc;
@@ -16,20 +16,20 @@ public class Course {
         this.nrc = nrc;
     }
 
-    public int getIdScholarPeriod() {
-        return idScholarPeriod;
+    public ScholarPeriod getScholarPeriod() {
+        return scholarPeriod;
     }
 
-    public void setIdScholarPeriod(int idScholarPeriod) {
-        this.idScholarPeriod = idScholarPeriod;
+    public void setScholarPeriod(ScholarPeriod scholarPeriod) {
+        this.scholarPeriod = scholarPeriod;
     }
 
-    public String getEEName() {
-        return this.eeName;
+    public String getName() {
+        return name;
     }
 
-    public void setEEName(String eeName) {
-        this.eeName = eeName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getSection() {
@@ -48,31 +48,22 @@ public class Course {
         this.block = block;
     }
 
-    public int getStaffNumber() {
-        return this.personalNumber;
+    public Professor getProfessor() {
+        return this.professor;
     }
 
-    public void setStaffNumber(int personalNumber) {
-        this.personalNumber = personalNumber;
+    public void setProfessor(Professor professor) {
+        this.professor = professor;
     }
 
     @Override
-    public boolean equals(Object course) {
-        if (this == course)
-            return true;
-        if (course == null)
-            return false;
-        if (this.getClass() != course.getClass())
+    public boolean equals(Object obj) {
+        if(obj instanceof Course course){
+            return this.nrc == course.nrc  && this.scholarPeriod == course.scholarPeriod && this.section == course.section &&
+               this.block == course.block;
+        }        
+
         return false;
-
-        Course c = (Course)course;
-
-        return this.nrc == c.nrc  &&
-               this.idScholarPeriod == c.idScholarPeriod &&
-               this.eeName.equals(c.eeName) &&
-               this.section == c.section &&
-               this.block == c.block &&
-               this.personalNumber == c.personalNumber;
     }
     
 }

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.uv.fei.gui.controllers.chronogram.advances.CreateActivityController">
+   <children>
+      <Pane layoutX="93.0" layoutY="106.0" prefHeight="70.0" prefWidth="457.0">
+         <children>
+            <Label layoutX="6.0" layoutY="1.0" prefHeight="35.0" prefWidth="354.0" text="Título:">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Label>
+            <TextField fx:id="advanceTitleTextField" layoutX="108.0" layoutY="6.0" prefHeight="25.0" prefWidth="346.0" />
+            <Label layoutX="6.0" layoutY="31.0" prefHeight="35.0" prefWidth="354.0" text="Comentarios:">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <Pane layoutY="76.0" prefHeight="330.0" prefWidth="54.0" />
+      <Pane prefHeight="54.0" prefWidth="593.0">
+         <children>
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="182.0" layoutY="2.0" prefHeight="30.0" prefWidth="194.0" text="[NombreEE]">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label layoutX="72.0" text="SPGER">
+               <font>
+                  <Font size="32.0" />
+               </font>
+            </Label>
+            <Label layoutX="227.0" layoutY="25.0" prefHeight="30.0" prefWidth="127.0" text="NRC: [NRC]">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Button layoutX="7.0" layoutY="2.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="59.0" text="Home" />
+            <Label alignment="CENTER_RIGHT" layoutX="394.0" layoutY="17.0" prefHeight="25.0" prefWidth="127.0" text="[Nombre]">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <Button layoutX="527.0" layoutY="2.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="59.0" text="ProfPic" />
+         </children>
+      </Pane>
+      <Button fx:id="returnButton" layoutX="93.0" layoutY="74.0" mnemonicParsing="false" onAction="#returnToAdvanceList" text="&lt;-" />
+      <Label layoutX="130.0" layoutY="77.0" text="Volver">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="233.0" layoutY="67.0" text="Crear Avance">
+         <font>
+            <Font size="27.0" />
+         </font>
+      </Label>
+      <ScrollPane layoutX="95.0" layoutY="170.0">
+         <content>
+            <TextArea fx:id="advanceCommentsTextArea" prefHeight="68.0" prefWidth="453.0" wrapText="true" />
+         </content>
+      </ScrollPane>
+      <Button fx:id="createAdvanceButton" layoutX="491.0" layoutY="361.0" mnemonicParsing="false" onAction="#createAdvance" prefHeight="25.0" prefWidth="59.0" text="Crear" />
+      <Label layoutX="93.0" layoutY="248.0" prefHeight="35.0" prefWidth="354.0" text="Archivo:">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <Button fx:id="uploadFileButton" layoutX="491.0" layoutY="253.0" mnemonicParsing="false" onAction="#uploadFileToAdvance" prefHeight="25.0" prefWidth="59.0" text="Subir" />
+      <VBox layoutX="94.0" layoutY="283.0" prefHeight="70.0" prefWidth="455.0" />
+   </children>
+</Pane>
