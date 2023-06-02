@@ -3,7 +3,7 @@ INSERT INTO Cursos (NRC, IdPeriodoEscolar, nombreEE, sección, bloque, NumPerson
 INSERT INTO Cursos (NRC, IdPeriodoEscolar, nombreEE, sección, bloque, NumPersonal) 
     VALUES (10001, 1, 'Proyecto Guiado', 2, 7, 100000000);
 
-INSERT INTO Usuarios (nombre, apellidoPaterno, apellidoMaterno, correo, contraseña, correoAlterno, númeroTeléfono, estado)
+INSERT INTO Usuarios (nombre, apellidoPaterno, apellidoMaterno, correo, contraseña, correoAlterno, numeroTelefono, estado)
     VALUES ('Luis Roberto', 'Justo', 'Moreno', 'lurojumo342@gmail.com', NULL, 'lurojumo343@gmail.com', '2288563472', 'Disponible');
 
 

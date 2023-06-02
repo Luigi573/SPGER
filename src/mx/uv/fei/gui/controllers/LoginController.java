@@ -14,6 +14,9 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import mx.uv.fei.gui.AlertPopUpGenerator;
 import mx.uv.fei.logic.daos.LoginDAO;
+import mx.uv.fei.logic.domain.AcademicBodyHead;
+import mx.uv.fei.logic.domain.DegreeBoss;
+import mx.uv.fei.logic.domain.Director;
 import mx.uv.fei.logic.domain.Professor;
 import mx.uv.fei.logic.domain.Student;
 import mx.uv.fei.logic.domain.User;
@@ -30,16 +33,10 @@ public class LoginController{
     private Label errorLabel;
 
     @FXML
-    private void initialize() {
-        
-    }    
-
-    @FXML
     private void logIn(ActionEvent event){        
         if(!idTextField.getText().isBlank() && !passwordField.getText().isBlank()){
             LoginDAO loginDAO = new LoginDAO(); 
-            
-            //Account searching is made based on how often a user type is accessed (so admin is last)
+
             try{
                 //Matricle and StaffNumber have their type default values if user is not found (null or '0')
                 Student student = loginDAO.logInStudent(idTextField.getText(), passwordField.getText());
@@ -47,22 +44,28 @@ public class LoginController{
                 if(student.getMatricle() != null){
                     openMainMenu(event, student);
                 }else{
-                    Professor professor = loginDAO.logInProfessor(idTextField.getText(), passwordField.getText());
+                    AcademicBodyHead academicBodyHead = loginDAO.logInAcademicBodyHead(idTextField.getText(), passwordField.getText());
 
-                    if((professor.getStaffNumber() > 0)){
-                        openMainMenu(event, professor);
+                    if((academicBodyHead.getStaffNumber() > 0)){
+                        openMainMenu(event, academicBodyHead);
                     }else{
-                        professor = loginDAO.logInAcademicBodyHead(idTextField.getText(), passwordField.getText());
+                        DegreeBoss admin = loginDAO.logInAdmin(idTextField.getText(), passwordField.getText());
                         
-                        if((professor.getStaffNumber() > 0)){
-                            openMainMenu(event, professor);
+                        if((admin.getStaffNumber() > 0)){
+                            openMainMenu(event, admin);
                         }else{
-                            professor = loginDAO.logInAdmin(idTextField.getText(), passwordField.getText());
-
-                            if((professor.getStaffNumber() > 0)){
-                                openMainMenu(event, professor);
+                            Director director = loginDAO.logInDirector(idTextField.getText(), passwordField.getText());
+                            
+                            if(director.getStaffNumber() > 0){
+                                openMainMenu(event, director);
                             }else{
-                                errorLabel.setText("Las credenciales ingresadas no coinciden con ningun usuario");
+                                Professor professor = loginDAO.logInProfessor(idTextField.getText(), passwordField.getText());
+
+                                if((professor.getStaffNumber() > 0)){
+                                    openMainMenu(event, professor);
+                                }else{
+                                    errorLabel.setText("Las credenciales ingresadas no coinciden con ningun usuario");
+                                }
                             }
                         }
                     } 
@@ -81,11 +84,15 @@ public class LoginController{
             Parent parent = loader.load();
             MainMenuController controller = (MainMenuController)loader.getController();
             controller.setUser(user);
+            controller.loadHeader();
             
-            Stage stage = new Stage();
             Scene scene = new Scene(parent);
+            String css = this.getClass().getResource("/mx/uv/fei/gui/stylesfiles/Styles.css").toExternalForm();
+            scene.getStylesheets().add(css);
+            Stage stage = new Stage();
             stage.setTitle("SPGER");
             stage.setScene(scene);
+            stage.setResizable(false);
             stage.show();
             
             Stage oldStage = (Stage)((Node)event.getSource()).getScene().getWindow();

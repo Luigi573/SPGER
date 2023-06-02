@@ -12,18 +12,15 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import mx.uv.fei.gui.AlertPopUpGenerator;
 import mx.uv.fei.logic.daos.KGALDAO;
 import mx.uv.fei.logic.domain.KGAL;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
 
 public class UpdateKGALController {
-    
     private KGAL kgal;
     
-    private Stage stage;
-    private Scene scene;
-    private Parent root;
-
+    
     @FXML
     private Button btnCancel;
     @FXML
@@ -45,32 +42,23 @@ public class UpdateKGALController {
         try {
             result = kgalDAO.updateKGALDescription(this.kgal.getKgalID(), newKgalDescription);
         } catch (DataRetrievalException dre) {
-            Alert errorMessage = new Alert(Alert.AlertType.ERROR);
-            errorMessage.setHeaderText("Error al mostrar la información");
-            errorMessage.setContentText(dre.getMessage());
-            errorMessage.showAndWait();
+            new AlertPopUpGenerator().showConnectionErrorMessage();
         }
         if(result > 0) {
-            Alert successMessage = new Alert(Alert.AlertType.CONFIRMATION);
-            successMessage.setHeaderText("Operación exitosa");
-            successMessage.setContentText("Se ha guardado la nueva Descripción de la LGAC correctamente.");
-            successMessage.showAndWait();
+            new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.CONFIRMATION, "Operación exitosa", "Se ha guardado la nueva Descripción de la LGAC correctamente.");
         }
     }
 
     @FXML
     public void switchToKGALListScene(ActionEvent event) {
         try {
-            root = FXMLLoader.load(getClass().getResource("/mx/uv/fei/gui/fxml/manageKGAL/KGALList.fxml"));
-            stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-            scene = new Scene(root);
+            Parent root = FXMLLoader.load(getClass().getResource("/mx/uv/fei/gui/fxml/manageKGAL/KGALList.fxml"));
+            Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
-        } catch (IOException e) {
-            Alert errorMessage = new Alert(Alert.AlertType.ERROR);
-            errorMessage.setHeaderText("Error al mostrar la información");
-            errorMessage.setContentText(e.getMessage());
-            errorMessage.showAndWait();
+        } catch (IOException exception) {
+            new AlertPopUpGenerator().showMissingFilesMessage();
         }
     }
 

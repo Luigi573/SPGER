@@ -13,20 +13,18 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.Pane;
+import mx.uv.fei.gui.AlertPopUpGenerator;
 import mx.uv.fei.logic.domain.KGAL;
 import mx.uv.fei.logic.daos.KGALDAO;
+import mx.uv.fei.logic.domain.User;
 
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
 
 public class KGALListController {
+    private User user;
     
-    private Stage stage;
-    private Scene scene;
-    private Parent root;
-
     @FXML 
     private TextField tfSearch;
-    
     @FXML
     private VBox vBoxKGALList;
     
@@ -46,19 +44,13 @@ public class KGALListController {
                     controller.setLabelText(kgal);
                     controller.setKGAL(kgal);
                     vBoxKGALList.getChildren().add(pane);
-                } catch (IOException | IllegalStateException exception) {
-                    Alert errorMessage = new Alert(Alert.AlertType.ERROR);
-                    errorMessage.setHeaderText("Error al mostrar la información");
-                    errorMessage.setContentText("Ocurrió un error al intentar mostrar la información.");
-                    errorMessage.showAndWait();
+                } catch (IOException exception) {
+                    new AlertPopUpGenerator().showMissingFilesMessage();
                 }
             }
             
         } catch (DataRetrievalException exception) {
-            Alert errorMessage = new Alert(Alert.AlertType.ERROR);
-            errorMessage.setHeaderText("Error al recuperar la información.");
-            errorMessage.setContentText(exception.getMessage());
-            errorMessage.showAndWait();
+            new AlertPopUpGenerator().showConnectionErrorMessage();
         }
         
     }   
@@ -82,42 +74,32 @@ public class KGALListController {
                     controller.setLabelText(kgal);
                     
                     vBoxKGALList.getChildren().add(pane);
-                } catch (IOException | IllegalStateException e) {
-                    Alert errorMessage = new Alert(Alert.AlertType.ERROR);
-                    errorMessage.setHeaderText("Error al cargar los elementos de la ventana.");
-                    errorMessage.setContentText(e.getMessage());
-                    errorMessage.showAndWait();
+                } catch (IOException e) {
+                    new AlertPopUpGenerator().showMissingFilesMessage();
                 }
             }
-            
         } catch (DataRetrievalException exception) {
-            Alert errorMessage = new Alert(Alert.AlertType.ERROR);
-            errorMessage.setHeaderText("Error al recuperar la información de la Base de Datos");
-            errorMessage.setContentText(exception.getMessage());            
-            errorMessage.showAndWait();
+            new AlertPopUpGenerator().showConnectionErrorMessage();
         }
     }
            
     public void switchToCreateNewKGALScene(ActionEvent event) throws IOException {
-        root = FXMLLoader.load(getClass().getResource("/mx/uv/fei/gui/fxml/manageKGAL/createNewKGAL.fxml"));
-        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
+        Parent root = FXMLLoader.load(getClass().getResource("/mx/uv/fei/gui/fxml/manageKGAL/createNewKGAL.fxml"));
+        Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root);
         stage.setScene(scene); 
         stage.show();       
     }
     
     public void exitKGALListScene(ActionEvent event) {
         try {
-            root = FXMLLoader.load(getClass().getResource("/mx/uv/fei/gui/fxml/manageKGAL/KGALList.fxml")); //should point to main menu
-            stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-            scene = new Scene(root);
+            Parent root = FXMLLoader.load(getClass().getResource("/mx/uv/fei/gui/fxml/manageKGAL/KGALList.fxml")); //should point to main menu
+            Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
         } catch (IOException e) {
-            Alert errorMessage = new Alert(Alert.AlertType.ERROR);
-            errorMessage.setHeaderText("Error al mostrar la ventana.");
-            errorMessage.setContentText(e.getMessage());
-            errorMessage.showAndWait();
+            new AlertPopUpGenerator().showMissingFilesMessage();
         }
     }
 }

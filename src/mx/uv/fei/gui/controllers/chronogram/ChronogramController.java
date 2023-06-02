@@ -11,12 +11,14 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import mx.uv.fei.gui.AlertPopUpGenerator;
+import mx.uv.fei.gui.controllers.HeaderPaneController;
 import mx.uv.fei.logic.daos.ActivityDAO;
 import mx.uv.fei.logic.daos.ResearchDAO;
 import mx.uv.fei.logic.domain.Activity;
@@ -24,13 +26,17 @@ import mx.uv.fei.logic.domain.Course;
 import mx.uv.fei.logic.domain.Director;
 import mx.uv.fei.logic.domain.Professor;
 import mx.uv.fei.logic.domain.ResearchProject;
+import mx.uv.fei.logic.domain.Student;
 import mx.uv.fei.logic.domain.User;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
 
 public class ChronogramController{
     private Course course;
+    private int researchId;
     private User user;
     
+    @FXML
+    private Button createActivityButton;
     @FXML
     private ComboBox<ResearchProject> studentChronogramComboBox;
     @FXML
@@ -42,15 +48,21 @@ public class ChronogramController{
     
     @FXML
     private void createActivity(ActionEvent event){
-        if(studentChronogramComboBox.getValue() != null){
+        if(researchId != 0){
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/activities/CreateActivity.fxml"));
             try{
                 Parent parent = loader.load();
                 CreateActivityController controller = (CreateActivityController)loader.getController();
-                controller.setResearchId(studentChronogramComboBox.getValue().getId());
+                controller.setResearchId(researchId);
+                controller.setCourse(course);
+                controller.setUser(user);
+                controller.loadHeader();
+                
+                Scene scene = new Scene(parent);
+                String css = this.getClass().getResource("/mx/uv/fei/gui/stylesfiles/Styles.css").toExternalForm();
+                scene.getStylesheets().add(css);
                 
                 Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-                Scene scene = new Scene(parent);
                 stage.setTitle("SPGER");
                 stage.setScene(scene);
                 stage.show();
@@ -64,11 +76,18 @@ public class ChronogramController{
     @FXML
     private void switchChronogram(ActionEvent event){
        if(studentChronogramComboBox.getValue() != null){
-            chronogramTitleLabel.setText("Cronograma de " + studentChronogramComboBox.getValue().getStudent().getName());
+            if(studentChronogramComboBox.getValue().getStudent().getName() != null){
+                chronogramTitleLabel.setText("Cronograma de " + studentChronogramComboBox.getValue().getStudent().getName());
+            }else{
+                chronogramTitleLabel.setText("Cronograma sin asignar");
+            }
+            
+            activityListVBox.getChildren().clear();
             ActivityDAO activityDAO = new ActivityDAO();
+            researchId = studentChronogramComboBox.getValue().getId();
         
             try{
-                ArrayList<Activity> activityList = activityDAO.getActivityList(studentChronogramComboBox.getValue().getId());
+                ArrayList<Activity> activityList = activityDAO.getActivityList(researchId);
 
                 for(Activity activity : activityList){
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/activities/ChronogramActivityPane.fxml"));
@@ -77,6 +96,8 @@ public class ChronogramController{
                         Pane activityPane = loader.load();
                         ActivityPaneController controller = (ActivityPaneController)loader.getController();
                         controller.setActivity(activity);
+                        controller.setUser(user);
+                        controller.setCourse(course);
 
                         activityListVBox.getChildren().add(activityPane);
                     }catch(IOException exception){
@@ -88,37 +109,104 @@ public class ChronogramController{
             }
        }
     }
-    private void loadHeader(){
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/HeaderPane.fxml"));
+    
+    public void setCourse(Course course){
+        this.course = course;
+    }
+    
+    public void setUser(User user){
+        if(Student.class.isAssignableFrom(user.getClass())){
+            setStudentView((Student)user);
+        }else if(Professor.class.isAssignableFrom(user.getClass())){
+            if(course != null){
+                setProfessorView((Professor)user,course);
+            }else{
+                setDirectorView((Director)user);
+            }
+        }
+    }
+    
+    private void setDirectorView(Director director){
+        chronogramTitleLabel.setText("Cronograma");
+        this.user = director;
         
         try{
-            Pane header = loader.load();
-            headerPane.getChildren().add(header);
-            
-        }catch(IOException exception){
+            ResearchDAO researchDAO = new ResearchDAO();
+            loadComboBoxResearch(researchDAO.getDirectorsResearch(director.getStaffNumber()));
+        }catch(DataRetrievalException exception){
             new AlertPopUpGenerator().showConnectionErrorMessage();
         }
     }
-    private void loadComboBoxResearch(){
-        studentChronogramComboBox.getItems().clear();
-        ResearchDAO researchDAO = new ResearchDAO();
+    
+    private void setProfessorView(Professor professor, Course course){
+        chronogramTitleLabel.setText("Cronograma");
+        this.course = course;
+        this.user = professor;
+        
+        createActivityButton.setVisible(false);
         
         try{
-            ArrayList<ResearchProject> researchList = researchDAO.getResearchProjectList();
+            ResearchDAO researchDAO = new ResearchDAO();
             
-            for(ResearchProject research : researchList){
-                if(research.getStudent().getName() != null){
-                    studentChronogramComboBox.getItems().add(research);
+            loadComboBoxResearch(researchDAO.getCourseResearch(course.getNrc()));
+        }catch(DataRetrievalException exception){
+            new AlertPopUpGenerator().showConnectionErrorMessage();
+        }
+    }
+    
+    private void setStudentView(Student student){
+        this.user = student;
+        chronogramTitleLabel.setText("Mi cronograma");
+        studentChronogramComboBox.setVisible(false);
+
+        try{
+            ActivityDAO activityDAO = new ActivityDAO();
+            ResearchDAO researchDAO = new ResearchDAO();
+            
+            ResearchProject research = researchDAO.getStudentsResearch(student.getMatricle());
+            researchId = research.getId();
+            ArrayList<Activity> activityList = activityDAO.getActivityList(researchId);
+
+            for(Activity activity : activityList){
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/activities/ChronogramActivityPane.fxml"));
+
+                try{
+                    Pane activityPane = loader.load();
+                    ActivityPaneController controller = (ActivityPaneController)loader.getController();
+                    controller.setActivity(activity);
+                    controller.setCourse(course);
+                    controller.setUser(user);
+
+                    activityListVBox.getChildren().add(activityPane);
+                }catch(IOException exception){
+                    new AlertPopUpGenerator().showMissingFilesMessage();
                 }
             }
         }catch(DataRetrievalException exception){
             new AlertPopUpGenerator().showConnectionErrorMessage();
         }
     }
-    private void setUser(User user){
+    
+    public void loadHeader(){
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/HeaderPane.fxml"));
         
+        try{
+            Pane header = loader.load();
+            HeaderPaneController controller = (HeaderPaneController)loader.getController();
+            controller.setUser(user);
+            controller.setCourse(course);
+            
+            headerPane.getChildren().clear();
+            headerPane.getChildren().add(header);
+        }catch(IOException exception){
+            new AlertPopUpGenerator().showConnectionErrorMessage();
+        }
     }
-    private void setCourse(Course course){
+    private void loadComboBoxResearch(ArrayList<ResearchProject> researchList){
+        studentChronogramComboBox.getItems().clear();
         
+        for(ResearchProject research : researchList){
+            studentChronogramComboBox.getItems().add(research);
+        }
     }
 }

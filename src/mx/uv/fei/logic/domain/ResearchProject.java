@@ -67,12 +67,8 @@ public class ResearchProject {
     public Date getStartDate() {
         return startDate;
     }
-    public Director getDirector(int index) {
-        if(index > 0 && index <= directors.size()){
-            return directors.get(index);
-        }
-        
-        return null;
+    public ArrayList<Director> getDirectors(){
+        return directors;
     }
     public int getId() {
         return id;

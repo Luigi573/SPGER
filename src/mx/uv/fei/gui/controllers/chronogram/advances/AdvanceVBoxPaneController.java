@@ -10,9 +10,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import mx.uv.fei.logic.domain.Advance;
+import mx.uv.fei.logic.domain.User;
 
 public class AdvanceVBoxPaneController{
     private Advance advance;
+    private User user;
     
     @FXML
     private Label titleLabel;
@@ -34,9 +36,14 @@ public class AdvanceVBoxPaneController{
             Parent parent = loader.load();
             AdvanceInfoController controller = (AdvanceInfoController)loader.getController();
             controller.setAdvance(advance);
+            controller.setUser(user);
+            controller.loadHeader();
+            
+            Scene scene = new Scene(parent);
+            String css = this.getClass().getResource("/mx/uv/fei/gui/stylesfiles/Styles.css").toExternalForm();
+            scene.getStylesheets().add(css);
             
             Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-            Scene scene = new Scene(parent);
             stage.setTitle("SPGER");
             stage.setScene(scene);
             stage.show();

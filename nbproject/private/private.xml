@@ -3,17 +3,25 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/src/mx/uv/fei/logic/domain/AcademicBodyHead.java</file>
-            <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/src/mx/uv/fei/logic/daos/FileDAO.java</file>
-            <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/src/mx/uv/fei/gui/controllers/CourseHBoxPaneController.java</file>
-            <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/src/mx/uv/fei/gui/controllers/AcademicBodyHeadVBoxPaneController.java</file>
-            <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/src/mx/uv/fei/logic/domain/ScholarPeriod.java</file>
-            <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/src/mx/uv/fei/logic/daos/CourseDAO.java</file>
-            <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/src/mx/uv/fei/gui/controllers/AdminMenuPaneController.java</file>
+            <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/src/mx/uv/fei/gui/controllers/HeaderPaneController.java</file>
+            <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/src/mx/uv/fei/gui/controllers/research/ModifyResearchPaneController.java</file>
+            <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/src/mx/uv/fei/gui/controllers/chronogram/activities/ActivityFileItemController.java</file>
+            <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/test/mx/uv/fei/logic/daos/ResearchDAOTest.java</file>
             <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/src/mx/uv/fei/gui/controllers/chronogram/activities/ActivityInfoController.java</file>
-            <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/src/mx/uv/fei/gui/SPGER.java</file>
-            <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/src/mx/uv/fei/gui/controllers/users/GuiRegisterUserController.java</file>
+            <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/test/mx/uv/fei/logic/daos/ActivityDAOTest.java</file>
+            <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/src/mx/uv/fei/gui/controllers/chronogram/activities/CreateActivityController.java</file>
             <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/src/mx/uv/fei/gui/controllers/MainMenuController.java</file>
+            <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/src/mx/uv/fei/gui/controllers/chronogram/activities/ActivityPaneController.java</file>
+            <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/src/mx/uv/fei/gui/controllers/LoginController.java</file>
+            <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/src/mx/uv/fei/gui/controllers/CourseHBoxPaneController.java</file>
+            <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/src/mx/uv/fei/gui/controllers/kgal/CreateNewKGALController.java</file>
+            <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/src/mx/uv/fei/gui/AlertPopUpGenerator.java</file>
+            <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/src/mx/uv/fei/gui/controllers/AcademicBodyHeadVBoxPaneController.java</file>
+            <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/src/mx/uv/fei/gui/controllers/chronogram/ChronogramController.java</file>
+            <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/src/mx/uv/fei/logic/daos/ResearchDAO.java</file>
+            <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/src/mx/uv/fei/gui/controllers/AdminMenuPaneController.java</file>
+            <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/src/mx/uv/fei/logic/daos/AcademicBodyDAO.java</file>
+            <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/src/mx/uv/fei/gui/controllers/users/GuiRegisterUserController.java</file>
         </group>
     </open-files>
 </project-private>

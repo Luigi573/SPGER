@@ -6,7 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
 public class SelectedResearchItemController{
-    private GuiResearchReportController guiResearchReportController;
+    /*private GuiResearchReportController guiResearchReportController;
 
     @FXML
     private Button deselectButton;
@@ -29,5 +29,5 @@ public class SelectedResearchItemController{
     public void setGuiResearchReportController(
         GuiResearchReportController guiResearchReportController){
             this.guiResearchReportController = guiResearchReportController;
-    }
+    }*/
 }

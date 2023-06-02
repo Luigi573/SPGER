@@ -5,6 +5,4 @@ import mx.uv.fei.logic.exceptions.DataInsertionException;
 
 public interface IFileDAO {
     public int addFile(String filePath) throws DataInsertionException;
-    public int addFilesList();
-    public int updateFilePath(String filePath) throws DataInsertionException;
 }

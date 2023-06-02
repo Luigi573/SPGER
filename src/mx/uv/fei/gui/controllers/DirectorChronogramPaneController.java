@@ -9,39 +9,34 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import mx.uv.fei.gui.AlertPopUpGenerator;
-import mx.uv.fei.gui.controllers.research.ResearchManagerController;
-import mx.uv.fei.logic.domain.User;
+import mx.uv.fei.gui.controllers.chronogram.ChronogramController;
+import mx.uv.fei.logic.domain.Director;
 
-public class AcademicBodyHeadVBoxPaneController{
-    private User user;
+public class DirectorChronogramPaneController {
+    private Director director;
     
-    private void initialize() {
-        
-    }    
-
     @FXML
-    private void goToResearchManager(ActionEvent event) {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/research/ResearchManager.fxml"));
+    private void goToChronogram(ActionEvent event) {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/Chronogram.fxml"));
         
         try{
             Parent parent = loader.load();
-            ResearchManagerController controller = (ResearchManagerController)loader.getController();
-            controller.setUser(user);
+            ChronogramController controller = (ChronogramController)loader.getController();
+            controller.setUser(director);
             controller.loadHeader();
-            
+
             Scene scene = new Scene(parent);
             String css = this.getClass().getResource("/mx/uv/fei/gui/stylesfiles/Styles.css").toExternalForm();
             scene.getStylesheets().add(css);
             Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
             stage.setScene(scene);
-            
             stage.show();
         }catch(IOException exception){
             new AlertPopUpGenerator().showMissingFilesMessage();
         }
     }
     
-    public void setUser(User user){
-        this.user = user;
+    public void setDirector(Director director){
+        this.director = director;
     }
 }

@@ -9,6 +9,7 @@ import com.lowagie.text.Document;
 import com.lowagie.text.PageSize;
 import com.lowagie.text.pdf.PdfContentByte;
 import com.lowagie.text.pdf.PdfWriter;
+import com.sun.media.jfxmedia.logging.Logger;
 
 public class ResearchReport {
     public void generateResearchReport(){
@@ -29,8 +30,8 @@ public class ResearchReport {
             graphics.setColor(Color.BLACK);
             graphics.drawString("Quiúbo", 0, 0);
             
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception exception) {
+            exception.printStackTrace();
         }
 
         document.close();

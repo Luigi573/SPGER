@@ -36,7 +36,7 @@ public class LoginDAOTest {
             preloadedAdmin.setName("Jorge Octavio");
             preloadedAdmin.setFirstSurname("Ocharán");
             preloadedAdmin.setSecondSurname("Hernández");
-            preloadedAdmin.setEmailAddress("jocharan@uv.mx");
+            preloadedAdmin.setEmailAddress("gmartinez@uv.mx");
             preloadedAdmin.setStaffNumber(68532);
             
             String userQuery = "INSERT INTO Usuarios(nombre, apellidoPaterno, apellidoMaterno, correo, contraseña) VALUES(?, ?, ?, ?, SHA2(?, 256))";
@@ -124,7 +124,7 @@ public class LoginDAOTest {
             preloadedAcademicBodyHead.setName("Maria de los Ángeles");
             preloadedAcademicBodyHead.setFirstSurname("Arenas");
             preloadedAcademicBodyHead.setSecondSurname("Valdez");
-            preloadedAcademicBodyHead.setEmailAddress("aarenas@uv.mx");
+            preloadedAcademicBodyHead.setEmailAddress("umarinero@uv.mx");
             preloadedAcademicBodyHead.setStaffNumber(47532);
             
             userStatement.setString(1, preloadedAcademicBodyHead.getName());
@@ -226,7 +226,7 @@ public class LoginDAOTest {
     @Test
     public void testLogInprofessorFail() throws LoginException{
         LoginDAO instance = new LoginDAO();
-        Professor result = instance.logInProfessor("elrevo@uv.mx", "contraseña");
+        Professor result = instance.logInProfessor("jaguevara@uv.mx", "contraseña");
         
         System.out.println("Testing LogInProfessor with wrong password");
         
@@ -236,7 +236,7 @@ public class LoginDAOTest {
     @Test
     public void testLogInAdmin() throws LoginException{
         LoginDAO instance = new LoginDAO();
-        DegreeBoss result = instance.logInAdmin("jocharan@uv.mx", "vivaElDiseño2023");
+        DegreeBoss result = instance.logInAdmin("gmartinez@uv.mx", "vivaElDiseño2023");
         
         System.out.println("Expected data: ");
         System.out.println("Admin name: " + preloadedAdmin);
@@ -254,7 +254,7 @@ public class LoginDAOTest {
     @Test
     public void testLogInAdminFail() throws LoginException{
         LoginDAO instance = new LoginDAO();
-        DegreeBoss result = instance.logInAdmin("jocharan@uv.mx", "viv34567");
+        DegreeBoss result = instance.logInAdmin("gmartinez@uv.mx", "viv34567");
         
         System.out.println("Testing LogInAdmin with wrong password");
         
@@ -264,7 +264,7 @@ public class LoginDAOTest {
     @Test
     public void testLogInAcademicBodyHead() throws LoginException{
         LoginDAO instance = new LoginDAO();
-        AcademicBodyHead result = instance.logInAcademicBodyHead("aarenas@uv.mx", "programaciónOOP5462");
+        AcademicBodyHead result = instance.logInAcademicBodyHead("umarinero@uv.mx", "programaciónOOP5462");
         
         System.out.println("Expected data: ");
         System.out.println("Academic body head name: " + preloadedAcademicBodyHead);
@@ -280,7 +280,7 @@ public class LoginDAOTest {
     @Test
     public void testLogInAcademicBodyHeadFail() throws LoginException{
         LoginDAO instance = new LoginDAO();
-        AcademicBodyHead result = instance.logInAcademicBodyHead("aarenas@uv.mx", "prograee24");
+        AcademicBodyHead result = instance.logInAcademicBodyHead("umarinero@uv.mx", "prograee24");
         
         System.out.println("\nTesting LogInAcademicBody with wrong password");
         

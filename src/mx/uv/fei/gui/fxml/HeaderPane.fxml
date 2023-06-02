@@ -7,7 +7,7 @@
 
 <Pane prefHeight="80.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.uv.fei.gui.controllers.HeaderPaneController">
    <children>
-      <Label fx:id="titleLabel" alignment="CENTER_RIGHT" contentDisplay="CENTER" layoutX="352.0" layoutY="4.0" prefHeight="32.0" prefWidth="321.0">
+      <Label fx:id="titleLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="288.0" layoutY="4.0" prefHeight="39.0" prefWidth="448.0">
          <font>
             <Font name="Comic Sans MS Bold" size="28.0" />
          </font>
@@ -24,11 +24,10 @@
       </Label>
 
       <Button fx:id="homeButton" layoutX="6.0" layoutY="7.0" mnemonicParsing="false" onAction="#goHome" prefHeight="67.0" prefWidth="67.0" text="Home" />
-      <Label fx:id="usernameLabel" alignment="CENTER_RIGHT" layoutX="716.0" layoutY="6.0" prefHeight="67.0" prefWidth="227.0" text="[Nombre]">
+      <Label fx:id="usernameLabel" alignment="CENTER_RIGHT" layoutX="746.0" layoutY="28.0" prefHeight="25.0" prefWidth="264.0" text="[Nombre]">
          <font>
             <Font size="16.0" />
          </font>
       </Label>
-      <Button fx:id="profileButton" layoutX="950.0" layoutY="6.0" mnemonicParsing="false" prefHeight="67.0" prefWidth="67.0" text="ProfPic" />
    </children>
 </Pane>

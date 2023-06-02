@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 import mx.uv.fei.dataaccess.DataBaseManager;
 import mx.uv.fei.logic.daosinterfaces.IResearchesReportDAO;
-import mx.uv.fei.logic.domain.Research;
+import mx.uv.fei.logic.domain.ResearchProject;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
 
 public class ResearchReportDAO implements IResearchesReportDAO{
@@ -18,8 +18,8 @@ public class ResearchReportDAO implements IResearchesReportDAO{
     }
 
     @Override
-    public ArrayList<Research> getResearches(String title, String query) throws DataRetrievalException{
-        ArrayList<Research> researches = new ArrayList<>();
+    public ArrayList<ResearchProject> getResearches(String title, String query) throws DataRetrievalException{
+        ArrayList<ResearchProject> researches = new ArrayList<>();
 
         try{
             if(query == ""){
@@ -30,7 +30,7 @@ public class ResearchReportDAO implements IResearchesReportDAO{
 
             ResultSet resultSet = preparedStatement.executeQuery();
             while(resultSet.next()){
-                Research research = new Research();
+                /*ResearchP research = new Research();
                 research.setTitle(resultSet.getString("título"));
                 research.setCodirector(resultSet.getString("codirector"));
                 research.setRequeriments(resultSet.getString("requisitos"));
@@ -41,10 +41,10 @@ public class ResearchReportDAO implements IResearchesReportDAO{
                 research.setFinishDate(resultSet.getString("fechaFin"));
                 research.setWaitedResults(resultSet.getString("resultadosEsperados"));
                 research.setNote(resultSet.getString("nota"));
-                researches.add(research);
+                researches.add(research);*/
             }
             resultSet.close();
-            dataBaseManager.getConnection().close();
+            dataBaseManager.closeConnection();
 
         }catch(SQLException e){
             throw new DataRetrievalException("Fallo al recuperar la informacion. Verifique su conexion e intentelo de nuevo");
@@ -56,33 +56,33 @@ public class ResearchReportDAO implements IResearchesReportDAO{
     }
 
     @Override
-    public ArrayList<Research> getValidatedResearches(String title) throws DataRetrievalException{
-        ArrayList<Research> validatedResearches;
+    public ArrayList<ResearchProject> getValidatedResearches(String title) throws DataRetrievalException{
+        ArrayList<ResearchProject> validatedResearches;
         String query = "SELECT * FROM Anteproyectos WHERE título LIKE ? && V°B° = 'Validado'";
         validatedResearches = getResearches(title, query);
         return validatedResearches;
     }
 
     @Override
-    public ArrayList<Research> getNotValidatedResearches(String title) throws DataRetrievalException{
-        ArrayList<Research> notValidatedResearches;
+    public ArrayList<ResearchProject> getNotValidatedResearches(String title) throws DataRetrievalException{
+        ArrayList<ResearchProject> notValidatedResearches;
         String query = "SELECT * FROM Anteproyectos WHERE título LIKE ? && V°B° = 'No Validado'";
         notValidatedResearches = getResearches(title, query);
         return notValidatedResearches;
     }
 
     @Override
-    public ArrayList<Research> getValidatedAndNotValidatedResearches(String title) throws DataRetrievalException{
-        ArrayList<Research> validatedAndNotValidatedResearches;
+    public ArrayList<ResearchProject> getValidatedAndNotValidatedResearches(String title) throws DataRetrievalException{
+        ArrayList<ResearchProject> validatedAndNotValidatedResearches;
         String query = "SELECT * FROM Anteproyectos WHERE título LIKE ? && (V°B° = 'Validado' || V°B° = 'No Validado')";
         validatedAndNotValidatedResearches = getResearches(title, query);
         return validatedAndNotValidatedResearches;
     }
 
     @Override
-    public ArrayList<Research> getSelectedResearches(ArrayList<String> selectedResearchesTitles) throws DataRetrievalException{
+    public ArrayList<ResearchProject> getSelectedResearches(ArrayList<String> selectedResearchesTitles) throws DataRetrievalException{
         DataBaseManager dataBaseManager = new DataBaseManager();
-        ArrayList<Research> selectedResearches = new ArrayList<>();
+        ArrayList<ResearchProject> selectedResearches = new ArrayList<>();
 
         String fullQuery = "SELECT * FROM Anteproyectos WHERE título = ";
         for(int i = 1; i <= selectedResearchesTitles.size(); i++){
@@ -102,7 +102,7 @@ public class ResearchReportDAO implements IResearchesReportDAO{
 
             ResultSet resultSet = preparedStatement.executeQuery();
             while(resultSet.next()){
-                Research research = new Research();
+                /*Research research = new Research();
                 research.setTitle(resultSet.getString("título"));
                 research.setCodirector(resultSet.getString("codirector"));
                 research.setRequeriments(resultSet.getString("requisitos"));
@@ -113,10 +113,10 @@ public class ResearchReportDAO implements IResearchesReportDAO{
                 research.setFinishDate(resultSet.getString("fechaFin"));
                 research.setWaitedResults(resultSet.getString("resultadosEsperados"));
                 research.setNote(resultSet.getString("nota"));
-                selectedResearches.add(research);
+                selectedResearches.add(research);*/
             }
             resultSet.close();
-            dataBaseManager.getConnection().close();
+            dataBaseManager.closeConnection();
         }catch(SQLException e){
             throw new DataRetrievalException("Fallo al recuperar la informacion. Verifique su conexion e intentelo de nuevo");
         }finally{

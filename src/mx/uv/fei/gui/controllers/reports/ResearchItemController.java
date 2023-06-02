@@ -11,7 +11,7 @@ import javafx.scene.layout.VBox;
 import mx.uv.fei.gui.AlertPopUpGenerator;
 
 public class ResearchItemController{
-    private GuiResearchReportController guiResearchReportController;
+    /*private GuiResearchReportController guiResearchReportController;
 
     @FXML
     private Label researchNameLabel;
@@ -43,5 +43,5 @@ public class ResearchItemController{
     public void setGuiResearchReportController(
         GuiResearchReportController guiResearchReportController){
             this.guiResearchReportController = guiResearchReportController;
-    }
+    }*/
 } 

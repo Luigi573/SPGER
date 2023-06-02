@@ -16,12 +16,15 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import mx.uv.fei.gui.AlertPopUpGenerator;
+import mx.uv.fei.gui.controllers.HeaderPaneController;
 import mx.uv.fei.logic.daos.ResearchDAO;
 import mx.uv.fei.logic.domain.ResearchProject;
+import mx.uv.fei.logic.domain.User;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
 
 public class ResearchManagerController {
     private ArrayList<ResearchProject> researchList;
+    private User user;
     
     @FXML
     private Pane headerPane;
@@ -38,7 +41,6 @@ public class ResearchManagerController {
 
     @FXML
     private void initialize() {
-        loadHeader();
         loadResearches(0);
     }
     @FXML
@@ -49,9 +51,11 @@ public class ResearchManagerController {
             Parent parent = loader.load();
             AddResearchController addResearchController = loader.getController();
             addResearchController.setResearchManagerController(this);
+            
             Scene scene = new Scene(parent);
             String css = this.getClass().getResource("/mx/uv/fei/gui/stylesfiles/Styles.css").toExternalForm();
             scene.getStylesheets().add(css);
+            
             Stage stage = new Stage();
             stage.initModality(Modality.WINDOW_MODAL);
             stage.initOwner((Stage)((Node)event.getSource()).getScene().getWindow());
@@ -168,13 +172,24 @@ public class ResearchManagerController {
         }
     }
 
-    private void loadHeader(){
+    public void setUser(User user){
+        this.user = user;
+        
+         
+    }
+    public void loadHeader(){
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/HeaderPane.fxml"));
         
         try{
             Pane header = loader.load();
-            headerPane.getChildren().add(header);
             
+            if(user != null){
+                HeaderPaneController controller = (HeaderPaneController)loader.getController();
+                controller.setUser(user);
+            }
+            
+            headerPane.getChildren().clear();
+            headerPane.getChildren().add(header);
         }catch(IOException exception){
             new AlertPopUpGenerator().showMissingFilesMessage();
         }

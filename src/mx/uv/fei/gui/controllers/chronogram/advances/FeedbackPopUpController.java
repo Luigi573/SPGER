@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
- */
 package mx.uv.fei.gui.controllers.chronogram.advances;
 
 import javafx.event.ActionEvent;
@@ -13,6 +9,8 @@ import javafx.stage.Stage;
 import mx.uv.fei.gui.AlertPopUpGenerator;
 import mx.uv.fei.logic.daos.AdvanceDAO;
 import mx.uv.fei.logic.domain.Advance;
+import mx.uv.fei.logic.domain.Director;
+import mx.uv.fei.logic.domain.User;
 import mx.uv.fei.logic.exceptions.DataInsertionException;
 
 public class FeedbackPopUpController{
@@ -47,6 +45,12 @@ public class FeedbackPopUpController{
         
         if(advance.getFeedback() != null){
             feedbackTextArea.setText(advance.getFeedback());
+        }
+    }
+    
+    public void setUser(User user){
+        if(!Director.class.isAssignableFrom(user.getClass())){
+            
         }
     }
 }

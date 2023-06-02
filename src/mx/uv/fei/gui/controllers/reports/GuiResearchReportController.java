@@ -30,7 +30,6 @@ import javafx.stage.DirectoryChooser;
 import mx.uv.fei.gui.AlertPopUpGenerator;
 import mx.uv.fei.gui.controllers.HeaderPaneController;
 import mx.uv.fei.logic.daos.ResearchReportDAO;
-import mx.uv.fei.logic.domain.Research;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
@@ -74,14 +73,14 @@ public class GuiResearchReportController {
     private Text showValidatedText;
     @FXML
     private ToggleButton showValidatedToggleButton;
-
+    
     @FXML
     private void initialize(){
-        loadHeader();
+         /*
 
         researchesVBox.getChildren().clear();
         ResearchReportDAO researchesReportDAO = new ResearchReportDAO();
-        ArrayList<Research> researches = new ArrayList<>();
+        ArrayList<ResearchProject> researches = new ArrayList<>();
         try{
             researches = researchesReportDAO.getResearches(findByTitleTextField.getText(), "");
         }catch(DataRetrievalException e) {
@@ -124,7 +123,7 @@ public class GuiResearchReportController {
 
         try{
             ResearchReportDAO researchesReportDAO = new ResearchReportDAO();
-            ArrayList<Research> researches = researchesReportDAO.getSelectedResearches(selectedResearches);
+            ArrayList<ResearchProject> researches = researchesReportDAO.getSelectedResearches(selectedResearches);
 
             Path path = Paths.get("src/dependencies/resources/jasperreports/ResearchReport.jasper");
             InputStream inputStream = Files.newInputStream(path.toAbsolutePath());
@@ -142,7 +141,7 @@ public class GuiResearchReportController {
             view.setVisible(true);
             JasperExportManager.exportReportToPdfStream(jasperPrint, reportFinale);
             
-        }catch(IOException ioe){
+        }catch(IOException exception){
             new AlertPopUpGenerator().showMissingFilesMessage();
         }catch(JRException jre){
             new AlertPopUpGenerator().showMissingFilesMessage();
@@ -154,7 +153,7 @@ public class GuiResearchReportController {
     private void searchResearchesButtonController(ActionEvent event){
         researchesVBox.getChildren().removeAll(researchesVBox.getChildren());
         ResearchReportDAO researchesReportDAO = new ResearchReportDAO();
-        ArrayList<Research> researches = new ArrayList<>();
+        ArrayList<ResearchProject> researches = new ArrayList<>();
         try{
             if(!showNotValidatedToggleButton.isSelected() &&
                !showValidatedToggleButton.isSelected()){
@@ -277,7 +276,7 @@ public class GuiResearchReportController {
         return selectedResearchesVBox;
     }
 
-    private void loadHeader(){
+    public void loadHeader(){
         FXMLLoader headerLoader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/HeaderPane.fxml"));
         
         try{
@@ -290,6 +289,6 @@ public class GuiResearchReportController {
             
         }catch(IOException exception){
             new AlertPopUpGenerator().showMissingFilesMessage();
-        }
+        }*/
     }
 }

@@ -86,7 +86,7 @@ public class AddResearchController{
     @FXML
     private void addResearch(ActionEvent event){
         //In case the date is NULL, setting other attributes is pointless
-        if(allFieldsContainsCorrectValues()){
+        if(startDatePicker.getValue() != null && dueDatePicker.getValue() != null){
             ResearchProject research = new ResearchProject();
             
             research.setStartDate(Date.valueOf(startDatePicker.getValue()));
@@ -136,7 +136,7 @@ public class AddResearchController{
                 new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "No se puede crear el anteproyecto", "Favor de introducir una fecha válida");
             }
         }else{
-            new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "Datos inválidos", "Favor de seleccionar una fecha válida");
+            new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "No se puede crear el anteproyecto", "Favor de introducir una fecha válida");
         }
     }
 
@@ -147,15 +147,4 @@ public class AddResearchController{
         this.researchManagerController = researchManagerController;
     }
 
-    private boolean allFieldsContainsCorrectValues(){
-        Pattern titlePattern = Pattern.compile("([A-Z][a-z]+)\\s?([A-Z][a-z]+)?\\s?([A-Z][a-z]+)?\\s?([A-Z][a-z]+)?");
-        Matcher titleMatcher = titlePattern.matcher(titleTextField.getText());
-
-        if(titleMatcher.find() && startDatePicker.getValue() != null && 
-           dueDatePicker.getValue() != null) {
-            return true;
-        }
-
-        return false;
-    }
 }

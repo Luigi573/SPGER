@@ -1,5 +1,7 @@
 package mx.uv.fei.gui.controllers.users;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -138,9 +140,7 @@ public class GuiRegisterUserController{
                 return;
             }
             directorDAO.addDirector (director);
-        }catch(DataRetrievalException e){
-            new AlertPopUpGenerator().showConnectionErrorMessage();
-        }catch(DataInsertionException e){
+        }catch(DataRetrievalException | DataInsertionException e){
             new AlertPopUpGenerator().showConnectionErrorMessage();
         }
     }
@@ -215,6 +215,7 @@ public class GuiRegisterUserController{
         }
     }
     private void registerStudent(){
+        try {
             StudentDAO studentDAO = new StudentDAO();
             Student student = new Student();
             student.setName(namesTextField.getText());
@@ -230,6 +231,9 @@ public class GuiRegisterUserController{
                 return;
             }
             studentDAO.addStudent (student);
+        } catch (DataInsertionException | DataRetrievalException ex) {
+            Logger.getLogger(GuiRegisterUserController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     private boolean allTextFieldsContainsCorrectValues(){
         Pattern namesPattern = Pattern.compile("([A-Z][a-z]+)\\s?([A-Z][a-z]+)?\\s?([A-Z][a-z]+)?\\s?([A-Z][a-z]+)?"),

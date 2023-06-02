@@ -35,7 +35,7 @@ public class ScholarPeriodDAO implements IScholarPeriodDAO{
                 scholarPeriods.add(scholarPeriod);
             }
             resultSet.close();
-            dataBaseManager.getConnection().close();
+            dataBaseManager.closeConnection();
         }catch(SQLException e){
             throw new DataRetrievalException("Fallo al recuperar la informacion. Verifique su conexion e intentelo de nuevo");
         }finally{
@@ -62,7 +62,7 @@ public class ScholarPeriodDAO implements IScholarPeriodDAO{
             }
             
             resultSet.close();
-            dataBaseManager.getConnection().close();
+            dataBaseManager.closeConnection();
         }catch(SQLException e){
             throw new DataRetrievalException("Fallo al recuperar la informacion. Verifique su conexion e intentelo de nuevo");
         }finally{

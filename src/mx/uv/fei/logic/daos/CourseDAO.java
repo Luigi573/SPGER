@@ -98,7 +98,6 @@ public class CourseDAO implements ICourseDAO{
                 courses.add(course);
             }
             resultSet.close();
-            dataBaseManager.getConnection().close();
         }catch(SQLException e){
             throw new DataRetrievalException("Fallo al recuperar la informacion. Verifique su conexion e intentelo de nuevo");
         }finally{
@@ -130,7 +129,6 @@ public class CourseDAO implements ICourseDAO{
             }
             
             resultSet.close();
-            dataBaseManager.getConnection().close();
         }catch(SQLException e){
             throw new DataRetrievalException("Fallo al recuperar la informacion. Verifique su conexion e intentelo de nuevo");
         }finally{
@@ -160,7 +158,6 @@ public class CourseDAO implements ICourseDAO{
             }
             
             resultSet.close();
-            dataBaseManager.getConnection().close();
         }catch(SQLException e){
             throw new DataRetrievalException("Fallo al recuperar la informacion. Verifique su conexion e intentelo de nuevo");
         }finally{
@@ -184,13 +181,12 @@ public class CourseDAO implements ICourseDAO{
                    resultSet.getInt("bloque") == course.getBlock()){
                     
                    resultSet.close();
-                   dataBaseManager.getConnection().close();
+                   dataBaseManager.closeConnection();
                    return true;
                 }
             }
 
             resultSet.close();
-            dataBaseManager.getConnection().close();
         }catch(SQLException e){
             throw new DataRetrievalException("Fallo al recuperar la informacion. Verifique su conexion e intentelo de nuevo");
         }finally{

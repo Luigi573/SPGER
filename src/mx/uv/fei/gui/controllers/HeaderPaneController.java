@@ -26,16 +26,21 @@ public class HeaderPaneController{
     @FXML
     private void goHome(ActionEvent event) {
         try{
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/MainMenu.fxml"));
-            Parent parent = loader.load();
-            MainMenuController controller = (MainMenuController)loader.getController();
-            controller.setUser(user);            
-            
-            Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-            Scene scene = new Scene(parent);
-            stage.setTitle("SPGER");
-            stage.setScene(scene);
-            stage.show();
+            if(user != null){
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/MainMenu.fxml"));
+                Parent parent = loader.load();
+                MainMenuController controller = (MainMenuController)loader.getController();
+                controller.setUser(user);
+                controller.loadHeader();
+                
+                Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+                Scene scene = new Scene(parent);
+                String css = this.getClass().getResource("/mx/uv/fei/gui/stylesfiles/Styles.css").toExternalForm();
+                scene.getStylesheets().add(css);
+                stage.setTitle("SPGER");
+                stage.setScene(scene);
+                stage.show();
+            }
         }catch(IOException exception){
             new AlertPopUpGenerator().showMissingFilesMessage();
         }
@@ -48,7 +53,9 @@ public class HeaderPaneController{
     }
     
     public void setCourse(Course course){
-        titleLabel.setText(course.getName());
-        NRCLabel.setText("NRC: " + course.getNrc());
+        if(course != null){
+            titleLabel.setText(course.getName());
+            NRCLabel.setText("NRC: " + course.getNrc());
+        }
     }
 }

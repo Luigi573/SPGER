@@ -38,7 +38,7 @@ public class GuiUsersCourseController{
 
     @FXML
     private void initialize(){
-        loadHeader();
+         
         refreshStudents();
     }
     @FXML
@@ -122,7 +122,7 @@ public class GuiUsersCourseController{
         }
     }
 
-    private void loadHeader(){
+    public void loadHeader(){
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/HeaderPane.fxml"));
         
         try{

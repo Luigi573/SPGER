@@ -24,7 +24,7 @@ public class DegreeBossDAO implements IDegreeBossDAO{
     public void addDegreeBoss (DegreeBoss degreeBoss) throws DataInsertionException{
         try{
             String wholeQueryToInsertDegreeBossDataToUserColumns = 
-                "INSERT INTO Usuarios (nombre, apellidoPaterno, apellidoMaterno, correo, correoAlterno, númeroTeléfono, estado) " + 
+                "INSERT INTO Usuarios (nombre, apellidoPaterno, apellidoMaterno, correo, correoAlterno, numeroTelefono, estado) " + 
                 "VALUES (?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement preparedStatementToInsertDegreeBossDataToUserColumns = 
                 dataBaseManager.getConnection().prepareStatement(wholeQueryToInsertDegreeBossDataToUserColumns);
@@ -40,7 +40,7 @@ public class DegreeBossDAO implements IDegreeBossDAO{
             String queryForAssignUserIdToDegreeBoss =
                 "SELECT IdUsuario FROM Usuarios WHERE nombre = ? && " +
                 "apellidoPaterno = ? && apellidoMaterno = ? && correo = ? && " +
-                "correoAlterno = ? && númeroTeléfono = ? && estado = ?";
+                "correoAlterno = ? && numeroTelefono = ? && estado = ?";
             PreparedStatement preparedStatementForAssignUserIdToDegreeBoss =  
                 dataBaseManager.getConnection().prepareStatement(queryForAssignUserIdToDegreeBoss);
             preparedStatementForAssignUserIdToDegreeBoss.setString(1, degreeBoss.getName());
@@ -68,7 +68,7 @@ public class DegreeBossDAO implements IDegreeBossDAO{
                 "SELECT NumPersonal FROM Usuarios U INNER JOIN Profesores P " +
                 "ON U.IdUsuario = P.IdUsuario WHERE U.nombre = ? && " +
                 "U.apellidoPaterno = ? && U.apellidoMaterno = ? && U.correo = ? && " +
-                "U.correoAlterno = ? && U.númeroTeléfono = ? && U.estado = ? && P.NumPersonal = ?";
+                "U.correoAlterno = ? && U.numeroTelefono = ? && U.estado = ? && P.NumPersonal = ?";
             
             PreparedStatement preparedStatementForAssignProfessorIdToDegreeBoss = 
                 dataBaseManager.getConnection().prepareStatement(queryForAssignProfessorIdToDegreeBoss);
@@ -96,7 +96,7 @@ public class DegreeBossDAO implements IDegreeBossDAO{
             preparedStatementToInsertDegreeBossDataToDegreeBossColumns.executeUpdate();
 
             preparedStatementToInsertDegreeBossDataToDegreeBossColumns.close();
-            dataBaseManager.getConnection().close();
+            dataBaseManager.closeConnection();
 
         }catch(SQLIntegrityConstraintViolationException e){
             deleteDegreeBossFromUsersTable(degreeBoss);
@@ -114,9 +114,9 @@ public class DegreeBossDAO implements IDegreeBossDAO{
         try{
             String query = "UPDATE Usuarios SET nombre = ?, " + 
                            "apellidoPaterno = ?, apellidoMaterno = ?, correo = ?, " + 
-                           "correoAlterno = ?, númeroTeléfono = ?, estado = ? " +
+                           "correoAlterno = ?, numeroTelefono = ?, estado = ? " +
                            "WHERE nombre = ? && apellidoPaterno = ? && apellidoMaterno = ? && " + 
-                           "correo = ? && correoAlterno = ? && númeroTeléfono = ? && estado = ?";
+                           "correo = ? && correoAlterno = ? && numeroTelefono = ? && estado = ?";
             
             PreparedStatement preparedStatement = dataBaseManager.getConnection().prepareStatement(query);
             preparedStatement.setString(1, newDegreeBossData.getName());
@@ -178,14 +178,14 @@ public class DegreeBossDAO implements IDegreeBossDAO{
                 degreeBoss.setEmailAddress(resultSet.getString("correo"));
                 degreeBoss.setPassword(resultSet.getString("contraseña"));
                 degreeBoss.setAlternateEmail(resultSet.getString("correoAlterno"));
-                degreeBoss.setPhoneNumber(resultSet.getString("númeroTeléfono"));
+                degreeBoss.setPhoneNumber(resultSet.getString("numeroTelefono"));
                 degreeBoss.setStatus(resultSet.getString("estado"));
                 degreeBoss.setStaffNumber(resultSet.getInt("NumPersonal"));
                 degreeBosses.add(degreeBoss);
             }
             
             resultSet.close();
-            dataBaseManager.getConnection().close();
+            dataBaseManager.closeConnection();
         }catch(SQLException e){
             throw new DataRetrievalException("Fallo al recuperar la informacion. Verifique su conexion e intentelo de nuevo");
         }finally{
@@ -212,15 +212,14 @@ public class DegreeBossDAO implements IDegreeBossDAO{
                 degreeBoss.setEmailAddress(resultSet.getString("correo"));
                 degreeBoss.setPassword(resultSet.getString("contraseña"));
                 degreeBoss.setAlternateEmail(resultSet.getString("correoAlterno"));
-                degreeBoss.setPhoneNumber(resultSet.getString("númeroTeléfono"));
+                degreeBoss.setPhoneNumber(resultSet.getString("numeroTelefono"));
                 degreeBoss.setStatus(resultSet.getString("estado"));
                 degreeBoss.setStaffNumber(resultSet.getInt("NumPersonal"));
                 degreeBosses.add(degreeBoss);
             }
             
-            dataBaseManager.getConnection().close();
+            dataBaseManager.closeConnection();
         }catch(SQLException exception){
-            exception.printStackTrace();
             throw new DataRetrievalException("Fallo al recuperar la informacion. Verifique su conexion e intentelo de nuevo");
         }finally{
             dataBaseManager.closeConnection();
@@ -247,14 +246,13 @@ public class DegreeBossDAO implements IDegreeBossDAO{
                 degreeBoss.setEmailAddress(resultSet.getString("correo"));
                 degreeBoss.setPassword(resultSet.getString("contraseña"));
                 degreeBoss.setAlternateEmail(resultSet.getString("correoAlterno"));
-                degreeBoss.setPhoneNumber(resultSet.getString("númeroTeléfono"));
+                degreeBoss.setPhoneNumber(resultSet.getString("numeroTelefono"));
                 degreeBoss.setStatus(resultSet.getString("estado"));
                 degreeBoss.setStaffNumber(resultSet.getInt("NumPersonal"));
             }
             
-            dataBaseManager.getConnection().close();
+            dataBaseManager.closeConnection();
         }catch(SQLException exception){
-            exception.printStackTrace();
             throw new DataRetrievalException("Fallo al recuperar la informacion. Verifique su conexion e intentelo de nuevo");
         }finally{
             dataBaseManager.closeConnection();
@@ -266,7 +264,7 @@ public class DegreeBossDAO implements IDegreeBossDAO{
     public boolean theDegreeBossIsAlreadyRegisted(DegreeBoss degreeBoss) throws DataRetrievalException{
         PreparedStatement statement;
         String query = "SELECT U.nombre, U.apellidoPaterno, U.apellidoMaterno, U.correo, " +
-                           "U.correoAlterno, U.númeroTeléfono, U.estado, P.NumPersonal FROM Usuarios U " + 
+                           "U.correoAlterno, U.numeroTelefono, U.estado, P.NumPersonal FROM Usuarios U " + 
                            "INNER JOIN Profesores P ON U.IdUsuario = P.IdUsuario INNER JOIN JefesCarrera JC " +
                            "ON P.NumPersonal = JC.NumPersonal";
         
@@ -280,18 +278,17 @@ public class DegreeBossDAO implements IDegreeBossDAO{
                    resultSet.getString("apellidoMaterno").equals(degreeBoss.getSecondSurname()) &&
                    resultSet.getString("correo").equals(degreeBoss.getEmailAddress()) &&
                    resultSet.getString("correoAlterno").equals(degreeBoss.getAlternateEmail()) &&
-                   resultSet.getString("númeroTeléfono").equals(degreeBoss.getPhoneNumber()) &&
+                   resultSet.getString("numeroTelefono").equals(degreeBoss.getPhoneNumber()) &&
                    resultSet.getString("estado").equals(degreeBoss.getStatus()) &&
                    resultSet.getInt("NumPersonal") == degreeBoss.getStaffNumber()) {
 
                     resultSet.close();
-                    dataBaseManager.getConnection().close();
+                    dataBaseManager.closeConnection();
                     return true;
                 }
             }
             statement.close();
         }catch(SQLException exception){
-            exception.printStackTrace();
             throw new DataRetrievalException("Fallo al recuperar la informacion. Verifique su conexion e intentelo de nuevo");
         }finally{
             dataBaseManager.closeConnection();
@@ -301,7 +298,7 @@ public class DegreeBossDAO implements IDegreeBossDAO{
     }
     private void deleteDegreeBossFromUsersTable(DegreeBoss degreeBoss) throws DataInsertionException{
         String queryToInsertUserData = "DELETE FROM Usuarios WHERE nombre = ? && apellidoPaterno = ? && apellidoMaterno = ? && " +
-            "correo = ? && correoAlterno = ? && númeroTeléfono = ? && estado = ?";
+            "correo = ? && correoAlterno = ? && numeroTelefono = ? && estado = ?";
         try{
             PreparedStatement preparedStatementToInsertUserData = 
             dataBaseManager.getConnection().prepareStatement(queryToInsertUserData);

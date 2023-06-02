@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import mx.uv.fei.dataaccess.DataBaseManager;
 import mx.uv.fei.logic.daosinterfaces.IActivityDAO;
 import mx.uv.fei.logic.domain.Activity;
+import mx.uv.fei.logic.domain.statuses.ActivityStatus;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
 import mx.uv.fei.logic.exceptions.DataInsertionException;
 
@@ -31,7 +32,7 @@ public class ActivityDAO implements IActivityDAO{
             statement.setDate(3, activity.getStartDate());
             statement.setDate(4, activity.getDueDate());
             statement.setInt(5, activity.getResearchId());
-            statement.setString(6, activity.getStatus().getValue());
+            statement.setString(6, ActivityStatus.ACTIVE.getValue());
             
             statement.executeUpdate();
             ResultSet resultSet = statement.getGeneratedKeys();
@@ -74,6 +75,14 @@ public class ActivityDAO implements IActivityDAO{
                 activity.setComment(resultSet.getString("a.comentario"));
                 activity.setFeedback(resultSet.getString("a.retroalimentación"));
                 
+                if(activity.getFeedback() != null){
+                    activity.setStatus(ActivityStatus.REVIEWED);
+                }else if(resultSet.getInt("IdArchivo") > 0){
+                    activity.setStatus(ActivityStatus.DELIVERED);
+                }else{
+                    activity.setStatus(ActivityStatus.ACTIVE);
+                }
+                
                 activityList.add(activity);
             }
         }catch(SQLException exception){
@@ -110,7 +119,6 @@ public class ActivityDAO implements IActivityDAO{
         return result;
     }
     
-    @Override
     public int setComment(String comment, int activityId) throws DataInsertionException{
         int result = 0;
         PreparedStatement statement;
@@ -161,18 +169,6 @@ public class ActivityDAO implements IActivityDAO{
         return activity.getTitle().isBlank() || activity.getDescription().isBlank();
     }
     
-    public boolean isNull(Activity activity){
-        if(activity != null){
-            if(activity.getTitle() != null && activity.getDescription() != null){
-                if(activity.getStartDate() != null && activity.getDueDate() != null){
-                    return false;
-                }
-            }
-        }
-        
-        return true;
-    }
-
     public boolean isValidDate(Activity activity){
         return activity.getStartDate().compareTo(activity.getDueDate()) <= 0;
     }

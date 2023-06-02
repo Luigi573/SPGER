@@ -7,27 +7,35 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import mx.uv.fei.gui.AlertPopUpGenerator;
+import mx.uv.fei.gui.controllers.courses.GuiCoursesController;
+import mx.uv.fei.logic.domain.User;
 
 public class AdminMenuPaneController{
-    public void initialize() {
-        // TODO
-    }    
-
+    private User user;
+    
     @FXML
     private void goToCourseManager(ActionEvent event) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/courses/GuiCourses.fxml"));
         
         try{
-            Parent parent = loader.load();
-            Scene scene = new Scene(parent);
-            Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-            stage.setScene(scene);
-            stage.setResizable(false);
+            if(user != null){
+                Parent parent = loader.load();
+                GuiCoursesController controller = (GuiCoursesController)loader.load();
+                controller.setUser(user);
+                
+                Scene scene = new Scene(parent);
+                String css = this.getClass().getResource("/mx/uv/fei/gui/stylesfiles/Styles.css").toExternalForm();
+                scene.getStylesheets().add(css);
+                Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+                stage.setScene(scene);
+                stage.setResizable(false);
+
+                stage.show();
+            }
             
-            stage.show();
+            
         }catch(IOException exception){
             new AlertPopUpGenerator().showConnectionErrorMessage();
         }
@@ -50,4 +58,7 @@ public class AdminMenuPaneController{
         }
     }
     
+    public void setUser(User user){
+        this.user = user;
+    }
 }

@@ -14,9 +14,11 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import mx.uv.fei.gui.AlertPopUpGenerator;
 import mx.uv.fei.logic.domain.Advance;
+import mx.uv.fei.logic.domain.User;
 
 public class AdvanceInfoController{
     private Advance advance;
+    private User user;
     
     @FXML
     private Pane headerPane;
@@ -30,11 +32,6 @@ public class AdvanceInfoController{
     private Text descriptionText;
 
     @FXML
-    private void initialize() {
-        loadHeader();
-    }    
-
-    @FXML
     private void editAdvance(ActionEvent event) {
         
     }
@@ -46,6 +43,7 @@ public class AdvanceInfoController{
             Parent parent = loader.load();
             FeedbackPopUpController controller = (FeedbackPopUpController)loader.getController();
             controller.setAdvance(advance);
+            controller.setUser(user);
             
             Scene scene = new Scene(parent);
             Stage stage = new Stage();
@@ -60,7 +58,7 @@ public class AdvanceInfoController{
             new AlertPopUpGenerator().showMissingFilesMessage();
         }
     }
-    private void loadHeader(){
+    public void loadHeader(){
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/HeaderPane.fxml"));
         
         try{
@@ -70,11 +68,16 @@ public class AdvanceInfoController{
             new AlertPopUpGenerator().showMissingFilesMessage();
         }
     }
-    protected void setAdvance(Advance advance){
+    
+    public void setAdvance(Advance advance){
         this.advance = advance;
         
         titleLabel.setText(advance.getTitle());
         dateLabel.setText(advance.getDate().toString());
-        descriptionText.setText(advance.getComment());
+        descriptionText.setText(advance.getComments());
+    }
+    
+    public void setUser(User user){
+        this.user = user;
     }
 }

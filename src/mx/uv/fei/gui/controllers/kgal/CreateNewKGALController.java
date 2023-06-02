@@ -30,11 +30,8 @@ public class CreateNewKGALController {
         try {
             result = kgalDAO.addKGAL(newKgal);
             System.out.println(result);
-        } catch (DataInsertionException die) {
-            Alert errorMessage = new Alert(Alert.AlertType.ERROR);
-            errorMessage.setHeaderText("Error al insertar datos");
-            errorMessage.setContentText(die.getMessage());
-            errorMessage.showAndWait();
+        } catch (DataInsertionException exception) {
+            new AlertPopUpGenerator().showConnectionErrorMessage();
         }
         if(result > 0) {
             Alert successMessage = new Alert(Alert.AlertType.CONFIRMATION);
