@@ -37,6 +37,7 @@ public class ActivityPaneController{
             controller.setActivity(activity);
             controller.setCourse(course);
             controller.setUser(user);
+            controller.loadAdvances();
             controller.loadHeader();
             
             Scene scene = new Scene(parent);

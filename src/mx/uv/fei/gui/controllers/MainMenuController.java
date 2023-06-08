@@ -43,13 +43,12 @@ public class MainMenuController{
     }
         
     private void loadCourses(){
-                if(Student.class.isAssignableFrom(user.getClass())){
+        if(Student.class.isAssignableFrom(user.getClass())){
             StudentsCoursesDAO studentsCoursesDAO = new StudentsCoursesDAO();
             
             try{
                 Student student = (Student)user;
                 courseList = studentsCoursesDAO.getStudentCourses(student.getMatricle());
-                
                 
                 for(Course course: courseList){
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/CourseHBoxPane.fxml"));
@@ -66,7 +65,6 @@ public class MainMenuController{
                     }
                 }
             }catch(DataRetrievalException exception){
-                exception.printStackTrace();
                 new AlertPopUpGenerator().showConnectionErrorMessage();
             }
         }else{
@@ -93,26 +91,24 @@ public class MainMenuController{
             }catch(DataRetrievalException exception){
                 new AlertPopUpGenerator().showConnectionErrorMessage();
             }
-
-            
         }
         
         for(Course course: courseList){
-                    if(Professor.class.isAssignableFrom(user.getClass()) && course.getProfessor().equals(user)){
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/CourseHBoxPane.fxml"));
+            if(Professor.class.isAssignableFrom(user.getClass()) && course.getProfessor().equals(user)){
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/CourseHBoxPane.fxml"));
 
-                        try{
-                            Pane pane = loader.load();
-                            CourseHBoxPaneController controller = (CourseHBoxPaneController)loader.getController();
-                            controller.setUser(user);
-                            controller.setCourse(course);
+                try{
+                    Pane pane = loader.load();
+                    CourseHBoxPaneController controller = (CourseHBoxPaneController)loader.getController();
+                    controller.setUser(user);
+                    controller.setCourse(course);
 
-                            courseHBox.getChildren().add(pane);
-                        }catch(IOException exception){
-                            new AlertPopUpGenerator().showMissingFilesMessage();
-                        }
-                    }
+                    courseHBox.getChildren().add(pane);
+                }catch(IOException exception){
+                    new AlertPopUpGenerator().showMissingFilesMessage();
                 }
+            }
+        }
     }
     
     public void loadHeader(){
@@ -124,8 +120,7 @@ public class MainMenuController{
             HeaderPaneController controller = (HeaderPaneController)loader.getController();
             controller.setUser(user);
             
-            headerPane.getChildren().clear();
-            headerPane.getChildren().add(header);
+            headerPane.getChildren().setAll(header);
         }catch(IOException exception){
             new AlertPopUpGenerator().showMissingFilesMessage();
         }
@@ -138,6 +133,7 @@ public class MainMenuController{
             try{
                 Pane adminPane = loader.load();
                 AdminMenuPaneController controller = (AdminMenuPaneController)loader.getController();
+                controller.setUser(user);
                 
 
                 courseVBox.getChildren().add(adminPane);

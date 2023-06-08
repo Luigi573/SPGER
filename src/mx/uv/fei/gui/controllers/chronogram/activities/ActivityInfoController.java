@@ -146,7 +146,7 @@ public class ActivityInfoController{
     }
     
     @FXML
-    private void feedback(ActionEvent event){
+    private void openFeedbackPopUp(ActionEvent event){
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/activities/FeedbackPopUp.fxml"));
         
         try{
@@ -177,7 +177,7 @@ public class ActivityInfoController{
         filesList.clear();
     }
     
-    public void loadHeader(){
+    protected void loadHeader(){
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/HeaderPane.fxml"));
         
         try{
@@ -187,44 +187,15 @@ public class ActivityInfoController{
                 controller.setCourse(course);
                 controller.setUser(user);
                 
-                headerPane.getChildren().clear();
-                headerPane.getChildren().add(header);
+                headerPane.getChildren().setAll(header);
             }
         }catch(IOException exception){
             new AlertPopUpGenerator().showMissingFilesMessage();
         }
     }
+
     
-    public void setActivity(Activity activity){
-        this.activity = activity;
-        titleLabel.setText(activity.getTitle());
-        startDateLabel.setText(activity.getStartDate().toString());
-        dueDateLabel.setText(activity.getDueDate().toString());
-        descriptionText.setText(activity.getDescription());
-        
-        loadAdvances();
-    }
-    
-    public void setCourse(Course course){
-        this.course = course;
-    }
-    
-    public void setUser(User user){
-        this.user = user;
-        
-        if(Professor.class.isAssignableFrom(user.getClass())){
-            addAdvanceButton.setVisible(false);
-            commentTextArea.setEditable(false);
-            deliveryButton.setVisible(false);
-            editButton.setVisible(false);
-            uploadFileButton.setVisible(false);
-            removeFilesButton.setVisible(false);
-        }else{
-            feedbackButton.setText("Ver retroalimentación");
-        }
-    }
-    
-    private void loadAdvances(){
+    protected void loadAdvances(){
         AdvanceDAO advanceDAO = new AdvanceDAO();
         
         try{
@@ -237,6 +208,8 @@ public class ActivityInfoController{
                     Pane advancePane = loader.load();
                     AdvanceVBoxPaneController controller = (AdvanceVBoxPaneController)loader.getController();
                     controller.setAdvance(advance);
+                    controller.setCourse(course);
+                    controller.setUser(user);
                     
                     advanceVBox.getChildren().add(advancePane);
                 }catch(IOException exception){
@@ -245,6 +218,33 @@ public class ActivityInfoController{
             }
         }catch(DataRetrievalException exception){
             new AlertPopUpGenerator().showConnectionErrorMessage();
+        }
+    }
+        
+    protected void setActivity(Activity activity){
+        this.activity = activity;
+        titleLabel.setText(activity.getTitle());
+        startDateLabel.setText(activity.getStartDate().toString());
+        dueDateLabel.setText(activity.getDueDate().toString());
+        descriptionText.setText(activity.getDescription());
+    }
+    
+    protected void setCourse(Course course){
+        this.course = course;
+    }
+    
+    protected void setUser(User user){
+        this.user = user;
+        
+        if(Professor.class.isAssignableFrom(user.getClass())){
+            addAdvanceButton.setVisible(false);
+            commentTextArea.setEditable(false);
+            deliveryButton.setVisible(false);
+            editButton.setVisible(false);
+            uploadFileButton.setVisible(false);
+            removeFilesButton.setVisible(false);
+        }else{
+            feedbackButton.setText("Ver retroalimentación");
         }
     }
 }

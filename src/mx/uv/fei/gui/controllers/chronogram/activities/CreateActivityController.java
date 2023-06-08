@@ -105,8 +105,7 @@ public class CreateActivityController{
                 controller.setCourse(course);
             }
             
-            headerPane.getChildren().clear();
-            headerPane.getChildren().add(header);
+            headerPane.getChildren().setAll(header);
         }catch(IOException exception){
             new AlertPopUpGenerator().showConnectionErrorMessage();
         }

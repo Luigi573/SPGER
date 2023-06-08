@@ -89,6 +89,7 @@ public class LoginController{
             Scene scene = new Scene(parent);
             String css = this.getClass().getResource("/mx/uv/fei/gui/stylesfiles/Styles.css").toExternalForm();
             scene.getStylesheets().add(css);
+            
             Stage stage = new Stage();
             stage.setTitle("SPGER");
             stage.setScene(scene);

@@ -4,6 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 import mx.uv.fei.gui.AlertPopUpGenerator;
@@ -16,6 +17,8 @@ import mx.uv.fei.logic.exceptions.DataInsertionException;
 public class FeedbackPopUpController{
     private Advance advance;
     
+    @FXML
+    private Button feedbackButton;
     @FXML
     private TextArea feedbackTextArea;
 
@@ -50,7 +53,8 @@ public class FeedbackPopUpController{
     
     public void setUser(User user){
         if(!Director.class.isAssignableFrom(user.getClass())){
-            
+            feedbackButton.setVisible(false);
+            feedbackTextArea.setEditable(false);
         }
     }
 }

@@ -28,14 +28,13 @@ public class AdminMenuPaneController{
                 Scene scene = new Scene(parent);
                 String css = this.getClass().getResource("/mx/uv/fei/gui/stylesfiles/Styles.css").toExternalForm();
                 scene.getStylesheets().add(css);
+                
                 Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
                 stage.setScene(scene);
                 stage.setResizable(false);
 
                 stage.show();
             }
-            
-            
         }catch(IOException exception){
             new AlertPopUpGenerator().showConnectionErrorMessage();
         }

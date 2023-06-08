@@ -54,8 +54,8 @@ public class ResearchDAO implements IResearchDAO{
             
             statement.setString(10, research.getValidationStatus());
             
-            for(int i = 0; i < research.getDirectors().size(); i++){
-                if(research.getDirectors().get(i).getName() != null){
+            for(int i = 0; i < 3; i++){
+                if(i < research.getDirectors().size()){
                     statement.setInt(i + 11, research.getDirectors().get(i).getDirectorId());
                 }else{
                     statement.setNull(i + 11, java.sql.Types.INTEGER);
@@ -69,7 +69,6 @@ public class ResearchDAO implements IResearchDAO{
                 generatedId = generatedKeys.getInt(1);
             }
         }catch(SQLException exception){
-            exception.printStackTrace();
             throw new DataInsertionException("Error de conexión. Verifique su conexion e intentelo de nuevo");
         }finally{
             dataBaseManager.closeConnection();
@@ -139,7 +138,6 @@ public class ResearchDAO implements IResearchDAO{
                 researchProjectList.add(research);
             }
         }catch(SQLException exception){
-            exception.printStackTrace();
             throw new DataRetrievalException("Fallo al recuperar la informacion. Verifique su conexion e intentelo de nuevo");
         }finally{
             dataBaseManager.closeConnection();
@@ -571,10 +569,10 @@ public class ResearchDAO implements IResearchDAO{
             }
             
             for(int i = 0; i < 3; i++){
-                if(research.getDirectors().get(i) != null){
-                    statement.setInt(i + 10, research.getDirectors().get(i).getDirectorId());
+                if(i < research.getDirectors().size()){
+                    statement.setInt(i + 11, research.getDirectors().get(i).getDirectorId());
                 }else{
-                    statement.setNull(i + 10, java.sql.Types.INTEGER);
+                    statement.setNull(i + 11, java.sql.Types.INTEGER);
                 }
             }
             

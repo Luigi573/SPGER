@@ -9,11 +9,14 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
+import mx.uv.fei.gui.AlertPopUpGenerator;
 import mx.uv.fei.logic.domain.Advance;
+import mx.uv.fei.logic.domain.Course;
 import mx.uv.fei.logic.domain.User;
 
 public class AdvanceVBoxPaneController{
     private Advance advance;
+    private Course course;
     private User user;
     
     @FXML
@@ -21,12 +24,7 @@ public class AdvanceVBoxPaneController{
     @FXML
     private Label dateLabel;
     @FXML
-    private Label statusLabel;
-
-    @FXML
-    public void initialize() {
-        
-    }    
+    private Label statusLabel;   
 
     @FXML
     private void viewAdvanceInfo(ActionEvent event) {
@@ -36,6 +34,7 @@ public class AdvanceVBoxPaneController{
             Parent parent = loader.load();
             AdvanceInfoController controller = (AdvanceInfoController)loader.getController();
             controller.setAdvance(advance);
+            controller.setCourse(course);
             controller.setUser(user);
             controller.loadHeader();
             
@@ -49,7 +48,7 @@ public class AdvanceVBoxPaneController{
             stage.show();
             
         }catch(IOException exception){
-            
+            new AlertPopUpGenerator().showMissingFilesMessage();
         }
     }
     
@@ -58,5 +57,13 @@ public class AdvanceVBoxPaneController{
         
         titleLabel.setText(advance.getTitle());
         dateLabel.setText(advance.getDate().toString());
+    }
+    
+    public void setCourse(Course course){
+        this.course = course;
+    }
+    
+    public void setUser(User user){
+        this.user = user;
     }
 }

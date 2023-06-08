@@ -15,7 +15,7 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.uv.fei.gui.controllers.chronogram.activities.ActivityInfoController">
    <children>
-      <Pane fx:id="headerPane" prefHeight="70.0" prefWidth="1024.0" />
+      <Pane fx:id="headerPane" prefHeight="80.0" prefWidth="1024.0" />
       <Pane fx:id="toolbarPane" layoutY="88.0" prefHeight="330.0" prefWidth="55.0" />
       <TabPane layoutX="119.0" layoutY="94.0" prefHeight="513.0" prefWidth="822.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
@@ -98,7 +98,7 @@
                            <font>
                               <Font size="16.0" />
                            </font></Button>
-                        <Button fx:id="feedbackButton" layoutX="480.0" layoutY="440.0" mnemonicParsing="false" onAction="#feedback" prefHeight="35.0" prefWidth="190.0" text="Retroalimentar">
+                        <Button fx:id="feedbackButton" layoutX="480.0" layoutY="440.0" mnemonicParsing="false" onAction="#openFeedbackPopUp" prefHeight="35.0" prefWidth="190.0" text="Retroalimentar">
                            <font>
                               <Font size="16.0" />
                            </font></Button>
@@ -123,7 +123,7 @@
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <Label layoutY="10.0" prefHeight="47.0" prefWidth="380.0" text="Entregas de avance:">
+                        <Label layoutX="26.0" layoutY="10.0" prefHeight="47.0" prefWidth="380.0" text="Entregas de avance:">
                            <font>
                               <Font size="32.0" />
                            </font>
