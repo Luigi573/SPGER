@@ -67,9 +67,8 @@ public class DirectorDAO implements IDirectorDAO{
 
         }catch(SQLIntegrityConstraintViolationException e){
             deleteDirectorFromUsersTable(director);
-            throw new DataInsertionException("Error al agregar estudiante. Verifique su conexion e intentelo de nuevo");
+            throw new DataInsertionException("Error al agregar director. Verifique su conexion e intentelo de nuevo");
         }catch(SQLException e){
-            e.printStackTrace();
             throw new DataInsertionException("Error al agregar director. Verifique su conexion e intentelo de nuevo");
         }finally{
             dataBaseManager.closeConnection();

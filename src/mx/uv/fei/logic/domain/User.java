@@ -1,20 +1,17 @@
 package mx.uv.fei.logic.domain;
 
 public abstract class User {
-    int userId;
-    String name;
-    String firstSurname;
-    String secondSurname;
-    String emailAddress;
-    String password;
-    String alternateEmail;
-    String phoneNumber;
+    protected int userId;
+    protected String name;
+    protected String firstSurname;
+    protected String secondSurname;
+    protected String emailAddress;
+    protected String alternateEmail;
+    protected String password;
+    protected String phoneNumber;
     
     public void setUserId(int userId){
         this.userId = userId;
-    }
-    public int getUserId(){
-        return userId;
     }
     public void setName(String name){
         this.name = name;
@@ -57,6 +54,9 @@ public abstract class User {
     }
     public String getPhoneNumber(){
         return phoneNumber;
+    }
+    public int getUserId(){
+        return userId;
     }
     
     @Override

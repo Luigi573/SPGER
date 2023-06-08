@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import mx.uv.fei.dataaccess.DataBaseManager;
 import mx.uv.fei.logic.daosinterfaces.ICourseDAO;
 import mx.uv.fei.logic.domain.Course;
+import mx.uv.fei.logic.domain.Professor;
+import mx.uv.fei.logic.domain.ScholarPeriod;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
 import mx.uv.fei.logic.exceptions.DataInsertionException;
 
@@ -51,24 +53,27 @@ public class CourseDAO implements ICourseDAO{
 
     @Override
     public int modifyCourseData(Course course) throws DataInsertionException{
+        int result = 0;
         try{
             String query = "UPDATE Cursos SET NRC = ?, " + 
                            "IdPeriodoEscolar = ?, NumPersonal = ?, nombreEE = ?, " + 
                            "sección = ?, bloque = ? WHERE NRC = ?";
             PreparedStatement preparedStatement = dataBaseManager.getConnection().prepareStatement(query);
             preparedStatement.setInt(1, course.getNrc());
-            preparedStatement.setInt(2, course.getIdScholarPeriod());
-            preparedStatement.setInt(3, course.getStaffNumber());
+            preparedStatement.setInt(2, course.getScholarPeriod().getIdScholarPeriod());
+            preparedStatement.setInt(3, course.getProfessor().getStaffNumber());
             preparedStatement.setString(4, course.getName());
             preparedStatement.setInt(5, course.getSection());
             preparedStatement.setInt(6, course.getBlock());
             preparedStatement.setInt(7, course.getNrc());
-            preparedStatement.executeUpdate();
+            result = preparedStatement.executeUpdate();
         }catch(SQLException e){
             throw new DataInsertionException("Error al modificar curso. Verifique su conexion e intentelo de nuevo");
         }finally{
             dataBaseManager.closeConnection();
         }
+
+        return result;
     }
 
     @Override
@@ -83,11 +88,17 @@ public class CourseDAO implements ICourseDAO{
             while(resultSet.next()){
                 Course course = new Course();
                 course.setNrc(resultSet.getInt("NRC"));
-                course.setIdScholarPeriod(resultSet.getInt("IdPeriodoEscolar"));
-                course.setStaffNumber(resultSet.getInt("NumPersonal"));
                 course.setName(resultSet.getString("nombreEE"));
                 course.setSection(resultSet.getInt("sección"));
                 course.setBlock(resultSet.getInt("bloque"));
+                
+                ScholarPeriod scholarPeriod = new ScholarPeriod();
+                scholarPeriod.setIdScholarPeriod(resultSet.getInt("IdPeriodoEscolar"));
+                course.setScholarPeriod(scholarPeriod);
+                Professor professor = new Professor();
+                professor.setStaffNumber(resultSet.getInt("NumPersonal"));
+                course.setProfessor(professor);
+
                 courses.add(course);
             }
             resultSet.close();
@@ -113,11 +124,17 @@ public class CourseDAO implements ICourseDAO{
             while(resultSet.next()){
                 Course course = new Course();
                 course.setNrc(resultSet.getInt("NRC"));
-                course.setIdScholarPeriod(resultSet.getInt("IdPeriodoEscolar"));
-                course.setStaffNumber(resultSet.getInt("NumPersonal"));
                 course.setName(resultSet.getString("nombreEE"));
                 course.setSection(resultSet.getInt("sección"));
                 course.setBlock(resultSet.getInt("bloque"));
+                
+                ScholarPeriod scholarPeriod = new ScholarPeriod();
+                scholarPeriod.setIdScholarPeriod(resultSet.getInt("IdPeriodoEscolar"));
+                course.setScholarPeriod(scholarPeriod);
+                Professor professor = new Professor();
+                professor.setStaffNumber(resultSet.getInt("NumPersonal"));
+                course.setProfessor(professor);
+                
                 courses.add(course);
             }
             resultSet.close();
@@ -142,11 +159,16 @@ public class CourseDAO implements ICourseDAO{
             ResultSet resultSet = preparedStatement.executeQuery();
             if(resultSet.next()){
                 course.setNrc(resultSet.getInt("NRC"));
-                course.setIdScholarPeriod(resultSet.getInt("IdPeriodoEscolar"));
-                course.setStaffNumber(resultSet.getInt("NumPersonal"));
                 course.setName(resultSet.getString("nombreEE"));
                 course.setSection(resultSet.getInt("sección"));
                 course.setBlock(resultSet.getInt("bloque"));
+                
+                ScholarPeriod scholarPeriod = new ScholarPeriod();
+                scholarPeriod.setIdScholarPeriod(resultSet.getInt("IdPeriodoEscolar"));
+                course.setScholarPeriod(scholarPeriod);
+                Professor professor = new Professor();
+                professor.setStaffNumber(resultSet.getInt("NumPersonal"));
+                course.setProfessor(professor);
             }
             
             resultSet.close();
@@ -167,8 +189,8 @@ public class CourseDAO implements ICourseDAO{
             ResultSet resultSet = statement.executeQuery(query);
             while(resultSet.next()) {
                 if(resultSet.getInt("NRC") == course.getNrc() &&
-                   resultSet.getInt("IdPeriodoEscolar") == course.getIdScholarPeriod() &&
-                   resultSet.getInt("NumPersonal") == course.getStaffNumber() &&
+                   resultSet.getInt("IdPeriodoEscolar") == course.getScholarPeriod().getIdScholarPeriod() &&
+                   resultSet.getInt("NumPersonal") == course.getProfessor().getStaffNumber() &&
                    resultSet.getString("nombreEE").equals(course.getName()) &&
                    resultSet.getInt("sección") == course.getSection() &&
                    resultSet.getInt("bloque") == course.getBlock()){

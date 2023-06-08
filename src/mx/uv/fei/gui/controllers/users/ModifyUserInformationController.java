@@ -219,7 +219,7 @@ public class ModifyUserInformationController{
             new AlertPopUpGenerator().showConnectionErrorMessage();
         }
         try{
-            studentDAO.modifyStudentData(newStudentData, originalStudentData);
+            studentDAO.modifyStudentData(newStudentData);
             new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "Éxito", "Usuario modificado exitosamente");
             returnToGuiUsers(event);
         }catch(DataInsertionException e){

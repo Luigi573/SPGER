@@ -69,7 +69,6 @@ public class DegreeBossDAO implements IDegreeBossDAO{
             deleteDegreeBossFromUsersTable(degreeBoss);
             throw new DataInsertionException("Error al agregar estudiante. Verifique su conexion e intentelo de nuevo");
         }catch(SQLException e){
-            e.printStackTrace();
             throw new DataInsertionException("Error al agregar jefe de carrera. Verifique su conexion e intentelo de nuevo");
         }finally{
             dataBaseManager.closeConnection();
@@ -96,7 +95,7 @@ public class DegreeBossDAO implements IDegreeBossDAO{
             preparedStatement.setString(6, degreeBoss.getPhoneNumber());
             preparedStatement.setString(7, degreeBoss.getStatus());
             preparedStatement.setInt(8, degreeBoss.getUserId());
-            preparedStatement.executeUpdate();
+            result = preparedStatement.executeUpdate();
 
             String queryForUpdateProfessorData = "UPDATE Profesores SET NumPersonal = ? " + 
                            "WHERE IdUsuario = ?";
@@ -153,7 +152,7 @@ public class DegreeBossDAO implements IDegreeBossDAO{
     @Override
     public ArrayList<DegreeBoss> getSpecifiedDegreeBosses(String degreeBossName) throws DataRetrievalException{
         ArrayList<DegreeBoss> degreeBosses = new ArrayList<>();
-        String query = "SELECT * FROM Usuarios U INNER JOIN Profesores P ON U.IdUsuario = P.IdUsuario INNER JOIN JefesCarrera JC ON P.NumPersonal = JC.NumPersonal WHERE U.Nombre LIKE ?";
+        String query = "SELECT * FROM Usuarios U INNER JOIN Profesores P ON U.IdUsuario = P.IdUsuario INNER JOIN JefesCarrera JC ON P.NumPersonal = JC.NumPersonal WHERE U.nombre LIKE ?";
 
         try{  
             PreparedStatement preparedStatement = dataBaseManager.getConnection().prepareStatement(query);

@@ -226,12 +226,14 @@ public class GuiRegisterUserController{
             student.setPhoneNumber(telephoneNumberTextField.getText());
             student.setStatus(StudentStatus.AVAILABLE.getValue());
             student.setMatricle(matricleOrPersonalNumberTextField.getText());
-            if(studentDAO.theStudentIsAlreadyRegisted(student.toString())){
+            if(studentDAO.theStudentIsAlreadyRegisted(student)){
                 new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "Error", "El usuario ya está registrado en el sistema");
                 return;
             }
             studentDAO.addStudent(student);
         } catch (DataInsertionException e) {
+            new AlertPopUpGenerator().showConnectionErrorMessage();
+        } catch (DataRetrievalException e) {
             new AlertPopUpGenerator().showConnectionErrorMessage();
         }
     }

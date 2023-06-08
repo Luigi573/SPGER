@@ -56,9 +56,8 @@ public class ProfessorDAO implements IProfessorDAO{
 
         }catch(SQLIntegrityConstraintViolationException e){
             deleteProfessorFromUsersTable(professor);
-            throw new DataInsertionException("Error al agregar estudiante. Verifique su conexion e intentelo de nuevo");
+            throw new DataInsertionException("Error al agregar profesor. Verifique su conexion e intentelo de nuevo");
         }catch(SQLException e){
-            e.printStackTrace();
             throw new DataInsertionException("Fallo al recuperar la informacion. Verifique su conexion e intentelo de nuevo");
         }finally{
             dataBaseManager.closeConnection();
@@ -85,6 +84,7 @@ public class ProfessorDAO implements IProfessorDAO{
             preparedStatement.setString(7, professor.getStatus());
             preparedStatement.setInt(8, professor.getUserId());
             result = preparedStatement.executeUpdate();
+            System.out.println(result);
 
             String queryForUpdateProfessorData = "UPDATE Profesores SET NumPersonal = ? " + 
                            "WHERE IdUsuario = ?";

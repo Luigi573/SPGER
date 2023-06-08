@@ -30,11 +30,6 @@ public class LoginController{
     private Label errorLabel;
 
     @FXML
-    private void initialize() {
-        
-    }    
-
-    @FXML
     private void logIn(ActionEvent event){        
         if(!idTextField.getText().isBlank() && !passwordField.getText().isBlank()){
             LoginDAO loginDAO = new LoginDAO(); 

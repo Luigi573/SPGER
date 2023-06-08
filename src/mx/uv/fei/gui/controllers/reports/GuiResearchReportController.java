@@ -110,7 +110,7 @@ public class GuiResearchReportController {
             return;
         }
 
-        directoryChooser.setTitle("Seleccionar rrrrrrrrrrrrrrrrrrrrrrrrrrrruta");
+        directoryChooser.setTitle("Seleccionar Ruta");
         File choosedDirectory = directoryChooser.showDialog(null);
         if(choosedDirectory == null){
             return;
@@ -284,7 +284,7 @@ public class GuiResearchReportController {
             Pane header = headerLoader.load();
             header.getStyleClass().add("/mx/uv/fei/gui/stylesfiles/Styles.css");
             backgroundPane.getChildren().add(header);
-            HeaderPaneController headerPaneController = headerLoader.getController();
+            //HeaderPaneController headerPaneController = headerLoader.getController();
             //headerPaneController.setTitle("Generar Reporte de Anteproshectos");
             //headerPaneController.setVisibleNRCLabel(false);
             

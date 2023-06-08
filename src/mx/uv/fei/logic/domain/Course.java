@@ -1,12 +1,12 @@
 package mx.uv.fei.logic.domain;
 
 public class Course {
-    private int nrc;
-    private ScholarPeriod scholarPeriod;
-    private String name;
-    private int section;
     private int block;
+    private String name;
+    private int nrc;
     private Professor professor;
+    private ScholarPeriod scholarPeriod;
+    private int section;
 
     public int getNrc() {
         return this.nrc;
@@ -59,8 +59,7 @@ public class Course {
     @Override
     public boolean equals(Object obj) {
         if(obj instanceof Course course){
-            return this.nrc == course.nrc  && this.scholarPeriod == course.scholarPeriod && this.section == course.section &&
-               this.block == course.block;
+            return this.nrc == course.nrc;
         }        
 
         return false;
