@@ -18,6 +18,7 @@ import mx.uv.fei.logic.domain.Professor;
 import mx.uv.fei.logic.domain.statuses.ProfessorStatus;
 import mx.uv.fei.logic.exceptions.DataInsertionException;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
+import mx.uv.fei.logic.exceptions.DuplicatedPrimaryKeyException;
 
 public class ProfessorDAOTest {
     private static DataBaseManager dataBaseManager;
@@ -124,6 +125,8 @@ public class ProfessorDAOTest {
             assertTrue(result > 0);
         }catch(DataInsertionException exception){
             fail("Couldn't connect to DB");
+        }catch(DuplicatedPrimaryKeyException e) {
+            fail("Duplicated primary key");
         }finally{
             dataBaseManager.closeConnection();
         }
@@ -162,6 +165,7 @@ public class ProfessorDAOTest {
             ArrayList<Professor> result = instance.getProfessors();
             assertTrue(result.contains(preloadedProfessor));
         }catch(DataRetrievalException exception){
+            exception.printStackTrace();
             fail("Couldn't connect to DB");
         }finally{
             dataBaseManager.closeConnection();
@@ -219,6 +223,8 @@ public class ProfessorDAOTest {
             assertTrue(result > 0);
         }catch(DataInsertionException exception){
             fail("Couldn't connect to DB");
+        }catch(DuplicatedPrimaryKeyException e) {
+            fail("Duplicated primary key");
         }finally{
             dataBaseManager.closeConnection();
         }

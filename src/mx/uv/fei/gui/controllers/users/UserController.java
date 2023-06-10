@@ -11,9 +11,9 @@ public class UserController{
     GuiUsersController guiUsersController;
 
     @FXML
-    private Label matricleOrPersonalNumberLabel;
+    private Label matricleOrStaffNumberLabel;
     @FXML
-    private Label matricleOrPersonalNumberText;
+    private Label matricleOrStaffNumberText;
     @FXML
     private Label nameLabel;
     @FXML
@@ -37,29 +37,29 @@ public class UserController{
     public void setType(String type){
         typeLabel.setText(type);
     }
-    public void setMatricleOrPersonalNumber(String matricleOrPersonalNumber){
-        matricleOrPersonalNumberLabel.setText(matricleOrPersonalNumber);
+    public void setMatricleOrStaffNumber(String matricleOrStaffNumber){
+        matricleOrStaffNumberLabel.setText(matricleOrStaffNumber);
     }
-    public void setMatricleOrPersonalNumberText(String matricleOrPersonalNumber){
-        matricleOrPersonalNumberText.setText(matricleOrPersonalNumber);
+    public void setMatricleOrStaffNumberText(String matricleOrStaffNumber){
+        matricleOrStaffNumberText.setText(matricleOrStaffNumber);
     }
     public String getType(){
         return typeLabel.getText();
     }
-    public String getMatricleOrPersonalNumber(){
-        return matricleOrPersonalNumberLabel.getText();
+    public String getMatricleOrStaffNumber(){
+        return matricleOrStaffNumberLabel.getText();
     }
     public void setLabelsCorrectBounds(String userType){
         if(userType.equals(UserType.STUDENT.getValue())){
-            matricleOrPersonalNumberText.setPrefWidth(72);
-            matricleOrPersonalNumberText.setLayoutX(10);
-            matricleOrPersonalNumberLabel.setPrefWidth(373);
-            matricleOrPersonalNumberLabel.setLayoutX(81);
+            matricleOrStaffNumberText.setPrefWidth(72);
+            matricleOrStaffNumberText.setLayoutX(10);
+            matricleOrStaffNumberLabel.setPrefWidth(373);
+            matricleOrStaffNumberLabel.setLayoutX(81);
         }else{
-            matricleOrPersonalNumberText.setPrefWidth(143);
-            matricleOrPersonalNumberText.setLayoutX(10);
-            matricleOrPersonalNumberLabel.setPrefWidth(303);
-            matricleOrPersonalNumberLabel.setLayoutX(151);
+            matricleOrStaffNumberText.setPrefWidth(143);
+            matricleOrStaffNumberText.setLayoutX(10);
+            matricleOrStaffNumberLabel.setPrefWidth(303);
+            matricleOrStaffNumberLabel.setLayoutX(151);
         }
     }
 }

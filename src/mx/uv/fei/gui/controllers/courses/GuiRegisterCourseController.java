@@ -7,7 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
-import javafx.scene.text.Text;
+import javafx.scene.control.Alert.AlertType;
 import javafx.util.StringConverter;
 import mx.uv.fei.gui.AlertPopUpGenerator;
 import mx.uv.fei.logic.daos.CourseDAO;
@@ -18,14 +18,13 @@ import mx.uv.fei.logic.domain.Professor;
 import mx.uv.fei.logic.domain.ScholarPeriod;
 import mx.uv.fei.logic.exceptions.DataInsertionException;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
+import mx.uv.fei.logic.exceptions.DuplicatedPrimaryKeyException;
 
 public class GuiRegisterCourseController {
     @FXML
     private ComboBox<String> blockComboBox;
     @FXML
     private ComboBox<String> educativeExperienceComboBox;
-    @FXML
-    private Text errorMessajeText;
     @FXML
     private TextField nrcTextField;
     @FXML
@@ -98,37 +97,27 @@ public class GuiRegisterCourseController {
     void registerButtonController(ActionEvent event) {
         try{
             if(!this.nrcTextField.getText().isEmpty()) {
-
                 if(allTextFieldsContainsCorrectValues()){
-                    this.errorMessajeText.setVisible(false);
                     CourseDAO courseDAO = new CourseDAO();
                     Course course = new Course();
                     course.setName(this.educativeExperienceComboBox.getValue());
                     course.setNrc(Integer.parseInt(this.nrcTextField.getText()));
                     course.setSection(Integer.parseInt(this.sectionComboBox.getValue()));
                     course.setBlock(Integer.parseInt(this.blockComboBox.getValue()));
-                    course.setStaffNumber(this.professorComboBox.getValue().getStaffNumber());
-                    course.setIdScholarPeriod(this.scholarPeriodComboBox.getValue().getIdScholarPeriod());
-
-                    if(courseDAO.theCourseIsAlreadyRegisted(course)) {
-                        this.errorMessajeText.setText("El curso ya está registrado en el sistema");
-                        this.errorMessajeText.setVisible(true);
-                        return;
-                    }
-                    courseDAO.addCourse(course);
-                    this.errorMessajeText.setText("Curso registrado exitosamente");
-                    this.errorMessajeText.setVisible(true);
-                } else {
-                    this.errorMessajeText.setText("Algunos campos contienen datos inválidos");
-                    this.errorMessajeText.setVisible(true);
+                    course.setProfessor(professorComboBox.getValue());
+                    course.setScholarPeriod(scholarPeriodComboBox.getValue());
+                    courseDAO.addCourse (course);
+                    new AlertPopUpGenerator().showCustomMessage(AlertType.INFORMATION, "Éxito", "Curso registrado exitosamente");
+                }else{
+                    new AlertPopUpGenerator().showCustomMessage(AlertType.ERROR, "Error", "Algunos campos contienen datos inválidos");
                 }
-
             } else {
-                this.errorMessajeText.setText("Faltan campos por llenar");
-                this.errorMessajeText.setVisible(true);
+                new AlertPopUpGenerator().showCustomMessage(AlertType.ERROR, "Error", "Faltan campos por llenar");
             }
-        }catch(DataInsertionException | DataRetrievalException exception){
+        }catch(DataInsertionException exception){
             new AlertPopUpGenerator().showConnectionErrorMessage();
+        }catch(DuplicatedPrimaryKeyException exception){
+            new AlertPopUpGenerator().showCustomMessage(AlertType.ERROR, "Error", "El NRC ya está usado");
         }
     }
 

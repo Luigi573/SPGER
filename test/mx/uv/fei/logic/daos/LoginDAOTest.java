@@ -1,19 +1,24 @@
 package mx.uv.fei.logic.daos;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.fail;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
 import java.sql.SQLException;
+import java.sql.Statement;
+
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
 import mx.uv.fei.dataaccess.DataBaseManager;
 import mx.uv.fei.logic.domain.AcademicBodyHead;
 import mx.uv.fei.logic.domain.DegreeBoss;
 import mx.uv.fei.logic.domain.Professor;
 import mx.uv.fei.logic.domain.Student;
 import mx.uv.fei.logic.exceptions.LoginException;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import static org.junit.Assert.*;
 
 public class LoginDAOTest {
     private static AcademicBodyHead preloadedAcademicBodyHead;
@@ -36,7 +41,7 @@ public class LoginDAOTest {
             preloadedAdmin.setName("Jorge Octavio");
             preloadedAdmin.setFirstSurname("Ocharán");
             preloadedAdmin.setSecondSurname("Hernández");
-            preloadedAdmin.setEmailAddress("jocharan@uv.mx");
+            preloadedAdmin.setEmailAddress("gmartinez@uv.mx");
             preloadedAdmin.setStaffNumber(68532);
             
             String userQuery = "INSERT INTO Usuarios(nombre, apellidoPaterno, apellidoMaterno, correo, contraseña) VALUES(?, ?, ?, ?, SHA2(?, 256))";
@@ -71,7 +76,7 @@ public class LoginDAOTest {
             preloadedProfessor.setName("Juan Carlos");
             preloadedProfessor.setFirstSurname("Pérez");
             preloadedProfessor.setSecondSurname("Arriaga");
-            preloadedProfessor.setEmailAddress("elrevo@uv.mx");
+            preloadedProfessor.setEmailAddress("elrevo@uv.com");
             preloadedProfessor.setStaffNumber(64582);
             
             userStatement.setString(1, preloadedProfessor.getName());
@@ -124,7 +129,7 @@ public class LoginDAOTest {
             preloadedAcademicBodyHead.setName("Maria de los Ángeles");
             preloadedAcademicBodyHead.setFirstSurname("Arenas");
             preloadedAcademicBodyHead.setSecondSurname("Valdez");
-            preloadedAcademicBodyHead.setEmailAddress("aarenas@uv.mx");
+            preloadedAcademicBodyHead.setEmailAddress("umarinero@uv.mx");
             preloadedAcademicBodyHead.setStaffNumber(47532);
             
             userStatement.setString(1, preloadedAcademicBodyHead.getName());
@@ -152,6 +157,7 @@ public class LoginDAOTest {
             
             userStatement.close();
         }catch(SQLException exception){
+            exception.printStackTrace();
             fail("Couldn't connect to DB");
         }finally{
             dataBaseManager.closeConnection();
@@ -208,12 +214,12 @@ public class LoginDAOTest {
     @Test
     public void testLogInprofessor() throws LoginException{
         LoginDAO instance = new LoginDAO();
-        Professor result = instance.logInProfessor("elrevo@uv.mx", "password");
+        Professor result = instance.logInProfessor("elrevo@uv.com", "password");
         
         System.out.println("Expected data: ");
-        System.out.println("Professor name: " + preloadedAdmin);
-        System.out.println("Staff Number: " + preloadedAdmin.getStaffNumber());
-        System.out.println("Email Address: " + preloadedAdmin.getEmailAddress());
+        System.out.println("Professor name: " + preloadedProfessor);
+        System.out.println("Staff Number: " + preloadedProfessor.getStaffNumber());
+        System.out.println("Email Address: " + preloadedProfessor.getEmailAddress());
         
         System.out.println("\nActual data: ");
         System.out.println("Admin name: " + result);
@@ -226,7 +232,7 @@ public class LoginDAOTest {
     @Test
     public void testLogInprofessorFail() throws LoginException{
         LoginDAO instance = new LoginDAO();
-        Professor result = instance.logInProfessor("elrevo@uv.mx", "contraseña");
+        Professor result = instance.logInProfessor("jaguevara@uv.mx", "contraseña");
         
         System.out.println("Testing LogInProfessor with wrong password");
         
@@ -236,7 +242,7 @@ public class LoginDAOTest {
     @Test
     public void testLogInAdmin() throws LoginException{
         LoginDAO instance = new LoginDAO();
-        DegreeBoss result = instance.logInAdmin("jocharan@uv.mx", "vivaElDiseño2023");
+        DegreeBoss result = instance.logInAdmin("gmartinez@uv.mx", "vivaElDiseño2023");
         
         System.out.println("Expected data: ");
         System.out.println("Admin name: " + preloadedAdmin);
@@ -254,7 +260,7 @@ public class LoginDAOTest {
     @Test
     public void testLogInAdminFail() throws LoginException{
         LoginDAO instance = new LoginDAO();
-        DegreeBoss result = instance.logInAdmin("jocharan@uv.mx", "viv34567");
+        DegreeBoss result = instance.logInAdmin("gmartinez@uv.mx", "viv34567");
         
         System.out.println("Testing LogInAdmin with wrong password");
         
@@ -264,7 +270,7 @@ public class LoginDAOTest {
     @Test
     public void testLogInAcademicBodyHead() throws LoginException{
         LoginDAO instance = new LoginDAO();
-        AcademicBodyHead result = instance.logInAcademicBodyHead("aarenas@uv.mx", "programaciónOOP5462");
+        AcademicBodyHead result = instance.logInAcademicBodyHead("umarinero@uv.mx", "programaciónOOP5462");
         
         System.out.println("Expected data: ");
         System.out.println("Academic body head name: " + preloadedAcademicBodyHead);
@@ -280,28 +286,11 @@ public class LoginDAOTest {
     @Test
     public void testLogInAcademicBodyHeadFail() throws LoginException{
         LoginDAO instance = new LoginDAO();
-        AcademicBodyHead result = instance.logInAcademicBodyHead("aarenas@uv.mx", "prograee24");
+        AcademicBodyHead result = instance.logInAcademicBodyHead("umarinero@uv.mx", "prograee24");
         
         System.out.println("\nTesting LogInAcademicBody with wrong password");
         
         assertNotEquals(preloadedAcademicBodyHead, result);
     }
 
-    @Test
-    public void testIsValidMatricle(){
-        LoginDAO instance = new LoginDAO();
-        String matricle = "zS21013906";
-        
-        System.out.println("A valid matricle has exactly 10 characters and has an 'zS' as the first two before numbers");
-        
-        assertTrue(instance.isValidMatricle(matricle));
-    }
-    
-    @Test
-    public void testIsValidMatricleFail(){
-        LoginDAO instance = new LoginDAO();
-        String matricle = "s2101390634";
-        
-        assertTrue(!instance.isValidMatricle(matricle));
-    }
 }

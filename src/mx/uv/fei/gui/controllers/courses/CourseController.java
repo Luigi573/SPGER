@@ -4,58 +4,49 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.Pane;
 
-public class CourseController {
-
+public class CourseController{
     private GuiCoursesController guiCoursesController;
 
     @FXML
+    private Pane courseButton;
+    @FXML
     private Label nameLabel;
-
     @FXML
     private Label nrcLabel;
-
     @FXML
     private Label scholarPeriodLabel;
-
     @FXML
     private Button userButton;
 
     @FXML
-    void userButtonController(ActionEvent event) {
-        this.guiCoursesController.openPaneWithCourseInformation(this.getNrc());
+    private void userButtonController(ActionEvent event){
+        this.guiCoursesController.openPaneWithCourseInformation(getNrc());
     }
 
-    public GuiCoursesController getGuiCoursesController() {
+    public GuiCoursesController getGuiCoursesController(){
         return guiCoursesController;
     }
-
-    public void setGuiCoursesController(GuiCoursesController guiCoursesController) {
+    public void setGuiCoursesController(GuiCoursesController guiCoursesController){
         this.guiCoursesController = guiCoursesController;
     }
-
-    public String getname() {
-        return this.nameLabel.getText();
+    public String getEEName(){
+        return nameLabel.getText();
     }
-
-    public void setname(String name) {
+    public void setEEName(String name){
         this.nameLabel.setText(name);
     }
-
-    public String getNrc() {
-        return this.nrcLabel.getText();
+    public String getNrc(){
+        return nrcLabel.getText();
     }
-
-    public void setNrc(String nrc) {
+    public void setNrc(String nrc){
         this.nrcLabel.setText(nrc);
     }
-
-    public String getScholarPeriod() {
-        return this.scholarPeriodLabel.getText();
+    public String getScholarPeriod(){
+        return scholarPeriodLabel.getText();
     }
-
-    public void setScholarPeriod(String status) {
+    public void setScholarPeriod(String status){
         this.scholarPeriodLabel.setText(status);
     }
-
 }

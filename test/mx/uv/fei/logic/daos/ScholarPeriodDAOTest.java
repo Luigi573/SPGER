@@ -1,19 +1,22 @@
 package mx.uv.fei.logic.daos;
 
-import mx.uv.fei.dataaccess.DataBaseManager;
-import mx.uv.fei.logic.domain.ScholarPeriod;
-import mx.uv.fei.logic.exceptions.DataRetrievalException;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
+
+import mx.uv.fei.dataaccess.DataBaseManager;
+import mx.uv.fei.logic.domain.ScholarPeriod;
+import mx.uv.fei.logic.exceptions.DataRetrievalException;
 
 public class ScholarPeriodDAOTest{
     private static DataBaseManager dataBaseManager;
@@ -27,26 +30,26 @@ public class ScholarPeriodDAOTest{
         try{
             //Adding a Scholar Period
             preloadedScholarPeriod = new ScholarPeriod();
-            preloadedScholarPeriod.setStartDate("2023-02-07");
-            preloadedScholarPeriod.setEndDate("2023-06-02");
+            preloadedScholarPeriod.setStartDate(Date.valueOf("2023-02-07"));
+            preloadedScholarPeriod.setEndDate(Date.valueOf("2023-06-02"));
            
             String scholarPeriodQuery = "INSERT INTO PeriodosEscolares(fechaInicio, fechaFin) VALUES (?, ?)";
             PreparedStatement scholarPeriodStatement = dataBaseManager.getConnection().prepareStatement(scholarPeriodQuery, Statement.RETURN_GENERATED_KEYS);
-            scholarPeriodStatement.setString(1, preloadedScholarPeriod.getStartDate());
-            scholarPeriodStatement.setString(2, preloadedScholarPeriod.getEndDate());
+            scholarPeriodStatement.setDate(1, preloadedScholarPeriod.getStartDate());
+            scholarPeriodStatement.setDate(2, preloadedScholarPeriod.getEndDate());
             scholarPeriodStatement.executeUpdate();
             
             ResultSet generatedScholarPeriodKeys = scholarPeriodStatement.getGeneratedKeys();
             if(generatedScholarPeriodKeys.next()){
-                preloadedScholarPeriod.setIdScholarPeriod(generatedScholarPeriodKeys.getInt(1));
+                preloadedScholarPeriod.setScholarPeriodId(generatedScholarPeriodKeys.getInt(1));
             }
             generatedScholarPeriodKeys.close();
             scholarPeriodStatement.close();
 
             //Set data to a failed Scholar Period
             failedScholarPeriod = new ScholarPeriod();
-            failedScholarPeriod.setStartDate("2021-02-07");
-            failedScholarPeriod.setEndDate("2021-06-02");
+            failedScholarPeriod.setStartDate(Date.valueOf("2021-02-07"));
+            failedScholarPeriod.setEndDate(Date.valueOf("2021-06-02"));
         }catch(SQLException exception){
             fail("Couldn't connect to DB");
         }finally{
@@ -61,7 +64,7 @@ public class ScholarPeriodDAOTest{
         
         try{
             statement = dataBaseManager.getConnection().prepareStatement(queryToDeleteScholarPeriod);
-            statement.setInt(1, preloadedScholarPeriod.getIdScholarPeriod());
+            statement.setInt(1, preloadedScholarPeriod.getScholarPeriodId());
             statement.executeUpdate();
             statement.close();
         }catch(SQLException exception){
@@ -75,7 +78,7 @@ public class ScholarPeriodDAOTest{
     public void getScholarPeriodTest(){
         try {
             ScholarPeriodDAO instance = new ScholarPeriodDAO();
-            ScholarPeriod result = instance.getScholarPeriod(preloadedScholarPeriod.getIdScholarPeriod());
+            ScholarPeriod result = instance.getScholarPeriod(preloadedScholarPeriod.getScholarPeriodId());
             assertTrue(result.equals(preloadedScholarPeriod));
         }catch(DataRetrievalException exception){
             fail("Couldn't connect to DB");
@@ -88,7 +91,7 @@ public class ScholarPeriodDAOTest{
     public void getScholarPeriodTestFail(){
         try {
             ScholarPeriodDAO instance = new ScholarPeriodDAO();
-            ScholarPeriod result = instance.getScholarPeriod(preloadedScholarPeriod.getIdScholarPeriod());
+            ScholarPeriod result = instance.getScholarPeriod(preloadedScholarPeriod.getScholarPeriodId());
             assertTrue(!result.equals(failedScholarPeriod));
         }catch(DataRetrievalException exception){
             fail("Couldn't connect to DB");

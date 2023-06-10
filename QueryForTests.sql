@@ -13,6 +13,9 @@ INSERT INTO Usuarios (nombre, apellidoPaterno, apellidoMaterno, correo, contrase
 INSERT INTO Profesores (IdUsuario, NumPersonal) VALUES (2, 100000001);
 
 INSERT INTO Usuarios (nombre, apellidoPaterno, apellidoMaterno, correo, contraseña, correoAlterno, númeroTeléfono, estado)
+    VALUES ('Luis Roberto', 'Justo', 'Moreno', 'lurojumo342@gmail.com', NULL, 'lurojumo343@gmail.com', '2288563472', 'Disponible');
+
+INSERT INTO Usuarios (nombre, apellidoPaterno, apellidoMaterno, correo, contraseña, correoAlterno, númeroTeléfono, estado)
     VALUES ('Miguel Gilberto', 'Chavez', 'Gonzalez', 'migichago998@gmail.com', NULL, 'migichago999@gmail.com', '2281647833', 'Disponible');
 INSERT INTO Profesores (IdUsuario, NumPersonal) VALUES (3, 100000002);
 INSERT INTO Directores (NumPersonal) VALUES (100000002);

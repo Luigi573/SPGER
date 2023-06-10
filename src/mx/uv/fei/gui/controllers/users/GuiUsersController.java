@@ -48,10 +48,10 @@ public class GuiUsersController{
     private ScrollPane userInformationScrollPane;
     @FXML
     private VBox usersVBox;
-    
+
     @FXML
     private void initialize(){
-        loadHeader();
+        //loadHeader();
         loadUserButtons();
     }
     @FXML
@@ -134,13 +134,14 @@ public class GuiUsersController{
         try{
             VBox modifyUserInformationVBox = modifyUserInformationControllerLoader.load();
             ModifyUserInformationController modifyUserInformationController = modifyUserInformationControllerLoader.getController();
+            modifyUserInformationController.setUser(userInformationController.getUser());
             modifyUserInformationController.setNames(userInformationController.getNames());
             modifyUserInformationController.setFirstSurname(userInformationController.getFirstSurname());
             modifyUserInformationController.setSecondSurname(userInformationController.getSecondSurname());
             modifyUserInformationController.setEmail(userInformationController.getEmail());
             modifyUserInformationController.setAlternateEmail(userInformationController.getAlternateEmail());
             modifyUserInformationController.setTelephoneNumber(userInformationController.getTelephoneNumber());
-            modifyUserInformationController.setMatricleOrPersonalNumber(userInformationController.getMatricleOrPersonalNumber());
+            modifyUserInformationController.setMatricleOrStaffNumber(userInformationController.getMatricleOrStaffNumber());
             modifyUserInformationController.setStatus(userInformationController.getStatus());
             modifyUserInformationController.setDataToStatusCombobox(userInformationController.getUserType());
             modifyUserInformationController.setLabelsCorrectBounds(userInformationController.getUserType());
@@ -157,7 +158,7 @@ public class GuiUsersController{
             if(userController.getType().equals(UserType.DIRECTOR.getValue())){
                 DirectorDAO directorDAO = new DirectorDAO();
                 Director director = directorDAO.getDirector(
-                    Integer.parseInt(userController.getMatricleOrPersonalNumber())
+                    Integer.parseInt(userController.getMatricleOrStaffNumber())
                 );
                 openPaneWithDirectorInformation(director);
             }
@@ -165,7 +166,7 @@ public class GuiUsersController{
             if(userController.getType().equals(UserType.ACADEMIC_BODY_HEAD.getValue())){
                 AcademicBodyHeadDAO academicBodyHeadDAO = new AcademicBodyHeadDAO();
                 AcademicBodyHead academicBodyHead = academicBodyHeadDAO.getAcademicBodyHead(
-                    Integer.parseInt(userController.getMatricleOrPersonalNumber())
+                    Integer.parseInt(userController.getMatricleOrStaffNumber())
                 );
                 openPaneWithAcademicBodyHeadInformation(academicBodyHead);
             }
@@ -173,7 +174,7 @@ public class GuiUsersController{
             if(userController.getType().equals(UserType.DEGREE_BOSS.getValue())){
                 DegreeBossDAO degreeBossDAO = new DegreeBossDAO();
                 DegreeBoss degreeBoss = degreeBossDAO.getDegreeBoss(
-                    Integer.parseInt(userController.getMatricleOrPersonalNumber())
+                    Integer.parseInt(userController.getMatricleOrStaffNumber())
                 );
                 openPaneWithDegreeBossInformation(degreeBoss);
             }
@@ -181,7 +182,7 @@ public class GuiUsersController{
             if(userController.getType().equals(UserType.PROFESSOR.getValue())){
                 ProfessorDAO professorDAO = new ProfessorDAO();
                 Professor professor = professorDAO.getProfessor(
-                    Integer.parseInt(userController.getMatricleOrPersonalNumber())
+                    Integer.parseInt(userController.getMatricleOrStaffNumber())
                 );
                 openPaneWithProfessorInformation(professor);
             }
@@ -189,7 +190,7 @@ public class GuiUsersController{
             if(userController.getType().equals(UserType.STUDENT.getValue())){
                 StudentDAO studentDAO = new StudentDAO();
                 Student student = studentDAO.getStudent(
-                    userController.getMatricleOrPersonalNumber()
+                    userController.getMatricleOrStaffNumber()
                 );
                 openPaneWithStudentInformation(student);
             }
@@ -200,17 +201,18 @@ public class GuiUsersController{
         }
     }
 
-    private void loadHeader(){
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/HeaderPane.fxml"));
-        
-        try{
-            Pane header = loader.load();
-            header.getStyleClass().add("/mx/uv/fei/gui/stylesfiles/Styles.css");
-            backgroundPane.getChildren().add(header);
-        } catch(IOException exception){
-            new AlertPopUpGenerator().showMissingFilesMessage();
-        }
-    }
+    //private void loadHeader(){
+    //    FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/HeaderPane.fxml"));
+    //    
+    //    try{
+    //        Pane header = loader.load();
+    //        header.getStyleClass().add("/mx/uv/fei/gui/stylesfiles/Styles.css");
+    //        backgroundPane.getChildren().add(header);
+    //    } catch(IOException exception){
+    //        new AlertPopUpGenerator().showMissingFilesMessage();
+    //    }
+    //}
+
     private void studentButtonMaker(ArrayList<Student> students){
         try{
             for(Student student : students){
@@ -221,10 +223,10 @@ public class GuiUsersController{
                 userItemPane = userItemControllerLoader.load();
                 UserController userController = userItemControllerLoader.getController();
                 userController.setName(student.getName() + " " + student.getFirstSurname() + " " + student.getSecondSurname());
-                userController.setType("Estudiante");
-                userController.setMatricleOrPersonalNumber(student.getMatricle());
-                userController.setMatricleOrPersonalNumberText("Matrícula: ");
-                userController.setLabelsCorrectBounds("Estudiante");
+                userController.setType(UserType.STUDENT.getValue());
+                userController.setMatricleOrStaffNumber(student.getMatricle());
+                userController.setMatricleOrStaffNumberText("Matrícula: ");
+                userController.setLabelsCorrectBounds(UserType.STUDENT.getValue());
                 userController.setGuiUsersController(this);
                 usersVBox.getChildren().add(userItemPane);
             }
@@ -251,10 +253,10 @@ public class GuiUsersController{
                     Pane userItemPane = userItemControllerLoader.load();
                     UserController userController = userItemControllerLoader.getController();
                     userController.setName(professor.getName() + " " + professor.getFirstSurname() + " " + professor.getSecondSurname());
-                    userController.setType("Profesor");
-                    userController.setMatricleOrPersonalNumber(Integer.toString(professor.getStaffNumber()));
-                    userController.setMatricleOrPersonalNumberText("Número de Personal: ");
-                    userController.setLabelsCorrectBounds("Profesor");
+                    userController.setType(UserType.PROFESSOR.getValue());
+                    userController.setMatricleOrStaffNumber(Integer.toString(professor.getStaffNumber()));
+                    userController.setMatricleOrStaffNumberText("Número de Personal: ");
+                    userController.setLabelsCorrectBounds(UserType.PROFESSOR.getValue());
                     userController.setGuiUsersController(this);
                     usersVBox.getChildren().add(userItemPane);
                 }
@@ -272,10 +274,10 @@ public class GuiUsersController{
                 Pane userItemPane = userItemControllerLoader.load();
                 UserController userController = userItemControllerLoader.getController();
                 userController.setName(director.getName() + " " + director.getFirstSurname() + " " + director.getSecondSurname());
-                userController.setType("Director");
-                userController.setMatricleOrPersonalNumber(Integer.toString(director.getStaffNumber()));
-                userController.setMatricleOrPersonalNumberText("Número de Personal: ");
-                userController.setLabelsCorrectBounds("Director");
+                userController.setType(UserType.DIRECTOR.getValue());
+                userController.setMatricleOrStaffNumber(Integer.toString(director.getStaffNumber()));
+                userController.setMatricleOrStaffNumberText("Número de Personal: ");
+                userController.setLabelsCorrectBounds(UserType.DIRECTOR.getValue());
                 userController.setGuiUsersController(this);
                 usersVBox.getChildren().add(userItemPane);
             }
@@ -292,10 +294,10 @@ public class GuiUsersController{
                 Pane userItemPane = userItemControllerLoader.load();
                 UserController userController = userItemControllerLoader.getController();
                 userController.setName(academicBodyHead.getName() + " " + academicBodyHead.getFirstSurname() + " " + academicBodyHead.getSecondSurname());
-                userController.setType("Miembro de Cuerpo Académico");
-                userController.setMatricleOrPersonalNumber(Integer.toString(academicBodyHead.getStaffNumber()));
-                userController.setMatricleOrPersonalNumberText("Número de Personal: ");
-                userController.setLabelsCorrectBounds("Miembro de Cuerpo Académico");
+                userController.setType(UserType.ACADEMIC_BODY_HEAD.getValue());
+                userController.setMatricleOrStaffNumber(Integer.toString(academicBodyHead.getStaffNumber()));
+                userController.setMatricleOrStaffNumberText("Número de Personal: ");
+                userController.setLabelsCorrectBounds(UserType.ACADEMIC_BODY_HEAD.getValue());
                 userController.setGuiUsersController(this);
                 usersVBox.getChildren().add(userItemPane);
             }
@@ -312,10 +314,10 @@ public class GuiUsersController{
                 Pane userItemPane = userItemControllerLoader.load();
                 UserController userController = userItemControllerLoader.getController();
                 userController.setName(degreeBoss.getName() + " " + degreeBoss.getFirstSurname() + " " + degreeBoss.getSecondSurname());
-                userController.setType("Jefe de Carrera");
-                userController.setMatricleOrPersonalNumber(Integer.toString(degreeBoss.getStaffNumber()));
-                userController.setMatricleOrPersonalNumberText("Número de Personal: ");
-                userController.setLabelsCorrectBounds("Jefe de Carrera");
+                userController.setType(UserType.DEGREE_BOSS.getValue());
+                userController.setMatricleOrStaffNumber(Integer.toString(degreeBoss.getStaffNumber()));
+                userController.setMatricleOrStaffNumberText("Número de Personal: ");
+                userController.setLabelsCorrectBounds(UserType.DEGREE_BOSS.getValue());
                 userController.setGuiUsersController(this);
                 usersVBox.getChildren().add(userItemPane);
             }
@@ -330,17 +332,18 @@ public class GuiUsersController{
         try{
             VBox userInformationVBox = userInformationControllerLoader.load();
             UserInformationController userInformationController = userInformationControllerLoader.getController();
+            userInformationController.setUser(director);
             userInformationController.setNames(director.getName());
             userInformationController.setFirstSurname(director.getFirstSurname());
             userInformationController.setSecondSurname(director.getSecondSurname());
             userInformationController.setEmail(director.getEmailAddress());
             userInformationController.setAlternateEmail(director.getAlternateEmail());
             userInformationController.setTelephoneNumber(director.getPhoneNumber());
-            userInformationController.setUserType("Director");
+            userInformationController.setUserType(UserType.DIRECTOR.getValue());
             userInformationController.setStatus(director.getStatus());
-            userInformationController.setMatricleOrPersonalNumber(Integer.toString(director.getStaffNumber()));
+            userInformationController.setMatricleOrStaffNumber(Integer.toString(director.getStaffNumber()));
             userInformationController.setGuiUsersController(this);
-            userInformationController.setMatricleOrPersonalNumberText();
+            userInformationController.setMatricleOrStaffNumberText();
             userInformationScrollPane.setContent(userInformationVBox);
             
         }catch (IOException e){
@@ -355,17 +358,18 @@ public class GuiUsersController{
         try{
             VBox userInformationVBox = userInformationControllerLoader.load();
             UserInformationController userInformationController = userInformationControllerLoader.getController();
+            userInformationController.setUser(academicBodyHead);
             userInformationController.setNames(academicBodyHead.getName());
             userInformationController.setFirstSurname(academicBodyHead.getFirstSurname());
             userInformationController.setSecondSurname(academicBodyHead.getSecondSurname());
             userInformationController.setEmail(academicBodyHead.getEmailAddress());
             userInformationController.setAlternateEmail(academicBodyHead.getAlternateEmail());
             userInformationController.setTelephoneNumber(academicBodyHead.getPhoneNumber());
-            userInformationController.setUserType("Miembro de Cuerpo Académico");
+            userInformationController.setUserType(UserType.ACADEMIC_BODY_HEAD.getValue());
             userInformationController.setStatus(academicBodyHead.getStatus());
-            userInformationController.setMatricleOrPersonalNumber(Integer.toString(academicBodyHead.getStaffNumber()));
+            userInformationController.setMatricleOrStaffNumber(Integer.toString(academicBodyHead.getStaffNumber()));
             userInformationController.setGuiUsersController(this);
-            userInformationController.setMatricleOrPersonalNumberText();
+            userInformationController.setMatricleOrStaffNumberText();
             userInformationScrollPane.setContent(userInformationVBox);
             
         }catch(IOException e){
@@ -381,17 +385,18 @@ public class GuiUsersController{
         try{
             VBox userInformationVBox = userInformationControllerLoader.load();
             UserInformationController userInformationController = userInformationControllerLoader.getController();
+            userInformationController.setUser(degreeBoss);
             userInformationController.setNames(degreeBoss.getName());
             userInformationController.setFirstSurname(degreeBoss.getFirstSurname());
             userInformationController.setSecondSurname(degreeBoss.getSecondSurname());
             userInformationController.setEmail(degreeBoss.getEmailAddress());
             userInformationController.setAlternateEmail(degreeBoss.getAlternateEmail());
             userInformationController.setTelephoneNumber(degreeBoss.getPhoneNumber());
-            userInformationController.setUserType("Jefe de Carrera");
+            userInformationController.setUserType(UserType.DEGREE_BOSS.getValue());
             userInformationController.setStatus(degreeBoss.getStatus());
-            userInformationController.setMatricleOrPersonalNumber(Integer.toString(degreeBoss.getStaffNumber()));
+            userInformationController.setMatricleOrStaffNumber(Integer.toString(degreeBoss.getStaffNumber()));
             userInformationController.setGuiUsersController(this);
-            userInformationController.setMatricleOrPersonalNumberText();
+            userInformationController.setMatricleOrStaffNumberText();
             userInformationScrollPane.setContent(userInformationVBox);
             
         }catch(IOException e){
@@ -406,17 +411,18 @@ public class GuiUsersController{
         try{
             VBox userInformationVBox = userInformationControllerLoader.load();
             UserInformationController userInformationController = userInformationControllerLoader.getController();
+            userInformationController.setUser(professor);
             userInformationController.setNames(professor.getName());
             userInformationController.setFirstSurname(professor.getFirstSurname());
             userInformationController.setSecondSurname(professor.getSecondSurname());
             userInformationController.setEmail(professor.getEmailAddress());
             userInformationController.setAlternateEmail(professor.getAlternateEmail());
             userInformationController.setTelephoneNumber(professor.getPhoneNumber());
-            userInformationController.setUserType("Profesor");
+            userInformationController.setUserType(UserType.PROFESSOR.getValue());
             userInformationController.setStatus(professor.getStatus());
-            userInformationController.setMatricleOrPersonalNumber(Integer.toString(professor.getStaffNumber()));
+            userInformationController.setMatricleOrStaffNumber(Integer.toString(professor.getStaffNumber()));
             userInformationController.setGuiUsersController(this);
-            userInformationController.setMatricleOrPersonalNumberText();
+            userInformationController.setMatricleOrStaffNumberText();
             userInformationScrollPane.setContent(userInformationVBox);
             
         } catch (IOException e){
@@ -431,17 +437,18 @@ public class GuiUsersController{
         try{
             VBox userInformationVBox = userInformationControllerLoader.load();
             UserInformationController userInformationController = userInformationControllerLoader.getController();
+            userInformationController.setUser(student);
             userInformationController.setNames(student.getName());
             userInformationController.setFirstSurname(student.getFirstSurname());
             userInformationController.setSecondSurname(student.getSecondSurname());
             userInformationController.setEmail(student.getEmailAddress());
             userInformationController.setAlternateEmail(student.getAlternateEmail());
             userInformationController.setTelephoneNumber(student.getPhoneNumber());
-            userInformationController.setUserType("Estudiante");
+            userInformationController.setUserType(UserType.STUDENT.getValue());
             userInformationController.setStatus(student.getStatus());
-            userInformationController.setMatricleOrPersonalNumber(student.getMatricle());
+            userInformationController.setMatricleOrStaffNumber(student.getMatricle());
             userInformationController.setGuiUsersController(this);
-            userInformationController.setMatricleOrPersonalNumberText();
+            userInformationController.setMatricleOrStaffNumberText();
             userInformationScrollPane.setContent(userInformationVBox);
             
         }catch(IOException e){

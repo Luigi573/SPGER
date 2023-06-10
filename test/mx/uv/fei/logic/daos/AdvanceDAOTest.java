@@ -1,5 +1,9 @@
 package mx.uv.fei.logic.daos;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -8,14 +12,15 @@ import java.sql.Statement;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
+
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
 import mx.uv.fei.dataaccess.DataBaseManager;
 import mx.uv.fei.logic.domain.Advance;
 import mx.uv.fei.logic.exceptions.DataInsertionException;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import static org.junit.Assert.*;
 
 public class AdvanceDAOTest {
     private static DataBaseManager dataBaseManager;

@@ -1,15 +1,18 @@
 package mx.uv.fei.logic.daos;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.ArrayList;
-import mx.uv.fei.logic.domain.KGAL;
-import mx.uv.fei.logic.exceptions.DataInsertionException;
-import mx.uv.fei.logic.exceptions.DataRetrievalException;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
+
+import mx.uv.fei.logic.domain.KGAL;
+import mx.uv.fei.logic.exceptions.DataInsertionException;
+import mx.uv.fei.logic.exceptions.DataRetrievalException;
 
 public class KGALDAOTest {
     
@@ -54,7 +57,7 @@ public class KGALDAOTest {
     public void testGetKGALList() throws DataRetrievalException {
         System.out.println("getKGALList");
         KGALDAO instance = new KGALDAO();
-        ArrayList<KGAL> expResult = new ArrayList();
+        ArrayList<KGAL> expResult = new ArrayList<>();
         KGAL kgal1 = new KGAL();
         KGAL kgal2 = new KGAL();
         kgal1.setKgalID(1);
@@ -132,7 +135,7 @@ public class KGALDAOTest {
         KGAL kgal = new KGAL();
         kgal.setKgalID(3);
         kgal.setDescription("Hola");
-        ArrayList<KGAL> expResult = new ArrayList();
+        ArrayList<KGAL> expResult = new ArrayList<>();
         expResult.add(kgal);
         ArrayList<KGAL> result = instance.getKGALListByDescription(description);
         

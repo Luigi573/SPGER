@@ -8,12 +8,11 @@
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.uv.fei.gui.controllers.MainMenuController">
    <children>
       <Pane fx:id="headerPane" prefHeight="80.0" prefWidth="1024.0" />
-      <Pane layoutY="100.0" prefHeight="339.0" prefWidth="65.0" />
-      <ScrollPane hbarPolicy="NEVER" layoutX="121.0" layoutY="144.0" prefHeight="445.0" prefWidth="828.0">
+      <ScrollPane layoutX="121.0" layoutY="144.0" prefHeight="445.0" prefWidth="830.0">
          <content>
-            <VBox prefHeight="443.0" prefWidth="827.0">
+            <VBox fx:id="courseVBox" prefHeight="440.0" prefWidth="830.0">
                <children>
-                  <HBox prefHeight="236.0" prefWidth="827.0" />
+                  <HBox fx:id="courseHBox" prefHeight="270.0" prefWidth="830.0" />
                </children>
             </VBox>
          </content>

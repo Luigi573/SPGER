@@ -17,6 +17,7 @@ import mx.uv.fei.logic.domain.Professor;
 import mx.uv.fei.logic.domain.ScholarPeriod;
 import mx.uv.fei.logic.exceptions.DataInsertionException;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
+import mx.uv.fei.logic.exceptions.DuplicatedPrimaryKeyException;
 
 public class CourseDAOTest{
     private static DataBaseManager dataBaseManager;
@@ -91,8 +92,10 @@ public class CourseDAOTest{
             CourseDAO instance = new CourseDAO();
             int result = instance.addCourse(preloadedCourseForAddCourseTest);
             assertTrue(result > 0);
-        } catch (DataInsertionException e) {
+        }catch(DataInsertionException e) {
             fail("Couldn't connect to DB");
+        }catch(DuplicatedPrimaryKeyException e) {
+            fail("Duplicated primary key");
         }finally{
             dataBaseManager.closeConnection();
         }
@@ -107,8 +110,10 @@ public class CourseDAOTest{
             preloadedCourse.setSection(2);
             int result = instance.modifyCourseData(preloadedCourse);
             assertTrue(result > 0);
-        } catch (DataInsertionException e) {
+        }catch(DataInsertionException e) {
             fail("Couldn't connect to DB");
+        }catch(DuplicatedPrimaryKeyException e) {
+            fail("Duplicated primary key");
         }finally{
             dataBaseManager.closeConnection();
         }

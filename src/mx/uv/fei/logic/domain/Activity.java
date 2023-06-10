@@ -17,58 +17,73 @@ public class Activity {
     public void setStatus(ActivityStatus status){
         this.status = status;
     }
+    public ActivityStatus getStatus(){
+        return status;
+    }
     public void setStartDate(Date startDate) {
         this.startDate = startDate;
     }
+    
+    public Date getStartDate() {
+        return startDate;
+    }
+    
     public void setDueDate(Date dueDate) {
         this.dueDate = dueDate;
     }
+    
+    public Date getDueDate() {
+        return dueDate;
+    }
+    
     public void setId(int id) {
         this.id = id;
     }
+    
+    public int getId() {
+        return id;
+    }
+    
     public void setResearchId(int researchId) {
         this.researchId = researchId;
     }
+    
+    public int getResearchId() {
+        return researchId;
+    }
+    
     public void setComment(String comment) {
         this.comment = comment;
     }
+    
+    public String getComment() {
+        return comment;
+    }
+    
     public void setDescription(String description) {
         this.description = description;
     }
+    
+    public String getDescription() {
+        return description;
+    }
+    
     public void setFeedback(String feedback) {
         this.feedback = feedback;
     }
+    
+    public String getFeedback() {
+        return feedback;
+    }
+    
     public void setTitle(String title) {
         this.title = title;
     }
     
-    public ActivityStatus getStatus(){
-        return status;
-    }
-    public Date getStartDate() {
-        return startDate;
-    }
-    public Date getDueDate() {
-        return dueDate;
-    }
-    public int getId() {
-        return id;
-    }
-    public int getResearchId() {
-        return researchId;
-    }
-    public String getComment() {
-        return comment;
-    }
-    public String getDescription() {
-        return description;
-    }
-    public String getFeedback() {
-        return feedback;
-    }
     public String getTitle() {
         return title;
     }
+    
     @Override
     public String toString(){
         return "Title: " + title + "\nDescription: " + description + "\nStartDate: " + startDate + "\nDueDate: " + dueDate;

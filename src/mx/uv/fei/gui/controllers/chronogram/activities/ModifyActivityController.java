@@ -3,6 +3,7 @@ package mx.uv.fei.gui.controllers.chronogram.activities;
 import java.io.IOException;
 import java.sql.Date;
 import java.util.Optional;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,12 +16,18 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import mx.uv.fei.gui.AlertPopUpGenerator;
+import mx.uv.fei.gui.controllers.chronogram.ChronogramController;
 import mx.uv.fei.logic.daos.ActivityDAO;
 import mx.uv.fei.logic.domain.Activity;
+import mx.uv.fei.logic.domain.Course;
+import mx.uv.fei.logic.domain.User;
 import mx.uv.fei.logic.exceptions.DataInsertionException;
 
 public class ModifyActivityController{
     private Activity activity;
+    private Course course;
+    private User user;
     
     @FXML
     private DatePicker startDatePicker; 
@@ -52,16 +59,10 @@ public class ModifyActivityController{
                         returnToChronogram(event);
                     }
                 }catch(DataInsertionException exception){
-                    Alert errorMessage = new Alert(Alert.AlertType.ERROR);
-                    errorMessage.setHeaderText("Error de conexión");
-                    errorMessage.setContentText("Favor de verificar su conexión a internet e inténtelo de nuevo");
-                    errorMessage.showAndWait();
+                    new AlertPopUpGenerator().showConnectionErrorMessage();
                 }
             }else{
-                Alert warningMessage = new Alert(Alert.AlertType.WARNING);
-                warningMessage.setHeaderText("No se puede crear la actividad");
-                warningMessage.setContentText("Favor de llenar todos los campos correctamente");
-                warningMessage.showAndWait();
+                new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.WARNING, "No se puede crear la actividad", "Favor de llenar todos los campos correctamente");
             }
         }
     }
@@ -80,16 +81,21 @@ public class ModifyActivityController{
         try{
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/Chronogram.fxml"));
             Parent parent = loader.load();
-            Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+            ChronogramController controller = (ChronogramController)loader.getController();
+            controller.setCourse(course);
+            controller.setUser(user);
+            controller.loadHeader();
+            
             Scene scene = new Scene(parent);
+            String css = this.getClass().getResource("/mx/uv/fei/gui/stylesfiles/Styles.css").toExternalForm();
+            scene.getStylesheets().add(css);
+            
+            Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
             stage.setTitle("SPGER");
             stage.setScene(scene);
             stage.show();
-        }catch(IllegalStateException | IOException exception){
-            Alert errorMessage = new Alert(Alert.AlertType.ERROR);
-            errorMessage.setTitle("Error");
-            errorMessage.setContentText("Hubo un error al cargar el cronograma, archivo no encontrado");
-            errorMessage.showAndWait();
+        }catch(IOException exception){
+            new AlertPopUpGenerator().showMissingFilesMessage();
         }
     }
     public void setAcitivty(Activity activity){
@@ -98,5 +104,13 @@ public class ModifyActivityController{
         dueDatePicker.setValue(activity.getDueDate().toLocalDate());
         activityTitleTextField.setText(activity.getTitle());
         activityDescriptionTextArea.setText(activity.getDescription());
+    }
+    
+    public void setCourse(Course course){
+        this.course = course;
+    }
+    
+    public void setUser(User user){
+        this.user = user;
     }
 }

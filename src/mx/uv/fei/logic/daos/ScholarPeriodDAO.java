@@ -3,7 +3,6 @@ package mx.uv.fei.logic.daos;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 
 import mx.uv.fei.dataaccess.DataBaseManager;
@@ -21,22 +20,24 @@ public class ScholarPeriodDAO implements IScholarPeriodDAO{
     @Override
     public ArrayList<ScholarPeriod> getScholarPeriods() throws DataRetrievalException{
         ArrayList<ScholarPeriod> scholarPeriods = new ArrayList<>();
+        PreparedStatement statement;
+        String query = "SELECT * FROM PeriodosEscolares";
 
         try{
-            Statement statement = dataBaseManager.getConnection().createStatement();
-            String query = "SELECT * FROM PeriodosEscolares";
+            statement = dataBaseManager.getConnection().prepareStatement(query);
+            
             ResultSet resultSet = statement.executeQuery(query);
             while(resultSet.next()) {
                 ScholarPeriod scholarPeriod = new ScholarPeriod();
-                scholarPeriod.setIdScholarPeriod(resultSet.getInt("IdPeriodoEscolar"));
-                scholarPeriod.setStartDate(resultSet.getString("fechaInicio"));
-                scholarPeriod.setEndDate(resultSet.getString("fechaFin"));
+                scholarPeriod.setScholarPeriodId(resultSet.getInt("IdPeriodoEscolar"));
+                scholarPeriod.setStartDate(resultSet.getDate("fechaInicio"));
+                scholarPeriod.setEndDate(resultSet.getDate("fechaFin"));
                 scholarPeriods.add(scholarPeriod);
             }
             resultSet.close();
-            dataBaseManager.getConnection().close();
+            dataBaseManager.closeConnection();
         }catch(SQLException e){
-            throw new DataRetrievalException("Fallo al recuperar la informacion. Verifique su conexion e intentelo de nuevo");
+            throw new DataRetrievalException("Fallo al recuperar la informacion. Inténtelo de nuevo más tarde");
         }finally{
             dataBaseManager.closeConnection();
         }
@@ -45,24 +46,25 @@ public class ScholarPeriodDAO implements IScholarPeriodDAO{
     }
 
     @Override
-    public ScholarPeriod getScholarPeriod(int idScholarPeriod) throws DataRetrievalException{
+    public ScholarPeriod getScholarPeriod(int scholarPeriodId) throws DataRetrievalException{
         ScholarPeriod scholarPeriod = new ScholarPeriod();
 
         try{
             String query = "SELECT * FROM PeriodosEscolares WHERE IdPeriodoEscolar = ?";
             PreparedStatement preparedStatement = dataBaseManager.getConnection().prepareStatement(query);
-            preparedStatement.setInt(1, idScholarPeriod);
+            preparedStatement.setInt(1, scholarPeriodId);
             ResultSet resultSet = preparedStatement.executeQuery();
+            
             if(resultSet.next()){
-                scholarPeriod.setIdScholarPeriod(resultSet.getInt("IdPeriodoEscolar"));
-                scholarPeriod.setStartDate(resultSet.getString("fechaInicio"));
-                scholarPeriod.setEndDate(resultSet.getString("fechaFin"));
+                scholarPeriod.setScholarPeriodId(resultSet.getInt("IdPeriodoEscolar"));
+                scholarPeriod.setStartDate(resultSet.getDate("fechaInicio"));
+                scholarPeriod.setEndDate(resultSet.getDate("fechaFin"));
             }
             
             resultSet.close();
-            dataBaseManager.getConnection().close();
+            dataBaseManager.closeConnection();
         }catch(SQLException e){
-            throw new DataRetrievalException("Fallo al recuperar la informacion. Verifique su conexion e intentelo de nuevo");
+            throw new DataRetrievalException("Fallo al recuperar la informacion. Inténtelo de nuevo más tarde");
         }finally{
             dataBaseManager.closeConnection();
         }

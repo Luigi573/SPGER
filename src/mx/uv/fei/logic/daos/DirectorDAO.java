@@ -10,8 +10,9 @@ import java.util.ArrayList;
 import mx.uv.fei.dataaccess.DataBaseManager;
 import mx.uv.fei.logic.daosinterfaces.IDirectorDAO;
 import mx.uv.fei.logic.domain.Director;
-import mx.uv.fei.logic.exceptions.DataRetrievalException;
 import mx.uv.fei.logic.exceptions.DataInsertionException;
+import mx.uv.fei.logic.exceptions.DataRetrievalException;
+import mx.uv.fei.logic.exceptions.DuplicatedPrimaryKeyException;
 
 public class DirectorDAO implements IDirectorDAO{
     private final DataBaseManager dataBaseManager;
@@ -21,7 +22,7 @@ public class DirectorDAO implements IDirectorDAO{
     }
 
     @Override
-    public int addDirector(Director director) throws DataInsertionException{
+    public int addDirector(Director director) throws DataInsertionException, DuplicatedPrimaryKeyException{
         int generatedId = 0;
         try{
             String queryToInsertDirectorDataToUserColumns = 
@@ -63,13 +64,13 @@ public class DirectorDAO implements IDirectorDAO{
             preparedStatementToInsertDirectorDataToDirectorColumns.executeUpdate();
 
             preparedStatementToInsertDirectorDataToDirectorColumns.close();
-            dataBaseManager.getConnection().close();
+            dataBaseManager.closeConnection();
 
         }catch(SQLIntegrityConstraintViolationException e){
             deleteDirectorFromUsersTable(director);
-            throw new DataInsertionException("Error al agregar director. Verifique su conexion e intentelo de nuevo");
+            throw new DuplicatedPrimaryKeyException("Director ya registrado en el sistema");
         }catch(SQLException e){
-            throw new DataInsertionException("Error al agregar director. Verifique su conexion e intentelo de nuevo");
+            throw new DataInsertionException("Error al agregar director. Inténtelo de nuevo más tarde");
         }finally{
             dataBaseManager.closeConnection();
         }
@@ -78,7 +79,7 @@ public class DirectorDAO implements IDirectorDAO{
     }
 
     @Override
-    public int modifyDirectorData(Director director) throws DataInsertionException{
+    public int modifyDirectorData(Director director) throws DataInsertionException, DuplicatedPrimaryKeyException{
         int result = 0;
         try{
             String queryForUpdateUserData = "UPDATE Usuarios SET nombre = ?, " + 
@@ -104,8 +105,10 @@ public class DirectorDAO implements IDirectorDAO{
             preparedStatementForUpdateProfessorData.setInt(1, director.getStaffNumber());
             preparedStatementForUpdateProfessorData.setInt(2, director.getUserId());
             preparedStatementForUpdateProfessorData.executeUpdate();
+        }catch(SQLIntegrityConstraintViolationException e){
+            throw new DuplicatedPrimaryKeyException("Director ya registrado en el sistema");
         }catch(SQLException e){
-            throw new DataInsertionException("Error al agregar director. Verifique su conexion e intentelo de nuevo");
+            throw new DataInsertionException("Error al modificar director. Inténtelo de nuevo más tarde");
         }finally{
             dataBaseManager.closeConnection();
         }
@@ -154,6 +157,7 @@ public class DirectorDAO implements IDirectorDAO{
             ResultSet resultSet = statement.executeQuery(query);
             while(resultSet.next()) {
                 Director director = new Director();
+                director.setUserId(resultSet.getInt("IdUsuario"));
                 director.setName(resultSet.getString("nombre"));
                 director.setFirstSurname(resultSet.getString("apellidoPaterno"));
                 director.setSecondSurname(resultSet.getString("apellidoMaterno"));
@@ -166,7 +170,7 @@ public class DirectorDAO implements IDirectorDAO{
                 directors.add(director);
             }
             resultSet.close();
-            dataBaseManager.getConnection().close();
+            dataBaseManager.closeConnection();
         }catch(SQLException e){
             throw new DataRetrievalException("Error al recuperar la información. Verifique su conexión e intentelo de nuevo");
         }finally{
@@ -187,6 +191,7 @@ public class DirectorDAO implements IDirectorDAO{
             ResultSet resultSet = preparedStatement.executeQuery();
             while(resultSet.next()) {
                 Director director = new Director();
+                director.setUserId(resultSet.getInt("IdUsuario"));
                 director.setName(resultSet.getString("nombre"));
                 director.setFirstSurname(resultSet.getString("apellidoPaterno"));
                 director.setSecondSurname(resultSet.getString("apellidoMaterno"));
@@ -199,7 +204,7 @@ public class DirectorDAO implements IDirectorDAO{
                 directors.add(director);
             }
             resultSet.close();
-            dataBaseManager.getConnection().close();
+            dataBaseManager.closeConnection();
         }catch(SQLException e){
             throw new DataRetrievalException("Error al recuperar la información. Verifique su conexión e intentelo de nuevo");
         }finally{
@@ -210,15 +215,16 @@ public class DirectorDAO implements IDirectorDAO{
     }
 
     @Override
-    public Director getDirector(int personalNumber) throws DataRetrievalException{
+    public Director getDirector(int staffNumber) throws DataRetrievalException{
         Director director = new Director();
 
         try{
             String query = "SELECT * FROM Usuarios U INNER JOIN Profesores P ON U.IdUsuario = P.IdUsuario INNER JOIN Directores D ON P.NumPersonal = D.NumPersonal WHERE D.NumPersonal = ?";
             PreparedStatement preparedStatement = dataBaseManager.getConnection().prepareStatement(query);
-            preparedStatement.setInt(1, personalNumber);
+            preparedStatement.setInt(1, staffNumber);
             ResultSet resultSet = preparedStatement.executeQuery();
             if(resultSet.next()) {
+                director.setUserId(resultSet.getInt("IdUsuario"));
                 director.setName(resultSet.getString("nombre"));
                 director.setFirstSurname(resultSet.getString("apellidoPaterno"));
                 director.setSecondSurname(resultSet.getString("apellidoMaterno"));
@@ -231,7 +237,7 @@ public class DirectorDAO implements IDirectorDAO{
             }
 
             resultSet.close();
-            dataBaseManager.getConnection().close();
+            dataBaseManager.closeConnection();
         }catch(SQLException e){
             throw new DataRetrievalException("Error al recuperar la información. Verifique su conexión e intentelo de nuevo");
         }finally{
@@ -241,56 +247,15 @@ public class DirectorDAO implements IDirectorDAO{
         return director;
     }
 
-    public boolean theDirectorIsAlreadyRegisted(Director director) throws DataRetrievalException{
-        try{
-            Statement statement = dataBaseManager.getConnection().createStatement();
-            String query = "SELECT U.nombre, U.apellidoPaterno, U.apellidoMaterno, U.correo, " +
-                           "U.correoAlterno, U.númeroTeléfono, U.estado, P.NumPersonal FROM Usuarios U " + 
-                           "INNER JOIN Profesores P ON U.IdUsuario = P.IdUsuario INNER JOIN Directores D " +
-                           "ON P.NumPersonal = D.NumPersonal";
-            ResultSet resultSet = statement.executeQuery(query);
-            
-            while(resultSet.next()) {
-                if(resultSet.getString("nombre").equals(director.getName()) &&
-                   resultSet.getString("apellidoPaterno").equals(director.getFirstSurname()) &&
-                   resultSet.getString("apellidoMaterno").equals(director.getSecondSurname()) &&
-                   resultSet.getString("correo").equals(director.getEmailAddress()) &&
-                   resultSet.getString("correoAlterno").equals(director.getAlternateEmail()) &&
-                   resultSet.getString("númeroTeléfono").equals(director.getPhoneNumber()) &&
-                   resultSet.getString("estado").equals(director.getStatus()) &&
-                   resultSet.getInt("NumPersonal") == director.getStaffNumber()) {
-
-                    resultSet.close();
-                    dataBaseManager.getConnection().close();
-                    return true;
-                }
-            }
-            resultSet.close();
-            dataBaseManager.getConnection().close();
-        }catch(SQLException e){
-            throw new DataRetrievalException("Error al recuperar la información. Verifique su conexión e intentelo de nuevo");
-        }finally{
-            dataBaseManager.closeConnection();
-        }
-
-        return false;
-    }
     private void deleteDirectorFromUsersTable(Director director) throws DataInsertionException{
-        String queryToInsertUserData = "DELETE FROM Usuarios WHERE nombre = ? && apellidoPaterno = ? && apellidoMaterno = ? && " +
-            "correo = ? && correoAlterno = ? && númeroTeléfono = ? && estado = ?";
+        String queryToInsertUserData = "DELETE FROM Usuarios WHERE IdUsuario = ?";
         try{
             PreparedStatement preparedStatementToInsertUserData = 
             dataBaseManager.getConnection().prepareStatement(queryToInsertUserData);
-            preparedStatementToInsertUserData.setString(1, director.getName());
-            preparedStatementToInsertUserData.setString(2, director.getFirstSurname());
-            preparedStatementToInsertUserData.setString(3, director.getSecondSurname());
-            preparedStatementToInsertUserData.setString(4, director.getEmailAddress());
-            preparedStatementToInsertUserData.setString(5, director.getAlternateEmail());
-            preparedStatementToInsertUserData.setString(6, director.getPhoneNumber());
-            preparedStatementToInsertUserData.setString(7, director.getStatus());
+            preparedStatementToInsertUserData.setInt(1, director.getUserId());
             preparedStatementToInsertUserData.executeUpdate();
         }catch(SQLException e){
-            throw new DataInsertionException("Error al eliminar profesor de la tabla usuarios");
+            throw new DataInsertionException("Error al eliminar director de la tabla usuarios");
         }
     }   
 }

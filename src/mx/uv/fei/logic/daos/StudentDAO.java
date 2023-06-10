@@ -12,6 +12,7 @@ import mx.uv.fei.logic.daosinterfaces.IStudentDAO;
 import mx.uv.fei.logic.domain.Student;
 import mx.uv.fei.logic.exceptions.DataInsertionException;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
+import mx.uv.fei.logic.exceptions.DuplicatedPrimaryKeyException;
 
 public class StudentDAO implements IStudentDAO{
     private final DataBaseManager dataBaseManager;
@@ -21,7 +22,7 @@ public class StudentDAO implements IStudentDAO{
     }
 
     @Override
-    public int addStudent(Student student) throws DataInsertionException{
+    public int addStudent(Student student) throws DataInsertionException, DuplicatedPrimaryKeyException{
         int generatedId = 0;
         try{
             String queryToInsertStudentDataToUserColumns = "INSERT INTO Usuarios (nombre, apellidoPaterno, apellidoMaterno, correo, " +
@@ -55,9 +56,9 @@ public class StudentDAO implements IStudentDAO{
 
         }catch(SQLIntegrityConstraintViolationException e){
             deleteStudentFromUsersTable(student);
-            throw new DataInsertionException("Estudiante ya registrado en el sistema");
+            throw new DuplicatedPrimaryKeyException("Estudiante ya registrado en el sistema");
         }catch(SQLException e){
-            throw new DataInsertionException("Error al agregar estudiante. Verifique su conexion e intentelo de nuevo");
+            throw new DataInsertionException("Error al agregar estudiante. Inténtelo de nuevo más tarde");
         }finally{
             dataBaseManager.closeConnection();
         }
@@ -65,12 +66,12 @@ public class StudentDAO implements IStudentDAO{
         return generatedId;
     }
     @Override
-    public int modifyStudentData(Student student) throws DataInsertionException{
+    public int modifyStudentData(Student student) throws DataInsertionException, DuplicatedPrimaryKeyException{
         int result = 0;
         try {
             String queryForUpdateUserData = "UPDATE Usuarios SET nombre = ?, " + 
                            "apellidoPaterno = ?, apellidoMaterno = ?, correo = ?, " + 
-                           "correoAlterno = ?, númeroTeléfono = ? " +
+                           "correoAlterno = ?, númeroTeléfono = ?, estado = ?" +
                            "WHERE IdUsuario = ?";
             PreparedStatement preparedStatementForUpdateUserData = 
                 dataBaseManager.getConnection().prepareStatement(queryForUpdateUserData);
@@ -80,19 +81,21 @@ public class StudentDAO implements IStudentDAO{
             preparedStatementForUpdateUserData.setString(4, student.getEmailAddress());
             preparedStatementForUpdateUserData.setString(5, student.getAlternateEmail());
             preparedStatementForUpdateUserData.setString(6, student.getPhoneNumber());
-            preparedStatementForUpdateUserData.setInt(7, student.getUserId());
+            preparedStatementForUpdateUserData.setString(7, student.getStatus());
+            preparedStatementForUpdateUserData.setInt(8, student.getUserId());
             result = preparedStatementForUpdateUserData.executeUpdate();
 
-            String queryForUpdateStudentData = "UPDATE Estudiantes SET Matrícula = ? " + 
-                           "WHERE IdUsuario = ?";
+            String queryForUpdateStudentData = "UPDATE Estudiantes SET Matrícula = ? WHERE IdUsuario = ?";
             
             PreparedStatement preparedStatementForUpdateStudentData = 
                 dataBaseManager.getConnection().prepareStatement(queryForUpdateStudentData);
             preparedStatementForUpdateStudentData.setString(1, student.getMatricle());
             preparedStatementForUpdateStudentData.setInt(2, student.getUserId());
             preparedStatementForUpdateStudentData.executeUpdate();
+        }catch(SQLIntegrityConstraintViolationException e){
+            throw new DuplicatedPrimaryKeyException("Estudiante ya registrado en el sistema");
         }catch(SQLException e){
-            throw new DataInsertionException("Error al agregar estudiante. Verifique su conexion e intentelo de nuevo");
+            throw new DataInsertionException("Error al modificar estudiante. Inténtelo de nuevo más tarde");
         }
 
         return result;
@@ -114,6 +117,7 @@ public class StudentDAO implements IStudentDAO{
                 student.setPassword(resultSet.getString("contraseña"));
                 student.setAlternateEmail(resultSet.getString("correoAlterno"));
                 student.setPhoneNumber(resultSet.getString("númeroTeléfono"));
+                student.setStatus(resultSet.getString("estado"));
                 student.setUserId(resultSet.getInt("IdUsuario"));
                 student.setMatricle(resultSet.getString("Matrícula"));
                 students.add(student);
@@ -127,11 +131,10 @@ public class StudentDAO implements IStudentDAO{
         return students;
     }
     @Override
-    public ArrayList<Student> getStudentList() throws DataRetrievalException{
+    public ArrayList<Student> getStudentList() throws DataRetrievalException {
         ArrayList<Student> studentList = new ArrayList<>();
         PreparedStatement statement;
-        String query = "SELECT e.Matrícula, u.nombre, u.apellidoPaterno, u.apellidoMaterno FROM Estudiantes e "
-                + "INNER JOIN Usuarios u ON e.IdUsuario = u.IdUsuario";
+        String query = "SELECT e.Matrícula, u.nombre, u.apellidoPaterno, u.apellidoMaterno FROM Estudiantes e INNER JOIN Usuarios u ON e.IdUsuario = u.IdUsuario";
         
         try{
             statement = dataBaseManager.getConnection().prepareStatement(query);
@@ -175,6 +178,7 @@ public class StudentDAO implements IStudentDAO{
                 student.setPassword(resultSet.getString("contraseña"));
                 student.setAlternateEmail(resultSet.getString("correoAlterno"));
                 student.setPhoneNumber(resultSet.getString("númeroTeléfono"));
+                student.setStatus(resultSet.getString("estado"));
                 student.setUserId(resultSet.getInt("IdUsuario"));
                 student.setMatricle(resultSet.getString("Matrícula"));
                 students.add(student);
@@ -207,6 +211,7 @@ public class StudentDAO implements IStudentDAO{
                 student.setPassword(resultSet.getString("contraseña"));
                 student.setAlternateEmail(resultSet.getString("correoAlterno"));
                 student.setPhoneNumber(resultSet.getString("númeroTeléfono"));
+                student.setStatus(resultSet.getString("estado"));
                 student.setUserId(resultSet.getInt("IdUsuario"));
                 student.setMatricle(resultSet.getString("Matrícula"));
             }
@@ -356,29 +361,6 @@ public class StudentDAO implements IStudentDAO{
         }
 
         return students;
-    }
-
-    public boolean theStudentIsAlreadyRegisted(Student student) throws DataRetrievalException{
-        String query = "SELECT Matrícula FROM Estudiantes";
-        
-        try {
-            Statement statement = dataBaseManager.getConnection().createStatement();
-            
-            ResultSet resultSet = statement.executeQuery(query);
-            while(resultSet.next()) {
-                if(resultSet.getString("Matrícula").equals(student.getMatricle())) {
-                    resultSet.close();
-                    dataBaseManager.getConnection().close();
-                    return true;
-                }
-            }
-            resultSet.close();
-            dataBaseManager.getConnection().close();
-        }catch(SQLException e){
-            throw new DataRetrievalException("Error al recuperar la información. Verifique su conexión e intentelo de nuevo");
-        }
-
-        return false;
     }
 
     private void deleteStudentFromUsersTable(Student student) throws DataInsertionException{

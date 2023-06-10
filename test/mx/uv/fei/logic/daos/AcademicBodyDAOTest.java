@@ -1,15 +1,18 @@
 package mx.uv.fei.logic.daos;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.ArrayList;
-import mx.uv.fei.logic.domain.AcademicBody;
-import mx.uv.fei.logic.exceptions.DataInsertionException;
-import mx.uv.fei.logic.exceptions.DataRetrievalException;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
+
+import mx.uv.fei.logic.domain.AcademicBody;
+import mx.uv.fei.logic.exceptions.DataInsertionException;
+import mx.uv.fei.logic.exceptions.DataRetrievalException;
 
 public class AcademicBodyDAOTest {
     
@@ -54,7 +57,7 @@ public class AcademicBodyDAOTest {
     public void testGetAcademicBodiesList() throws DataRetrievalException {
         System.out.println("getAcademicBodiesList");
         AcademicBodyDAO instance = new AcademicBodyDAO();
-        ArrayList<AcademicBody> expResult = new ArrayList();
+        ArrayList<AcademicBody> expResult = new ArrayList<>();
         AcademicBody academicBody1 = new AcademicBody();
         AcademicBody academicBody2 = new AcademicBody();
         academicBody1.setAcademicBodyID(18);

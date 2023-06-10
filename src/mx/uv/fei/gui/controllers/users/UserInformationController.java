@@ -4,11 +4,13 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import mx.uv.fei.logic.domain.User;
 import mx.uv.fei.logic.domain.UserType;
 
 public class UserInformationController{
     private GuiUsersController guiUsersController;
     private UserController userController;
+    private User user;
 
     @FXML
     private Label alternateEmailLabel;
@@ -19,9 +21,9 @@ public class UserInformationController{
     @FXML
     private Label firstSurnameLabel;
     @FXML
-    private Label matricleOrPersonalNumberLabel;
+    private Label matricleOrStaffNumberLabel;
     @FXML
-    private Label matricleOrPersonalNumberText;
+    private Label matricleOrStaffNumberText;
     @FXML
     private Label namesLabel;
     @FXML
@@ -80,17 +82,23 @@ public class UserInformationController{
     public void setTelephoneNumber(String telephoneNumber){
         telephoneNumberLabel.setText(telephoneNumber);
     }
+    public User getUser() {
+        return user;
+    }
+    public void setUser(User user) {
+        this.user = user;
+    }
     public String getUserType(){
         return userTypeLabel.getText();
     }
     public void setUserType(String userType){
         userTypeLabel.setText(userType);
     }
-    public String getMatricleOrPersonalNumber(){
-        return matricleOrPersonalNumberLabel.getText();
+    public String getMatricleOrStaffNumber(){
+        return matricleOrStaffNumberLabel.getText();
     }
-    public void setMatricleOrPersonalNumber(String type){
-        matricleOrPersonalNumberLabel.setText(type);
+    public void setMatricleOrStaffNumber(String type){
+        matricleOrStaffNumberLabel.setText(type);
     }
     public void setGuiUsersController(GuiUsersController guiUsersController){
         this.guiUsersController = guiUsersController;
@@ -101,15 +109,15 @@ public class UserInformationController{
     public void setUserController(UserController userController){
         this.userController = userController;
     }
-    public void setMatricleOrPersonalNumberText(){
+    public void setMatricleOrStaffNumberText(){
         if(userTypeLabel.getText().equals(UserType.STUDENT.getValue())){
-            matricleOrPersonalNumberText.setText("Matrícula: ");
-            matricleOrPersonalNumberText.setPrefWidth(71);
-            matricleOrPersonalNumberLabel.setPrefWidth(282);
+            matricleOrStaffNumberText.setText("Matrícula: ");
+            matricleOrStaffNumberText.setPrefWidth(71);
+            matricleOrStaffNumberLabel.setPrefWidth(282);
         } else {
-            matricleOrPersonalNumberText.setText("Número de Personal: ");
-            matricleOrPersonalNumberText.setPrefWidth(141);
-            matricleOrPersonalNumberLabel.setPrefWidth(213);
+            matricleOrStaffNumberText.setText("Número de Personal: ");
+            matricleOrStaffNumberText.setPrefWidth(141);
+            matricleOrStaffNumberLabel.setPrefWidth(213);
         }
     }
 }

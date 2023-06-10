@@ -195,6 +195,7 @@ public class GuiStudentAdderController{
         }catch(DataRetrievalException e) {
             new AlertPopUpGenerator().showConnectionErrorMessage();
         }
+
     }
 
     public GuiUsersCourseController getGuiUsersCourseController(){

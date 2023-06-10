@@ -14,6 +14,7 @@ import javafx.scene.text.Text;
 import mx.uv.fei.gui.AlertPopUpGenerator;
 import mx.uv.fei.logic.daos.ResearchDAO;
 import mx.uv.fei.logic.domain.ResearchProject;
+import mx.uv.fei.logic.domain.User;
 import mx.uv.fei.logic.exceptions.DataInsertionException;
 
 public class ResearchInfoPaneController{
@@ -21,6 +22,7 @@ public class ResearchInfoPaneController{
     private ArrayList<Label> directorLabels;
     private ResearchProject research;
     private ScrollPane container;
+    private User user;
 
     @FXML
     private Label KGALLabel;
@@ -66,9 +68,12 @@ public class ResearchInfoPaneController{
             Pane researchInfoPane = loader.load();
             ModifyResearchPaneController controller = (ModifyResearchPaneController)loader.getController();
             controller.setResearch(research);
+            controller.setUser(user);
+            
             container.setContent(researchInfoPane);
             researchManagerController.loadResearches(0);
         }catch(IOException exception){
+            exception.printStackTrace();
             new AlertPopUpGenerator().showMissingFilesMessage();
         }
     }
@@ -104,9 +109,9 @@ public class ResearchInfoPaneController{
             KGALLabel.setText(research.getKgal().getDescription());
         }
         
-        for(int i = 0; i < 3; i++){
-            if(research.getDirector(i).getName() != null){
-                directorLabels.get(i).setText(research.getDirector(i).getName());
+        for(int i = 0; i < research.getDirectors().size(); i++){
+            if(research.getDirectors().get(i).getName() != null){
+                directorLabels.get(i).setText(research.getDirectors().get(i).toString());
             }
         }
         
@@ -122,10 +127,9 @@ public class ResearchInfoPaneController{
         expectedResultText.setText(research.getExpectedResult());
     }
     public void showValidateButton(boolean show){
-        if(show){
-            validateButton.setVisible(true);
-        }else{
-            validateButton.setVisible(false);
-        }
+        validateButton.setVisible(show);
+    }
+    public void setUser(User user){
+        this.user = user;
     }
 }

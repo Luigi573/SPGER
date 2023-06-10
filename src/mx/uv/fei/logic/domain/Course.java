@@ -48,18 +48,19 @@ public class Course {
         this.block = block;
     }
 
-    public Professor getProfessor() {
-        return this.professor;
-    }
-
     public void setProfessor(Professor professor) {
         this.professor = professor;
+    }
+
+    public Professor getProfessor() {
+        return professor;
     }
 
     @Override
     public boolean equals(Object obj) {
         if(obj instanceof Course course){
-            return this.nrc == course.nrc;
+            return this.nrc == course.nrc  && scholarPeriod.equals(course.scholarPeriod)  && this.section == course.section &&
+               this.block == course.block;
         }        
 
         return false;

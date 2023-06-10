@@ -18,6 +18,7 @@ import mx.uv.fei.logic.domain.DegreeBoss;
 import mx.uv.fei.logic.domain.statuses.ProfessorStatus;
 import mx.uv.fei.logic.exceptions.DataInsertionException;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
+import mx.uv.fei.logic.exceptions.DuplicatedPrimaryKeyException;
 
 public class DegreeBossDAOTest {
     private static DataBaseManager dataBaseManager;
@@ -136,6 +137,8 @@ public class DegreeBossDAOTest {
             assertTrue(result > 0);
         }catch(DataInsertionException exception){
             fail("Couldn't connect to DB");
+        }catch(DuplicatedPrimaryKeyException e) {
+            fail("Duplicated primary key");
         }finally{
             dataBaseManager.closeConnection();
         }
@@ -231,6 +234,8 @@ public class DegreeBossDAOTest {
             assertTrue(result > 0);
         }catch(DataInsertionException exception){
             fail("Couldn't connect to DB");
+        }catch(DuplicatedPrimaryKeyException e) {
+            fail("Duplicated primary key");
         }finally{
             dataBaseManager.closeConnection();
         }

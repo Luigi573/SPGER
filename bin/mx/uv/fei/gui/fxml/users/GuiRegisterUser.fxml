@@ -53,7 +53,7 @@
             <Font size="15.0" />
          </font>
       </Text>
-      <Text fx:id="matricleOrPersonalNumberText" layoutX="400.0" layoutY="176.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Matricula: ">
+      <Text fx:id="matricleOrStaffNumberText" layoutX="400.0" layoutY="176.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Matricula: ">
          <font>
             <Font size="15.0" />
          </font>
@@ -67,6 +67,6 @@
             <Font size="18.0" />
          </font>
       </Text>
-      <TextField fx:id="matricleOrPersonalNumberTextField" layoutX="479.0" layoutY="160.0" prefHeight="24.0" prefWidth="303.0" />
+      <TextField fx:id="matricleOrStaffNumberTextField" layoutX="479.0" layoutY="160.0" prefHeight="24.0" prefWidth="303.0" />
    </children>
 </Pane>

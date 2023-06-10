@@ -27,12 +27,14 @@ import mx.uv.fei.logic.domain.Director;
 import mx.uv.fei.logic.domain.KGAL;
 import mx.uv.fei.logic.domain.ResearchProject;
 import mx.uv.fei.logic.domain.Student;
+import mx.uv.fei.logic.domain.User;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
 import mx.uv.fei.logic.exceptions.DataInsertionException;
 
 public class ModifyResearchPaneController{
-    private ArrayList<ComboBox> directorComboBoxes;
+    private ArrayList<ComboBox<Director>> directorComboBoxes;
     private int researchId;
+    private User user;
     
     @FXML
     private ComboBox<Director> director1ComboBox;
@@ -134,9 +136,7 @@ public class ModifyResearchPaneController{
                 if(!researchDAO.isBlank(research)){
                     try{
                         if(researchDAO.modifyResearch(research) > 0){
-                            Alert successMessage = new Alert(Alert.AlertType.INFORMATION);
-                            successMessage.setHeaderText("Cambios guardados exitosamente");
-                            successMessage.showAndWait();
+                            new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.INFORMATION, "", "Cambios guardados exitosamente");
                             
                             returnToResearchManager(event);
                         }
@@ -144,18 +144,11 @@ public class ModifyResearchPaneController{
                         new AlertPopUpGenerator().showConnectionErrorMessage();
                     }
                 }else{
-                    Alert warningMessage = new Alert(Alert.AlertType.WARNING);
-                    warningMessage.setHeaderText("No se puede modificar el anteproyecto");
-                    warningMessage.setContentText("Favor de llenar todos los campos");
-                    warningMessage.showAndWait();
+                    new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.WARNING, "No se puede modificar el anteproyecto", "Favor de llenar todos los campos");
                 }
             }else{
-                Alert warningMessage = new Alert(Alert.AlertType.WARNING);
-                warningMessage.setHeaderText("No se puede modificar el anteproyecto");
-                warningMessage.setContentText("Favor de introducir una fecha válida");
-                warningMessage.showAndWait();
+                new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.WARNING, "No se puede modificar el anteproyecto", "Favor de introducir una fecha válida");
             }
-            
         }
     }
 
@@ -169,8 +162,8 @@ public class ModifyResearchPaneController{
         }
         
         for(int i = 0; i < 3; i++){
-            if(research.getDirector(i).getName() != null){
-                directorComboBoxes.get(i).getSelectionModel().select(research.getDirector(i));
+            if(research.getDirectors().get(i) != null){
+                directorComboBoxes.get(i).getSelectionModel().select(research.getDirectors().get(i));
             }
         }
         
@@ -186,18 +179,31 @@ public class ModifyResearchPaneController{
         expectedResultTextArea.setText(research.getExpectedResult());
     }
     
+    public void setUser(User user){
+        this.user = user;
+    }
+    
     private void returnToResearchManager(ActionEvent event){
         try{
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/research/ResearchManager.fxml"));
             Parent parent = loader.load();
+            
+            if(user != null){
+                ResearchManagerController controller = (ResearchManagerController)loader.getController();
+                controller.setUser(user);
+                controller.loadHeader();
+            }
+            
             Scene scene = new Scene(parent);
             String css = this.getClass().getResource("/mx/uv/fei/gui/stylesfiles/Styles.css").toExternalForm();
             scene.getStylesheets().add(css);
+            
             Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
             stage.setTitle("SPGER");
             stage.setScene(scene);
+            
             stage.show();
-        }catch(IllegalStateException | IOException exception){
+        }catch(IOException exception){
             new AlertPopUpGenerator().showMissingFilesMessage();
         }
     }

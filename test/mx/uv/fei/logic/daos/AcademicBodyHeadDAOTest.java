@@ -18,6 +18,7 @@ import mx.uv.fei.logic.domain.AcademicBodyHead;
 import mx.uv.fei.logic.domain.statuses.ProfessorStatus;
 import mx.uv.fei.logic.exceptions.DataInsertionException;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
+import mx.uv.fei.logic.exceptions.DuplicatedPrimaryKeyException;
 
 public class AcademicBodyHeadDAOTest {
     private static DataBaseManager dataBaseManager;
@@ -136,6 +137,8 @@ public class AcademicBodyHeadDAOTest {
             assertTrue(result > 0);
         }catch(DataInsertionException exception){
             fail("Couldn't connect to DB");
+        }catch(DuplicatedPrimaryKeyException e) {
+            fail("Duplicated primary key");
         }finally{
             dataBaseManager.closeConnection();
         }
@@ -231,8 +234,11 @@ public class AcademicBodyHeadDAOTest {
             assertTrue(result > 0);
         }catch(DataInsertionException exception){
             fail("Couldn't connect to DB");
+        }catch(DuplicatedPrimaryKeyException e) {
+            fail("Duplicated primary key");
         }finally{
             dataBaseManager.closeConnection();
         }
+
     }
 }

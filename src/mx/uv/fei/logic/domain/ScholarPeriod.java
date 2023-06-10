@@ -1,32 +1,34 @@
 package mx.uv.fei.logic.domain;
 
-public class ScholarPeriod {
-    private String endDate;
-    private int IdScholarPeriod;
-    private String startDate;
+import java.sql.Date;
 
-    public String getEndDate() {
+public class ScholarPeriod {
+    private Date endDate;
+    private Date startDate;
+    private int ScholarPeriodId;
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+    
+    public Date getEndDate() {
         return this.endDate;
     }
 
-    public void setEndDate(String endDate) {
-        this.endDate = endDate;
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
     }
 
-    public int getIdScholarPeriod() {
-        return this.IdScholarPeriod;
-    }
-
-    public void setIdScholarPeriod(int idScholarPeriod) {
-        IdScholarPeriod = idScholarPeriod;
-    }
-
-    public String getStartDate() {
+    public Date getStartDate() {
         return this.startDate;
     }
-
-    public void setStartDate(String startDate) {
-        this.startDate = startDate;
+  
+    public void setScholarPeriodId(int scholarPeriodId) {
+        ScholarPeriodId = scholarPeriodId;
+    }
+      
+    public int getScholarPeriodId() {
+        return this.ScholarPeriodId;
     }
 
     @Override

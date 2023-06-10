@@ -1,14 +1,16 @@
 package mx.uv.fei.logic.daos;
 
-import java.util.ArrayList;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+
 import mx.uv.fei.dataaccess.DataBaseManager;
 import mx.uv.fei.logic.daosinterfaces.IActivityDAO;
 import mx.uv.fei.logic.domain.Activity;
-import mx.uv.fei.logic.exceptions.DataRetrievalException;
+import mx.uv.fei.logic.domain.statuses.ActivityStatus;
 import mx.uv.fei.logic.exceptions.DataInsertionException;
+import mx.uv.fei.logic.exceptions.DataRetrievalException;
 
 public class ActivityDAO implements IActivityDAO{
     private final DataBaseManager dataBaseManager;
@@ -31,7 +33,7 @@ public class ActivityDAO implements IActivityDAO{
             statement.setDate(3, activity.getStartDate());
             statement.setDate(4, activity.getDueDate());
             statement.setInt(5, activity.getResearchId());
-            statement.setString(6, activity.getStatus().getValue());
+            statement.setString(6, ActivityStatus.ACTIVE.getValue());
             
             statement.executeUpdate();
             ResultSet resultSet = statement.getGeneratedKeys();
@@ -40,7 +42,7 @@ public class ActivityDAO implements IActivityDAO{
                 generatedId = resultSet.getInt(1);
             }
         }catch(SQLException exception){
-            throw new DataInsertionException("Error al agregar actividad. Verifique su conexion e intentelo de nuevo");
+            throw new DataInsertionException("Error al agregar actividad. Inténtelo de nuevo más tarde");
         }finally{
             dataBaseManager.closeConnection();
         }
@@ -74,10 +76,18 @@ public class ActivityDAO implements IActivityDAO{
                 activity.setComment(resultSet.getString("a.comentario"));
                 activity.setFeedback(resultSet.getString("a.retroalimentación"));
                 
+                if(activity.getFeedback() != null){
+                    activity.setStatus(ActivityStatus.REVIEWED);
+                }else if(resultSet.getInt("IdArchivo") > 0){
+                    activity.setStatus(ActivityStatus.DELIVERED);
+                }else{
+                    activity.setStatus(ActivityStatus.ACTIVE);
+                }
+                
                 activityList.add(activity);
             }
         }catch(SQLException exception){
-            throw new DataRetrievalException("Fallo al recuperar la informacion. Verifique su conexion e intentelo de nuevo");
+            throw new DataRetrievalException("Fallo al recuperar la informacion. Inténtelo de nuevo más tarde");
         }finally{
             dataBaseManager.closeConnection();
         }
@@ -102,7 +112,7 @@ public class ActivityDAO implements IActivityDAO{
             result = statement.executeUpdate();
         }catch(SQLException exception){
             System.out.println(exception.getMessage());
-            throw new DataInsertionException("Error al modificar actividad. Verifique su conexion e intentelo de nuevo");
+            throw new DataInsertionException("Error al modificar actividad. Inténtelo de nuevo más tarde");
         }finally{
             dataBaseManager.closeConnection();
         }
@@ -110,7 +120,6 @@ public class ActivityDAO implements IActivityDAO{
         return result;
     }
     
-    @Override
     public int setComment(String comment, int activityId) throws DataInsertionException{
         int result = 0;
         PreparedStatement statement;
@@ -124,7 +133,7 @@ public class ActivityDAO implements IActivityDAO{
             
             result = statement.executeUpdate();
         }catch(SQLException exception){
-            throw new DataInsertionException("Error de conexión. Favor de revisar su conexión a internet e inténtelo de nuevo");
+            throw new DataInsertionException("Error de conexión. Favor de revisar su conexión con la base de datos e inténtelo de nuevo");
         }finally{
             dataBaseManager.closeConnection();
         }
@@ -145,7 +154,7 @@ public class ActivityDAO implements IActivityDAO{
             
             result = statement.executeUpdate();
         }catch(SQLException exception){
-            throw new DataInsertionException("Error de conexión. Favor de revisar su conexión a internet e inténtelo de nuevo");
+            throw new DataInsertionException("Error de conexión. Favor de revisar su conexión con la base de datos e inténtelo de nuevo");
         }finally{
             dataBaseManager.closeConnection();
         }
@@ -161,18 +170,6 @@ public class ActivityDAO implements IActivityDAO{
         return activity.getTitle().isBlank() || activity.getDescription().isBlank();
     }
     
-    public boolean isNull(Activity activity){
-        if(activity != null){
-            if(activity.getTitle() != null && activity.getDescription() != null){
-                if(activity.getStartDate() != null && activity.getDueDate() != null){
-                    return false;
-                }
-            }
-        }
-        
-        return true;
-    }
-
     public boolean isValidDate(Activity activity){
         return activity.getStartDate().compareTo(activity.getDueDate()) <= 0;
     }

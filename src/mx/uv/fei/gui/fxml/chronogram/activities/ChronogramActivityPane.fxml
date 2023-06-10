@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="120.0" prefWidth="728.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.uv.fei.gui.controllers.chronogram.activities.ActivityPaneController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="120.0" prefWidth="808.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.uv.fei.gui.controllers.chronogram.activities.ActivityPaneController">
    <children>
       <Label fx:id="titleLabel" layoutX="16.0" layoutY="1.0" prefHeight="32.0" prefWidth="707.0" text="Actividad: ">
          <font>
@@ -33,13 +33,13 @@
             <Font size="16.0" />
          </font>
       </Label>
-      <Button fx:id="activityDetailButton" layoutX="623.0" layoutY="73.0" mnemonicParsing="false" onAction="#viewActivity" text="Ver detalles">
+      <Button fx:id="activityDetailButton" layoutX="695.0" layoutY="75.0" mnemonicParsing="false" onAction="#viewActivity" text="Ver detalles">
          <font>
             <Font size="14.0" />
          </font></Button>
-      <Label fx:id="statusLabel" alignment="CENTER_RIGHT" layoutX="429.0" layoutY="78.0" prefHeight="20.0" prefWidth="177.0" text="[Estado]" textAlignment="RIGHT">
+      <Label fx:id="statusLabel" alignment="CENTER_RIGHT" layoutX="503.0" layoutY="77.0" prefHeight="20.0" prefWidth="177.0" text="[Estado]" textAlignment="RIGHT">
          <font>
-            <Font size="14.0" />
+            <Font name="System Bold" size="18.0" />
          </font>
       </Label>
       <Separator layoutX="-3.0" layoutY="118.0" prefHeight="3.0" prefWidth="840.0" />

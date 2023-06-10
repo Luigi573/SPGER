@@ -1,20 +1,24 @@
 package mx.uv.fei.logic.daos;
 
-import java.util.ArrayList;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.LocalDate;
 import java.time.Month;
-import mx.uv.fei.dataaccess.DataBaseManager;
-import mx.uv.fei.logic.domain.Activity;
-import mx.uv.fei.logic.domain.statuses.ActivityStatus;
+import java.util.ArrayList;
+
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
+
+import mx.uv.fei.dataaccess.DataBaseManager;
+import mx.uv.fei.logic.domain.Activity;
+import mx.uv.fei.logic.domain.statuses.ActivityStatus;
 
 public class ActivityDAOTest {
     private static int researchId;
@@ -64,6 +68,7 @@ public class ActivityDAOTest {
                 preloadedActivity.setId(generatedActivity.getInt(1));
             }
         }catch(SQLException exception){
+            exception.printStackTrace();
             fail("Test failed, couldn't connect to DB");
         }finally{
             dataBaseManager.closeConnection();

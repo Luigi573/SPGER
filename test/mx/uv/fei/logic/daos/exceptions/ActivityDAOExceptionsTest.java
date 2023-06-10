@@ -1,10 +1,11 @@
 package mx.uv.fei.logic.daos.exceptions;
 
+import org.junit.Test;
+
 import mx.uv.fei.logic.daos.ActivityDAO;
 import mx.uv.fei.logic.domain.Activity;
 import mx.uv.fei.logic.exceptions.DataInsertionException;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
-import org.junit.Test;
 
 //It returns exception since attributes have not been initializated, which causes an SQLException on purpose
 public class ActivityDAOExceptionsTest {

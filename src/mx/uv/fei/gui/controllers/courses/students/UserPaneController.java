@@ -15,7 +15,7 @@ public class UserPaneController{
     @FXML
     private Button deleteButton;
     @FXML
-    private Label matricleOrPersonalNumberLabel;
+    private Label matricleOrStaffNumberLabel;
     @FXML
     private Label nameLabel;
     @FXML
@@ -26,7 +26,7 @@ public class UserPaneController{
         StudentsCoursesDAO studentsCoursesDAO = new StudentsCoursesDAO();
         try{
             studentsCoursesDAO.removeStudentCourse(
-                matricleOrPersonalNumberLabel.getText(),
+                matricleOrStaffNumberLabel.getText(),
                 guiUsersCourseController.getCourseInformationController().getNrc()
             );
         }catch(DataInsertionException e){
@@ -35,11 +35,11 @@ public class UserPaneController{
         guiUsersCourseController.refreshStudents();
     }
     
-    public String getMatricleOrPersonalNumber(){
-        return matricleOrPersonalNumberLabel.getText();
+    public String getMatricleOrStaffNumber(){
+        return matricleOrStaffNumberLabel.getText();
     }
-    public void setMatricleOrPersonalNumber(String matricleOrPersonalNumber){
-        matricleOrPersonalNumberLabel.setText(matricleOrPersonalNumber);
+    public void setMatricleOrStaffNumber(String matricleOrStaffNumber){
+        matricleOrStaffNumberLabel.setText(matricleOrStaffNumber);
     }
     public String getName(){
         return nameLabel.getText();

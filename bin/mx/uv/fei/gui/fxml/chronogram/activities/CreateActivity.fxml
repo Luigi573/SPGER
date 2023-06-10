@@ -33,9 +33,9 @@
             </Label>
             <DatePicker fx:id="dueDatePicker" editable="false" layoutX="478.0" layoutY="46.0" prefHeight="25.0" prefWidth="127.0" />
             <DatePicker fx:id="startDatePicker" editable="false" layoutX="215.0" layoutY="46.0" prefHeight="25.0" prefWidth="127.0" />
-            <TextField fx:id="activityTitleTextField" layoutX="118.0" layoutY="1.0" prefHeight="35.0" prefWidth="495.0">
+            <TextField fx:id="activityTitleTextField" layoutX="110.0" layoutY="1.0" prefHeight="39.0" prefWidth="516.0">
                <font>
-                  <Font size="16.0" />
+                  <Font size="18.0" />
                </font></TextField>
          </children>
       </Pane>
@@ -46,6 +46,9 @@
             <Font size="30.0" />
          </font>
       </Label>
-      <TextArea fx:id="activityDescriptionTextArea" layoutX="156.0" layoutY="212.0" prefHeight="388.0" prefWidth="745.0" wrapText="true" />
+      <TextArea fx:id="activityDescriptionTextArea" layoutX="156.0" layoutY="212.0" prefHeight="388.0" prefWidth="745.0" wrapText="true">
+         <font>
+            <Font size="18.0" />
+         </font></TextArea>
    </children>
 </Pane>

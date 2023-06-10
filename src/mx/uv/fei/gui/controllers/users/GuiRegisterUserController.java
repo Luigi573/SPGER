@@ -5,10 +5,10 @@ import java.util.regex.Pattern;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import mx.uv.fei.gui.AlertPopUpGenerator;
@@ -25,8 +25,8 @@ import mx.uv.fei.logic.domain.Student;
 import mx.uv.fei.logic.domain.UserType;
 import mx.uv.fei.logic.domain.statuses.ProfessorStatus;
 import mx.uv.fei.logic.domain.statuses.StudentStatus;
-import mx.uv.fei.logic.exceptions.DataRetrievalException;
 import mx.uv.fei.logic.exceptions.DataInsertionException;
+import mx.uv.fei.logic.exceptions.DuplicatedPrimaryKeyException;
 
 public class GuiRegisterUserController{
     private GuiUsersController guiUsersController;
@@ -40,9 +40,9 @@ public class GuiRegisterUserController{
     @FXML
     private TextField firstSurnameTextField;
     @FXML
-    private Text matricleOrPersonalNumberText;
+    private Text matricleOrStaffNumberText;
     @FXML
-    private TextField matricleOrPersonalNumberTextField;
+    private TextField matricleOrStaffNumberTextField;
     @FXML
     private TextField namesTextField;
     @FXML
@@ -71,7 +71,7 @@ public class GuiRegisterUserController{
            !emailTextField.getText().trim().isEmpty() &&
            !alternateEmailTextField.getText().trim().isEmpty() &&
            !telephoneNumberTextField.getText().trim().isEmpty() &&
-           !matricleOrPersonalNumberTextField.getText().trim().isEmpty()){
+           !matricleOrStaffNumberTextField.getText().trim().isEmpty()){
             if(allTextFieldsContainsCorrectValues()){
                 if(typeComboBox.getValue().equals(UserType.DIRECTOR.getValue())){
                     registerDirector();
@@ -93,7 +93,6 @@ public class GuiRegisterUserController{
                     registerStudent();
                 }
 
-                new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "Éxito", "Usuario registrado exitosamente");
                 guiUsersController.loadUserButtons();
                 Stage stage = (Stage) registerButton.getScene().getWindow();
                 stage.close();
@@ -107,13 +106,13 @@ public class GuiRegisterUserController{
     @FXML
     private void typeComboBoxController(ActionEvent event){
         if(typeComboBox.getValue().equals(UserType.STUDENT.getValue())){
-            matricleOrPersonalNumberText.setText("Matrícula: ");
-            matricleOrPersonalNumberTextField.setPrefWidth(303);
-            matricleOrPersonalNumberTextField.setLayoutX(479);
+            matricleOrStaffNumberText.setText("Matrícula: ");
+            matricleOrStaffNumberTextField.setPrefWidth(303);
+            matricleOrStaffNumberTextField.setLayoutX(479);
         } else {
-            matricleOrPersonalNumberText.setText("Número de Personal: ");
-            matricleOrPersonalNumberTextField.setPrefWidth(219);
-            matricleOrPersonalNumberTextField.setLayoutX(563);        
+            matricleOrStaffNumberText.setText("Número de Personal: ");
+            matricleOrStaffNumberTextField.setPrefWidth(219);
+            matricleOrStaffNumberTextField.setLayoutX(563);        
         }
     }
 
@@ -132,16 +131,13 @@ public class GuiRegisterUserController{
             director.setAlternateEmail(alternateEmailTextField.getText());
             director.setPhoneNumber(telephoneNumberTextField.getText());
             director.setStatus(ProfessorStatus.ACTIVE.getValue());
-            director.setStaffNumber(Integer.parseInt(matricleOrPersonalNumberTextField.getText()));
-            if(directorDAO.theDirectorIsAlreadyRegisted(director)){
-                new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "Error", "El usuario ya está registrado en el sistema");
-                return;
-            }
-            directorDAO.addDirector(director);
-        }catch(DataRetrievalException e){
-            new AlertPopUpGenerator().showConnectionErrorMessage();
+            director.setStaffNumber(Integer.parseInt(matricleOrStaffNumberTextField.getText()));
+            directorDAO.addDirector (director);
+            new AlertPopUpGenerator().showCustomMessage(AlertType.INFORMATION, "Éxito", "Director registrado exitosamente");
         }catch(DataInsertionException e){
             new AlertPopUpGenerator().showConnectionErrorMessage();
+        }catch(DuplicatedPrimaryKeyException e) {
+            new AlertPopUpGenerator().showCustomMessage(AlertType.ERROR, "Error", "El número de personal ya está usado");
         }
     }
     private void registerAcademicBodyHead(){
@@ -155,16 +151,13 @@ public class GuiRegisterUserController{
             academicBodyHead.setAlternateEmail(alternateEmailTextField.getText());
             academicBodyHead.setPhoneNumber(telephoneNumberTextField.getText());
             academicBodyHead.setStatus(ProfessorStatus.ACTIVE.getValue());
-            academicBodyHead.setStaffNumber(Integer.parseInt(matricleOrPersonalNumberTextField.getText()));
-            if(academicBodyHeadDAO.theAcademicBodyHeadIsAlreadyRegisted(academicBodyHead)){
-                new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "Error", "El usuario ya está registrado en el sistema");
-                return;
-            }
+            academicBodyHead.setStaffNumber(Integer.parseInt(matricleOrStaffNumberTextField.getText()));
             academicBodyHeadDAO.addAcademicBodyHead(academicBodyHead);
-        }catch(DataRetrievalException e){
-            new AlertPopUpGenerator().showConnectionErrorMessage();
+            new AlertPopUpGenerator().showCustomMessage(AlertType.INFORMATION, "Éxito", "Miembro de Cuerpo Académico registrado exitosamente");
         }catch(DataInsertionException e){
             new AlertPopUpGenerator().showConnectionErrorMessage();
+        }catch(DuplicatedPrimaryKeyException e) {
+            new AlertPopUpGenerator().showCustomMessage(AlertType.ERROR, "Error", "El número de personal ya está usado");
         }
     }
     private void registerDegreeBoss(){
@@ -178,16 +171,13 @@ public class GuiRegisterUserController{
             degreeBoss.setAlternateEmail(alternateEmailTextField.getText());
             degreeBoss.setPhoneNumber(telephoneNumberTextField.getText());
             degreeBoss.setStatus(ProfessorStatus.ACTIVE.getValue());
-            degreeBoss.setStaffNumber(Integer.parseInt(matricleOrPersonalNumberTextField.getText()));
-            if(degreeBossDAO.theDegreeBossIsAlreadyRegisted(degreeBoss)){
-                new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "Error", "El usuario ya está registrado en el sistema");
-                return;
-            }
+            degreeBoss.setStaffNumber(Integer.parseInt(matricleOrStaffNumberTextField.getText()));
             degreeBossDAO.addDegreeBoss(degreeBoss);
-        }catch(DataRetrievalException e){
-            new AlertPopUpGenerator().showConnectionErrorMessage();
+            new AlertPopUpGenerator().showCustomMessage(AlertType.INFORMATION, "Éxito", "Jefe de Carrera registrado exitosamente");
         }catch(DataInsertionException e){
             new AlertPopUpGenerator().showConnectionErrorMessage();
+        }catch(DuplicatedPrimaryKeyException e) {
+            new AlertPopUpGenerator().showCustomMessage(AlertType.ERROR, "Error", "El número de personal ya está usado");
         }
         
     }
@@ -202,16 +192,13 @@ public class GuiRegisterUserController{
             professor.setAlternateEmail(alternateEmailTextField.getText());
             professor.setPhoneNumber(telephoneNumberTextField.getText());
             professor.setStatus(ProfessorStatus.ACTIVE.getValue());
-            professor.setStaffNumber(Integer.parseInt(matricleOrPersonalNumberTextField.getText()));
-            if(professorDAO.theProfessorIsAlreadyRegisted(professor)){
-                new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "Error", "El usuario ya está registrado en el sistema");
-                return;
-            }
+            professor.setStaffNumber(Integer.parseInt(matricleOrStaffNumberTextField.getText()));
             professorDAO.addProfessor(professor);
-        }catch(DataRetrievalException e){
-            new AlertPopUpGenerator().showConnectionErrorMessage();
+            new AlertPopUpGenerator().showCustomMessage(AlertType.INFORMATION, "Éxito", "Profesor registrado exitosamente");
         }catch(DataInsertionException e){
             new AlertPopUpGenerator().showConnectionErrorMessage();
+        }catch(DuplicatedPrimaryKeyException e) {
+            new AlertPopUpGenerator().showCustomMessage(AlertType.ERROR, "Error", "El número de personal ya está usado");
         }
     }
     private void registerStudent(){
@@ -225,31 +212,28 @@ public class GuiRegisterUserController{
             student.setAlternateEmail(alternateEmailTextField.getText());
             student.setPhoneNumber(telephoneNumberTextField.getText());
             student.setStatus(StudentStatus.AVAILABLE.getValue());
-            student.setMatricle(matricleOrPersonalNumberTextField.getText());
-            if(studentDAO.theStudentIsAlreadyRegisted(student)){
-                new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "Error", "El usuario ya está registrado en el sistema");
-                return;
-            }
-            studentDAO.addStudent(student);
-        } catch (DataInsertionException e) {
+            student.setMatricle(matricleOrStaffNumberTextField.getText());
+            studentDAO.addStudent (student);
+            new AlertPopUpGenerator().showCustomMessage(AlertType.INFORMATION, "Éxito", "Estudiante registrado exitosamente");
+        }catch(DataInsertionException e) {
             new AlertPopUpGenerator().showConnectionErrorMessage();
-        } catch (DataRetrievalException e) {
-            new AlertPopUpGenerator().showConnectionErrorMessage();
+        }catch(DuplicatedPrimaryKeyException e) {
+            new AlertPopUpGenerator().showCustomMessage(AlertType.ERROR, "Error", "La Matrícula ya está usada");
         }
     }
     private boolean allTextFieldsContainsCorrectValues(){
         Pattern namesPattern = Pattern.compile("([A-Z][a-z]+)\\s?([A-Z][a-z]+)?\\s?([A-Z][a-z]+)?\\s?([A-Z][a-z]+)?"),
                 firstSurnamePattern = Pattern.compile("([A-Z][a-z]+)\\s?([A-Z][a-z]+)?\\s?([A-Z][a-z]+)?\\s?([A-Z][a-z]+)?"),
                 secondSurnamePattern = Pattern.compile("([A-Z][a-z]+)\\s?([A-Z][a-z]+)?\\s?([A-Z][a-z]+)?\\s?([A-Z][a-z]+)?"),
-                emailPattern = Pattern.compile("^(.+)@(\\S+)$"),
-                alternateEmailPattern = Pattern.compile("^(.+)@(\\S+)$"),
+                emailPattern = Pattern.compile("^(.+)@uv.mx$"),
+                alternateEmailPattern = Pattern.compile("^(.+)@uv.mx$"),
                 telephoneNumberPattern = Pattern.compile("^[0-9]{10}$"),
-                matricleOrPersonalNumberPattern = Pattern.compile("");
+                matricleOrStaffNumberPattern = Pattern.compile("");
     
         if(typeComboBox.getValue().equals(UserType.STUDENT.getValue())){
-            matricleOrPersonalNumberPattern = Pattern.compile("^[z][S][0-9]{8}$");
+            matricleOrStaffNumberPattern = Pattern.compile("^[z][S][0-9]{8}$");
         }else{
-            matricleOrPersonalNumberPattern = Pattern.compile("^[0-9]{9}$");
+            matricleOrStaffNumberPattern = Pattern.compile("^[0-9]{9}$");
         }
 
         Matcher namesMatcher = namesPattern.matcher(namesTextField.getText()),
@@ -258,12 +242,12 @@ public class GuiRegisterUserController{
                 emailMatcher = emailPattern.matcher(emailTextField.getText()),
                 alternateEmailMatcher = alternateEmailPattern.matcher(alternateEmailTextField.getText()),
                 telephoneNumberMatcher = telephoneNumberPattern.matcher(telephoneNumberTextField.getText()),
-                matricleOrPersonalNumberMatcher = matricleOrPersonalNumberPattern.matcher(matricleOrPersonalNumberTextField.getText());
+                matricleOrStaffNumberMatcher = matricleOrStaffNumberPattern.matcher(matricleOrStaffNumberTextField.getText());
 
         if(namesMatcher.find() && firstSurnameMatcher.find() &&
            secondSurnameMatcher.find() && emailMatcher.find() &&
            alternateEmailMatcher.find() && telephoneNumberMatcher.find() &&
-           matricleOrPersonalNumberMatcher.find()){
+           matricleOrStaffNumberMatcher.find()){
             return true;
         }
 
