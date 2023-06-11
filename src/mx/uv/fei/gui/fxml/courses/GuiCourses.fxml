@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.uv.fei.gui.controllers.courses.GuiCoursesController">
+<Pane fx:id="backgroundPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.uv.fei.gui.controllers.courses.GuiCoursesController">
    <children>
       <ScrollPane layoutX="25.0" layoutY="159.0" prefHeight="410.0" prefWidth="470.0">
          <content>
@@ -16,11 +16,8 @@
          </content>
       </ScrollPane>
       <ScrollPane fx:id="courseInformationScrollPane" layoutX="527.0" layoutY="159.0" prefHeight="410.0" prefWidth="470.0" />
-      <Button fx:id="registerCourseButton" layoutX="822.0" layoutY="108.0" mnemonicParsing="false" onAction="#registerCourse" prefHeight="39.0" prefWidth="168.0" text="Registrar Curso">
-         <font>
-            <Font name="System Bold" size="18.0" />
-         </font></Button>
-      <Label layoutX="107.0" layoutY="136.0" text="(Dejar en blanco para mostrar todos los cursos)" />
+      <Button fx:id="registerCourseButton" layoutX="683.0" layoutY="101.0" mnemonicParsing="false" onAction="#registerCourseButtonController" prefHeight="47.0" prefWidth="169.0" text="Registrar Curso" />
+      <Label layoutX="107.0" layoutY="136.0" text="(Deja en blanco para mostrar todos los cursos)" />
       <Label layoutX="33.0" layoutY="102.0" text="Buscar por NRC:">
          <font>
             <Font size="17.0" />
@@ -28,6 +25,5 @@
       </Label>
       <TextField fx:id="searchByNrcTextField" layoutX="179.0" layoutY="102.0" prefHeight="24.0" prefWidth="228.0" />
       <Button fx:id="searchByNrcButton" layoutX="418.0" layoutY="101.0" mnemonicParsing="false" onAction="#searchByNrcButtonController" prefHeight="24.0" prefWidth="70.0" text="Buscar" />
-      <Pane fx:id="headerPane" layoutX="-1.0" layoutY="-2.0" prefHeight="90.0" prefWidth="1024.0" />
    </children>
 </Pane>

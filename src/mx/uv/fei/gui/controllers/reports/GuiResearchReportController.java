@@ -17,11 +17,11 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -29,8 +29,8 @@ import javafx.scene.text.Text;
 import javafx.stage.DirectoryChooser;
 import mx.uv.fei.gui.AlertPopUpGenerator;
 import mx.uv.fei.gui.controllers.HeaderPaneController;
-import mx.uv.fei.logic.daos.ResearchesReportDAO;
-import mx.uv.fei.logic.domain.Research;
+import mx.uv.fei.logic.daos.ResearchReportDAO;
+import mx.uv.fei.logic.domain.ResearchProject;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
@@ -77,11 +77,11 @@ public class GuiResearchReportController {
 
     @FXML
     private void initialize(){
-        loadHeader();
+        //loadHeader();
 
         researchesVBox.getChildren().clear();
-        ResearchesReportDAO researchesReportDAO = new ResearchesReportDAO();
-        ArrayList<Research> researches = new ArrayList<>();
+        ResearchReportDAO researchesReportDAO = new ResearchReportDAO();
+        ArrayList<ResearchProject> researches = new ArrayList<>();
         try{
             researches = researchesReportDAO.getResearches(findByTitleTextField.getText(), "");
         }catch(DataRetrievalException e) {
@@ -89,7 +89,7 @@ public class GuiResearchReportController {
         }
         
         try{
-            for(Research research : researches){
+            for(ResearchProject research : researches){
                 FXMLLoader researchItemControllerLoader = new FXMLLoader(
                     getClass().getResource("/mx/uv/fei/gui/fxml/reports/ResearchItem.fxml")
                 );
@@ -110,7 +110,7 @@ public class GuiResearchReportController {
             return;
         }
 
-        directoryChooser.setTitle("Seleccionar rrrrrrrrrrrrrrrrrrrrrrrrrrrruta");
+        directoryChooser.setTitle("Seleccionar Ruta");
         File choosedDirectory = directoryChooser.showDialog(null);
         if(choosedDirectory == null){
             return;
@@ -123,16 +123,17 @@ public class GuiResearchReportController {
         }
 
         try{
-            ResearchesReportDAO researchesReportDAO = new ResearchesReportDAO();
-            ArrayList<Research> researches = researchesReportDAO.getSelectedResearches(selectedResearches);
+            ResearchReportDAO researchesReportDAO = new ResearchReportDAO();
+            ArrayList<ResearchProject> researches = researchesReportDAO.getSelectedResearches(selectedResearches);
 
             Path path = Paths.get("src/dependencies/resources/jasperreports/ResearchReport.jasper");
             InputStream inputStream = Files.newInputStream(path.toAbsolutePath());
             JasperReport report = (JasperReport) JRLoader.loadObject(inputStream);
             
-            JRBeanArrayDataSource researchesReportDataSource = new JRBeanArrayDataSource(researches.toArray());
+            JRBeanArrayDataSource researchesData = new JRBeanArrayDataSource(researches.toArray());
+
             HashMap<String, Object> parameters = new HashMap<>();
-            parameters.put("researchesReportDataSource", researchesReportDataSource);
+            parameters.put("researchesData", researchesData);
 
             OutputStream reportFinale = new FileOutputStream(choosedDirectory.getAbsolutePath() + "/Reporte.pdf");
 
@@ -141,6 +142,9 @@ public class GuiResearchReportController {
             view.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
             view.setVisible(true);
             JasperExportManager.exportReportToPdfStream(jasperPrint, reportFinale);
+
+            inputStream.close();
+            reportFinale.close();
             
         }catch(IOException ioe){
             new AlertPopUpGenerator().showMissingFilesMessage();
@@ -153,8 +157,8 @@ public class GuiResearchReportController {
     @FXML
     private void searchResearchesButtonController(ActionEvent event){
         researchesVBox.getChildren().removeAll(researchesVBox.getChildren());
-        ResearchesReportDAO researchesReportDAO = new ResearchesReportDAO();
-        ArrayList<Research> researches = new ArrayList<>();
+        ResearchReportDAO researchesReportDAO = new ResearchReportDAO();
+        ArrayList<ResearchProject> researches = new ArrayList<>();
         try{
             if(!showNotValidatedToggleButton.isSelected() &&
                !showValidatedToggleButton.isSelected()){
@@ -181,7 +185,7 @@ public class GuiResearchReportController {
         }
         
         try{
-            for(Research research : researches){
+            for(ResearchProject research : researches){
                 FXMLLoader researchItemControllerLoader = new FXMLLoader(
                     getClass().getResource("/mx/uv/fei/gui/fxml/reports/ResearchItem.fxml")
                 );
@@ -277,19 +281,19 @@ public class GuiResearchReportController {
         return selectedResearchesVBox;
     }
 
-    private void loadHeader(){
-        FXMLLoader headerLoader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/HeaderPane.fxml"));
-        
-        try{
-            Pane header = headerLoader.load();
-            header.getStyleClass().add("/mx/uv/fei/gui/stylesfiles/Styles.css");
-            backgroundPane.getChildren().add(header);
-            HeaderPaneController headerPaneController = headerLoader.getController();
-            headerPaneController.setTitle("Generar Reporte de Anteproshectos");
-            headerPaneController.setVisibleNRCLabel(false);
-            
-        }catch(IOException exception){
-            new AlertPopUpGenerator().showMissingFilesMessage();
-        }
-    }
+    //private void loadHeader(){
+    //    FXMLLoader headerLoader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/HeaderPane.fxml"));
+    //    
+    //    try{
+    //        Pane header = headerLoader.load();
+    //        header.getStyleClass().add("/mx/uv/fei/gui/stylesfiles/Styles.css");
+    //        backgroundPane.getChildren().add(header);
+    //        HeaderPaneController headerPaneController = headerLoader.getController();
+    //        headerPaneController.setTitle("Generar Reporte de Anteproshectos");
+    //        headerPaneController.setVisibleNRCLabel(false);
+    //        
+    //    }catch(IOException exception){
+    //        new AlertPopUpGenerator().showMissingFilesMessage();
+    //    }
+    //}
 }

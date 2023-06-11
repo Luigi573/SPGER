@@ -46,15 +46,15 @@
             <Font size="15.0" />
          </font>
       </Text>
-      <ComboBox fx:id="educativeExperienceComboBox" layoutX="190.0" layoutY="79.0" prefHeight="24.0" prefWidth="172.0" />
-      <ComboBox fx:id="sectionComboBox" layoutX="82.0" layoutY="159.0" prefHeight="24.0" prefWidth="280.0" />
-      <ComboBox fx:id="professorComboBox" layoutX="88.0" layoutY="235.0" prefHeight="24.0" prefWidth="274.0" />
-      <ComboBox fx:id="scholarPeriodComboBox" layoutX="81.0" layoutY="272.0" prefHeight="24.0" prefWidth="281.0" />
+      <ComboBox fx:id="educativeExperienceComboBox" layoutX="190.0" layoutY="79.0" prefHeight="24.0" prefWidth="172.0" promptText="--Seleccionar EE--" />
+      <ComboBox fx:id="sectionComboBox" layoutX="82.0" layoutY="159.0" prefHeight="24.0" prefWidth="280.0" promptText="--Seleccionar Seccion--" />
+      <ComboBox fx:id="professorComboBox" layoutX="88.0" layoutY="235.0" prefHeight="24.0" prefWidth="274.0" promptText="--Seleccionar Docente--" />
+      <ComboBox fx:id="scholarPeriodComboBox" layoutX="81.0" layoutY="272.0" prefHeight="24.0" prefWidth="281.0" promptText="--Seleccionar Periodo--" />
       <Text layoutX="14.0" layoutY="215.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Bloque: ">
          <font>
             <Font size="15.0" />
          </font>
       </Text>
-      <ComboBox fx:id="blockComboBox" layoutX="77.0" layoutY="198.0" prefHeight="24.0" prefWidth="285.0" />
+      <ComboBox fx:id="blockComboBox" layoutX="77.0" layoutY="198.0" prefHeight="24.0" prefWidth="285.0" promptText="--Seleccionar Bloque--" />
    </children>
 </Pane>

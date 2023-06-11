@@ -31,10 +31,10 @@ public class CourseController{
     public void setGuiCoursesController(GuiCoursesController guiCoursesController){
         this.guiCoursesController = guiCoursesController;
     }
-    public String getEEName(){
+    public String getName(){
         return nameLabel.getText();
     }
-    public void setEEName(String name){
+    public void setName(String name){
         this.nameLabel.setText(name);
     }
     public String getNrc(){

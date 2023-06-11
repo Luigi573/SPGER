@@ -56,7 +56,6 @@ public class GuiRegisterCourseController {
                 }
 
             });
-            this.professorComboBox.setValue(this.professorComboBox.getItems().get(0));
 
             ScholarPeriodDAO scholarPeriodDAO = new ScholarPeriodDAO();
             this.scholarPeriodComboBox.getItems().addAll(scholarPeriodDAO.getScholarPeriods());
@@ -77,17 +76,13 @@ public class GuiRegisterCourseController {
                 }
 
             });
-            this.scholarPeriodComboBox.setValue(this.scholarPeriodComboBox.getItems().get(0));
 
             this.educativeExperienceComboBox.getItems().add("Proyecto Guiado");
             this.educativeExperienceComboBox.getItems().add("Experiencia Recepcional");
-            this.educativeExperienceComboBox.setValue("Proyecto Guiado");
             this.sectionComboBox.getItems().add("7");
             this.sectionComboBox.getItems().add("8");
-            this.sectionComboBox.setValue("7");
             this.blockComboBox.getItems().add("1");
             this.blockComboBox.getItems().add("2");
-            this.blockComboBox.setValue("1");
         }catch(DataRetrievalException exception){
             new AlertPopUpGenerator().showConnectionErrorMessage();
         }
@@ -96,7 +91,12 @@ public class GuiRegisterCourseController {
     @FXML
     void registerButtonController(ActionEvent event) {
         try{
-            if(!this.nrcTextField.getText().isEmpty()) {
+            if(!nrcTextField.getText().isEmpty() &&
+               blockComboBox.getValue() != null &&
+               educativeExperienceComboBox.getValue() != null &&
+               //professorComboBox.getValue() != null &&
+               //scholarPeriodComboBox.getValue() != null &&
+               sectionComboBox.getValue() != null) {
                 if(allTextFieldsContainsCorrectValues()){
                     CourseDAO courseDAO = new CourseDAO();
                     Course course = new Course();
@@ -106,7 +106,7 @@ public class GuiRegisterCourseController {
                     course.setBlock(Integer.parseInt(this.blockComboBox.getValue()));
                     course.setProfessor(professorComboBox.getValue());
                     course.setScholarPeriod(scholarPeriodComboBox.getValue());
-                    courseDAO.addCourse (course);
+                    courseDAO.addCourse(course);
                     new AlertPopUpGenerator().showCustomMessage(AlertType.INFORMATION, "Éxito", "Curso registrado exitosamente");
                 }else{
                     new AlertPopUpGenerator().showCustomMessage(AlertType.ERROR, "Error", "Algunos campos contienen datos inválidos");

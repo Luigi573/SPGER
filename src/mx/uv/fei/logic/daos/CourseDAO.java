@@ -33,8 +33,19 @@ public class CourseDAO implements ICourseDAO{
             PreparedStatement preparedStatement = 
                 dataBaseManager.getConnection().prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
             preparedStatement.setInt(1, course.getNrc());
-            preparedStatement.setInt(2, course.getScholarPeriod().getScholarPeriodId());
-            preparedStatement.setInt(3, course.getProfessor().getStaffNumber());
+
+            if(course.getScholarPeriod() != null){
+                preparedStatement.setInt(2, course.getScholarPeriod().getScholarPeriodId());
+            }else{
+                preparedStatement.setString(2, null);
+            }
+
+            if(course.getProfessor() != null){
+                preparedStatement.setInt(3, course.getProfessor().getStaffNumber());
+            }else{
+                preparedStatement.setString(3, null);
+            }
+
             preparedStatement.setString(4, course.getName());
             preparedStatement.setInt(5, course.getSection());
             preparedStatement.setInt(6, course.getBlock());
@@ -68,6 +79,7 @@ public class CourseDAO implements ICourseDAO{
             preparedStatement.setInt(5, course.getSection());
             preparedStatement.setInt(6, course.getBlock());
             preparedStatement.setInt(7, course.getNrc());
+            System.out.println(preparedStatement.toString());
             result = preparedStatement.executeUpdate();
         }catch(SQLIntegrityConstraintViolationException e){
             throw new DuplicatedPrimaryKeyException("Curso ya registrado en el sistema");
