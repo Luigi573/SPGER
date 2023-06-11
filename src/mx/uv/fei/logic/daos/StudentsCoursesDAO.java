@@ -101,7 +101,7 @@ public class StudentsCoursesDAO implements IStudentsCoursesDAO{
                 course.setBlock(resultSet.getInt("c.bloque"));
                 course.setNrc(resultSet.getInt("c.NRC"));
                 
-                if(!resultSet.wasNull()){
+                if(resultSet.getString("c.NumPersonal") != null){
                     Professor professor = new Professor();
                     course.setProfessor(professor);
                     
@@ -109,11 +109,17 @@ public class StudentsCoursesDAO implements IStudentsCoursesDAO{
                     course.getProfessor().setName(resultSet.getString("up.nombre"));
                     course.getProfessor().setFirstSurname(resultSet.getString("up.apellidoPaterno"));
                     course.getProfessor().setSecondSurname(resultSet.getString("up.apellidoMaterno"));
-                    
+                }else{
+                    course.setProfessor(null);
+                }
+                
+                if(resultSet.getDate("pe.fechaInicio") != null && resultSet.getDate("pe.fechaFin") != null){
                     ScholarPeriod period = new ScholarPeriod();
                     course.setScholarPeriod(period);
                     course.getScholarPeriod().setStartDate(resultSet.getDate("pe.fechaInicio"));
                     course.getScholarPeriod().setEndDate(resultSet.getDate("pe.fechaFin"));
+                }else{
+                    course.setScholarPeriod(null);
                 }
                 
                 courseList.add(course);

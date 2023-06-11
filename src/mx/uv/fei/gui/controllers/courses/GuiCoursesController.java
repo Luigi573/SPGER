@@ -94,10 +94,6 @@ public class GuiCoursesController{
         CourseDAO courseDAO = new CourseDAO();
         try {
             Course course = courseDAO.getCourse(courseInformationController.getNrc());
-            ScholarPeriodDAO scholarPeriodDAO = new ScholarPeriodDAO();
-            ScholarPeriod scholarPeriod = scholarPeriodDAO.getScholarPeriod(course.getScholarPeriod().getScholarPeriodId());
-            ProfessorDAO professorDAO = new ProfessorDAO();
-            Professor professor = professorDAO.getProfessor(course.getProfessor().getStaffNumber());
             FXMLLoader modifyCourseInformationControllerLoader = new FXMLLoader(
                 getClass().getResource("/mx/uv/fei/gui/fxml/courses/ModifyCourseInformation.fxml")
             );
@@ -107,8 +103,18 @@ public class GuiCoursesController{
             modifyCourseInformationController.setNrc(Integer.toString(course.getNrc()));
             modifyCourseInformationController.setSection(Integer.toString(course.getSection()));
             modifyCourseInformationController.setBlock(Integer.toString(course.getBlock()));
-            modifyCourseInformationController.setProfessor(professor);
-            modifyCourseInformationController.setScholarPeriod(scholarPeriod);
+            if(course.getProfessor() != null){
+                ProfessorDAO professorDAO = new ProfessorDAO();
+                Professor professor = professorDAO.getProfessor(course.getProfessor().getStaffNumber());
+                modifyCourseInformationController.setProfessor(professor);
+            }
+            
+            if(course.getScholarPeriod() != null){
+                ScholarPeriodDAO scholarPeriodDAO = new ScholarPeriodDAO();
+                ScholarPeriod scholarPeriod = scholarPeriodDAO.getScholarPeriod(course.getScholarPeriod().getScholarPeriodId());
+                modifyCourseInformationController.setScholarPeriod(scholarPeriod);
+            }
+
             modifyCourseInformationController.setCourse(course);
             modifyCourseInformationController.setGuiCoursesController(this);
             modifyCourseInformationController.setCourseInformationController(courseInformationController);
@@ -124,10 +130,6 @@ public class GuiCoursesController{
         CourseDAO courseDAO = new CourseDAO();
         try{
             Course course = courseDAO.getCourse(courseNRC);
-            ScholarPeriodDAO scholarPeriodDAO = new ScholarPeriodDAO();
-            ScholarPeriod scholarPeriod = scholarPeriodDAO.getScholarPeriod(course.getScholarPeriod().getScholarPeriodId());
-            ProfessorDAO professorDAO = new ProfessorDAO();
-            Professor professor = professorDAO.getProfessor(course.getProfessor().getStaffNumber());
             FXMLLoader courseInformationControllerLoader = new FXMLLoader(
                 getClass().getResource("/mx/uv/fei/gui/fxml/courses/CourseInformation.fxml")
             );
@@ -137,8 +139,22 @@ public class GuiCoursesController{
             courseInformationController.setNrc(Integer.toString(course.getNrc()));
             courseInformationController.setSection(Integer.toString(course.getSection()));
             courseInformationController.setBlock(Integer.toString(course.getBlock()));
-            courseInformationController.setProfessor(professor.getName());
-            courseInformationController.setScholarPeriod(scholarPeriod.toString());
+            if(course.getProfessor() != null){
+                ProfessorDAO professorDAO = new ProfessorDAO();
+                Professor professor = professorDAO.getProfessor(course.getProfessor().getStaffNumber());
+                courseInformationController.setProfessor(professor.getName());
+            }else{
+                courseInformationController.setProfessor("Sin Asignar");
+            }
+
+            if(course.getScholarPeriod() != null){
+                ScholarPeriodDAO scholarPeriodDAO = new ScholarPeriodDAO();
+                ScholarPeriod scholarPeriod = scholarPeriodDAO.getScholarPeriod(course.getScholarPeriod().getScholarPeriodId());
+                courseInformationController.setScholarPeriod(scholarPeriod.toString());
+            }else{
+                courseInformationController.setScholarPeriod("Sin Asignar");
+            }
+
             courseInformationController.setGuiCoursesController(this);
             courseInformationScrollPane.setContent(courseInformationVBox);
             
@@ -155,14 +171,19 @@ public class GuiCoursesController{
                 FXMLLoader courseItemControllerLoader = new FXMLLoader(
                     getClass().getResource("/mx/uv/fei/gui/fxml/courses/Course.fxml")
                 );
-                ScholarPeriodDAO scholarPeriodDAO = new ScholarPeriodDAO();
-                ScholarPeriod scholarPeriod = scholarPeriodDAO.getScholarPeriod(course.getScholarPeriod().getScholarPeriodId());
-                Pane courseItemPane;
-                courseItemPane = courseItemControllerLoader.load();
+                Pane courseItemPane = courseItemControllerLoader.load();
                 CourseController courseController = courseItemControllerLoader.getController();
                 courseController.setName(course.getName());
                 courseController.setNrc(Integer.toString(course.getNrc()));
-                courseController.setScholarPeriod(scholarPeriod.toString());
+                
+                if(course.getScholarPeriod() != null){
+                    ScholarPeriodDAO scholarPeriodDAO = new ScholarPeriodDAO();
+                    ScholarPeriod scholarPeriod = scholarPeriodDAO.getScholarPeriod(course.getScholarPeriod().getScholarPeriodId());
+                    courseController.setScholarPeriod(scholarPeriod.toString());
+                }else{
+                    courseController.setScholarPeriod("Sin Asignar");
+                }
+
                 courseController.setGuiCoursesController(this);
                 coursesVBox.getChildren().add(courseItemPane);
             }

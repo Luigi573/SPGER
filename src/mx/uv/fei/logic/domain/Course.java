@@ -7,6 +7,15 @@ public class Course {
     private Professor professor;
     private ScholarPeriod scholarPeriod;
     private int section;
+    private String status;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     public int getNrc() {
         return this.nrc;

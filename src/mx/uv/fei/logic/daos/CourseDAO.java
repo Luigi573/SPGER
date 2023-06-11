@@ -12,6 +12,7 @@ import mx.uv.fei.logic.daosinterfaces.ICourseDAO;
 import mx.uv.fei.logic.domain.Course;
 import mx.uv.fei.logic.domain.Professor;
 import mx.uv.fei.logic.domain.ScholarPeriod;
+import mx.uv.fei.logic.domain.statuses.CourseStatus;
 import mx.uv.fei.logic.exceptions.DataInsertionException;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
 import mx.uv.fei.logic.exceptions.DuplicatedPrimaryKeyException;
@@ -27,8 +28,8 @@ public class CourseDAO implements ICourseDAO{
     public int addCourse(Course course) throws DataInsertionException, DuplicatedPrimaryKeyException{
         int generatedId = 0;
         String query = 
-        "INSERT INTO Cursos (NRC, IdPeriodoEscolar, NumPersonal, nombreEE, sección, bloque)" +
-        " VALUES (?, ?, ?, ?, ?, ?)";
+        "INSERT INTO Cursos (NRC, IdPeriodoEscolar, NumPersonal, nombre, sección, bloque, estado)" +
+        " VALUES (?, ?, ?, ?, ?, ?, ?)";
         try{
             PreparedStatement preparedStatement = 
                 dataBaseManager.getConnection().prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
@@ -49,6 +50,7 @@ public class CourseDAO implements ICourseDAO{
             preparedStatement.setString(4, course.getName());
             preparedStatement.setInt(5, course.getSection());
             preparedStatement.setInt(6, course.getBlock());
+            preparedStatement.setString(7, CourseStatus.ACTIVE.getValue());
             preparedStatement.executeUpdate();
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
             if(resultSet.next()){
@@ -69,8 +71,8 @@ public class CourseDAO implements ICourseDAO{
     public int modifyCourseData(Course course) throws DataInsertionException, DuplicatedPrimaryKeyException{
         int result = 0;
         try{
-            String query = "UPDATE Cursos SET NRC = ?, IdPeriodoEscolar = ?, NumPersonal = ?, nombreEE = ?, " + 
-                           "sección = ?, bloque = ? WHERE NRC = ?";
+            String query = "UPDATE Cursos SET NRC = ?, IdPeriodoEscolar = ?, NumPersonal = ?, nombre = ?, " + 
+                           "sección = ?, bloque = ?, estado = ? WHERE NRC = ?";
             PreparedStatement preparedStatement = dataBaseManager.getConnection().prepareStatement(query);
             preparedStatement.setInt(1, course.getNrc());
             preparedStatement.setInt(2, course.getScholarPeriod().getScholarPeriodId());
@@ -78,7 +80,8 @@ public class CourseDAO implements ICourseDAO{
             preparedStatement.setString(4, course.getName());
             preparedStatement.setInt(5, course.getSection());
             preparedStatement.setInt(6, course.getBlock());
-            preparedStatement.setInt(7, course.getNrc());
+            preparedStatement.setString(7, course.getStatus());
+            preparedStatement.setInt(8, course.getNrc());
             System.out.println(preparedStatement.toString());
             result = preparedStatement.executeUpdate();
         }catch(SQLIntegrityConstraintViolationException e){
@@ -98,23 +101,40 @@ public class CourseDAO implements ICourseDAO{
 
         try{
             Statement statement = dataBaseManager.getConnection().createStatement();
-            String query = "SELECT * FROM Cursos";
+            String query = "SELECT c.NRC, c.NumPersonal, c.nombre, c.sección, c.bloque, up.nombre, up.apellidoPaterno, up.apellidoMaterno, "
+                         + "pe.fechaInicio, pe.fechaFin FROM EstudiantesCurso ec LEFT JOIN Cursos c ON ec.NRC = c.NRC "
+                         + "LEFT JOIN PeriodosEscolares pe ON c.IdPeriodoEscolar = pe.IdPeriodoEscolar "
+                         + "LEFT JOIN Profesores p ON c.NumPersonal = p.NumPersonal LEFT JOIN Usuarios up ON p.IdUsuario = up.IdUsuario ";
             
             ResultSet resultSet = statement.executeQuery(query);
             while(resultSet.next()){
                 Course course = new Course();
-                course.setNrc(resultSet.getInt("NRC"));
-                course.setName(resultSet.getString("nombreEE"));
-                course.setSection(resultSet.getInt("sección"));
-                course.setBlock(resultSet.getInt("bloque"));
+                course.setName(resultSet.getString("c.nombre"));
+                course.setSection(resultSet.getInt("c.sección"));
+                course.setBlock(resultSet.getInt("c.bloque"));
+                course.setNrc(resultSet.getInt("c.NRC"));
                 
-                ScholarPeriod scholarPeriod = new ScholarPeriod();
-                scholarPeriod.setScholarPeriodId(resultSet.getInt("IdPeriodoEscolar"));
-                course.setScholarPeriod(scholarPeriod);
-                Professor professor = new Professor();
-                professor.setStaffNumber(resultSet.getInt("NumPersonal"));
-                course.setProfessor(professor);
-
+                if(resultSet.getString("c.NumPersonal") != null){
+                    Professor professor = new Professor();
+                    course.setProfessor(professor);
+                    
+                    course.getProfessor().setStaffNumber(resultSet.getInt("c.NumPersonal"));
+                    course.getProfessor().setName(resultSet.getString("up.nombre"));
+                    course.getProfessor().setFirstSurname(resultSet.getString("up.apellidoPaterno"));
+                    course.getProfessor().setSecondSurname(resultSet.getString("up.apellidoMaterno"));
+                }else{
+                    course.setProfessor(null);
+                }
+                
+                if(resultSet.getDate("pe.fechaInicio") != null && resultSet.getDate("pe.fechaFin") != null){
+                    ScholarPeriod period = new ScholarPeriod();
+                    course.setScholarPeriod(period);
+                    course.getScholarPeriod().setStartDate(resultSet.getDate("pe.fechaInicio"));
+                    course.getScholarPeriod().setEndDate(resultSet.getDate("pe.fechaFin"));
+                }else{
+                    course.setScholarPeriod(null);
+                }
+                
                 courses.add(course);
             }
             resultSet.close();
@@ -140,17 +160,27 @@ public class CourseDAO implements ICourseDAO{
             while(resultSet.next()){
                 Course course = new Course();
                 course.setNrc(resultSet.getInt("NRC"));
-                course.setName(resultSet.getString("nombreEE"));
+                course.setName(resultSet.getString("nombre"));
                 course.setSection(resultSet.getInt("sección"));
                 course.setBlock(resultSet.getInt("bloque"));
                 
-                ScholarPeriod scholarPeriod = new ScholarPeriod();
-                scholarPeriod.setScholarPeriodId(resultSet.getInt("IdPeriodoEscolar"));
-                course.setScholarPeriod(scholarPeriod);
-                Professor professor = new Professor();
-                professor.setStaffNumber(resultSet.getInt("NumPersonal"));
-                course.setProfessor(professor);
+                if(resultSet.getInt("IdPeriodoEscolar") != 0){
+                    ScholarPeriod scholarPeriod = new ScholarPeriod();
+                    scholarPeriod.setScholarPeriodId(resultSet.getInt("IdPeriodoEscolar"));
+                    course.setScholarPeriod(scholarPeriod);
+                }else{
+                    course.setScholarPeriod(null);
+                }
+
+                if(resultSet.getString("NumPersonal") != null){
+                    Professor professor = new Professor();
+                    professor.setStaffNumber(resultSet.getInt("NumPersonal"));
+                    course.setProfessor(professor);
+                }else{
+                    course.setProfessor(null);
+                }
                 
+                course.setStatus(resultSet.getString("estado"));
                 courses.add(course);
             }
             
@@ -176,16 +206,27 @@ public class CourseDAO implements ICourseDAO{
             
             if(resultSet.next()){
                 course.setNrc(resultSet.getInt("NRC"));
-                course.setName(resultSet.getString("nombreEE"));
+                course.setName(resultSet.getString("nombre"));
                 course.setSection(resultSet.getInt("sección"));
                 course.setBlock(resultSet.getInt("bloque"));
                 
-                ScholarPeriod scholarPeriod = new ScholarPeriod();
-                scholarPeriod.setScholarPeriodId(resultSet.getInt("IdPeriodoEscolar"));
-                course.setScholarPeriod(scholarPeriod);
-                Professor professor = new Professor();
-                professor.setStaffNumber(resultSet.getInt("NumPersonal"));
-                course.setProfessor(professor);
+                if(resultSet.getInt("IdPeriodoEscolar") != 0){
+                    ScholarPeriod scholarPeriod = new ScholarPeriod();
+                    scholarPeriod.setScholarPeriodId(resultSet.getInt("IdPeriodoEscolar"));
+                    course.setScholarPeriod(scholarPeriod);
+                }else{
+                    course.setScholarPeriod(null);
+                }
+
+                if(resultSet.getString("NumPersonal") != null){
+                    Professor professor = new Professor();
+                    professor.setStaffNumber(resultSet.getInt("NumPersonal"));
+                    course.setProfessor(professor);
+                }else{
+                    course.setProfessor(null);
+                }
+
+                course.setStatus(resultSet.getString("estado"));
             }
             
             resultSet.close();

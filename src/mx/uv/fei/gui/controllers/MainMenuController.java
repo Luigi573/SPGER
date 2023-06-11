@@ -33,8 +33,7 @@ public class MainMenuController{
     
     @FXML
     private void initialize() {
-        courseList = new ArrayList<>
-        ();
+        courseList = new ArrayList<>();
     }
     
     public void setUser(User user){
@@ -73,9 +72,10 @@ public class MainMenuController{
             try{
                 CourseDAO courseDAO = new CourseDAO();
                 courseList = courseDAO.getCourses();
-                
+
                 for(Course course: courseList){
-                    if(Professor.class.isAssignableFrom(user.getClass()) && course.getProfessor().equals(user)){
+                    System.out.println(course.getProfessor());
+                    if(Professor.class.isAssignableFrom(user.getClass())){
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/CourseHBoxPane.fxml"));
 
                         try{
@@ -96,7 +96,7 @@ public class MainMenuController{
         }
         
         for(Course course: courseList){
-            if(Professor.class.isAssignableFrom(user.getClass()) && course.getProfessor().equals(user)){
+            if(Professor.class.isAssignableFrom(user.getClass())){
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/CourseHBoxPane.fxml"));
 
                 try{

@@ -32,7 +32,7 @@ INSERT INTO JefesCarrera (NumPersonal) VALUES (100000004);
 
 INSERT INTO PeriodosEscolares (fechaInicio, fechaFin) VALUES ('2018-02-07', '2018-06-02');
 
-INSERT INTO Cursos (NRC, IdPeriodoEscolar, nombreEE, sección, bloque, NumPersonal) 
+INSERT INTO Cursos (NRC, IdPeriodoEscolar, nombre, sección, bloque, NumPersonal) 
     VALUES (10001, 1, 'Proyecto Guiado', 2, 7, 100000001);
 
 INSERT INTO EstudiantesCurso (Matrícula, NRC) VALUES ('zS10000001', 10001);

@@ -65,7 +65,7 @@ public class StudentsCoursesDAOTest {
             preloadedCourse.setBlock(1);
             preloadedCourse.setSection(8);
             preloadedCourse.setNrc(73898);
-            String courseQuery = "INSERT INTO Cursos (nombreEE, bloque, sección, NRC) VALUES (?, ?, ?, ?)";
+            String courseQuery = "INSERT INTO Cursos (nombre, bloque, sección, NRC) VALUES (?, ?, ?, ?)";
             PreparedStatement courseStatement = dataBaseManager.getConnection().prepareStatement(courseQuery);
             courseStatement.setString(1, preloadedCourse.getName());
             courseStatement.setInt(2, preloadedCourse.getBlock());
