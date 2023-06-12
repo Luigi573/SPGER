@@ -75,14 +75,24 @@ public class CourseDAO implements ICourseDAO{
                            "sección = ?, bloque = ?, estado = ? WHERE NRC = ?";
             PreparedStatement preparedStatement = dataBaseManager.getConnection().prepareStatement(query);
             preparedStatement.setInt(1, course.getNrc());
-            preparedStatement.setInt(2, course.getScholarPeriod().getScholarPeriodId());
-            preparedStatement.setInt(3, course.getProfessor().getStaffNumber());
+
+            if(course.getScholarPeriod() != null){
+                preparedStatement.setInt(2, course.getScholarPeriod().getScholarPeriodId());
+            }else{
+                preparedStatement.setString(2, null);
+            }
+
+            if(course.getProfessor() != null){
+                preparedStatement.setInt(3, course.getProfessor().getStaffNumber());
+            }else{
+                preparedStatement.setString(3, null);
+            }
+
             preparedStatement.setString(4, course.getName());
             preparedStatement.setInt(5, course.getSection());
             preparedStatement.setInt(6, course.getBlock());
             preparedStatement.setString(7, course.getStatus());
             preparedStatement.setInt(8, course.getNrc());
-            System.out.println(preparedStatement.toString());
             result = preparedStatement.executeUpdate();
         }catch(SQLIntegrityConstraintViolationException e){
             throw new DuplicatedPrimaryKeyException("Curso ya registrado en el sistema");
@@ -101,10 +111,10 @@ public class CourseDAO implements ICourseDAO{
 
         try{
             Statement statement = dataBaseManager.getConnection().createStatement();
-            String query = "SELECT c.NRC, c.NumPersonal, c.nombre, c.sección, c.bloque, up.nombre, up.apellidoPaterno, up.apellidoMaterno, "
-                         + "pe.fechaInicio, pe.fechaFin FROM EstudiantesCurso ec LEFT JOIN Cursos c ON ec.NRC = c.NRC "
+            String query = "SELECT c.NRC, c.NumPersonal, c.nombre, c.sección, c.bloque, c.estado, up.nombre, up.apellidoPaterno, up.apellidoMaterno, "
+                         + "pe.IdPeriodoEscolar, pe.fechaInicio, pe.fechaFin FROM Cursos c LEFT JOIN EstudiantesCurso ec ON c.NRC = ec.NRC "
                          + "LEFT JOIN PeriodosEscolares pe ON c.IdPeriodoEscolar = pe.IdPeriodoEscolar "
-                         + "LEFT JOIN Profesores p ON c.NumPersonal = p.NumPersonal LEFT JOIN Usuarios up ON p.IdUsuario = up.IdUsuario ";
+                         + "LEFT JOIN Profesores p ON c.NumPersonal = p.NumPersonal LEFT JOIN Usuarios up ON p.IdUsuario = up.IdUsuario";
             
             ResultSet resultSet = statement.executeQuery(query);
             while(resultSet.next()){
@@ -113,6 +123,7 @@ public class CourseDAO implements ICourseDAO{
                 course.setSection(resultSet.getInt("c.sección"));
                 course.setBlock(resultSet.getInt("c.bloque"));
                 course.setNrc(resultSet.getInt("c.NRC"));
+                course.setStatus(resultSet.getString("c.estado"));
                 
                 if(resultSet.getString("c.NumPersonal") != null){
                     Professor professor = new Professor();
@@ -129,6 +140,7 @@ public class CourseDAO implements ICourseDAO{
                 if(resultSet.getDate("pe.fechaInicio") != null && resultSet.getDate("pe.fechaFin") != null){
                     ScholarPeriod period = new ScholarPeriod();
                     course.setScholarPeriod(period);
+                    course.getScholarPeriod().setScholarPeriodId(resultSet.getInt("pe.IdPeriodoEscolar"));
                     course.getScholarPeriod().setStartDate(resultSet.getDate("pe.fechaInicio"));
                     course.getScholarPeriod().setEndDate(resultSet.getDate("pe.fechaFin"));
                 }else{

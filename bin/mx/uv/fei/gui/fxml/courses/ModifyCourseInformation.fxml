@@ -6,6 +6,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
@@ -33,10 +34,10 @@
       <HBox prefHeight="55.0" prefWidth="369.0">
          <children>
             <Label prefHeight="26.0" prefWidth="11.0" />
-            <Label prefHeight="55.0" prefWidth="155.0" text="Experiencia Educativa: " />
+            <Label prefHeight="55.0" prefWidth="166.0" text="Experiencia Educativa: *" />
             <AnchorPane prefHeight="55.0" prefWidth="272.0">
                <children>
-                  <ComboBox fx:id="educativeExperienceComboBox" layoutX="4.0" layoutY="17.0" prefHeight="24.0" prefWidth="265.0" promptText="--Seleccionar EE--" />
+                  <ComboBox fx:id="educativeExperienceComboBox" layoutX="4.0" layoutY="11.0" prefHeight="24.0" prefWidth="255.0" promptText="--Seleccionar EE--" />
                </children>
             </AnchorPane>
          </children>
@@ -44,10 +45,10 @@
       <HBox prefHeight="55.0" prefWidth="369.0">
          <children>
             <Label prefHeight="25.0" prefWidth="11.0" />
-            <Label prefHeight="55.0" prefWidth="40.0" text="NRC: " />
+            <Label prefHeight="55.0" prefWidth="51.0" text="NRC: *" />
             <AnchorPane prefHeight="55.0" prefWidth="387.0">
                <children>
-                  <TextField fx:id="nrcTextField" layoutY="16.0" prefHeight="25.0" prefWidth="384.0" />
+                  <TextField fx:id="nrcTextField" layoutY="10.0" prefHeight="25.0" prefWidth="374.0" />
                </children>
             </AnchorPane>
          </children>
@@ -55,10 +56,10 @@
       <HBox prefHeight="55.0" prefWidth="369.0">
          <children>
             <Label prefHeight="25.0" prefWidth="11.0" />
-            <Label prefHeight="55.0" prefWidth="62.0" text="Seccion: " />
+            <Label prefHeight="55.0" prefWidth="72.0" text="Seccion: *" />
             <AnchorPane prefHeight="55.0" prefWidth="362.0">
                <children>
-                  <ComboBox fx:id="sectionComboBox" layoutX="2.0" layoutY="16.0" prefHeight="24.0" prefWidth="359.0" promptText="--Seleccionar Seccion--" />
+                  <ComboBox fx:id="sectionComboBox" layoutX="2.0" layoutY="10.0" prefHeight="24.0" prefWidth="349.0" promptText="--Seleccionar Seccion--" />
                </children>
             </AnchorPane>
          </children>
@@ -66,10 +67,10 @@
       <HBox prefHeight="55.0" prefWidth="369.0">
          <children>
             <Label prefHeight="25.0" prefWidth="11.0" />
-            <Label prefHeight="55.0" prefWidth="56.0" text="Bloque: " />
+            <Label prefHeight="55.0" prefWidth="68.0" text="Bloque: *" />
             <AnchorPane prefHeight="55.0" prefWidth="369.0">
                <children>
-                  <ComboBox fx:id="blockComboBox" layoutX="2.0" layoutY="17.0" prefHeight="24.0" prefWidth="364.0" promptText="--Seleccionar Bloque--" />
+                  <ComboBox fx:id="blockComboBox" layoutX="2.0" layoutY="12.0" prefHeight="24.0" prefWidth="353.0" promptText="--Seleccionar Bloque--" />
                </children>
             </AnchorPane>
          </children>
@@ -77,10 +78,10 @@
       <HBox prefHeight="55.0" prefWidth="369.0">
          <children>
             <Label prefHeight="25.0" prefWidth="10.0" />
-            <Label prefHeight="55.0" prefWidth="65.0" text="Docente: " />
+            <Label prefHeight="44.0" prefWidth="74.0" text="Docente: *" />
             <AnchorPane prefHeight="55.0" prefWidth="361.0">
                <children>
-                  <ComboBox fx:id="professorComboBox" layoutY="18.0" prefHeight="24.0" prefWidth="357.0" promptText="--Seleccionar Docente--" />
+                  <ComboBox fx:id="professorComboBox" layoutY="12.0" prefHeight="24.0" prefWidth="349.0" promptText="--Seleccionar Docente--" />
                </children>
             </AnchorPane>
          </children>
@@ -88,13 +89,29 @@
       <HBox prefHeight="55.0" prefWidth="261.0">
          <children>
             <Label prefHeight="25.0" prefWidth="10.0" />
-            <Label prefHeight="55.0" prefWidth="61.0" text="Periodo: " />
+            <Label prefHeight="44.0" prefWidth="68.0" text="Periodo: *" />
             <AnchorPane prefHeight="55.0" prefWidth="364.0">
                <children>
-                  <ComboBox fx:id="scholarPeriodComboBox" layoutY="16.0" prefHeight="24.0" prefWidth="362.0" promptText="--Seleccionar Periodo--" />
+                  <ComboBox fx:id="scholarPeriodComboBox" layoutY="10.0" prefHeight="24.0" prefWidth="353.0" promptText="--Seleccionar Periodo--" />
                </children>
             </AnchorPane>
          </children>
       </HBox>
+      <HBox prefHeight="55.0" prefWidth="261.0">
+         <children>
+            <Label prefHeight="25.0" prefWidth="10.0" />
+            <Label prefHeight="55.0" prefWidth="61.0" text="Estado: *" />
+            <AnchorPane prefHeight="55.0" prefWidth="364.0">
+               <children>
+                  <ComboBox fx:id="statusComboBox" layoutX="3.0" layoutY="10.0" prefHeight="24.0" prefWidth="358.0" promptText="--Seleccionar Estado--" />
+               </children>
+            </AnchorPane>
+         </children>
+      </HBox>
+      <Pane prefHeight="49.0" prefWidth="450.0">
+         <children>
+            <Text layoutX="150.0" layoutY="23.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*: Campos Obligatorios" />
+         </children>
+      </Pane>
    </children>
 </VBox>

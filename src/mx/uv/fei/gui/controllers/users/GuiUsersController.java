@@ -19,6 +19,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import mx.uv.fei.gui.AlertPopUpGenerator;
+import mx.uv.fei.gui.controllers.HeaderPaneController;
 import mx.uv.fei.logic.daos.AcademicBodyHeadDAO;
 import mx.uv.fei.logic.daos.DegreeBossDAO;
 import mx.uv.fei.logic.daos.DirectorDAO;
@@ -29,10 +30,12 @@ import mx.uv.fei.logic.domain.DegreeBoss;
 import mx.uv.fei.logic.domain.Director;
 import mx.uv.fei.logic.domain.Professor;
 import mx.uv.fei.logic.domain.Student;
+import mx.uv.fei.logic.domain.User;
 import mx.uv.fei.logic.domain.UserType;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
 
 public class GuiUsersController{
+    private User user;
 
     @FXML
     private Pane backgroundPane;
@@ -51,7 +54,6 @@ public class GuiUsersController{
 
     @FXML
     private void initialize(){
-        //loadHeader();
         loadUserButtons();
     }
     @FXML
@@ -103,7 +105,7 @@ public class GuiUsersController{
     }
 
     public void loadUserButtons(){
-        usersVBox.getChildren().removeAll(usersVBox.getChildren());
+        usersVBox.getChildren().clear();
         StudentDAO studentDAO = new StudentDAO();
         ProfessorDAO professorDAO = new ProfessorDAO();
         DirectorDAO directorDAO = new DirectorDAO();
@@ -134,7 +136,6 @@ public class GuiUsersController{
         try{
             VBox modifyUserInformationVBox = modifyUserInformationControllerLoader.load();
             ModifyUserInformationController modifyUserInformationController = modifyUserInformationControllerLoader.getController();
-            modifyUserInformationController.setUser(userInformationController.getUser());
             modifyUserInformationController.setNames(userInformationController.getNames());
             modifyUserInformationController.setFirstSurname(userInformationController.getFirstSurname());
             modifyUserInformationController.setSecondSurname(userInformationController.getSecondSurname());
@@ -143,6 +144,8 @@ public class GuiUsersController{
             modifyUserInformationController.setTelephoneNumber(userInformationController.getTelephoneNumber());
             modifyUserInformationController.setMatricleOrStaffNumber(userInformationController.getMatricleOrStaffNumber());
             modifyUserInformationController.setStatus(userInformationController.getStatus());
+            modifyUserInformationController.setUserToModify(userInformationController.getUser());
+            modifyUserInformationController.setUser(user);
             modifyUserInformationController.setDataToStatusCombobox(userInformationController.getUserType());
             modifyUserInformationController.setLabelsCorrectBounds(userInformationController.getUserType());
             modifyUserInformationController.setUserInformationController(userInformationController);
@@ -200,18 +203,30 @@ public class GuiUsersController{
             new AlertPopUpGenerator().showConnectionErrorMessage();
         }
     }
+    public User getUser(){
+        return user;
+    }
+    public void setUser(User user){
+        this.user = user;
+    }
+    public void loadHeader(){
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/HeaderPane.fxml"));
+        
+        try{
+            Pane header = loader.load();
+            HeaderPaneController headerPaneController = loader.getController();
 
-    //private void loadHeader(){
-    //    FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/HeaderPane.fxml"));
-    //    
-    //    try{
-    //        Pane header = loader.load();
-    //        header.getStyleClass().add("/mx/uv/fei/gui/stylesfiles/Styles.css");
-    //        backgroundPane.getChildren().add(header);
-    //    } catch(IOException exception){
-    //        new AlertPopUpGenerator().showMissingFilesMessage();
-    //    }
-    //}
+            if(user != null){
+                headerPaneController.setUser(user);
+            }
+
+            header.getStyleClass().add("/mx/uv/fei/gui/stylesfiles/Styles.css");
+            backgroundPane.getChildren().add(header);
+            
+        }catch(IOException exception){
+            new AlertPopUpGenerator().showMissingFilesMessage();
+        }
+    }
 
     private void studentButtonMaker(ArrayList<Student> students){
         try{

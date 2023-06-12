@@ -22,10 +22,6 @@ Text {
     -fx-background-color: #FFC872;
 }
 
-.choice-box {
-
-}
-
 .combo-box {
     -fx-background-color: #FFC872;
     -fx-text-fill: #000000;
@@ -86,8 +82,8 @@ Text {
     -fx-background-color : #7ACE67;
 }
 
- .scroll-bar .increment-arrow,
- .scroll-bar .decrement-arrow{
+.scroll-bar .increment-arrow,
+.scroll-bar .decrement-arrow{
     -fx-background-color : #5a9e4b;
 }
 
@@ -102,7 +98,7 @@ Text {
 }
 
 .text-area .content {
-    -fx-background-color: #62ca4a;
+    -fx-background-color: #000000;
     -fx-border-color: #62ca4a;
 }
 
@@ -126,8 +122,12 @@ Text {
     -fx-border-color:#5a9e4b;
 }
 
-#headerPane {
+#headerBackground {
     -fx-background-color: #217258;
+}
+
+#mainMenuSpecificPane {
+    -fx-border-color: #5a9e4b;
 }
 
 #researchButton {

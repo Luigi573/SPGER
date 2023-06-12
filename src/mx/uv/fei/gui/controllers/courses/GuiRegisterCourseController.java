@@ -5,9 +5,11 @@ import java.util.regex.Pattern;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
+import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import mx.uv.fei.gui.AlertPopUpGenerator;
 import mx.uv.fei.logic.daos.CourseDAO;
@@ -21,6 +23,8 @@ import mx.uv.fei.logic.exceptions.DataRetrievalException;
 import mx.uv.fei.logic.exceptions.DuplicatedPrimaryKeyException;
 
 public class GuiRegisterCourseController {
+    private GuiCoursesController guiCoursesController;
+
     @FXML
     private ComboBox<String> blockComboBox;
     @FXML
@@ -30,16 +34,18 @@ public class GuiRegisterCourseController {
     @FXML
     private ComboBox<Professor> professorComboBox;
     @FXML
+    private Button registerButton;
+    @FXML
     private ComboBox<ScholarPeriod> scholarPeriodComboBox;
     @FXML
     private ComboBox<String> sectionComboBox;
     
     @FXML
-    void initialize() {
+    private void initialize() {
         try{
             ProfessorDAO professorDAO = new ProfessorDAO();
-            this.professorComboBox.getItems().addAll(professorDAO.getProfessors());
-            this.professorComboBox.setConverter(new StringConverter<Professor>() {
+            professorComboBox.getItems().addAll(professorDAO.getProfessors());
+            professorComboBox.setConverter(new StringConverter<Professor>() {
 
                 @Override
                 public Professor fromString(String arg0) {
@@ -58,8 +64,8 @@ public class GuiRegisterCourseController {
             });
 
             ScholarPeriodDAO scholarPeriodDAO = new ScholarPeriodDAO();
-            this.scholarPeriodComboBox.getItems().addAll(scholarPeriodDAO.getScholarPeriods());
-            this.scholarPeriodComboBox.setConverter(new StringConverter<ScholarPeriod>() {
+            scholarPeriodComboBox.getItems().addAll(scholarPeriodDAO.getScholarPeriods());
+            scholarPeriodComboBox.setConverter(new StringConverter<ScholarPeriod>() {
 
                 @Override
                 public ScholarPeriod fromString(String arg0) {
@@ -77,41 +83,48 @@ public class GuiRegisterCourseController {
 
             });
 
-            this.educativeExperienceComboBox.getItems().add("Proyecto Guiado");
-            this.educativeExperienceComboBox.getItems().add("Experiencia Recepcional");
-            this.sectionComboBox.getItems().add("7");
-            this.sectionComboBox.getItems().add("8");
-            this.blockComboBox.getItems().add("1");
-            this.blockComboBox.getItems().add("2");
+            educativeExperienceComboBox.getItems().add("Proyecto Guiado");
+            educativeExperienceComboBox.getItems().add("Experiencia Recepcional");
+            sectionComboBox.getItems().add("1");
+            sectionComboBox.getItems().add("2");
+            sectionComboBox.getItems().add("3");
+            blockComboBox.getItems().add("7");
+            blockComboBox.getItems().add("8");
+            blockComboBox.getItems().add("9");
+            blockComboBox.getItems().add("10");
         }catch(DataRetrievalException exception){
             new AlertPopUpGenerator().showConnectionErrorMessage();
         }
     }
 
     @FXML
-    void registerButtonController(ActionEvent event) {
+    private void registerButtonController(ActionEvent event) {
         try{
             if(!nrcTextField.getText().isEmpty() &&
                blockComboBox.getValue() != null &&
                educativeExperienceComboBox.getValue() != null &&
-               //professorComboBox.getValue() != null &&
-               //scholarPeriodComboBox.getValue() != null &&
-               sectionComboBox.getValue() != null) {
+               sectionComboBox.getValue() != null &&
+               professorComboBox.getValue() != null &&
+               scholarPeriodComboBox.getValue() != null){
                 if(allTextFieldsContainsCorrectValues()){
                     CourseDAO courseDAO = new CourseDAO();
                     Course course = new Course();
-                    course.setName(this.educativeExperienceComboBox.getValue());
-                    course.setNrc(Integer.parseInt(this.nrcTextField.getText()));
-                    course.setSection(Integer.parseInt(this.sectionComboBox.getValue()));
-                    course.setBlock(Integer.parseInt(this.blockComboBox.getValue()));
+                    course.setName(educativeExperienceComboBox.getValue());
+                    course.setNrc(Integer.parseInt(nrcTextField.getText()));
+                    course.setSection(Integer.parseInt(sectionComboBox.getValue()));
+                    course.setBlock(Integer.parseInt(blockComboBox.getValue()));
                     course.setProfessor(professorComboBox.getValue());
                     course.setScholarPeriod(scholarPeriodComboBox.getValue());
                     courseDAO.addCourse(course);
                     new AlertPopUpGenerator().showCustomMessage(AlertType.INFORMATION, "Éxito", "Curso registrado exitosamente");
+
+                    guiCoursesController.loadCourseButtons();
+                    Stage stage = (Stage) registerButton.getScene().getWindow();
+                    stage.close();
                 }else{
                     new AlertPopUpGenerator().showCustomMessage(AlertType.ERROR, "Error", "Algunos campos contienen datos inválidos");
                 }
-            } else {
+            }else{
                 new AlertPopUpGenerator().showCustomMessage(AlertType.ERROR, "Error", "Faltan campos por llenar");
             }
         }catch(DataInsertionException exception){
@@ -121,12 +134,17 @@ public class GuiRegisterCourseController {
         }
     }
 
-    private boolean allTextFieldsContainsCorrectValues(){
-        Pattern nrcPattern = Pattern.compile("^[0-9]{5}$");
-        Matcher nrcMatcher = nrcPattern.matcher(this.nrcTextField.getText());
-
-        return nrcMatcher.find();
-        
+    public GuiCoursesController getGuiCoursesController() {
+        return guiCoursesController;
+    }
+    public void setGuiCoursesController(GuiCoursesController guiCoursesController) {
+        this.guiCoursesController = guiCoursesController;
     }
 
+    private boolean allTextFieldsContainsCorrectValues(){
+        Pattern nrcPattern = Pattern.compile("^[0-9]{5}$");
+        Matcher nrcMatcher = nrcPattern.matcher(nrcTextField.getText());
+
+        return nrcMatcher.find();
+    }
 }

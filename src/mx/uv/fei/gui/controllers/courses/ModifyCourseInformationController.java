@@ -15,7 +15,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DialogPane;
 import javafx.scene.control.TextField;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import mx.uv.fei.gui.AlertPopUpGenerator;
@@ -25,6 +24,7 @@ import mx.uv.fei.logic.daos.ScholarPeriodDAO;
 import mx.uv.fei.logic.domain.Course;
 import mx.uv.fei.logic.domain.Professor;
 import mx.uv.fei.logic.domain.ScholarPeriod;
+import mx.uv.fei.logic.domain.User;
 import mx.uv.fei.logic.exceptions.DataInsertionException;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
 import mx.uv.fei.logic.exceptions.DuplicatedPrimaryKeyException;
@@ -33,6 +33,7 @@ public class ModifyCourseInformationController{
     private CourseInformationController courseInformationController;
     private GuiCoursesController guiCoursesController;
     private Course course;
+    private User user;
 
     @FXML
     private ComboBox<String> blockComboBox;
@@ -40,8 +41,6 @@ public class ModifyCourseInformationController{
     private DialogPane dialogPane;
     @FXML
     private ComboBox<String> educativeExperienceComboBox;
-    @FXML
-    private Text errorMessageText;
     @FXML
     private Button exitButton;
     @FXML
@@ -54,6 +53,8 @@ public class ModifyCourseInformationController{
     private ComboBox<ScholarPeriod> scholarPeriodComboBox;
     @FXML
     private ComboBox<String> sectionComboBox;
+    @FXML
+    private ComboBox<String> statusComboBox;
 
     @FXML
     private void initialize(){
@@ -111,8 +112,11 @@ public class ModifyCourseInformationController{
         educativeExperienceComboBox.getItems().add("Experiencia Recepcional");
         sectionComboBox.getItems().add("1");
         sectionComboBox.getItems().add("2");
+        sectionComboBox.getItems().add("3");
         blockComboBox.getItems().add("7");
         blockComboBox.getItems().add("8");
+        blockComboBox.getItems().add("9");
+        blockComboBox.getItems().add("10");
     }
     @FXML
     private void exitButtonController(ActionEvent event){
@@ -122,20 +126,27 @@ public class ModifyCourseInformationController{
     private void modifyButtonController(ActionEvent event){
 
         try{
-            if(blockComboBox.getValue() != null &&
+            if(!nrcTextField.getText().isEmpty() &&
+               blockComboBox.getValue() != null &&
                educativeExperienceComboBox.getValue() != null &&
-               !nrcTextField.getText().trim().isEmpty() &&
+               sectionComboBox.getValue() != null &&
                professorComboBox.getValue() != null &&
-               scholarPeriodComboBox.getValue() != null &&
-               sectionComboBox.getValue() != null){
+               scholarPeriodComboBox.getValue() != null){
                 if(allTextFieldsContainsCorrectValues()){
                     CourseDAO courseDAO = new CourseDAO();
                     course.setName((String)educativeExperienceComboBox.getValue());
                     course.setNrc(Integer.parseInt(nrcTextField.getText()));
                     course.setSection(Integer.parseInt(sectionComboBox.getValue()));
                     course.setBlock(Integer.parseInt(blockComboBox.getValue()));
-                    course.setProfessor(professorComboBox.getValue());
-                    course.setScholarPeriod(scholarPeriodComboBox.getValue());
+
+                    if(professorComboBox.getValue() != null){
+                        course.setProfessor(professorComboBox.getValue());
+                    }
+
+                    if(scholarPeriodComboBox.getValue() != null){
+                        course.setScholarPeriod(scholarPeriodComboBox.getValue());
+                    }
+                    
                     courseDAO.modifyCourseData(course);
                     new AlertPopUpGenerator().showCustomMessage(AlertType.INFORMATION, "Éxito", "Curso modificado exitosamente");
                     returnToGuiCourses(event);
@@ -213,6 +224,15 @@ public class ModifyCourseInformationController{
     public void setScholarPeriodToDefaultSelect(ScholarPeriod scholarPeriod){
         scholarPeriodComboBox.setValue(scholarPeriod);
     }
+    public void setStatus(String status){
+        statusComboBox.setValue(status);
+    }
+    public User getUser() {
+        return user;
+    }
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     private boolean allTextFieldsContainsCorrectValues(){
         Pattern nrcPattern = Pattern.compile("^[0-9]{5}$");
@@ -223,18 +243,27 @@ public class ModifyCourseInformationController{
         return false;
     }
     private void returnToGuiCourses(ActionEvent event){
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/courses/GuiCourses.fxml"));
+        
         try{
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/courses/GuiCourses.fxml"));
+            
             Parent parent = loader.load();
-            Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+            GuiCoursesController controller = (GuiCoursesController)loader.getController();
+            controller.setUser(user);
+            controller.loadHeader();
+            
             Scene scene = new Scene(parent);
-            String css = getClass().getResource("/mx/uv/fei/gui/stylesfiles/Styles.css").toExternalForm();
+            String css = this.getClass().getResource("/mx/uv/fei/gui/stylesfiles/Styles.css").toExternalForm();
             scene.getStylesheets().add(css);
-            stage.setTitle("SPGER");
+            
+            Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
             stage.setScene(scene);
+            stage.setResizable(false);
             stage.show();
-        }catch(IllegalStateException | IOException exception){
-            new AlertPopUpGenerator().showMissingFilesMessage();
+            
+        }catch(IOException exception){
+            exception.printStackTrace();
+            new AlertPopUpGenerator().showConnectionErrorMessage();
         }
     }
 }

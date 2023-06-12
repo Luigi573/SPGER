@@ -9,7 +9,7 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="827.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.uv.fei.gui.controllers.DirectorChronogramPaneController">
    <children>
-      <Pane layoutX="264.0" layoutY="25.0" prefHeight="250.0" prefWidth="300.0" style="-fx-border-color: black;">
+      <Pane fx:id="mainMenuSpecificPane" layoutX="264.0" layoutY="25.0" prefHeight="250.0" prefWidth="300.0" style="-fx-border-color: black;">
          <children>
             <Label alignment="CENTER" layoutX="24.0" layoutY="14.0" prefHeight="30.0" prefWidth="252.0" text="Cronograma">
                <font>

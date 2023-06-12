@@ -25,7 +25,7 @@ public class HeaderPaneController{
     private Label usernameLabel;
     
     @FXML
-    private void goHome(MouseEvent event) {
+    private void goHome(MouseEvent event){
         if(user != null){
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/MainMenu.fxml"));

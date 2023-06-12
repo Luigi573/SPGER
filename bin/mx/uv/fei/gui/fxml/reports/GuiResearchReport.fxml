@@ -12,6 +12,7 @@
 
 <Pane fx:id="backgroundPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.uv.fei.gui.controllers.reports.GuiResearchReportController">
    <children>
+      <Button layoutX="13.0" layoutY="96.0" mnemonicParsing="false" onAction="#backButtonController" prefWidth="75.0" text="Atrás" />
       <ScrollPane layoutX="25.0" layoutY="184.0" prefHeight="364.0" prefWidth="470.0">
          <content>
             <VBox fx:id="researchesVBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="360.0" prefWidth="457.0" />

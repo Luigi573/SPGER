@@ -9,9 +9,9 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="827.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.uv.fei.gui.controllers.AdminMenuPaneController">
    <children>
-      <Pane layoutX="60.0" layoutY="25.0" prefHeight="250.0" prefWidth="300.0" style="-fx-border-color: black;">
+      <Pane fx:id="mainMenuSpecificPane" layoutX="60.0" layoutY="25.0" prefHeight="250.0" prefWidth="300.0" style="-fx-border-color: black;">
          <children>
-            <Label layoutX="44.0" layoutY="14.0" text="Administrar cursos">
+            <Label layoutX="22.0" layoutY="14.0" text="Administrar Cursos">
                <font>
                   <Font name="System Bold" size="24.0" />
                </font>
@@ -28,9 +28,9 @@
             </Button>
          </children>
       </Pane>
-      <Pane layoutX="470.0" layoutY="25.0" prefHeight="250.0" prefWidth="300.0" style="-fx-border-color: black;">
+      <Pane fx:id="mainMenuSpecificPane" layoutX="470.0" layoutY="25.0" prefHeight="250.0" prefWidth="300.0" style="-fx-border-color: black;">
          <children>
-            <Label layoutX="33.0" layoutY="14.0" text="Administrar usuarios">
+            <Label layoutX="8.0" layoutY="14.0" text="Administrar Usuarios">
                <font>
                   <Font name="System Bold" size="24.0" />
                </font>

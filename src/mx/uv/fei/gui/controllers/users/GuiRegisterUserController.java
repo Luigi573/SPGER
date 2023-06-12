@@ -36,8 +36,6 @@ public class GuiRegisterUserController{
     @FXML
     private TextField emailTextField;
     @FXML
-    private Text errorMessajeText;
-    @FXML
     private TextField firstSurnameTextField;
     @FXML
     private Text matricleOrStaffNumberText;
@@ -106,13 +104,13 @@ public class GuiRegisterUserController{
     @FXML
     private void typeComboBoxController(ActionEvent event){
         if(typeComboBox.getValue().equals(UserType.STUDENT.getValue())){
-            matricleOrStaffNumberText.setText("Matrícula: ");
-            matricleOrStaffNumberTextField.setPrefWidth(303);
-            matricleOrStaffNumberTextField.setLayoutX(479);
+            matricleOrStaffNumberText.setText("Matrícula: *");
+            matricleOrStaffNumberTextField.setPrefWidth(295);
+            matricleOrStaffNumberTextField.setLayoutX(487);
         } else {
-            matricleOrStaffNumberText.setText("Número de Personal: ");
-            matricleOrStaffNumberTextField.setPrefWidth(219);
-            matricleOrStaffNumberTextField.setLayoutX(563);        
+            matricleOrStaffNumberText.setText("Número de Personal: *");
+            matricleOrStaffNumberTextField.setPrefWidth(211);
+            matricleOrStaffNumberTextField.setLayoutX(571);        
         }
     }
 

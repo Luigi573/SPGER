@@ -17,18 +17,22 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import mx.uv.fei.gui.AlertPopUpGenerator;
 import mx.uv.fei.gui.controllers.courses.CourseInformationController;
+import mx.uv.fei.gui.controllers.courses.GuiCoursesController;
 import mx.uv.fei.logic.daos.StudentDAO;
 import mx.uv.fei.logic.daos.StudentsCoursesDAO;
 import mx.uv.fei.logic.domain.Student;
+import mx.uv.fei.logic.domain.User;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
 
 public class GuiUsersCourseController{
-
     private CourseInformationController courseInformationController;
     private int students = 0;
+    private User user;
 
     @FXML
     private Button addButton;
+    @FXML
+    private Button backButton;
     @FXML
     private Pane backgroundPane;
     @FXML
@@ -60,6 +64,31 @@ public class GuiUsersCourseController{
             stage.setTitle("Agregar Estudiante");
             stage.initModality(Modality.WINDOW_MODAL);
             stage.initOwner((Stage)((Node)event.getSource()).getScene().getWindow());
+            stage.setScene(scene);
+            stage.setResizable(false);
+            stage.show();
+        }catch(IOException e){
+            new AlertPopUpGenerator().showMissingFilesMessage();
+        }   
+    }
+    @FXML
+    private void backButtonController(ActionEvent event){
+        try{
+            FXMLLoader loader = new FXMLLoader(
+                getClass().getResource("/mx/uv/fei/gui/fxml/courses/GuiCourses.fxml")
+            );
+
+            Parent guiCourses = loader.load();
+
+            GuiCoursesController guiCoursesController = loader.getController();
+            guiCoursesController.setUser(user);
+            guiCoursesController.loadHeader();
+
+            Scene scene = new Scene(guiCourses);
+            String css = getClass().getResource("/mx/uv/fei/gui/stylesfiles/Styles.css").toExternalForm();
+            scene.getStylesheets().add(css);
+            Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+            stage.setTitle("Administrar Cursos");
             stage.setScene(scene);
             stage.setResizable(false);
             stage.show();
@@ -120,6 +149,12 @@ public class GuiUsersCourseController{
         }catch(DataRetrievalException e) {
             new AlertPopUpGenerator().showConnectionErrorMessage();
         }
+    }
+    public User getUser(){
+        return user;
+    }
+    public void setUser(User user){
+        this.user = user;
     }
 
     private void loadHeader(){

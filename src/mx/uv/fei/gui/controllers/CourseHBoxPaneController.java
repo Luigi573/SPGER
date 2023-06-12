@@ -66,11 +66,9 @@ public class CourseHBoxPaneController{
             startDateLabel.setText(course.getScholarPeriod().getStartDate().toString());
             endDateLabel.setText(course.getScholarPeriod().getEndDate().toString());
         }
-
-        if(course.getProfessor() != null){
-            Professor professor = course.getProfessor();
-            professorLabel.setText(professor.getName() + " " + professor.getFirstSurname() + " " + professor.getSecondSurname().charAt(0) + ".");
-        }
+        
+        Professor professor = course.getProfessor();
+        professorLabel.setText(professor.getName() + " " + professor.getFirstSurname() + " " + professor.getSecondSurname().charAt(0) + ".");
     }
     public void setUser(User user){
         this.user = user;

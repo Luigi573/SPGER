@@ -16,7 +16,6 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import mx.uv.fei.gui.AlertPopUpGenerator;
 import mx.uv.fei.logic.daos.AcademicBodyHeadDAO;
@@ -34,11 +33,13 @@ import mx.uv.fei.logic.domain.UserType;
 import mx.uv.fei.logic.domain.statuses.ProfessorStatus;
 import mx.uv.fei.logic.domain.statuses.StudentStatus;
 import mx.uv.fei.logic.exceptions.DataInsertionException;
+import mx.uv.fei.logic.exceptions.DataRetrievalException;
 import mx.uv.fei.logic.exceptions.DuplicatedPrimaryKeyException;
 
 public class ModifyUserInformationController{
     private UserInformationController userInformationController;
     private User user;
+    private User userToModify;
 
     @FXML
     private TextField alternateEmailTextField;
@@ -46,8 +47,6 @@ public class ModifyUserInformationController{
     private DialogPane dialogPane;
     @FXML
     private TextField emailTextField;
-    @FXML
-    private Text errorMessageText;
     @FXML
     private Button exitButton;
     @FXML
@@ -69,7 +68,7 @@ public class ModifyUserInformationController{
 
     @FXML
     private void exitButtonController(ActionEvent event){
-        returnToGuiUsers(event);
+        returnToGuiUsers(event, user);
     }
     @FXML
     private void modifyButtonController(ActionEvent event){
@@ -166,6 +165,12 @@ public class ModifyUserInformationController{
     public void setUser(User user) {
         this.user = user;
     }
+    public User getUserToModify() {
+        return userToModify;
+    }
+    public void setUserToModify(User userToModify) {
+        this.userToModify = userToModify;
+    }
     public void setDataToStatusCombobox(String userType){
         if(userType.equals(UserType.STUDENT.getValue())){
             statusComboBox.getItems().add(StudentStatus.ACTIVE.getValue());
@@ -179,19 +184,19 @@ public class ModifyUserInformationController{
     }
     public void setLabelsCorrectBounds(String userType){
         if(userType.equals(UserType.STUDENT.getValue())){
-            matricleOrStaffNumberText.setText("Matrícula: ");
-            matricleOrStaffNumberText.setPrefWidth(72);
+            matricleOrStaffNumberText.setText("Matrícula: *");
+            matricleOrStaffNumberText.setPrefWidth(79);
             matricleOrStaffNumberText.setLayoutX(0);
             matricleOrStaffNumberText.setLayoutY(0);
-            matricleOrStaffNumberTextField.setPrefWidth(350);
+            matricleOrStaffNumberTextField.setPrefWidth(351);
             matricleOrStaffNumberTextField.setLayoutX(1);
             matricleOrStaffNumberTextField.setLayoutY(7);
         }else{
-            matricleOrStaffNumberText.setText("Número de Personal: ");
-            matricleOrStaffNumberText.setPrefWidth(144);
+            matricleOrStaffNumberText.setText("Número de Personal: *");
+            matricleOrStaffNumberText.setPrefWidth(153);
             matricleOrStaffNumberText.setLayoutX(0);
             matricleOrStaffNumberText.setLayoutY(0);
-            matricleOrStaffNumberTextField.setPrefWidth(286);
+            matricleOrStaffNumberTextField.setPrefWidth(278);
             matricleOrStaffNumberTextField.setLayoutX(1);
             matricleOrStaffNumberTextField.setLayoutY(7);
         }
@@ -199,7 +204,7 @@ public class ModifyUserInformationController{
 
     private void modifyStudent(ActionEvent event){
         StudentDAO studentDAO = new StudentDAO();
-        Student student = (Student)user;
+        Student student = (Student)userToModify;
         student.setName(namesTextField.getText());
         student.setFirstSurname(firstSurnameTextField.getText());
         student.setSecondSurname(secondSurnameTextField.getText());
@@ -212,7 +217,7 @@ public class ModifyUserInformationController{
         try{
             studentDAO.modifyStudentData(student);
             new AlertPopUpGenerator().showCustomMessage(AlertType.INFORMATION, "Éxito", "Estudiante modificado exitosamente");
-            returnToGuiUsers(event);
+            returnToGuiUsers(event, user);
         }catch(DataInsertionException e){
             new AlertPopUpGenerator().showConnectionErrorMessage();
         }catch(DuplicatedPrimaryKeyException e) {
@@ -221,7 +226,7 @@ public class ModifyUserInformationController{
     }
     private void modifyProfessor(ActionEvent event){
         ProfessorDAO professorDAO = new ProfessorDAO();
-        Professor professor = (Professor)user;
+        Professor professor = (Professor)userToModify;
         professor.setName(namesTextField.getText());
         professor.setFirstSurname(firstSurnameTextField.getText());
         professor.setSecondSurname(secondSurnameTextField.getText());
@@ -234,17 +239,16 @@ public class ModifyUserInformationController{
         try{
             professorDAO.modifyProfessorData(professor);
             new AlertPopUpGenerator().showCustomMessage(AlertType.INFORMATION, "Éxito", "Profesor modificado exitosamente");
-            returnToGuiUsers(event);
+            returnToGuiUsers(event, user);
         }catch(DataInsertionException e){
             new AlertPopUpGenerator().showConnectionErrorMessage();
-        }
-        catch(DuplicatedPrimaryKeyException e) {
+        }catch(DuplicatedPrimaryKeyException e) {
             new AlertPopUpGenerator().showCustomMessage(AlertType.ERROR, "Error", "El número de personal ya está usado");
         }
     }
     private void modifyDirector(ActionEvent event){
         DirectorDAO directorDAO = new DirectorDAO();
-        Director director = (Director)user;
+        Director director = (Director)userToModify;
         director.setName(namesTextField.getText());
         director.setFirstSurname(firstSurnameTextField.getText());
         director.setSecondSurname(secondSurnameTextField.getText());
@@ -257,8 +261,8 @@ public class ModifyUserInformationController{
         try{
             directorDAO.modifyDirectorData(director);
             new AlertPopUpGenerator().showCustomMessage(AlertType.INFORMATION, "Éxito", "Director modificado exitosamente");
-            returnToGuiUsers(event);
-        }catch(DataInsertionException e) {
+            returnToGuiUsers(event, user);
+        }catch(DataInsertionException e){
             new AlertPopUpGenerator().showConnectionErrorMessage();
         }catch(DuplicatedPrimaryKeyException e) {
             new AlertPopUpGenerator().showCustomMessage(AlertType.ERROR, "Error", "El número de personal ya está usado");
@@ -266,7 +270,7 @@ public class ModifyUserInformationController{
     }
     private void modifyAcademicBodyHead(ActionEvent event){
         AcademicBodyHeadDAO academicBodyHeadDAO = new AcademicBodyHeadDAO();
-        AcademicBodyHead academicBodyHead = (AcademicBodyHead)user;
+        AcademicBodyHead academicBodyHead = (AcademicBodyHead)userToModify;
         academicBodyHead.setName(namesTextField.getText());
         academicBodyHead.setFirstSurname(firstSurnameTextField.getText());
         academicBodyHead.setSecondSurname(secondSurnameTextField.getText());
@@ -278,9 +282,8 @@ public class ModifyUserInformationController{
 
         try{
             academicBodyHeadDAO.modifyAcademicBodyHeadData(academicBodyHead);
-
             new AlertPopUpGenerator().showCustomMessage(AlertType.INFORMATION, "Éxito", "Miembro de Cuerpo Académico modificado exitosamente");
-            returnToGuiUsers(event);
+            returnToGuiUsers(event, user);
         }catch(DataInsertionException e){
             new AlertPopUpGenerator().showConnectionErrorMessage();
         }catch(DuplicatedPrimaryKeyException e) {
@@ -289,7 +292,7 @@ public class ModifyUserInformationController{
     }
     private void modifyDegreeBoss(ActionEvent event){
         DegreeBossDAO degreeBossDAO = new DegreeBossDAO();
-        DegreeBoss degreeBoss = (DegreeBoss)user;
+        DegreeBoss degreeBoss = (DegreeBoss)userToModify;
         degreeBoss.setName(namesTextField.getText());
         degreeBoss.setFirstSurname(firstSurnameTextField.getText());
         degreeBoss.setSecondSurname(secondSurnameTextField.getText());
@@ -301,10 +304,12 @@ public class ModifyUserInformationController{
 
         try{
             degreeBossDAO.modifyDegreeBossData(degreeBoss);
-
+            if(user.getUserId() == userToModify.getUserId()){
+                user = degreeBossDAO.getDegreeBoss(Integer.parseInt(getMatricleOrStaffNumber()));
+            }
             new AlertPopUpGenerator().showCustomMessage(AlertType.INFORMATION, "Éxito", "Jefe de Carrera modificado exitosamente");
-            returnToGuiUsers(event);
-        }catch(DataInsertionException e){
+            returnToGuiUsers(event, user);
+        }catch(DataInsertionException | DataRetrievalException e){
             new AlertPopUpGenerator().showConnectionErrorMessage();
         }catch(DuplicatedPrimaryKeyException e) {
             new AlertPopUpGenerator().showCustomMessage(AlertType.ERROR, "Error", "El número de personal ya está usado");
@@ -342,20 +347,28 @@ public class ModifyUserInformationController{
 
         return false;
     }
-    private void returnToGuiUsers(ActionEvent event){
+    private void returnToGuiUsers(ActionEvent event, User user){
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/users/GuiUsers.fxml"));
+        
         try{
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/users/GuiUsers.fxml"));
-            Parent parent = loader.load();
-            Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-            Scene scene = new Scene(parent);
-            String css = getClass().getResource("/mx/uv/fei/gui/stylesfiles/Styles.css").toExternalForm();
-            scene.getStylesheets().add(css);
-            stage.setTitle("SPGER");
-            stage.setScene(scene);
-            stage.show();
+            if(user != null){
+                Parent parent = loader.load();
+                GuiUsersController controller = (GuiUsersController)loader.getController();
+                controller.setUser(user);
+                controller.loadHeader();
+                
+                Scene scene = new Scene(parent);
+                String css = this.getClass().getResource("/mx/uv/fei/gui/stylesfiles/Styles.css").toExternalForm();
+                scene.getStylesheets().add(css);
+                
+                Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+                stage.setScene(scene);
+                stage.setResizable(false);
+
+                stage.show();
+            }
         }catch(IllegalStateException | IOException exception){
-            AlertPopUpGenerator alertPopUpGenerator = new AlertPopUpGenerator();
-            alertPopUpGenerator.showMissingFilesMessage();
+            new AlertPopUpGenerator().showConnectionErrorMessage();
         }
     }
 }

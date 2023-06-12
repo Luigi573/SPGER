@@ -1,7 +1,6 @@
 package mx.uv.fei.gui.controllers;
 
 import java.io.IOException;
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -37,6 +36,7 @@ public class LoginController{
     private void logIn(ActionEvent event){        
         if(!idTextField.getText().isBlank() && !passwordField.getText().isBlank()){
             LoginDAO loginDAO = new LoginDAO(); 
+
             try{
                 //Matricle and StaffNumber have their type default values if user is not found (null or '0')
                 Student student = loginDAO.logInStudent(idTextField.getText(), passwordField.getText());

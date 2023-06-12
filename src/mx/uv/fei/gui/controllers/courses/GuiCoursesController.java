@@ -17,15 +17,19 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import mx.uv.fei.gui.AlertPopUpGenerator;
+import mx.uv.fei.gui.controllers.HeaderPaneController;
 import mx.uv.fei.logic.daos.CourseDAO;
 import mx.uv.fei.logic.daos.ProfessorDAO;
 import mx.uv.fei.logic.daos.ScholarPeriodDAO;
 import mx.uv.fei.logic.domain.Course;
 import mx.uv.fei.logic.domain.Professor;
 import mx.uv.fei.logic.domain.ScholarPeriod;
+import mx.uv.fei.logic.domain.User;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
 
 public class GuiCoursesController{
+    private User user;
+
     @FXML
     private ScrollPane courseInformationScrollPane;
     @FXML
@@ -41,16 +45,7 @@ public class GuiCoursesController{
 
     @FXML
     private void initialize(){
-        loadHeader();
-        CourseDAO courseDAO = new CourseDAO();
-        ArrayList<Course> courses;
-        
-        try{
-            courses = courseDAO.getCourses();
-            courseButtonMaker(courses);
-        }catch(DataRetrievalException e){
-            new AlertPopUpGenerator().showConnectionErrorMessage();
-        }
+        loadCourseButtons();
     }
     @FXML
     private void registerCourseButtonController(ActionEvent event){
@@ -60,6 +55,8 @@ public class GuiCoursesController{
                 getClass().getResource("/mx/uv/fei/gui/fxml/courses/GuiRegisterCourse.fxml")
             );
             guiRegisterCourse = loader.load();
+            GuiRegisterCourseController guiRegisterCourseController = loader.getController();
+            guiRegisterCourseController.setGuiCoursesController(this);
             Scene scene = new Scene(guiRegisterCourse);
             String css = getClass().getResource("/mx/uv/fei/gui/stylesfiles/Styles.css").toExternalForm();
             scene.getStylesheets().add(css);
@@ -71,7 +68,6 @@ public class GuiCoursesController{
             stage.setResizable(false);
             stage.show();
         }catch(IOException e){
-            e.printStackTrace();
             new AlertPopUpGenerator().showMissingFilesMessage();
         }   
     }
@@ -103,6 +99,7 @@ public class GuiCoursesController{
             modifyCourseInformationController.setNrc(Integer.toString(course.getNrc()));
             modifyCourseInformationController.setSection(Integer.toString(course.getSection()));
             modifyCourseInformationController.setBlock(Integer.toString(course.getBlock()));
+            modifyCourseInformationController.setStatus(course.getStatus());
             if(course.getProfessor() != null){
                 ProfessorDAO professorDAO = new ProfessorDAO();
                 Professor professor = professorDAO.getProfessor(course.getProfessor().getStaffNumber());
@@ -114,7 +111,8 @@ public class GuiCoursesController{
                 ScholarPeriod scholarPeriod = scholarPeriodDAO.getScholarPeriod(course.getScholarPeriod().getScholarPeriodId());
                 modifyCourseInformationController.setScholarPeriod(scholarPeriod);
             }
-
+            
+            modifyCourseInformationController.setUser(user);
             modifyCourseInformationController.setCourse(course);
             modifyCourseInformationController.setGuiCoursesController(this);
             modifyCourseInformationController.setCourseInformationController(courseInformationController);
@@ -139,6 +137,7 @@ public class GuiCoursesController{
             courseInformationController.setNrc(Integer.toString(course.getNrc()));
             courseInformationController.setSection(Integer.toString(course.getSection()));
             courseInformationController.setBlock(Integer.toString(course.getBlock()));
+            courseInformationController.setStatus(course.getStatus());
             if(course.getProfessor() != null){
                 ProfessorDAO professorDAO = new ProfessorDAO();
                 Professor professor = professorDAO.getProfessor(course.getProfessor().getStaffNumber());
@@ -162,6 +161,40 @@ public class GuiCoursesController{
             new AlertPopUpGenerator().showMissingFilesMessage();
         }catch(DataRetrievalException e){
             new AlertPopUpGenerator().showConnectionErrorMessage();
+        }
+    }
+    public void loadCourseButtons(){
+        coursesVBox.getChildren().clear();
+        CourseDAO courseDAO = new CourseDAO();
+        try{
+            ArrayList<Course> courses = courseDAO.getCourses();
+            courseButtonMaker(courses);
+        }catch(DataRetrievalException e){
+            new AlertPopUpGenerator().showConnectionErrorMessage();
+        }
+    }
+    public User getUser() {
+        return user;
+    }
+    public void setUser(User user) {
+        this.user = user;
+    }
+    public void loadHeader(){
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/HeaderPane.fxml"));
+        
+        try{
+            Pane header = loader.load();
+            HeaderPaneController headerPaneController = loader.getController();
+
+            if(user != null){
+                headerPaneController.setUser(user);
+            }
+
+            header.getStyleClass().add("/mx/uv/fei/gui/stylesfiles/Styles.css");
+            backgroundPane.getChildren().add(header);
+            
+        }catch(IOException exception){
+            new AlertPopUpGenerator().showMissingFilesMessage();
         }
     }
 
@@ -192,17 +225,5 @@ public class GuiCoursesController{
         }catch(DataRetrievalException e){
             new AlertPopUpGenerator().showConnectionErrorMessage();
         }    
-    }
-    private void loadHeader(){
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/HeaderPane.fxml"));
-        
-        try{
-            Pane header = loader.load();
-            header.getStyleClass().add("/mx/uv/fei/gui/stylesfiles/Styles.css");
-            backgroundPane.getChildren().add(header);
-            
-        }catch(IOException exception){
-            new AlertPopUpGenerator().showMissingFilesMessage();
-        }
     }
 }

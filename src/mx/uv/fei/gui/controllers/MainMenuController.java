@@ -3,11 +3,16 @@ package mx.uv.fei.gui.controllers;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import mx.uv.fei.gui.AlertPopUpGenerator;
 import mx.uv.fei.logic.daos.CourseDAO;
 import mx.uv.fei.logic.daos.StudentsCoursesDAO;
@@ -35,12 +40,43 @@ public class MainMenuController{
     private void initialize() {
         courseList = new ArrayList<>();
     }
+    @FXML
+    private void exitButtonController(ActionEvent event){
+        try{
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/Login.fxml"));
+            Parent parent = loader.load();            
+            Scene scene = new Scene(parent);
+            Stage stage = new Stage();
+            stage.setTitle("SPGER");
+            stage.setScene(scene);
+            stage.setResizable(false);
+            stage.show();
+            Stage oldStage = (Stage)((Node)event.getSource()).getScene().getWindow();
+            oldStage.close();
+        }catch(IOException exception){            
+            new AlertPopUpGenerator().showMissingFilesMessage();
+        }
+    }
     
     public void setUser(User user){
         this.user = user;
         
         loadCourses();
         loadSpecialPanes();
+    }
+    public void loadHeader(){
+        headerPane.getChildren().clear();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/HeaderPane.fxml"));
+        
+        try{
+            Pane header = loader.load();
+            HeaderPaneController controller = (HeaderPaneController)loader.getController();
+            controller.setUser(user);
+            
+            headerPane.getChildren().setAll(header);
+        }catch(IOException exception){
+            new AlertPopUpGenerator().showMissingFilesMessage();
+        }
     }
         
     private void loadCourses(){
@@ -72,10 +108,9 @@ public class MainMenuController{
             try{
                 CourseDAO courseDAO = new CourseDAO();
                 courseList = courseDAO.getCourses();
-
+                
                 for(Course course: courseList){
-                    System.out.println(course.getProfessor());
-                    if(Professor.class.isAssignableFrom(user.getClass())){
+                    if(Professor.class.isAssignableFrom(user.getClass()) && course.getProfessor().equals(user)){
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/CourseHBoxPane.fxml"));
 
                         try{
@@ -96,7 +131,7 @@ public class MainMenuController{
         }
         
         for(Course course: courseList){
-            if(Professor.class.isAssignableFrom(user.getClass())){
+            if(Professor.class.isAssignableFrom(user.getClass()) && course.getProfessor().equals(user)){
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/CourseHBoxPane.fxml"));
 
                 try{
@@ -111,23 +146,7 @@ public class MainMenuController{
                 }
             }
         }
-    }
-    
-    public void loadHeader(){
-        headerPane.getChildren().clear();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/HeaderPane.fxml"));
-        
-        try{
-            Pane header = loader.load();
-            HeaderPaneController controller = (HeaderPaneController)loader.getController();
-            controller.setUser(user);
-            
-            headerPane.getChildren().setAll(header);
-        }catch(IOException exception){
-            new AlertPopUpGenerator().showMissingFilesMessage();
-        }
-    }
-    
+    }    
     private void loadSpecialPanes(){
         if(DegreeBoss.class.isAssignableFrom(user.getClass())){
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/AdminMenuPane.fxml"));

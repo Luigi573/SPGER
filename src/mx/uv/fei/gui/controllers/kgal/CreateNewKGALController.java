@@ -29,7 +29,6 @@ public class CreateNewKGALController {
         newKgal.setDescription(newKGALDescription);
         try {
             result = kgalDAO.addKGAL(newKgal);
-            System.out.println(result);
         } catch (DataInsertionException exception) {
             new AlertPopUpGenerator().showConnectionErrorMessage();
         }

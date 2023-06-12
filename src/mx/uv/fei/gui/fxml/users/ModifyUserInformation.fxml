@@ -34,10 +34,10 @@
       <HBox prefHeight="42.0" prefWidth="369.0">
          <children>
             <Label prefHeight="26.0" prefWidth="11.0" />
-            <Label prefHeight="43.0" prefWidth="79.0" text="Nombre(s):" />
-            <AnchorPane prefHeight="200.0" prefWidth="200.0">
+            <Label prefHeight="40.0" prefWidth="90.0" text="Nombre(s): *" />
+            <AnchorPane prefHeight="40.0" prefWidth="344.0">
                <children>
-                  <TextField fx:id="namesTextField" layoutY="8.0" prefHeight="25.0" prefWidth="352.0" />
+                  <TextField fx:id="namesTextField" layoutY="8.0" prefHeight="25.0" prefWidth="340.0" />
                </children>
             </AnchorPane>
          </children>
@@ -45,10 +45,10 @@
       <HBox prefHeight="42.0" prefWidth="369.0">
          <children>
             <Label prefHeight="25.0" prefWidth="11.0" />
-            <Label prefHeight="43.0" prefWidth="119.0" text="Apellido Paterno:" />
-            <AnchorPane prefHeight="200.0" prefWidth="200.0">
+            <Label prefHeight="40.0" prefWidth="129.0" text="Apellido Paterno: *" />
+            <AnchorPane prefHeight="40.0" prefWidth="293.0">
                <children>
-                  <TextField fx:id="firstSurnameTextField" layoutY="8.0" prefHeight="25.0" prefWidth="312.0" />
+                  <TextField fx:id="firstSurnameTextField" layoutY="8.0" prefHeight="25.0" prefWidth="300.0" />
                </children>
             </AnchorPane>
          </children>
@@ -56,10 +56,10 @@
       <HBox prefHeight="42.0" prefWidth="369.0">
          <children>
             <Label prefHeight="25.0" prefWidth="11.0" />
-            <Label prefHeight="43.0" prefWidth="120.0" text="Apellido Materno:" />
+            <Label prefHeight="40.0" prefWidth="130.0" text="Apellido Materno: *" />
             <AnchorPane prefHeight="200.0" prefWidth="200.0">
                <children>
-                  <TextField fx:id="secondSurnameTextField" layoutY="8.0" prefHeight="25.0" prefWidth="310.0" />
+                  <TextField fx:id="secondSurnameTextField" layoutY="8.0" prefHeight="25.0" prefWidth="300.0" />
                </children>
             </AnchorPane>
          </children>
@@ -67,10 +67,10 @@
       <HBox prefHeight="42.0" prefWidth="369.0">
          <children>
             <Label prefHeight="25.0" prefWidth="10.0" />
-            <Label prefHeight="43.0" prefWidth="131.0" text="Correo Electronico:" />
+            <Label prefHeight="40.0" prefWidth="141.0" text="Correo Electronico: *" />
             <AnchorPane prefHeight="200.0" prefWidth="200.0">
                <children>
-                  <TextField fx:id="emailTextField" layoutY="8.0" prefHeight="25.0" prefWidth="300.0" />
+                  <TextField fx:id="emailTextField" layoutY="8.0" prefHeight="25.0" prefWidth="290.0" />
                </children>
             </AnchorPane>
          </children>
@@ -78,10 +78,10 @@
       <HBox prefHeight="42.0" prefWidth="261.0">
          <children>
             <Label prefHeight="25.0" prefWidth="10.0" />
-            <Label prefHeight="43.0" prefWidth="107.0" text="Correo Alterno:" />
+            <Label prefHeight="40.0" prefWidth="116.0" text="Correo Alterno: *" />
             <AnchorPane prefHeight="200.0" prefWidth="200.0">
                <children>
-                  <TextField fx:id="alternateEmailTextField" layoutY="8.0" prefHeight="25.0" prefWidth="324.0" />
+                  <TextField fx:id="alternateEmailTextField" layoutY="8.0" prefHeight="25.0" prefWidth="315.0" />
                </children>
             </AnchorPane>
          </children>
@@ -89,10 +89,10 @@
       <HBox prefHeight="42.0" prefWidth="369.0">
          <children>
             <Label prefHeight="25.0" prefWidth="10.0" />
-            <Label prefHeight="43.0" prefWidth="145.0" text="Numero de Telefono:" />
+            <Label prefHeight="40.0" prefWidth="153.0" text="Numero de Telefono: *" />
             <AnchorPane prefHeight="200.0" prefWidth="200.0">
                <children>
-                  <TextField fx:id="telephoneNumberTextField" layoutY="8.0" prefHeight="25.0" prefWidth="286.0" />
+                  <TextField fx:id="telephoneNumberTextField" layoutY="8.0" prefHeight="25.0" prefWidth="278.0" />
                </children>
             </AnchorPane>
          </children>
@@ -100,10 +100,10 @@
       <HBox prefHeight="40.0" prefWidth="353.0">
          <children>
             <Label prefHeight="25.0" prefWidth="10.0" />
-            <Label fx:id="matricleOrStaffNumberText" prefHeight="39.0" prefWidth="144.0" text="Numero de Personal:" />
+            <Label fx:id="matricleOrStaffNumberText" prefHeight="39.0" prefWidth="153.0" text="Numero de Personal: *" />
             <AnchorPane layoutX="21.0" prefHeight="39.0" prefWidth="188.0">
                <children>
-                  <TextField fx:id="matricleOrStaffNumberTextField" layoutY="7.0" prefHeight="25.0" prefWidth="286.0" />
+                  <TextField fx:id="matricleOrStaffNumberTextField" layoutY="7.0" prefHeight="25.0" prefWidth="278.0" />
                </children>
             </AnchorPane>
          </children>
@@ -111,17 +111,17 @@
       <HBox prefHeight="42.0" prefWidth="369.0">
          <children>
             <Label prefHeight="25.0" prefWidth="10.0" />
-            <Label prefHeight="43.0" prefWidth="55.0" text="Estatus:" />
+            <Label prefHeight="41.0" prefWidth="70.0" text="Estatus: *" />
             <AnchorPane prefHeight="200.0" prefWidth="200.0">
                <children>
-                  <ComboBox fx:id="statusComboBox" layoutY="8.0" prefHeight="25.0" prefWidth="376.0" />
+                  <ComboBox fx:id="statusComboBox" layoutY="8.0" prefHeight="25.0" prefWidth="361.0" />
                </children>
             </AnchorPane>
          </children>
       </HBox>
       <Pane prefHeight="23.0" prefWidth="369.0">
          <children>
-            <Text fx:id="errorMessageText" fill="RED" layoutX="62.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Error" visible="false" wrappingWidth="245.0" />
+            <Text layoutX="150.0" layoutY="12.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*: Campos Obligatorios" />
          </children>
       </Pane>
    </children>

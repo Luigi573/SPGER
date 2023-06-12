@@ -22,7 +22,7 @@ public class CourseController{
 
     @FXML
     private void userButtonController(ActionEvent event){
-        this.guiCoursesController.openPaneWithCourseInformation(getNrc());
+        guiCoursesController.openPaneWithCourseInformation(getNrc());
     }
 
     public GuiCoursesController getGuiCoursesController(){

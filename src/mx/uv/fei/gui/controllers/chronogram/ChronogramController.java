@@ -170,6 +170,7 @@ public class ChronogramController{
 
             for(Activity activity : activityList){
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/activities/ChronogramActivityPane.fxml"));
+
                 try{
                     Pane activityPane = loader.load();
                     ActivityPaneController controller = (ActivityPaneController)loader.getController();

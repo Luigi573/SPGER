@@ -7,24 +7,24 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="414.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.uv.fei.gui.controllers.CourseHBoxPaneController">
    <children>
-      <Pane layoutX="57.0" layoutY="15.0" prefHeight="270.0" prefWidth="300.0" style="-fx-border-color: black;">
+      <Pane fx:id="mainMenuSpecificPane" layoutX="57.0" layoutY="15.0" prefHeight="270.0" prefWidth="300.0" style="-fx-border-color: black;">
          <children>
-            <Label fx:id="courseLabel" alignment="CENTER" layoutX="6.0" layoutY="14.0" prefHeight="45.0" prefWidth="292.0" text="[Nombre curso]">
+            <Label fx:id="courseLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="6.0" layoutY="2.0" prefHeight="79.0" prefWidth="292.0" text="[Nombre curso]" wrapText="true">
                <font>
                   <Font name="System Bold" size="24.0" />
                </font>
             </Label>
-            <Label layoutX="46.0" layoutY="71.0" text="NRC: ">
+            <Label layoutX="46.0" layoutY="81.0" text="NRC: ">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
-            <Label fx:id="NRCLabel" alignment="CENTER" layoutX="91.0" layoutY="71.0" prefHeight="27.0" prefWidth="195.0" text="[NRC]">
+            <Label fx:id="NRCLabel" alignment="CENTER" layoutX="91.0" layoutY="78.0" prefHeight="27.0" prefWidth="195.0" text="[NRC]">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
-            <Label layoutX="3.0" layoutY="109.0" text="Fecha Inicio:">
+            <Label layoutX="3.0" layoutY="110.0" text="Fecha Inicio:">
                <font>
                   <Font size="16.0" />
                </font>
@@ -34,7 +34,7 @@
                   <Font size="18.0" />
                </font>
             </Label>
-            <Label layoutX="33.0" layoutY="146.0" text="End Fin:">
+            <Label layoutX="33.0" layoutY="148.0" text="End Fin:">
                <font>
                   <Font size="16.0" />
                </font>
@@ -44,17 +44,17 @@
                   <Font size="18.0" />
                </font>
             </Label>
-            <Label layoutX="27.0" layoutY="183.0" text="Profesor: ">
+            <Label layoutX="27.0" layoutY="193.0" text="Profesor: ">
                <font>
                   <Font size="16.0" />
                </font>
             </Label>
-            <Label fx:id="professorLabel" alignment="CENTER" layoutX="94.0" layoutY="182.0" prefHeight="27.0" prefWidth="195.0" text="[Nombre AP. AM.]">
+            <Label fx:id="professorLabel" alignment="CENTER" layoutX="94.0" layoutY="191.0" prefHeight="27.0" prefWidth="195.0" text="[Nombre AP. AM.]" wrapText="true">
                <font>
                   <Font size="14.0" />
                </font>
             </Label>
-            <Button layoutX="106.0" layoutY="217.0" mnemonicParsing="false" onAction="#goToChronogram" text="Acceder">
+            <Button layoutX="106.0" layoutY="230.0" mnemonicParsing="false" onAction="#goToChronogram" text="Acceder">
                <font>
                   <Font size="18.0" />
                </font>

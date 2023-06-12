@@ -2,11 +2,22 @@ package mx.uv.fei.dataaccess;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.Base64;
 import java.util.Properties;
 import java.util.logging.Logger;
+
+import javax.crypto.Cipher;
+import javax.crypto.spec.SecretKeySpec;
+
+
+import com.gluonhq.impl.charm.a.b.b.e;
 import java.util.logging.Level;
 
 public class DataBaseManager {
@@ -19,18 +30,10 @@ public class DataBaseManager {
             dataBaseUserPropertiesFile = new Properties();
             dataBaseUserPropertiesFile.load(fis);
         } catch (IOException e) {
-            e.printStackTrace();
+            Logger.getLogger(DataBaseManager.class.getName()).log(Level.SEVERE, null, e);
         }
     }
     
-    private void connect() throws SQLException{
-        connection = DriverManager.getConnection(
-            this.dataBaseUserPropertiesFile.getProperty("DATABASE_NAME"),
-            this.dataBaseUserPropertiesFile.getProperty("DATABASE_USER"),
-            this.dataBaseUserPropertiesFile.getProperty("DATABASE_PASSWORD")
-        );
-    }
-
     public Connection getConnection() throws SQLException {
         this.connect();
         return connection;
@@ -46,5 +49,13 @@ public class DataBaseManager {
                 Logger.getLogger(DataBaseManager.class.getName()).log(Level.SEVERE, null, exception);
             }
         }
+    }
+
+    private void connect() throws SQLException{
+        connection = DriverManager.getConnection(
+            dataBaseUserPropertiesFile.getProperty("DATABASE_NAME"),
+            dataBaseUserPropertiesFile.getProperty("DATABASE_USER"),
+            dataBaseUserPropertiesFile.getProperty("DATABASE_PASSWORD")
+        );
     }
 }

@@ -17,6 +17,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -27,10 +29,13 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.DirectoryChooser;
+import javafx.stage.Stage;
 import mx.uv.fei.gui.AlertPopUpGenerator;
 import mx.uv.fei.gui.controllers.HeaderPaneController;
+import mx.uv.fei.gui.controllers.research.ResearchManagerController;
 import mx.uv.fei.logic.daos.ResearchReportDAO;
 import mx.uv.fei.logic.domain.ResearchProject;
+import mx.uv.fei.logic.domain.User;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
@@ -43,7 +48,8 @@ import net.sf.jasperreports.view.JasperViewer;
 
 public class GuiResearchReportController {
     private final DirectoryChooser directoryChooser = new DirectoryChooser();
-    
+    private User user;
+
     @FXML
     private Pane backgroundPane;
     @FXML
@@ -77,8 +83,6 @@ public class GuiResearchReportController {
 
     @FXML
     private void initialize(){
-        //loadHeader();
-
         researchesVBox.getChildren().clear();
         ResearchReportDAO researchesReportDAO = new ResearchReportDAO();
         ArrayList<ResearchProject> researches = new ArrayList<>();
@@ -100,6 +104,30 @@ public class GuiResearchReportController {
                 researchesVBox.getChildren().add(researchItemHBox);
             }
         }catch(IOException e) {
+            new AlertPopUpGenerator().showMissingFilesMessage();
+        }
+    }
+    @FXML
+    private void backButtonController(ActionEvent event) {
+        try{
+            FXMLLoader loader = new FXMLLoader(
+                getClass().getResource("/mx/uv/fei/gui/fxml/research/ResearchManager.fxml")
+            );
+            Parent researchManager = loader.load();
+
+            ResearchManagerController researchManagerController = loader.getController();
+            researchManagerController.setUser(user);
+            researchManagerController.loadHeader();
+
+            Scene scene = new Scene(researchManager);
+            String css = getClass().getResource("/mx/uv/fei/gui/stylesfiles/Styles.css").toExternalForm();
+            scene.getStylesheets().add(css);
+            Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+            stage.setTitle("Administrar Cursos");
+            stage.setScene(scene);
+            stage.setResizable(false);
+            stage.show();
+        }catch(IOException e){
             new AlertPopUpGenerator().showMissingFilesMessage();
         }
     }
@@ -280,20 +308,25 @@ public class GuiResearchReportController {
     public VBox getSelectedResearchesVBox(){
         return selectedResearchesVBox;
     }
-
-    //private void loadHeader(){
-    //    FXMLLoader headerLoader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/HeaderPane.fxml"));
-    //    
-    //    try{
-    //        Pane header = headerLoader.load();
-    //        header.getStyleClass().add("/mx/uv/fei/gui/stylesfiles/Styles.css");
-    //        backgroundPane.getChildren().add(header);
-    //        HeaderPaneController headerPaneController = headerLoader.getController();
-    //        headerPaneController.setTitle("Generar Reporte de Anteproshectos");
-    //        headerPaneController.setVisibleNRCLabel(false);
-    //        
-    //    }catch(IOException exception){
-    //        new AlertPopUpGenerator().showMissingFilesMessage();
-    //    }
-    //}
+    public User getUser() {
+        return user;
+    }
+    public void setUser(User user) {
+        this.user = user;
+    }
+    public void loadHeader(){
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/HeaderPane.fxml"));
+        
+        try{
+            Pane header = loader.load();
+            
+            if(user != null){
+                HeaderPaneController controller = (HeaderPaneController)loader.getController();
+                controller.setUser(user);
+            }
+            backgroundPane.getChildren().add(header);
+        }catch(IOException exception){
+            new AlertPopUpGenerator().showMissingFilesMessage();
+        }
+    }
 }

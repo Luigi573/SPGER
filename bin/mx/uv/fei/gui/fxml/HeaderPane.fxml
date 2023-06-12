@@ -1,29 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane prefHeight="80.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.uv.fei.gui.controllers.HeaderPaneController">
+<Pane fx:id="headerBackground" prefHeight="80.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.uv.fei.gui.controllers.HeaderPaneController">
    <children>
-      <Label fx:id="titleLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="288.0" layoutY="4.0" prefHeight="39.0" prefWidth="448.0">
+      <Label fx:id="titleLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="288.0" layoutY="4.0" prefHeight="39.0" prefWidth="448.0" textAlignment="CENTER">
          <font>
-            <Font name="Comic Sans MS Bold" size="28.0" />
+            <Font size="23.0" />
          </font>
       </Label>
-      <Label layoutX="86.0" layoutY="4.0" text="SPGER">
+      <Label layoutX="87.0" layoutY="12.0" text="SPGER">
          <font>
             <Font size="50.0" />
          </font>
       </Label>
-      <Label fx:id="NRCLabel" alignment="CENTER" layoutX="456.0" layoutY="40.0" prefHeight="32.0" prefWidth="114.0">
+      <Label fx:id="NRCLabel" alignment="CENTER" layoutX="404.0" layoutY="40.0" prefHeight="32.0" prefWidth="211.0" textAlignment="CENTER">
          <font>
             <Font size="22.0" />
          </font>
       </Label>
-      <Label fx:id="usernameLabel" alignment="CENTER_RIGHT" layoutX="746.0" layoutY="28.0" prefHeight="25.0" prefWidth="264.0" text="[Nombre de usuario]">
+      <Label fx:id="usernameLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="746.0" layoutY="6.0" prefHeight="70.0" prefWidth="271.0" text="[Nombre de usuario]" textAlignment="CENTER" wrapText="true">
          <font>
             <Font size="16.0" />
          </font>
@@ -32,6 +33,9 @@
          <image>
             <Image url="@../../../../../dependencies/images/spgerLogo.jpeg" />
          </image>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
       </ImageView>
    </children>
 </Pane>

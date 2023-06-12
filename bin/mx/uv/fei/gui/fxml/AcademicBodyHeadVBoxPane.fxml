@@ -9,11 +9,11 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="827.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.uv.fei.gui.controllers.AcademicBodyHeadVBoxPaneController">
    <children>
-      <Pane layoutX="264.0" layoutY="25.0" prefHeight="250.0" prefWidth="300.0" style="-fx-border-color: black;">
+      <Pane fx:id="mainMenuSpecificPane" layoutX="264.0" layoutY="25.0" prefHeight="250.0" prefWidth="300.0" style="-fx-border-color: black;">
          <children>
-            <Label layoutX="24.0" layoutY="14.0" text="Administrar anteproyectos">
+            <Label layoutX="6.0" layoutY="14.0" text="Administrar Anteproyectos">
                <font>
-                  <Font name="System Bold" size="20.0" />
+                  <Font name="System Bold" size="19.0" />
                </font>
             </Label>
             <ImageView fitHeight="140.0" fitWidth="140.0" layoutX="80.0" layoutY="55.0" pickOnBounds="true" preserveRatio="true">
