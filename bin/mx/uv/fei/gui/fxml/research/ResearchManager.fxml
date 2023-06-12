@@ -19,7 +19,7 @@
       </ScrollPane>
       <ScrollPane fx:id="researchInfoScrollPane" hbarPolicy="NEVER" layoutX="524.0" layoutY="164.0" prefHeight="410.0" prefWidth="470.0">
          <content>
-            <Label alignment="CENTER" prefHeight="408.0" prefWidth="469.0" text="Haz click en un anteproshecto para ver su informacion" textAlignment="CENTER" wrapText="true">
+            <Label alignment="CENTER" prefHeight="408.0" prefWidth="469.0" text="Haz click en un anteproyecto para ver su informacion" textAlignment="CENTER" wrapText="true">
                <font>
                   <Font size="26.0" />
                </font>
@@ -34,9 +34,9 @@
             <Font size="11.0" />
          </font>
       </ToggleButton>
-      <Button fx:id="addResearchButton" layoutX="790.0" layoutY="100.0" mnemonicParsing="false" onAction="#addResearch" prefHeight="24.0" prefWidth="183.0" text="Registrar Anteproshecto" />
+      <Button fx:id="addResearchButton" layoutX="790.0" layoutY="100.0" mnemonicParsing="false" onAction="#addResearch" prefHeight="24.0" prefWidth="183.0" text="Registrar Anteproyecto" />
       <Button fx:id="reportButton" layoutX="823.0" layoutY="131.0" mnemonicParsing="false" onAction="#goToReports" prefHeight="17.0" prefWidth="117.0" text="Crear Reporte" />
-      <Label layoutX="86.0" layoutY="139.0" text="(Deje en blanco para mostrar to2 los Anteproshectos)" />
+      <Label layoutX="138.0" layoutY="136.0" text="(Deje en blanco para mostrar todos los Anteproyectos)" />
       <Label layoutX="568.0" layoutY="136.0" text="Mostrar Validados:" />
       <ToggleButton fx:id="showValidatedButton" layoutX="708.0" layoutY="132.0" mnemonicParsing="false" onAction="#showValidatedButtonController" prefHeight="24.0" prefWidth="43.0" text="No">
          <font>

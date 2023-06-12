@@ -8,31 +8,35 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.uv.fei.gui.controllers.chronogram.ChronogramController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.uv.fei.gui.controllers.chronogram.ChronogramController">
    <children>
-      <Pane fx:id="headerPane" layoutY="-2.0" prefHeight="60.0" prefWidth="600.0" />
-      <ScrollPane hbarPolicy="NEVER" layoutX="88.0" layoutY="154.0" prefHeight="244.0" prefWidth="484.0">
+      <Pane fx:id="headerPane" layoutY="-2.0" prefHeight="70.0" prefWidth="1024.0" />
+      <ScrollPane hbarPolicy="NEVER" layoutX="135.0" layoutY="168.0" prefHeight="428.0" prefWidth="807.0">
          <content>
-            <VBox fx:id="activityListVBox" prefHeight="241.0" prefWidth="481.0" />
+            <VBox fx:id="activityListVBox" prefHeight="423.0" prefWidth="742.0" />
          </content>
       </ScrollPane>
-      <Pane layoutY="57.0" prefHeight="342.0" prefWidth="59.0" />
-      <Pane layoutX="60.0" layoutY="67.0" prefHeight="87.0" prefWidth="511.0">
+      <Pane layoutY="57.0" prefHeight="350.0" prefWidth="60.0" />
+      <Pane layoutX="139.0" layoutY="81.0" prefHeight="87.0" prefWidth="571.0">
          <children>
-            <Label fx:id="chronogramTitleLabel" alignment="TOP_CENTER" layoutY="7.0" prefHeight="34.0" prefWidth="269.0" text="Mi cronograma" textAlignment="CENTER">
+            <Label fx:id="chronogramTitleLabel" alignment="TOP_LEFT" layoutX="20.0" layoutY="6.0" prefHeight="38.0" prefWidth="550.0" text="Mi cronograma" textAlignment="CENTER">
                <font>
-                  <Font size="23.0" />
+                  <Font size="26.0" />
                </font>
             </Label>
-
-                  <ComboBox fx:id="studentChronogramComboBox" layoutX="277.0" layoutY="7.0" onAction="#switchChronogram" prefHeight="34.0" prefWidth="228.0" promptText="Cronograma de [Estudiante]" />
             <Label layoutX="42.0" layoutY="50.0" text="Lista de actividades">
                <font>
                   <Font size="23.0" />
                </font>
             </Label>
-            <Button fx:id="createActivityButton" layoutX="412.0" layoutY="55.0" mnemonicParsing="false" onAction="#createActivity" text="Create Activity" />
          </children>
         </Pane>
+
+            <ComboBox fx:id="studentChronogramComboBox" layoutX="724.0" layoutY="91.0" onAction="#switchChronogram" prefHeight="34.0" prefWidth="218.0" promptText="--Seleccionar cronograma--" />
+      <Button fx:id="createActivityButton" layoutX="833.0" layoutY="131.0" mnemonicParsing="false" onAction="#createActivity" text="Create Activity">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
     </children>
 </Pane>
