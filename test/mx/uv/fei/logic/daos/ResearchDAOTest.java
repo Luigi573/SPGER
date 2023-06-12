@@ -119,6 +119,21 @@ public class ResearchDAOTest {
     }
 
     @Test
+    public void testGetDirectorsResearch() throws Exception{
+        
+    }
+
+    @Test
+    public void testGetStudentsResearch() throws Exception{
+        
+    }
+
+    @Test
+    public void testGetCourseResearch() throws Exception{
+        
+    }
+    
+    @Test
     public void testAssertResearch() {
         System.out.println("assertResearch");
         ResearchDAO instance = new ResearchDAO();
@@ -168,5 +183,15 @@ public class ResearchDAOTest {
         ResearchDAO instance = new ResearchDAO();
         System.out.println("If due date is before startDate, then it's invalid");
         assertTrue(!instance.isValidDate(research));
+    }
+
+    @Test
+    public void testAreDirectorsDifferent(){    
+        
+    }
+    
+    @Test
+    public void testAreDirectorsDifferentFail(){    
+        
     }
 }

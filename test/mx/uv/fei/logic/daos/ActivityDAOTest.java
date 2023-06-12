@@ -110,16 +110,17 @@ public class ActivityDAOTest {
         System.out.println("Generated activity Id: " + result);
         assertTrue(result > 0);
     }
+    
     @Test
     public void testGetActivityList() throws Exception {
         ActivityDAO instance = new ActivityDAO();
         ArrayList<Activity> result = instance.getActivityList(researchId);
         
         System.out.println("If list is not empty, it means preloaded activity got retrieved sucessfully");
-        System.out.println(result.get(0));
         
         assertTrue((!result.isEmpty()));
     }
+    
     @Test
     public void testModifyActivity() throws Exception{
         Activity activity = preloadedActivity;
@@ -131,6 +132,14 @@ public class ActivityDAOTest {
         System.out.println("If affected rows is greater than 0, it means that activity was modified sucessfully");
         assertTrue(result > 0);
     }
+    
+    @Test
+    public void testSetFeedback() throws Exception {
+        Activity activity = new Activity();
+        activity.setFeedback("");
+        
+    }
+    
     @Test
     public void testAssertActivity() {
         Activity activity = preloadedActivity;
@@ -139,6 +148,7 @@ public class ActivityDAOTest {
         System.out.println("If it returns true, it means activity is neither blank or has invalid date");
         assertTrue(instance.assertActivity(activity));
     }
+    
     @Test
     public void testIsBlank(){
         ActivityDAO instance = new ActivityDAO();
@@ -146,6 +156,7 @@ public class ActivityDAOTest {
         System.out.println("IsBlank() will return true when either the title or description are blank");
         assertTrue(!instance.isBlank(preloadedActivity));
     }
+    
     @Test
     public void testIsBlankFail() {
         System.out.println("isBlank() test with blank data");
@@ -182,5 +193,24 @@ public class ActivityDAOTest {
         System.out.println("Start date: " + activity.getStartDate());
         System.out.println("Due date: " + activity.getDueDate());
         assertTrue(!instance.isValidDate(activity));
+    }
+
+    @Test
+    public void testIsValidTitle(){
+        Activity activity = new Activity();
+        activity.setTitle("This is a valid title for an activity");
+        ActivityDAO instance = new ActivityDAO();
+        
+        assertTrue(instance.isValidTitle(activity));
+    }
+    
+    @Test
+    public void testIsValidTitleFail(){
+        Activity activity = new Activity();
+        activity.setTitle("This is not a valid title for an activity. "
+                + "It is too long to actually display it and the DB only accepts up to 50 char");
+        ActivityDAO instance = new ActivityDAO();
+        
+        assertTrue(!instance.isValidTitle(activity));
     }
 }

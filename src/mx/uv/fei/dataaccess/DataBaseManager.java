@@ -19,7 +19,7 @@ public class DataBaseManager {
             dataBaseUserPropertiesFile = new Properties();
             dataBaseUserPropertiesFile.load(fis);
         } catch (IOException e) {
-            e.printStackTrace();
+            Logger.getLogger(DataBaseManager.class.getName()).log(Level.WARNING, null, e);
         }
     }
     

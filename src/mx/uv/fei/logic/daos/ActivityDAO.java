@@ -172,7 +172,7 @@ public class ActivityDAO implements IActivityDAO{
     public boolean isValidDate(Activity activity){
         return activity.getStartDate().compareTo(activity.getDueDate()) <= 0;
     }
-    public boolean isValidLength(Activity activity){
+    public boolean isValidTitle(Activity activity){
         return activity.getTitle().length() <= 50;
     }
 }
