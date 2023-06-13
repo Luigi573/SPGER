@@ -58,4 +58,33 @@ public class DataBaseManager {
             dataBaseUserPropertiesFile.getProperty("DATABASE_PASSWORD")
         );
     }
+
+    private SecretKeySpec makeKey(String password){
+        
+        try {
+            byte[] chain = password.getBytes("UTF-8");
+            MessageDigest messageDigest = MessageDigest.getInstance("SHA-1");
+            chain = messageDigest.digest(chain);
+            chain = Arrays.copyOf(chain, 16);
+            SecretKeySpec secretKeySpec = new SecretKeySpec(chain, "AES");
+            return secretKeySpec;
+        }catch(UnsupportedEncodingException exception) {
+            Logger.getLogger(DataBaseManager.class.getName()).log(Level.SEVERE, null, exception);
+        }catch(NoSuchAlgorithmException exception) {
+            Logger.getLogger(DataBaseManager.class.getName()).log(Level.SEVERE, null, exception);
+        }
+        return null;
+    }
+
+    private String desencodeDatabasePassword(String decode){        
+        SecretKeySpec secretKeySpec = makeKey();
+        Cipher cipher = Cipher.getInstance("AES");
+        cipher.init(Cipher.DECRYPT_MODE, secretKeySpec);
+
+        byte[] chain = Base.decode(decode);
+        byte[] decoding = cipher.doFinal(chain);
+        String decodedPassword = new String(decoding);
+
+        return decodedPassword;
+    }
 }
