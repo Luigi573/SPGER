@@ -1,16 +1,18 @@
 package mx.uv.fei.logic.daos;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.ResultSet;
 import mx.uv.fei.dataaccess.DataBaseManager;
 import mx.uv.fei.logic.daosinterfaces.IFileDAO;
 import mx.uv.fei.logic.domain.File;
+import mx.uv.fei.logic.domain.KGAL;
 import mx.uv.fei.logic.exceptions.DataInsertionException;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
 
 public class FileDAO implements IFileDAO {
-    private final DataBaseManager dataBaseManager;
+    private DataBaseManager dataBaseManager;
     
     public FileDAO() {
         dataBaseManager = new DataBaseManager();
@@ -19,9 +21,10 @@ public class FileDAO implements IFileDAO {
     @Override
     public int addFile(String filePath) throws DataInsertionException {
         int generatedId = 0;
-        String query = "INSERT INTO Archivos(ruta) VALUES(?)";
+        String query = "insert into Archivos(ruta) values(?)";
         try {
-            PreparedStatement statement = dataBaseManager.getConnection().prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
+            Connection connection = dataBaseManager.getConnection();
+            PreparedStatement statement = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
             statement.setString(1, filePath);
             
             statement.executeUpdate();
@@ -30,32 +33,39 @@ public class FileDAO implements IFileDAO {
             if (resultSet.next()) {
                 generatedId = resultSet.getInt(1);
             }
-        }catch(SQLException exception){
+        } catch (SQLException sql) {
             throw new DataInsertionException("No fue posible guardar la información del archivo. Por favor, intente de nuevo más tarde.");
-        }finally{
-            dataBaseManager.closeConnection();
         }
         return generatedId;
     }
+
+    @Override
+    public int addFilesList() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
     
+    @Override
+    public int updateFilePath(String filePath) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }    
+    
+    @Override
     public File getFileByID(int fileID) throws DataRetrievalException {
-        String query = "SELECT * FROM Archivos WHERE IdArchivo = ?";
+        String query = "select * from Archivos where IdArchivo = ?";
         File file = new File();
-        
         try {
-            PreparedStatement statement = dataBaseManager.getConnection().prepareStatement(query);
+            Connection connection = dataBaseManager.getConnection();
+            PreparedStatement statement = connection.prepareStatement(query);
             statement.setInt(1, fileID);
             ResultSet rs = statement.executeQuery();
 
             if(rs.next()) {
-                file.setFileId(rs.getInt("IdArchivo"));
+                file.setFileID(rs.getInt("IdArchivo"));
                 file.setPath(rs.getString("ruta"));
             }
-        }catch(SQLException exception){
+        } catch (SQLException sql) {
             throw new DataRetrievalException("No fue posible recuperar la información del archivo. Por favor intente de nuevo más tarde.");
-        }finally{
-            dataBaseManager.closeConnection();
-        }
+        }       
         return file;
     }
 }

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.uv.fei.gui.controllers.chronogram.AdvanceInfoController">
+   <children>
+      <Pane layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0">
+         <children>
+            <Pane layoutX="93.0" layoutY="106.0" prefHeight="70.0" prefWidth="457.0">
+               <children>
+                  <Label layoutX="6.0" layoutY="1.0" prefHeight="35.0" prefWidth="354.0" text="Título:">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="6.0" layoutY="31.0" prefHeight="35.0" prefWidth="354.0" text="Comentarios:">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="advanceTitleLabel" layoutX="83.0" layoutY="6.0" prefHeight="25.0" prefWidth="354.0" text="Label" />
+               </children>
+            </Pane>
+            <Pane layoutY="76.0" prefHeight="330.0" prefWidth="54.0" />
+            <Pane fx:id="headerPane" prefHeight="54.0" prefWidth="593.0" />
+            <Button fx:id="returnButton" layoutX="93.0" layoutY="74.0" mnemonicParsing="false" onAction="#returnToAdvanceList" text="&lt;-" />
+            <Label layoutX="130.0" layoutY="77.0" text="Volver">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="233.0" layoutY="67.0" text="Información Avance">
+               <font>
+                  <Font size="27.0" />
+               </font>
+            </Label>
+            <ScrollPane layoutX="95.0" layoutY="170.0" prefHeight="81.0" prefWidth="464.0">
+               <content>
+                  <Text fx:id="advanceCommentsText" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="459.13671875" />
+               </content>
+            </ScrollPane>
+            <Button fx:id="modifyAdvanceButton" layoutX="475.0" layoutY="361.0" mnemonicParsing="false" onAction="#modifyAdvance" prefHeight="25.0" prefWidth="75.0" text="Modificar" />
+            <Label layoutX="93.0" layoutY="248.0" prefHeight="35.0" prefWidth="354.0" text="Archivo:">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Label>
+            <Pane fx:id="advanceFilePane" layoutX="94.0" layoutY="283.0">
+               <children>
+                  <VBox fx:id="advanceFileVBox" prefHeight="70.0" prefWidth="455.0" />
+               </children>
+            </Pane>
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>

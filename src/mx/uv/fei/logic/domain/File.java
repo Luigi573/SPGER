@@ -1,19 +1,19 @@
 package mx.uv.fei.logic.domain;
 
 public class File {
-    private int fileId;
+    private int fileID;
     private String filePath;
     
-    public void setFileId(int fileId) {
-        this.fileId = fileId;
+    public void setFileID(int idArchivo) {
+        this.fileID = idArchivo;
     }
     
     public void setPath(String filePath) {
         this.filePath = filePath;
     }
     
-    public int getFileId() {
-        return this.fileId;
+    public int getFileID() {
+        return this.fileID;
     }
     
     public String getFilePath() {

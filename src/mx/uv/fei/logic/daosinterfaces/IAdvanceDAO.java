@@ -8,7 +8,7 @@ import mx.uv.fei.logic.exceptions.DataRetrievalException;
 
 public interface IAdvanceDAO {
     public int addAdvance(Advance advance) throws DataInsertionException;
-    public ArrayList<Advance> getAdvanceList(int activityId) throws DataRetrievalException;
-    //public Advance getAdvanceByID(int advanceID) throws DataRetrievalException;
-    public int setFeedback(Advance advance) throws DataInsertionException;
+    public ArrayList<Advance> getAdvancesList() throws DataRetrievalException;
+    public Advance getAdvanceByID(int advanceID) throws DataRetrievalException;
+    public int updateAdvanceInfo(int advanceToBeUpdatedID, Advance newAdvanceInfo) throws DataRetrievalException;
 }
