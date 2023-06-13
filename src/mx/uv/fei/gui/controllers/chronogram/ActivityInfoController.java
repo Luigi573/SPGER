@@ -107,7 +107,7 @@ public class ActivityInfoController{
             stage.setTitle("SPGER");
             stage.setScene(scene);
             stage.show();
-        }catch(IllegalStateException | IOException exception){
+        }catch (IllegalStateException | IOException exception){
             Alert errorMessage = new Alert(Alert.AlertType.ERROR);
             errorMessage.setHeaderText("Error de carga");
             errorMessage.setContentText("No se pudo abrir la ventana, verifique que el archivo .fxml esté en su ubicación correcta");
@@ -127,6 +127,7 @@ public class ActivityInfoController{
                     Pane pane = loader.load();
                     ActivityFileItemController controller = (ActivityFileItemController)loader.getController();
                     controller.setFile(file);
+                    controller.hideDownloadButton();
                     activityFileListVBox.getChildren().add(pane);
                     this.filesList.add(file);
                 } catch (IOException | IllegalStateException exception) {

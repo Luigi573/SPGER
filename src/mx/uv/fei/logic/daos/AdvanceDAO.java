@@ -27,8 +27,7 @@ public class AdvanceDAO implements IAdvanceDAO{
         int generatedId = 0;
         String query = "insert into Avances(IdActividad, IdArchivo, título, comentario, estado) values(?, ?, ?, ?, ?)";
         try {
-            Connection connection = dataBaseManager.getConnection();
-            PreparedStatement statement = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
+            PreparedStatement statement = dataBaseManager.getConnection().prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
             statement.setInt(1, advance.getActivityID());
             statement.setInt(2, advance.getFileID());
             statement.setString(3, advance.getTitle());
