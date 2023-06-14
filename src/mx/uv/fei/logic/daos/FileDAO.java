@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import mx.uv.fei.dataaccess.DataBaseManager;
 import mx.uv.fei.logic.daosinterfaces.IFileDAO;
 import mx.uv.fei.logic.domain.File;
@@ -56,5 +57,48 @@ public class FileDAO implements IFileDAO {
             throw new DataRetrievalException("No fue posible recuperar la información del archivo. Por favor intente de nuevo más tarde.");
         }       
         return file;
+    }
+    
+    public ArrayList<Integer> getFilesByActivity(int activityID) throws DataRetrievalException {
+        String query = "select * from ArchivosActividades where IdActividad = ?";
+        ArrayList<Integer> fileIdList = new ArrayList();
+        
+        try {
+            PreparedStatement statement = dataBaseManager.getConnection().prepareStatement(query);
+            statement.setInt(1, activityID);
+            ResultSet resultSet = statement.executeQuery();
+            
+            if (resultSet.next()) {
+                fileIdList.add(resultSet.getInt("IdArchivo"));
+            }
+        } catch (SQLException exception){
+            throw new DataRetrievalException("No fue posible recuperar los archivos. Por favor intente de nuevo más tarde.");
+        }
+        
+        return fileIdList;
+    }
+    
+    public int addActivityFile(int fileId, int activityId) throws DataInsertionException {
+        int generatedId = 0;
+        String query = "insert into ArchivosActividades(IdArchivo, IdActividad) values(?, ?)";
+        
+        if (activityId > 0 && fileId > 0) {
+            try {
+                Connection connection = dataBaseManager.getConnection();
+                PreparedStatement statement = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
+                statement.setInt(1, fileId);
+                statement.setInt(2, activityId);
+
+                statement.executeUpdate();
+                ResultSet resultSet = statement.getGeneratedKeys();
+
+                if (resultSet.next()) {
+                    generatedId = resultSet.getInt(1);
+                }
+            } catch (SQLException sql) {
+                throw new DataInsertionException("No fue posible guardar la información del archivo. Por favor, intente de nuevo más tarde.");
+            }
+        }
+        return generatedId;
     }
 }

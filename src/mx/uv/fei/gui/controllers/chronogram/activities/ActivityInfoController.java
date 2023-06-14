@@ -88,6 +88,7 @@ public class ActivityInfoController{
             
             if(user != null){
                 controller.setUser(user);
+                controller.setCourse(course);
             }
             
             Scene scene = new Scene(parent);
@@ -117,6 +118,7 @@ public class ActivityInfoController{
                 ActivityFileItemController controller = (ActivityFileItemController)loader.getController();
                 controller.setFile(file);
                 controller.hideDownloadButton();
+                
                 fileVBox.getChildren().add(pane);
                 filesList.add(file);
             }catch(IOException exception) {
@@ -165,7 +167,12 @@ public class ActivityInfoController{
     
     @FXML
     private void modifyActivityDelivery(ActionEvent event){
+        addAdvanceButton.setVisible(false);
         commentTextArea.setEditable(true);
+        deliveryButton.setVisible(true);
+        editButton.setVisible(false);
+        uploadFileButton.setVisible(true);
+        removeFilesButton.setVisible(true);
     }
     
     @FXML
@@ -197,13 +204,19 @@ public class ActivityInfoController{
     @FXML
     private void createNewAdvance(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/CreateNewAdvance.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/advances/CreateNewAdvance.fxml"));
             Parent parent = loader.load();
             CreateNewAdvanceController createNewAdvanceController = (CreateNewAdvanceController)loader.getController();
             createNewAdvanceController.setActivity(activity);
-
-            Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+            createNewAdvanceController.setCourse(course);
+            createNewAdvanceController.setUser(user);
+            createNewAdvanceController.loadHeader();
+            
             Scene scene = new Scene(parent);
+            String css = this.getClass().getResource("/mx/uv/fei/gui/stylesfiles/Styles.css").toExternalForm();
+            scene.getStylesheets().add(css);
+            
+            Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
             stage.setTitle("SPGER");
             stage.setScene(scene);
             stage.show();
@@ -218,7 +231,7 @@ public class ActivityInfoController{
         filesList.clear();
     }
     
-    protected void loadHeader(){
+    public void loadHeader(){
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/HeaderPane.fxml"));
         
         try{
@@ -236,7 +249,7 @@ public class ActivityInfoController{
     }
 
     
-    protected void loadAdvances(){
+    public void loadAdvances(){
         AdvanceDAO advanceDAO = new AdvanceDAO();
         
         try{
@@ -283,11 +296,11 @@ public class ActivityInfoController{
         }
     }
     
-    protected void setCourse(Course course){
+    public void setCourse(Course course){
         this.course = course;
     }
     
-    protected void setUser(User user){
+    public void setUser(User user){
         this.user = user;
         
         if(Professor.class.isAssignableFrom(user.getClass())){
@@ -301,4 +314,41 @@ public class ActivityInfoController{
             feedbackButton.setText("Ver retroalimentación");
         }
     }
+    
+      private void loadActivityFiles(){
+        ArrayList<Integer> fileIdList = new ArrayList();
+        FileDAO fileDAO = new FileDAO();
+        try {
+            fileIdList = fileDAO.getFilesByActivity(activity.getId());
+        } catch (DataRetrievalException exception) {
+            new AlertPopUpGenerator().showConnectionErrorMessage();
+        }
+        
+        String path;
+        File file;
+        for (int fileId : fileIdList) {
+            try {
+                path = fileDAO.getFileByID(fileId).getFilePath();
+
+                if (path != null) {
+                    file = new File(path);
+                    
+                    try{
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/activities/ActivityFileItem.fxml"));
+                        Pane pane = loader.load();
+                        ActivityFileItemController controller = (ActivityFileItemController)loader.getController();
+                        controller.setFile(file);
+                        
+                        fileVBox.getChildren().add(pane);
+                        filesList.add(file);
+                    } catch (IOException exception) {
+                        new AlertPopUpGenerator().showMissingFilesMessage();
+                    }
+                }
+            } catch (DataRetrievalException exception) {
+                new AlertPopUpGenerator().showConnectionErrorMessage();
+            }
+        }
+    }
+    
 }

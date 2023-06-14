@@ -110,7 +110,6 @@ public class ActivityDAO implements IActivityDAO{
            
             result = statement.executeUpdate();
         }catch(SQLException exception){
-            System.out.println(exception.getMessage());
             throw new DataInsertionException("Error al modificar actividad. Verifique su conexion e intentelo de nuevo");
         }finally{
             dataBaseManager.closeConnection();

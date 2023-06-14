@@ -23,18 +23,25 @@ public class AdvanceDAO implements IAdvanceDAO{
     @Override
     public int addAdvance(Advance advance) throws DataInsertionException {
         int generatedId = 0;
-        String query = "insert into Avances(IdActividad, IdArchivo, título, comentario, estado) values(?, ?, ?, ?, ?)";
+        String query = "insert into Avances(IdActividad, IdArchivo, título, comentario, estado, fecha) values(?, ?, ?, ?, ?, NOW())";
         try {
             PreparedStatement statement = dataBaseManager.getConnection().prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
             statement.setInt(1, advance.getActivityID());
-            statement.setInt(2, advance.getFileID());
+            
+            if(advance.getFileID() > 0){
+                statement.setInt(2, advance.getFileID());
+                advance.setState("Entregado");
+            }else{
+                statement.setNull(2, Types.INTEGER);
+            }
+            
             statement.setString(3, advance.getTitle());
             statement.setString(4, advance.getComment());
             statement.setString(5, advance.getState());
             
             statement.executeUpdate();
-            ResultSet resultSet = statement.getGeneratedKeys();
             
+            ResultSet resultSet = statement.getGeneratedKeys();
             if(resultSet.next()) {
                 generatedId = resultSet.getInt(1);
             }
@@ -74,7 +81,7 @@ public class AdvanceDAO implements IAdvanceDAO{
     public ArrayList<Advance> getActivityAdvanceList(int activityId) throws DataRetrievalException {
         ArrayList<Advance> advanceList = new ArrayList<>();
         PreparedStatement statement;
-        String query = "SELECT IdAvance, IdActividad, IdArchivo, título, fecha, comentario, retroalimentación FROM Avances WHERE IdActividad IN(?)";
+        String query = "SELECT IdAvance, IdActividad, IdArchivo, título, fecha, comentario, retroalimentación, estado FROM Avances WHERE IdActividad IN(?)";
         
         try {
             statement = dataBaseManager.getConnection().prepareStatement(query);
@@ -90,6 +97,7 @@ public class AdvanceDAO implements IAdvanceDAO{
                 advance.setDate(rs.getDate("fecha"));
                 advance.setComment(rs.getString("comentario"));
                 advance.setFeedback(rs.getString("retroalimentación"));
+                advance.setState(rs.getString("estado"));
                 
                advanceList.add(advance);
             }
@@ -103,13 +111,14 @@ public class AdvanceDAO implements IAdvanceDAO{
      public int setFeedback(Advance advance) throws DataInsertionException{
         int result = 0;
         PreparedStatement statement;
-        String query = "UPDATE Avances SET retroalimentación = ? WHERE IdAvance IN(?)";
+        String query = "UPDATE Avances SET retroalimentación = ?, estado = ? WHERE IdAvance IN(?)";
         
         try{
             statement = dataBaseManager.getConnection().prepareStatement(query);
             
             statement.setString(1, advance.getFeedback());
-            statement.setInt(2, advance.getAdvanceID());
+            statement.setString(2, "Retroalimentado");
+            statement.setInt(3, advance.getAdvanceID());
             
             result = statement.executeUpdate();
         }catch(SQLException exception){
@@ -135,10 +144,6 @@ public class AdvanceDAO implements IAdvanceDAO{
             }
             i++;
         }
-                
-        if(!b){
-            System.out.println("There is no Advance that matches the given ID.");
-        }
         
         return advanceByID;
     }
@@ -146,7 +151,7 @@ public class AdvanceDAO implements IAdvanceDAO{
     @Override
     public int updateAdvanceInfo(int advanceToBeUpdatedID, Advance newAdvanceInfo) throws DataRetrievalException {
         int result;
-        String query = "update Avances set IdArchivo = ?, título = ?, comentario = ? where IdAvances = ?";
+        String query = "update Avances set IdArchivo = ?, título = ?, comentario = ? where IdAvance = ?";
         try {
             PreparedStatement statement = dataBaseManager.getConnection().prepareStatement(query);
             if (newAdvanceInfo.getFileID() != 0) {

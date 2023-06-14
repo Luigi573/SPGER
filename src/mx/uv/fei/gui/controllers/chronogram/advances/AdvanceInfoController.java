@@ -8,7 +8,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -38,6 +37,10 @@ public class AdvanceInfoController{
     @FXML
     private Button editButton;
     @FXML
+    private Button feedbackButton;
+    @FXML
+    private Button saveChangesButton;
+    @FXML
     private Pane headerPane;
     @FXML
     private Label titleLabel;
@@ -51,21 +54,15 @@ public class AdvanceInfoController{
     private VBox advanceFileVBox;
 
     @FXML
+    private void initialize(){
+        saveChangesButton.setVisible(false);
+        commentTextArea.setEditable(false);
+    }
+    
+    @FXML
     private void editAdvance(ActionEvent event) {
-        try{
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/ModifyAdvance.fxml"));
-            Parent parent = loader.load();
-            ModifyAdvanceController controller = (ModifyAdvanceController)loader.getController();
-            controller.setAdvance(advance);
-            
-            Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-            Scene scene = new Scene(parent);
-            stage.setTitle("SPGER");
-            stage.setScene(scene);
-            stage.show();
-        }catch(IOException exception){
-           new AlertPopUpGenerator().showMissingFilesMessage();
-        }
+        saveChangesButton.setVisible(true);
+        commentTextArea.setEditable(true);
     }
     
      @FXML
@@ -81,11 +78,8 @@ public class AdvanceInfoController{
             stage.setTitle("SPGER");
             stage.setScene(scene);
             stage.show();
-        }catch(IllegalStateException | IOException exception){
-            Alert errorMessage = new Alert(Alert.AlertType.ERROR);
-            errorMessage.setHeaderText("Error de carga");
-            errorMessage.setContentText("No se pudo abrir la ventana, verifique que el archivo .fxml esté en su ubicación correcta");
-            errorMessage.showAndWait();
+        }catch(IOException exception){
+            new AlertPopUpGenerator().showMissingFilesMessage();
         }
     }
     
@@ -115,6 +109,12 @@ public class AdvanceInfoController{
             new AlertPopUpGenerator().showMissingFilesMessage();
         }
     }
+    
+    @FXML
+    private void saveChanges(ActionEvent event){
+        
+    }
+    
     public void loadHeader(){
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/HeaderPane.fxml"));
         
@@ -141,11 +141,7 @@ public class AdvanceInfoController{
         dateLabel.setText(advance.getDate().toString());
         titleLabel.setText(advance.getTitle());
         statusLabel.setText(advance.getState());
-        
-        if(!commentTextArea.getText().isEmpty()){
-            commentTextArea.setEditable(false);
-        }
-        
+                
         FileDAO fileDAO = new FileDAO();
         File file;
         
@@ -160,17 +156,11 @@ public class AdvanceInfoController{
                     controller.setFile(file.getFilePath());
 
                     advanceFileVBox.getChildren().add(advancePane);
-                } catch(IllegalStateException | IOException exception){
-                    Alert errorMessage = new Alert(Alert.AlertType.ERROR);
-                    errorMessage.setHeaderText("Error de carga");
-                    errorMessage.setContentText("No se pudo abrir la ventana, verifique que el archivo .fxml esté en su ubicación correcta");
-                    errorMessage.showAndWait();
+                } catch(IOException exception){
+                    new AlertPopUpGenerator().showMissingFilesMessage();
                 }
             } catch (DataRetrievalException exception) {
-                Alert errorMessage = new Alert(Alert.AlertType.ERROR);
-                errorMessage.setHeaderText("Error de conexión");
-                errorMessage.setContentText("Favor de verificar su conexión a internet e inténtelo de nuevo");
-                errorMessage.showAndWait();
+                new AlertPopUpGenerator().showConnectionErrorMessage();
             }
         }
     }
@@ -183,6 +173,9 @@ public class AdvanceInfoController{
         
         if(Professor.class.isAssignableFrom(user.getClass())){
             commentTextArea.setEditable(false);
+            editButton.setVisible(false);
+        }else{
+            feedbackButton.setVisible(false);
         }
     }
 }

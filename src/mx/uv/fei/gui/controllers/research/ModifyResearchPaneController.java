@@ -90,8 +90,8 @@ public class ModifyResearchPaneController{
     @FXML
     private void cancelChanges(ActionEvent event){
         Alert confirmationMessage = new Alert(Alert.AlertType.CONFIRMATION);
-        confirmationMessage.setHeaderText("Guardar cambios");
-        confirmationMessage.setContentText("¿Está seguro que desea modificar la actividad y volver al cronograma?");
+        confirmationMessage.setHeaderText("Descartar cambios");
+        confirmationMessage.setContentText("¿Está seguro que cancelar la modificación del anteproeycto?");
         
         Optional<ButtonType> choice = confirmationMessage.showAndWait();
         if(choice.isPresent() && choice.get() == ButtonType.OK){
@@ -100,9 +100,9 @@ public class ModifyResearchPaneController{
     }
     @FXML
     private void saveChanges(ActionEvent event){
-        Alert confirmationMessage = new Alert(Alert.AlertType.CONFIRMATION);
-        confirmationMessage.setHeaderText("Descartar cambios");
-        confirmationMessage.setContentText("¿Está seguro que cancelar la modificación del anteproeycto?");
+        Alert confirmationMessage = new Alert(Alert.AlertType.CONFIRMATION);        
+        confirmationMessage.setHeaderText("Guardar cambios");
+        confirmationMessage.setContentText("¿Está seguro que desea guardar las modificaciones del anteproyecto?");
         
         Optional<ButtonType> choice = confirmationMessage.showAndWait();
         if(choice.isPresent() && choice.get() == ButtonType.OK){
@@ -144,7 +144,7 @@ public class ModifyResearchPaneController{
                         new AlertPopUpGenerator().showConnectionErrorMessage();
                     }
                 }else{
-                    new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.WARNING, "No se puede modificar el anteproyecto", "Favor de llenar todos los campos");
+                    new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.WARNING, "No se puede modificar el anteproyecto", "Favor de llenar todos los campos obligatorios");
                 }
             }else{
                 new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.WARNING, "No se puede modificar el anteproyecto", "Favor de introducir una fecha válida");

@@ -138,7 +138,7 @@
                               <VBox fx:id="advanceVBox" prefHeight="200.0" prefWidth="774.0" />
                            </content>
                         </ScrollPane>
-                        <Button fx:id="addAdvanceButton" layoutX="674.0" layoutY="18.0" mnemonicParsing="false" text="Agregar avance">
+                        <Button fx:id="addAdvanceButton" layoutX="674.0" layoutY="18.0" mnemonicParsing="false" onAction="#createNewAdvance" text="Agregar avance">
                            <font>
                               <Font size="15.0" />
                            </font></Button>
