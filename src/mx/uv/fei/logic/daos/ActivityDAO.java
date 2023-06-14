@@ -54,8 +54,8 @@ public class ActivityDAO implements IActivityDAO{
         ArrayList<Activity> activityList = new ArrayList();
         PreparedStatement statement;
         String query = "SELECT IdActividad, a.IdAnteproyecto, a.título, a.descripción, a.fechaInicio, a.fechaFin, a.comentario, a.retroalimentación"
-                + "FROM Actividades a INNER JOIN Anteproyectos ap ON a.IdAnteproyecto = ap.IdAnteproyecto WHERE a.IdAnteproyecto IN(?) "
-                + "ORDER BY fechaFin, fechaInicio, título ASC";
+                + " FROM Actividades a INNER JOIN Anteproyectos ap ON a.IdAnteproyecto = ap.IdAnteproyecto WHERE a.IdAnteproyecto IN(?) "
+                + " ORDER BY fechaFin, fechaInicio, título ASC";
         
         try{
             statement = dataBaseManager.getConnection().prepareStatement(query);
@@ -74,6 +74,8 @@ public class ActivityDAO implements IActivityDAO{
                 activity.setDueDate(resultSet.getDate("a.fechaFin"));
                 activity.setComment(resultSet.getString("a.comentario"));
                 activity.setFeedback(resultSet.getString("a.retroalimentación"));
+                activity.setStatus(ActivityStatus.ACTIVE);
+                
                 
                 if(activity.getComment() != null){
                     activity.setStatus(ActivityStatus.DELIVERED);

@@ -24,6 +24,7 @@ import mx.uv.fei.gui.AlertPopUpGenerator;
 import mx.uv.fei.gui.controllers.HeaderPaneController;
 import mx.uv.fei.gui.controllers.chronogram.advances.CreateNewAdvanceController;
 import mx.uv.fei.gui.controllers.chronogram.advances.AdvanceVBoxPaneController;
+import mx.uv.fei.logic.daos.ActivityDAO;
 import mx.uv.fei.logic.daos.AdvanceDAO;
 import mx.uv.fei.logic.daos.FileDAO;
 import mx.uv.fei.logic.domain.Activity;
@@ -31,6 +32,7 @@ import mx.uv.fei.logic.domain.Advance;
 import mx.uv.fei.logic.domain.Course;
 import mx.uv.fei.logic.domain.Professor;
 import mx.uv.fei.logic.domain.User;
+import mx.uv.fei.logic.domain.statuses.ActivityStatus;
 import mx.uv.fei.logic.exceptions.DataInsertionException;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
 
@@ -53,6 +55,8 @@ public class ActivityInfoController{
     @FXML
     private Button removeFilesButton;
     @FXML
+    private Button modifyDeliveryButton;
+    @FXML
     private Label titleLabel;
     @FXML
     private Label startDateLabel;
@@ -71,7 +75,7 @@ public class ActivityInfoController{
     
     @FXML
     public void initialize() {
-        filesList = new ArrayList<>();
+        filesList = new ArrayList();
     }
     
     @FXML
@@ -108,7 +112,7 @@ public class ActivityInfoController{
         
         if (file != null){
             try{
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/ActivityFileItem.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/activities/ActivityFileItem.fxml"));
                 Pane pane = loader.load();
                 ActivityFileItemController controller = (ActivityFileItemController)loader.getController();
                 controller.setFile(file);
@@ -123,29 +127,45 @@ public class ActivityInfoController{
     
     @FXML
     private void deliverActivity(ActionEvent event) {
-        int result;
-        int successfulSaves = 0;
-        ArrayList<String> failedSaves = new ArrayList<>();
-        
-        for (File file : filesList) {
-            if (file != null) {
-                FileDAO fileDAO = new FileDAO();
-                try {
-                    result = fileDAO.addFile(file.getPath());
-                    if (result > 0) {
-                        successfulSaves = successfulSaves + 1;
+        if(!commentTextArea.getText().trim().isEmpty()){
+            int result;
+            int successfulSaves = 0;
+            ArrayList<String> failedSaves = new ArrayList<>();
+
+            for (File file : filesList) {
+                if (file != null) {
+                    FileDAO fileDAO = new FileDAO();
+                    try {
+                        result = fileDAO.addFile(file.getPath());
+                        if (result > 0) {
+                            successfulSaves = successfulSaves + 1;
+                        }
+                    } catch (DataInsertionException die) {
+                        failedSaves.add(file.getName());
                     }
-                } catch (DataInsertionException die) {
-                    failedSaves.add(file.getName());
                 }
             }
+
+            for (String fileName : failedSaves) {
+                new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.ERROR, "Error al guardar archivo", fileName);
+            }
+            
+            try{
+                ActivityDAO activityDAO = new ActivityDAO();
+                if(activityDAO.setComment(commentTextArea.getText().trim(), activity.getId()) > 0){
+                    new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.INFORMATION, "", "Actividad entregada exitosamente");
+                }
+            }catch(DataInsertionException exception){
+                new AlertPopUpGenerator().showConnectionErrorMessage();
+            }
+        }else{
+            new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.WARNING, "No se puede guardar la información", "Debe definir un comentario para la actividad");
         }
-        
-        new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.CONFIRMATION, "Operación exitosa", "Se guardaron correctamente " + successfulSaves + " archivos.");
-        
-        for (String fileName : failedSaves) {
-            new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.ERROR, "Error al guardar archivo", fileName);
-        }
+    }
+    
+    @FXML
+    private void modifyActivityDelivery(ActionEvent event){
+        commentTextArea.setEditable(true);
     }
     
     @FXML
@@ -249,13 +269,17 @@ public class ActivityInfoController{
         dueDateLabel.setText(activity.getDueDate().toString());
         descriptionText.setText(activity.getDescription());
         
-        if(activity.getComment() != null || activity.getFeedback() != null){
+        if(activity.getStatus().equals(ActivityStatus.DELIVERED) || activity.getStatus().equals(ActivityStatus.REVIEWED )){
             addAdvanceButton.setVisible(false);
             commentTextArea.setEditable(false);
             deliveryButton.setVisible(false);
             editButton.setVisible(false);
             uploadFileButton.setVisible(false);
             removeFilesButton.setVisible(false);
+        }
+        
+        if(!activity.getStatus().equals(ActivityStatus.DELIVERED)){
+            modifyDeliveryButton.setVisible(false);
         }
     }
     

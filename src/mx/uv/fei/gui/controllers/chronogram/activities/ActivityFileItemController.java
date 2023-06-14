@@ -23,8 +23,6 @@ public class ActivityFileItemController {
     private Button downloadFileButton;
     @FXML
     private Label FileNameLabel;
-    @FXML
-    private Pane pKGALListElement;
 
     @FXML
     private void downloadFile(ActionEvent event) {

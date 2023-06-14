@@ -63,7 +63,7 @@ public class AdvanceInfoController{
             stage.setTitle("SPGER");
             stage.setScene(scene);
             stage.show();
-        }catch(IllegalStateException | IOException exception){
+        }catch(IOException exception){
            new AlertPopUpGenerator().showMissingFilesMessage();
         }
     }
@@ -140,6 +140,7 @@ public class AdvanceInfoController{
         commentTextArea.setText(advance.getComment());
         dateLabel.setText(advance.getDate().toString());
         titleLabel.setText(advance.getTitle());
+        statusLabel.setText(advance.getState());
         
         if(!commentTextArea.getText().isEmpty()){
             commentTextArea.setEditable(false);
