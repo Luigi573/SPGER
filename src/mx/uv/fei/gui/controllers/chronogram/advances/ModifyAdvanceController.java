@@ -1,4 +1,4 @@
-package mx.uv.fei.gui.controllers.chronogram;
+package mx.uv.fei.gui.controllers.chronogram.advances;
 
 import java.io.IOException;
 import javafx.event.ActionEvent;
@@ -15,6 +15,9 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import mx.uv.fei.gui.controllers.chronogram.activities.ActivityInfoController;
+import mx.uv.fei.gui.controllers.chronogram.advances.AdvanceInfoController;
+import mx.uv.fei.gui.controllers.chronogram.activities.ActivityFileItemController;
 import mx.uv.fei.logic.daos.AdvanceDAO;
 import mx.uv.fei.logic.daos.FileDAO;
 import mx.uv.fei.logic.domain.Advance;
@@ -29,30 +32,19 @@ public class ModifyAdvanceController {
 
     @FXML
     private TextArea advanceCommentsTextArea;
-
     @FXML
     private Pane advanceFilePane;
-
     @FXML
     private VBox advanceFileVBox;
-
     @FXML
     private TextField advanceTitleTextField;
-
     @FXML
     private Pane headerPane;
-
     @FXML
     private Button returnButton;
-
     @FXML
     private Button saveChangesButton;
     
-    @FXML 
-    private void initialize() {
-        loadHeader();
-    }
-
     @FXML
     private void returnToAdvanceInfo(ActionEvent event) {
         try{
@@ -66,11 +58,8 @@ public class ModifyAdvanceController {
             stage.setTitle("SPGER");
             stage.setScene(scene);
             stage.show();
-        }catch(IllegalStateException | IOException exception){
-            Alert errorMessage = new Alert(Alert.AlertType.ERROR);
-            errorMessage.setHeaderText("Error de carga");
-            errorMessage.setContentText("No se pudo abrir la ventana, verifique que el archivo .fxml esté en su ubicación correcta");
-            errorMessage.showAndWait();
+        }catch(IOException exception){
+            new AlertPopUpGenerator().showMissingFilesMessage();
         }
     }
 
@@ -80,10 +69,10 @@ public class ModifyAdvanceController {
         savedFileGeneratedId = saveFile();
         
         Advance advanceToBeSaved = new Advance();
-        advanceToBeSaved.setActivityID(ActivityInfoController.activity.getId());
+        advanceToBeSaved.setActivityID(advance.getActivityID());
         advanceToBeSaved.setFileID(savedFileGeneratedId);
         advanceToBeSaved.setTitle(advanceTitleTextField.getText());
-        advanceToBeSaved.setComments(advanceCommentsTextArea.getText());
+        advanceToBeSaved.setComment(advanceCommentsTextArea.getText());
         
         AdvanceDAO advanceDAO = new AdvanceDAO();
         
@@ -91,16 +80,10 @@ public class ModifyAdvanceController {
         try {
             result = advanceDAO.updateAdvanceInfo(advance.getAdvanceID(), advanceToBeSaved);
         } catch (DataRetrievalException exception) {
-            Alert errorMessage = new Alert(Alert.AlertType.ERROR);
-            errorMessage.setHeaderText("Ocurrió un error");
-            errorMessage.setContentText(exception.getMessage());
-            errorMessage.showAndWait(); 
+            new AlertPopUpGenerator().showConnectionErrorMessage();
         } finally {
             if (result > 0) {
-                Alert successMessage = new Alert(Alert.AlertType.CONFIRMATION);
-                successMessage.setHeaderText("Operación exitosa");
-                successMessage.setContentText("Se ha guardado el nuevo avance correctamente.");
-                successMessage.showAndWait();
+                new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.CONFIRMATION, "Operación exitosa", "Se ha guardado el nuevo avance correctamente.");
             }
         }
     }
@@ -112,28 +95,22 @@ public class ModifyAdvanceController {
             fileChooser.setTitle("Seleccione el archivo a entregar");
             java.io.File file = fileChooser.showOpenDialog((Stage)((Node)event.getSource()).getScene().getWindow());
 
-            if (file != null) {
-                try {
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/ActivityFileItem.fxml"));
-                        Pane pane = loader.load();
-                        ActivityFileItemController controller = (ActivityFileItemController)loader.getController();
-                        controller.setFile(file);
-                        controller.hideDownloadButton();
-                        advanceFileVBox.getChildren().add(pane);
-                        this.filePath = file.getPath();
-                        hasFile = true;
-                    } catch (IOException | IllegalStateException exception) {
-                        Alert errorMessage = new Alert(Alert.AlertType.ERROR);
-                        errorMessage.setHeaderText("Error al mostrar la información");
-                        errorMessage.setContentText("Ocurrió un error al intentar mostrar la información.");
-                        errorMessage.showAndWait();
-                    }
+            if(file != null){
+                try{
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/ActivityFileItem.fxml"));
+                    Pane pane = loader.load();
+                    ActivityFileItemController controller = (ActivityFileItemController)loader.getController();
+                    controller.setFile(file);
+                    controller.hideDownloadButton();
+                    advanceFileVBox.getChildren().add(pane);
+                    this.filePath = file.getPath();
+                    hasFile = true;
+                }catch (IOException exception){
+                    new AlertPopUpGenerator().showMissingFilesMessage();
+                }
             }
-        } else {
-                Alert errorMessage = new Alert(Alert.AlertType.ERROR);
-                errorMessage.setHeaderText("El avance ya tiene un archivo adjunto");
-                errorMessage.setContentText("Quite el archivo adjunto antes de agregar uno nuevo.");
-                errorMessage.showAndWait();
+        }else{
+            new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.ERROR, "El avance ya tiene un archivo adjunto", "Quite el archivo adjunto antes de agregar uno nuevo.");
         }
     }
     
@@ -146,11 +123,11 @@ public class ModifyAdvanceController {
     public void setAdvance(Advance advance) {
         this.advance = advance;
         this.advanceTitleTextField.setText(advance.getTitle());
-        this.advanceCommentsTextArea.setText(advance.getComments());
+        this.advanceCommentsTextArea.setText(advance.getComment());
         showAdvanceFile();
     }
     
-    private void loadHeader() {
+    public void loadHeader() {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/HeaderPane.fxml"));
         
         try{
@@ -158,9 +135,7 @@ public class ModifyAdvanceController {
             headerPane.getChildren().add(header);
             
         }catch(IOException exception){
-            Alert errorMessage = new Alert(Alert.AlertType.ERROR);
-            errorMessage.setContentText("Error al cargar, faltan archivos");
-            errorMessage.showAndWait();
+            new AlertPopUpGenerator().showMissingFilesMessage();
         }
     }
     
@@ -181,17 +156,11 @@ public class ModifyAdvanceController {
 
                     advanceFileVBox.getChildren().add(advancePane);
                     hasFile = true;
-                } catch(IllegalStateException | IOException exception){
-                    Alert errorMessage = new Alert(Alert.AlertType.ERROR);
-                    errorMessage.setHeaderText("Error de carga");
-                    errorMessage.setContentText("No se pudo abrir la ventana, verifique que el archivo .fxml esté en su ubicación correcta");
-                    errorMessage.showAndWait();
+                } catch(IOException exception){
+                    new AlertPopUpGenerator().showMissingFilesMessage();
                 }
             } catch (DataRetrievalException exception) {
-                Alert errorMessage = new Alert(Alert.AlertType.ERROR);
-                errorMessage.setHeaderText("Error de conexión");
-                errorMessage.setContentText("Favor de verificar su conexión a internet e inténtelo de nuevo");
-                errorMessage.showAndWait();
+                new AlertPopUpGenerator().showConnectionErrorMessage();
             }
         }
         
@@ -204,10 +173,7 @@ public class ModifyAdvanceController {
                 try {
                     result = fileDAO.addFile(this.filePath);
                 } catch (DataInsertionException die) {
-                    Alert errorMessage = new Alert(Alert.AlertType.ERROR);
-                    errorMessage.setHeaderText("Error al guardar archivo");
-                    errorMessage.setContentText("Ocurrió un error al intentar guardar el archivo. Por favor intente de nuevo más tarde.");
-                    errorMessage.showAndWait(); 
+                    new AlertPopUpGenerator().showConnectionErrorMessage();
                 }
         }
         return result;

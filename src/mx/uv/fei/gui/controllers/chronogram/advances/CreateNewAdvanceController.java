@@ -1,4 +1,4 @@
-package mx.uv.fei.gui.controllers.chronogram;
+package mx.uv.fei.gui.controllers.chronogram.advances;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,6 +16,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import mx.uv.fei.gui.controllers.chronogram.activities.ActivityFileItemController;
+import mx.uv.fei.gui.controllers.chronogram.activities.ActivityInfoController;
 import mx.uv.fei.logic.daos.AdvanceDAO;
 import mx.uv.fei.logic.daos.FileDAO;
 import mx.uv.fei.logic.domain.Activity;
@@ -54,7 +56,7 @@ public class CreateNewAdvanceController {
         advance.setActivityID(this.activity.getId());
         advance.setFileID(savedFileGeneratedId);
         advance.setTitle(advanceTitleTextField.getText());
-        advance.setComments(advanceCommentsTextArea.getText());
+        advance.setComment(advanceCommentsTextArea.getText());
         advance.setState("Sin revisar"); //TODO
 
         System.out.println(advance);

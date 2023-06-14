@@ -11,6 +11,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
+import mx.uv.fei.gui.AlertPopUpGenerator;
 
 import org.apache.commons.io.FileUtils;
 
@@ -38,15 +39,9 @@ public class ActivityFileItemController {
 
             try {
                 FileUtils.copyFile(file,downloadedFile);
-                Alert successMessage = new Alert(Alert.AlertType.CONFIRMATION);
-                successMessage.setHeaderText("Operación exitosa");
-                successMessage.setContentText("Se ha descargado el archivo correctamente.");
-                successMessage.showAndWait();
+                new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.INFORMATION, "Operación exitosa", "Se ha descargado el archivo correctamente.");
             } catch (IOException exception) {
-                Alert errorMessage = new Alert(Alert.AlertType.ERROR);
-                errorMessage.setHeaderText("Ocurrió un error");
-                errorMessage.setContentText("No se pudo descargar el archivo. Por favor intente de nuevo más tarde.");
-                errorMessage.showAndWait();
+                new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.ERROR, "Ocurrió un error", "No se pudo descargar el archivo. Por favor intente de nuevo más tarde.");
             }
         }
     }

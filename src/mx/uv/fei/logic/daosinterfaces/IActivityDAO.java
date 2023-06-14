@@ -12,4 +12,5 @@ public interface IActivityDAO {
     public int modifyActivity(Activity activity) throws DataInsertionException;
     public boolean assertActivity(Activity activity);
     public int setFeedback(String feedback, int activityId) throws DataInsertionException;
+    public int setComment(String feedback, int activityId) throws DataInsertionException;
 }

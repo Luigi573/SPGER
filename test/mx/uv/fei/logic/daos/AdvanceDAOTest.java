@@ -42,7 +42,7 @@ public class AdvanceDAOTest {
         advance.setActivityID(1);
         advance.setFileID(5);
         advance.setTitle("Avance de prueba unitaria");
-        advance.setComments("Este avance es una prueba");
+        advance.setComment("Este avance es una prueba");
         advance.setState("Sin revisar");
         AdvanceDAO instance = new AdvanceDAO();
         int expResult = 1;
@@ -67,8 +67,8 @@ public class AdvanceDAOTest {
 //        advance2.setDirectorID(5);
         advance1.setTitle("Avance de prueba unitaria");
         advance2.setTitle("Avance de prueba unitaria num2");
-        advance1.setComments("Este avance es una prueba");
-        advance2.setComments("Este avance también es una prueba");      
+        advance1.setComment("Este avance es una prueba");
+        advance2.setComment("Este avance también es una prueba");      
         ArrayList<Advance> expResult = new ArrayList();
         expResult.add(advance1);
         expResult.add(advance2);
@@ -98,7 +98,7 @@ public class AdvanceDAOTest {
 //        advance1.setMatricle("zs21013873");
 //        advance1.setDirectorID(5);
         advance1.setTitle("Avance de prueba unitaria num2");
-        advance1.setComments("Este avance también es una prueba");
+        advance1.setComment("Este avance también es una prueba");
         Advance expResult = advance1;
         Advance result = instance.getAdvanceByID(advanceID);
         System.out.println(expResult);

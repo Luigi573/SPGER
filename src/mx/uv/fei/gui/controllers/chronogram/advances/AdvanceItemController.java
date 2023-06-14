@@ -1,4 +1,4 @@
-package mx.uv.fei.gui.controllers.chronogram;
+package mx.uv.fei.gui.controllers.chronogram.advances;
 
 import java.io.IOException;
 import javafx.event.ActionEvent;
@@ -36,8 +36,8 @@ public class AdvanceItemController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/AdvanceInfo.fxml"));
             parent = loader.load();
             AdvanceInfoController controller = (AdvanceInfoController)loader.getController();
-            controller.setAdvanceInfo(advance);
-            controller.setActivity();
+            //controller.setAdvanceInfo(advance);
+            //controller.setActivity();
             
             stage = (Stage)((Node)event.getSource()).getScene().getWindow();
             scene = new Scene(parent);

@@ -1,80 +1,92 @@
 package mx.uv.fei.logic.domain;
 
+import java.sql.Date;
+
 public class Advance {
     private int advanceID;
     private int activityID;
     private int fileID;
-    private String title;
-    private String comments;
-    private String state;
+    private Date date;
+    private String comment;
+    private String feedback;
+    private String title;    
+    private String status;
 
-    public Advance() {}
-    
-    public Advance(int activityID, String title, String comments) {
-        this.activityID = activityID;
-        this.title = title;
-        this.comments = comments;
-    }
-    
     public void setAdvanceID(int advanceID) {
         this.advanceID = advanceID;
-    }
-    
-    public void setActivityID(int activityID) {
-        this.activityID = activityID;
-    }
-    
-    public void setFileID(int fileID) {
-        this.fileID = fileID;
-    }
-    
-    public void setTitle(String title) {
-        this.title = title;
-    }
-    
-    public void setComments(String comments) {
-        this.comments = comments;
-    }
-    
-    public void setState(String state) {
-        this.state = state;
     }
     
     public int getAdvanceID() {
         return this.advanceID;
     }
     
+    public void setActivityID(int activityID) {
+        this.activityID = activityID;
+    }
+    
     public int getActivityID() {
         return this.activityID;
+    }
+    
+    public void setFileID(int fileID) {
+        this.fileID = fileID;
     }
     
     public int getFileID() {
         return this.fileID;
     }
     
-    public String getTitle() {
-        return this.title;
+    public void setDate(Date date){
+        this.date = date;
     }
     
-    public String getComments() {
-        return this.comments;
+    public Date getDate(){
+        return date;
+    }
+    
+    public void setTitle(String title) {
+        this.title = title;
+    }
+    
+    public String getTitle() {
+        return title;
+    }
+    
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+    
+    public String getComment() {
+        return comment;
+    }
+    
+    public void setFeedback(String feedback){
+        this.feedback = feedback;
+    }
+    
+    public String getFeedback(){
+        return feedback;
+    }
+    
+    public void setState(String status) {
+        this.status = status;
     }
     
     public String getState() {
-        return this.state;
+        return status;
     }
     
     @Override
-    public boolean equals(Object o) {
-        if (!(o instanceof Advance)) {
-            return false;
+    public boolean equals(Object obj) {
+        if (obj instanceof Advance advance) {
+            return this.activityID == advance.getActivityID() && this.title.equals(advance.getTitle()) && this.comment.equals(advance.getComment());
         }
-            Advance advance = (Advance) o;
-            return ((this.activityID == advance.getActivityID()) && (this.title.equals(advance.getTitle())) && (this.comments.equals(advance.getComments())));
+            
+        return false;
     }
 
     @Override
     public String toString() {
-        return "ID Avance: " + this.advanceID + " ID Actividad: " + this.activityID + " ID Archivo: " + this.fileID + " Titulo: " + this.title + " Comentarios: " + this.comments;
+        return "ID Avance: " + advanceID + " ID Actividad: " + activityID + " ID Archivo: " + fileID + " Titulo: " + title + " Comentarios: " + comment;
     }
 }
