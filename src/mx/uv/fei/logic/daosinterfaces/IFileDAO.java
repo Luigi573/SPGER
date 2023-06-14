@@ -1,6 +1,5 @@
 package mx.uv.fei.logic.daosinterfaces;
 
-import mx.uv.fei.logic.domain.File;
 import mx.uv.fei.logic.exceptions.DataInsertionException;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
 

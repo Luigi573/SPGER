@@ -1,6 +1,7 @@
 package mx.uv.fei.gui.controllers;
 
 import java.io.IOException;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -24,7 +25,7 @@ public class HeaderPaneController{
     private Label usernameLabel;
     
     @FXML
-    private void goHome(MouseEvent event) {
+    private void goHome(MouseEvent event){
         if(user != null){
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/MainMenu.fxml"));

@@ -4,55 +4,62 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.Pane;
+import mx.uv.fei.logic.domain.UserType;
 
-public class UserController {
+public class UserController{
     GuiUsersController guiUsersController;
 
     @FXML
     private Label matricleOrStaffNumberLabel;
-
     @FXML
     private Label matricleOrStaffNumberText;
-
     @FXML
     private Label nameLabel;
-
     @FXML
     private Label typeLabel;
-
+    @FXML
+    private Pane userPane;
     @FXML
     private Button userButton;
 
     @FXML
-    void userButtonController(ActionEvent event) {
-        this.guiUsersController.openPaneWithUserInformation(this);
+    private void userButtonController(ActionEvent event){
+        guiUsersController.openPaneWithUserInformation(this);
     }
 
-    void setGuiUsersController(GuiUsersController guiUsersController) {
+    public void setGuiUsersController(GuiUsersController guiUsersController){
         this.guiUsersController = guiUsersController;
     }
-
-    void setName(String name) {
-        this.nameLabel.setText(name);
+    public void setName(String name){
+        nameLabel.setText(name);
     }
-
-    void setType(String type) {
-        this.typeLabel.setText(type);
+    public void setType(String type){
+        typeLabel.setText(type);
     }
-
-    void setMatricleOrStaffNumber(String matricleOrStaffNumber) {
-        this.matricleOrStaffNumberLabel.setText(matricleOrStaffNumber);
+    public void setMatricleOrStaffNumber(String matricleOrStaffNumber){
+        matricleOrStaffNumberLabel.setText(matricleOrStaffNumber);
     }
-
-    void setMatricleOrStaffNumberText(String matricleOrStaffNumber) {
-        this.matricleOrStaffNumberText.setText(matricleOrStaffNumber);
+    public void setMatricleOrStaffNumberText(String matricleOrStaffNumber){
+        matricleOrStaffNumberText.setText(matricleOrStaffNumber);
     }
-
-    String getType() {
-        return this.typeLabel.getText();
+    public String getType(){
+        return typeLabel.getText();
     }
-
-    String getMatricleOrStaffNumber() {
-        return this.matricleOrStaffNumberLabel.getText();
+    public String getMatricleOrStaffNumber(){
+        return matricleOrStaffNumberLabel.getText();
+    }
+    public void setLabelsCorrectBounds(String userType){
+        if(userType.equals(UserType.STUDENT.getValue())){
+            matricleOrStaffNumberText.setPrefWidth(72);
+            matricleOrStaffNumberText.setLayoutX(10);
+            matricleOrStaffNumberLabel.setPrefWidth(373);
+            matricleOrStaffNumberLabel.setLayoutX(81);
+        }else{
+            matricleOrStaffNumberText.setPrefWidth(143);
+            matricleOrStaffNumberText.setLayoutX(10);
+            matricleOrStaffNumberLabel.setPrefWidth(303);
+            matricleOrStaffNumberLabel.setLayoutX(151);
+        }
     }
 }

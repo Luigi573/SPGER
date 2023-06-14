@@ -2,17 +2,18 @@ package mx.uv.fei.logic.daos;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
+
 import mx.uv.fei.dataaccess.DataBaseManager;
 import mx.uv.fei.logic.daosinterfaces.IResearchDAO;
 import mx.uv.fei.logic.domain.Director;
 import mx.uv.fei.logic.domain.ResearchProject;
 import mx.uv.fei.logic.domain.Student;
 import mx.uv.fei.logic.domain.statuses.ResearchProjectStatus;
-import mx.uv.fei.logic.exceptions.DataRetrievalException;
 import mx.uv.fei.logic.exceptions.DataInsertionException;
+import mx.uv.fei.logic.exceptions.DataRetrievalException;
 
 public class ResearchDAO implements IResearchDAO{
     private final DataBaseManager dataBaseManager;
@@ -69,7 +70,7 @@ public class ResearchDAO implements IResearchDAO{
                 generatedId = generatedKeys.getInt(1);
             }
         }catch(SQLException exception){
-            throw new DataInsertionException("Error de conexión. Verifique su conexion e intentelo de nuevo");
+            throw new DataInsertionException("Error de conexión. Inténtelo de nuevo más tarde");
         }finally{
             dataBaseManager.closeConnection();
         }
@@ -138,7 +139,7 @@ public class ResearchDAO implements IResearchDAO{
                 researchProjectList.add(research);
             }
         }catch(SQLException exception){
-            throw new DataRetrievalException("Fallo al recuperar la informacion. Verifique su conexion e intentelo de nuevo");
+            throw new DataRetrievalException("Fallo al recuperar la informacion. Inténtelo de nuevo más tarde");
         }finally{
             dataBaseManager.closeConnection();
         }
@@ -147,7 +148,7 @@ public class ResearchDAO implements IResearchDAO{
     }
     
     public ArrayList<ResearchProject> getDirectorsResearch(int staffNumber) throws DataRetrievalException{
-        ArrayList<ResearchProject> researchList = new ArrayList();
+        ArrayList<ResearchProject> researchList = new ArrayList<>();
         PreparedStatement statement;
         String query = "SELECT DISTINCT a.IdAnteproyecto, a.título, a.Matrícula, u.nombre, u.apellidoPaterno, u.apellidoMaterno FROM Anteproyectos a " +
             " LEFT JOIN Directores d1 ON a.IdDirector1 = d1.IdDirector LEFT JOIN Profesores p1 ON d1.NumPersonal = p1.NumPersonal " +
@@ -214,7 +215,7 @@ public class ResearchDAO implements IResearchDAO{
     }
     
     public ArrayList<ResearchProject> getCourseResearch(int NRC) throws DataRetrievalException{
-        ArrayList<ResearchProject> researchList = new ArrayList();
+        ArrayList<ResearchProject> researchList = new ArrayList<>();
         PreparedStatement statement;
         String query = "SELECT DISTINCT a.IdAnteproyecto, a.título, a.Matrícula, u.nombre, u.apellidoPaterno, u.apellidoMaterno FROM Anteproyectos a "
                 + " LEFT JOIN Directores d1 ON a.IdDirector1 = d1.IdDirector LEFT JOIN Profesores p1 ON d1.NumPersonal = p1.NumPersonal LEFT JOIN Cursos c1 ON p1.NumPersonal = c1.NumPersonal "
@@ -321,7 +322,7 @@ public class ResearchDAO implements IResearchDAO{
                 researchProjectList.add(research);
             }
         }catch(SQLException exception){
-            throw new DataRetrievalException("Fallo al recuperar la informacion. Verifique su conexion e intentelo de nuevo");
+            throw new DataRetrievalException("Fallo al recuperar la informacion. Inténtelo de nuevo más tarde");
         }finally{
             dataBaseManager.closeConnection();
         }
@@ -390,7 +391,7 @@ public class ResearchDAO implements IResearchDAO{
                 researchProjectList.add(research);
             }
         }catch(SQLException exception){
-            throw new DataRetrievalException("Fallo al recuperar la informacion. Verifique su conexion e intentelo de nuevo");
+            throw new DataRetrievalException("Fallo al recuperar la informacion. Inténtelo de nuevo más tarde");
         }finally{
             dataBaseManager.closeConnection();
         }
@@ -459,7 +460,7 @@ public class ResearchDAO implements IResearchDAO{
                 researchProjectList.add(research);
             }
         }catch(SQLException exception){
-            throw new DataRetrievalException("Fallo al recuperar la informacion. Verifique su conexion e intentelo de nuevo");
+            throw new DataRetrievalException("Fallo al recuperar la informacion. Inténtelo de nuevo más tarde");
         }finally{
             dataBaseManager.closeConnection();
         }
@@ -528,7 +529,7 @@ public class ResearchDAO implements IResearchDAO{
                 researchProjectList.add(research);
             }
         }catch(SQLException exception){
-            throw new DataRetrievalException("Fallo al recuperar la informacion. Verifique su conexion e intentelo de nuevo");
+            throw new DataRetrievalException("Fallo al recuperar la informacion. Inténtelo de nuevo más tarde");
         }finally{
             dataBaseManager.closeConnection();
         }
@@ -581,7 +582,7 @@ public class ResearchDAO implements IResearchDAO{
             result = statement.executeUpdate();
         }catch(SQLException exception){
             exception.printStackTrace();
-            throw new DataInsertionException("Error de conexión. Verifique su conexion e intentelo de nuevo");
+            throw new DataInsertionException("Error de conexión. Inténtelo de nuevo más tarde");
         }finally{
             dataBaseManager.closeConnection();
         }
@@ -601,7 +602,7 @@ public class ResearchDAO implements IResearchDAO{
             statement.setInt(2, researchProject.getId());
             statement.executeUpdate();
         }catch(SQLException exception){
-            throw new DataInsertionException("Error de conexión. Verifique su conexion e intentelo de nuevo");
+            throw new DataInsertionException("Error de conexión. Inténtelo de nuevo más tarde");
         }finally{
             dataBaseManager.closeConnection();
         }

@@ -4,6 +4,8 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
@@ -16,29 +18,29 @@
                   <Font size="44.0" />
                </font>
             </Label>
-            <Label layoutX="14.0" layoutY="8.0" prefHeight="65.0" prefWidth="86.0" text="Icon">
-               <font>
-                  <Font size="44.0" />
-               </font>
-            </Label>
+            <ImageView fitHeight="71.0" fitWidth="71.0" layoutX="6.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../../dependencies/images/spgerLogo.jpeg" />
+               </image>
+            </ImageView>
          </children>
       </Pane>
-      <Label layoutX="58.0" layoutY="131.0" prefHeight="30.0" prefWidth="74.0" text="Usuario:" textFill="WHITE">
+      <Label layoutX="46.0" layoutY="131.0" prefHeight="30.0" prefWidth="86.0" text="Usuario:" textFill="WHITE">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
-      <Label layoutX="25.0" layoutY="202.0" prefHeight="30.0" prefWidth="107.0" text="Contraseña:" textFill="WHITE">
+      <Label layoutX="7.0" layoutY="202.0" prefHeight="30.0" prefWidth="125.0" text="Contraseña:" textFill="WHITE">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
-      <TextField fx:id="idTextField" layoutX="144.0" layoutY="126.0" prefHeight="39.0" prefWidth="387.0" promptText="nombre@correo.com">
+      <TextField fx:id="idTextField" layoutX="144.0" layoutY="126.0" prefHeight="39.0" prefWidth="387.0" promptText="Nombre">
          <font>
             <Font size="18.0" />
          </font>
       </TextField>
-      <PasswordField fx:id="passwordField" layoutX="144.0" layoutY="197.0" prefHeight="39.0" prefWidth="387.0" promptText="password">
+      <PasswordField fx:id="passwordField" layoutX="144.0" layoutY="197.0" prefHeight="39.0" prefWidth="387.0" promptText="Contraseña">
          <font>
             <Font size="18.0" />
          </font>

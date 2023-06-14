@@ -10,7 +10,6 @@ import mx.uv.fei.gui.AlertPopUpGenerator;
 import mx.uv.fei.logic.daos.ActivityDAO;
 import mx.uv.fei.logic.domain.Activity;
 import mx.uv.fei.logic.domain.Director;
-import mx.uv.fei.logic.domain.Professor;
 import mx.uv.fei.logic.domain.User;
 import mx.uv.fei.logic.exceptions.DataInsertionException;
 

@@ -6,14 +6,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+
 import mx.uv.fei.dataaccess.DataBaseManager;
-import mx.uv.fei.logic.domain.KGAL;
 import mx.uv.fei.logic.daosinterfaces.IKGALDAO;
+import mx.uv.fei.logic.domain.KGAL;
 import mx.uv.fei.logic.exceptions.DataInsertionException;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
 
 public class KGALDAO implements IKGALDAO {
-    private DataBaseManager dataBaseManager;
+    private final DataBaseManager dataBaseManager;
 
     public KGALDAO () {
         dataBaseManager = new DataBaseManager();
@@ -46,7 +47,6 @@ public class KGALDAO implements IKGALDAO {
     @Override
     public ArrayList<KGAL> getKGALList() throws DataRetrievalException {
         ArrayList<KGAL> kgalList = new ArrayList();
-        
         String query = "select * from LGAC";
         try {
             Connection connection = dataBaseManager.getConnection();
@@ -113,6 +113,7 @@ public class KGALDAO implements IKGALDAO {
     public ArrayList<KGAL> getKGALListByDescription(String description) throws DataRetrievalException {
         String query = "select * from LGAC where descripción like ?";
         ArrayList<KGAL> kgalList = new ArrayList();
+        
         try {
             Connection connection = dataBaseManager.getConnection();
             PreparedStatement statement = connection.prepareStatement(query);

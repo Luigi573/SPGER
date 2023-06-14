@@ -18,7 +18,7 @@ public class ResearchProject {
     private Student student;
     
     public ResearchProject(){
-        directors = new ArrayList();
+        directors = new ArrayList<>();
         kgal = new KGAL();
         student = new Student();
     }

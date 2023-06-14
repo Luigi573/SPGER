@@ -29,7 +29,7 @@ import mx.uv.fei.logic.exceptions.DataRetrievalException;
 import mx.uv.fei.logic.exceptions.DataInsertionException;
 
 public class AddResearchController{
-    private ArrayList<ComboBox> directorComboBoxes;
+    private ArrayList<ComboBox<Director>> directorComboBoxes;
     private ResearchManagerController researchManagerController;    
 
     @FXML
@@ -115,25 +115,27 @@ public class AddResearchController{
             
             ResearchDAO researchDAO = new ResearchDAO();
             
-            if(researchDAO.isValidDate(research)){
-                if(!researchDAO.isBlank(research)){
-                    try{
-                        if(researchDAO.addResearch(research) > 0){
-                            new AlertPopUpGenerator().showCustomMessage(AlertType.INFORMATION, "Éxito", "Anteproyecto creado exitosamente");
-                            
-                            researchManagerController.loadResearches(0);
-                            Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-                            stage.close();
+            if(allFieldsContainsCorrectValues()){
+                if(researchDAO.isValidDate(research)){
+                    if(!researchDAO.isBlank(research)){
+                        try{
+                            if(researchDAO.addResearch(research) > 0){
+                                new AlertPopUpGenerator().showCustomMessage(AlertType.INFORMATION, "Éxito", "Anteproyecto creado exitosamente");
+                                
+                                researchManagerController.loadResearches(0);
+                                Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+                                stage.close();
+                            }
+    
+                        }catch(DataInsertionException exception){
+                            new AlertPopUpGenerator().showConnectionErrorMessage();
                         }
-
-                    }catch(DataInsertionException exception){
-                        new AlertPopUpGenerator().showConnectionErrorMessage();
+                    }else{
+                        new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "No se puede crear el anteproyecto", "Favor de llenar todos los campos");
                     }
                 }else{
-                    new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "No se puede crear el anteproyecto", "Favor de llenar todos los campos");
+                    new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "No se puede crear el anteproyecto", "Favor de introducir una fecha válida");
                 }
-            }else{
-                new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "No se puede crear el anteproyecto", "Favor de introducir una fecha válida");
             }
         }else{
             new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "No se puede crear el anteproyecto", "Favor de introducir una fecha válida");
@@ -145,6 +147,17 @@ public class AddResearchController{
     }
     public void setResearchManagerController(ResearchManagerController researchManagerController){
         this.researchManagerController = researchManagerController;
+    }
+    private boolean allFieldsContainsCorrectValues(){
+        Pattern titlePattern = Pattern.compile("([A-Z][a-z]+)\\s?([A-Z][a-z]+)?\\s?([A-Z][a-z]+)?\\s?([A-Z][a-z]+)?");
+        Matcher titleMatcher = titlePattern.matcher(titleTextField.getText());
+
+        if(titleMatcher.find() && startDatePicker.getValue() != null && 
+           dueDatePicker.getValue() != null) {
+            return true;
+        }
+
+        return false;
     }
 
 }

@@ -1,6 +1,7 @@
 package mx.uv.fei.logic.daosinterfaces;
 
 import java.util.ArrayList;
+
 import mx.uv.fei.logic.domain.KGAL;
 import mx.uv.fei.logic.exceptions.DataInsertionException;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;

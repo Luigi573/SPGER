@@ -7,13 +7,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.sql.Types;
-
-
+import mx.uv.fei.dataaccess.DataBaseManager;
 import mx.uv.fei.logic.daosinterfaces.IAdvanceDAO;
 import mx.uv.fei.logic.domain.Advance;
 import mx.uv.fei.logic.exceptions.DataInsertionException;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
-import mx.uv.fei.dataaccess.DataBaseManager;
 
 public class AdvanceDAO implements IAdvanceDAO{
     private DataBaseManager dataBaseManager;
@@ -45,7 +43,7 @@ public class AdvanceDAO implements IAdvanceDAO{
         }
         return generatedId;
     }
-
+    
     @Override
     public ArrayList<Advance> getAdvancesList() throws DataRetrievalException {
         ArrayList<Advance> advancesList = new ArrayList();
@@ -74,7 +72,7 @@ public class AdvanceDAO implements IAdvanceDAO{
     }
     
     public ArrayList<Advance> getActivityAdvanceList(int activityId) throws DataRetrievalException {
-        ArrayList<Advance> advanceList = new ArrayList();
+        ArrayList<Advance> advanceList = new ArrayList<>();
         PreparedStatement statement;
         String query = "SELECT IdAvance, IdActividad, IdArchivo, título, fecha, comentario, retroalimentación FROM Avances WHERE IdActividad IN(?)";
         
@@ -164,6 +162,5 @@ public class AdvanceDAO implements IAdvanceDAO{
             throw new DataRetrievalException("La información del avance con ID " + advanceToBeUpdatedID + " no pudo ser modificada. Por favor, intente de nuevo más tarde.");
         }
         return result;
-    }
-    
+    }   
 }

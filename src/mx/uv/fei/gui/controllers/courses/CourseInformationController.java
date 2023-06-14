@@ -33,6 +33,8 @@ public class CourseInformationController{
     private Label scholarPeriodLabel;
     @FXML
     private Label sectionLabel;
+    @FXML
+    private Label statusLabel;
 
     @FXML
     private void adminUsersButtonController(ActionEvent event){
@@ -44,6 +46,7 @@ public class CourseInformationController{
 
             GuiUsersCourseController guiUsersCourseController = new GuiUsersCourseController();
             guiUsersCourseController.setCourseInformationController(this);
+            guiUsersCourseController.setUser(guiCoursesController.getUser());
 
             loader.setController(guiUsersCourseController);
             guiUsersCourse = loader.load();
@@ -106,5 +109,11 @@ public class CourseInformationController{
     }
     public void setSection(String section){
         sectionLabel.setText(section);
+    }
+    public String getStatus(){
+        return statusLabel.getText();
+    }
+    public void setStatus(String status){
+        statusLabel.setText(status);
     }
 }

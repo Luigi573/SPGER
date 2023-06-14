@@ -55,7 +55,7 @@ public class ResearchInfoPaneController{
     
     @FXML
     private void initialize(){
-        directorLabels = new ArrayList();
+        directorLabels = new ArrayList<>();
         directorLabels.add(director1Label);
         directorLabels.add(director2Label);
         directorLabels.add(director3Label);

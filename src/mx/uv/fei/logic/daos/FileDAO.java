@@ -7,7 +7,6 @@ import java.sql.ResultSet;
 import mx.uv.fei.dataaccess.DataBaseManager;
 import mx.uv.fei.logic.daosinterfaces.IFileDAO;
 import mx.uv.fei.logic.domain.File;
-import mx.uv.fei.logic.domain.KGAL;
 import mx.uv.fei.logic.exceptions.DataInsertionException;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
 

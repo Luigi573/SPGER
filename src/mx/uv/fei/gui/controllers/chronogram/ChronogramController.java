@@ -1,9 +1,8 @@
 package mx.uv.fei.gui.controllers.chronogram;
 
-import mx.uv.fei.gui.controllers.chronogram.activities.CreateActivityController;
-import mx.uv.fei.gui.controllers.chronogram.activities.ActivityPaneController;
 import java.io.IOException;
 import java.util.ArrayList;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -19,6 +18,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import mx.uv.fei.gui.AlertPopUpGenerator;
 import mx.uv.fei.gui.controllers.HeaderPaneController;
+import mx.uv.fei.gui.controllers.chronogram.activities.ActivityPaneController;
+import mx.uv.fei.gui.controllers.chronogram.activities.CreateActivityController;
 import mx.uv.fei.logic.daos.ActivityDAO;
 import mx.uv.fei.logic.daos.ResearchDAO;
 import mx.uv.fei.logic.domain.Activity;

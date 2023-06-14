@@ -1,66 +1,81 @@
 package mx.uv.fei.logic.domain;
 
 public abstract class User {
-    int userId;
-    String name;
-    String firstSurname;
-    String secondSurname;
-    String emailAddress;
-    String password;
-    String alternateEmail;
-    String phoneNumber;
-    
-    public void setUserId(int userId){
+    private int userId;
+    private String alternateEmail;
+    private String emailAddress;
+    private String firstSurname;
+    private String name;
+    private String password;
+    private String phoneNumber;
+    private String secondSurname;
+
+    public void setUserId(int userId) {
         this.userId = userId;
     }
-    public int getUserId(){
+
+    public int getUserId() {
         return userId;
     }
-    public void setName(String name){
+
+    public void setName(String name) {
         this.name = name;
     }
-    public void setFirstSurname(String firstSurname){
+
+    public void setFirstSurname(String firstSurname) {
         this.firstSurname = firstSurname;
     }
-    public void setSecondSurname(String secondSurname){
+
+    public void setSecondSurname(String secondSurname) {
         this.secondSurname = secondSurname;
     }
-    public void setEmailAddress(String emailAddress){
+
+    public void setEmailAddress(String emailAddress) {
         this.emailAddress = emailAddress;
     }
-    public void setPassword(String password){
+
+    public void setPassword(String password) {
         this.password = password;
     }
-    public void setAlternateEmail(String alternateEmail){
+
+    public void setAlternateEmail(String alternateEmail) {
         this.alternateEmail = alternateEmail;
     }
-    public void setPhoneNumber(String phoneNumber){
+
+    public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
-    public String getName(){
+
+    public String getName() {
         return name;
     }
-    public String getFirstSurname(){
+
+    public String getFirstSurname() {
         return firstSurname;
     }
-    public String getSecondSurname(){
+
+    public String getSecondSurname() {
         return secondSurname;
     }
-    public String getEmailAddress(){
+
+    public String getEmailAddress() {
         return emailAddress;
     }
-    public String getPassword(){
+
+    public String getPassword() {
         return password;
     }
-    public String getAlternateEmail(){
+
+    public String getAlternateEmail() {
         return alternateEmail;
     }
-    public String getPhoneNumber(){
+
+    public String getPhoneNumber() {
         return phoneNumber;
     }
-    
+
     @Override
-    public String toString(){
+    public String toString() {
         return name + " " + firstSurname + " " + secondSurname;
     }
 }

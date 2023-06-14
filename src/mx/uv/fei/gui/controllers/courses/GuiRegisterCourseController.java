@@ -5,9 +5,11 @@ import java.util.regex.Pattern;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
-import javafx.scene.text.Text;
+import javafx.scene.control.Alert.AlertType;
+import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import mx.uv.fei.gui.AlertPopUpGenerator;
 import mx.uv.fei.logic.daos.CourseDAO;
@@ -18,29 +20,32 @@ import mx.uv.fei.logic.domain.Professor;
 import mx.uv.fei.logic.domain.ScholarPeriod;
 import mx.uv.fei.logic.exceptions.DataInsertionException;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
+import mx.uv.fei.logic.exceptions.DuplicatedPrimaryKeyException;
 
 public class GuiRegisterCourseController {
+    private GuiCoursesController guiCoursesController;
+
     @FXML
     private ComboBox<String> blockComboBox;
     @FXML
     private ComboBox<String> educativeExperienceComboBox;
     @FXML
-    private Text errorMessajeText;
-    @FXML
     private TextField nrcTextField;
     @FXML
     private ComboBox<Professor> professorComboBox;
+    @FXML
+    private Button registerButton;
     @FXML
     private ComboBox<ScholarPeriod> scholarPeriodComboBox;
     @FXML
     private ComboBox<String> sectionComboBox;
     
     @FXML
-    void initialize() {
+    private void initialize() {
         try{
             ProfessorDAO professorDAO = new ProfessorDAO();
-            this.professorComboBox.getItems().addAll(professorDAO.getProfessors());
-            this.professorComboBox.setConverter(new StringConverter<Professor>() {
+            professorComboBox.getItems().addAll(professorDAO.getProfessors());
+            professorComboBox.setConverter(new StringConverter<Professor>() {
 
                 @Override
                 public Professor fromString(String arg0) {
@@ -57,11 +62,10 @@ public class GuiRegisterCourseController {
                 }
 
             });
-            this.professorComboBox.setValue(this.professorComboBox.getItems().get(0));
 
             ScholarPeriodDAO scholarPeriodDAO = new ScholarPeriodDAO();
-            this.scholarPeriodComboBox.getItems().addAll(scholarPeriodDAO.getScholarPeriods());
-            this.scholarPeriodComboBox.setConverter(new StringConverter<ScholarPeriod>() {
+            scholarPeriodComboBox.getItems().addAll(scholarPeriodDAO.getScholarPeriods());
+            scholarPeriodComboBox.setConverter(new StringConverter<ScholarPeriod>() {
 
                 @Override
                 public ScholarPeriod fromString(String arg0) {
@@ -78,66 +82,69 @@ public class GuiRegisterCourseController {
                 }
 
             });
-            this.scholarPeriodComboBox.setValue(this.scholarPeriodComboBox.getItems().get(0));
 
-            this.educativeExperienceComboBox.getItems().add("Proyecto Guiado");
-            this.educativeExperienceComboBox.getItems().add("Experiencia Recepcional");
-            this.educativeExperienceComboBox.setValue("Proyecto Guiado");
-            this.sectionComboBox.getItems().add("7");
-            this.sectionComboBox.getItems().add("8");
-            this.sectionComboBox.setValue("7");
-            this.blockComboBox.getItems().add("1");
-            this.blockComboBox.getItems().add("2");
-            this.blockComboBox.setValue("1");
+            educativeExperienceComboBox.getItems().add("Proyecto Guiado");
+            educativeExperienceComboBox.getItems().add("Experiencia Recepcional");
+            sectionComboBox.getItems().add("1");
+            sectionComboBox.getItems().add("2");
+            sectionComboBox.getItems().add("3");
+            blockComboBox.getItems().add("7");
+            blockComboBox.getItems().add("8");
+            blockComboBox.getItems().add("9");
+            blockComboBox.getItems().add("10");
         }catch(DataRetrievalException exception){
             new AlertPopUpGenerator().showConnectionErrorMessage();
         }
     }
 
     @FXML
-    void registerButtonController(ActionEvent event) {
+    private void registerButtonController(ActionEvent event) {
         try{
-            if(!this.nrcTextField.getText().isEmpty()) {
-
+            if(!nrcTextField.getText().isEmpty() &&
+               blockComboBox.getValue() != null &&
+               educativeExperienceComboBox.getValue() != null &&
+               sectionComboBox.getValue() != null &&
+               professorComboBox.getValue() != null &&
+               scholarPeriodComboBox.getValue() != null){
                 if(allTextFieldsContainsCorrectValues()){
-                    this.errorMessajeText.setVisible(false);
                     CourseDAO courseDAO = new CourseDAO();
                     Course course = new Course();
-                    course.setName(this.educativeExperienceComboBox.getValue());
-                    course.setNrc(Integer.parseInt(this.nrcTextField.getText()));
-                    course.setSection(Integer.parseInt(this.sectionComboBox.getValue()));
-                    course.setBlock(Integer.parseInt(this.blockComboBox.getValue()));
+                    course.setName(educativeExperienceComboBox.getValue());
+                    course.setNrc(Integer.parseInt(nrcTextField.getText()));
+                    course.setSection(Integer.parseInt(sectionComboBox.getValue()));
+                    course.setBlock(Integer.parseInt(blockComboBox.getValue()));
                     course.setProfessor(professorComboBox.getValue());
                     course.setScholarPeriod(scholarPeriodComboBox.getValue());
+                    courseDAO.addCourse(course);
+                    new AlertPopUpGenerator().showCustomMessage(AlertType.INFORMATION, "Éxito", "Curso registrado exitosamente");
 
-                    if(courseDAO.theCourseIsAlreadyRegisted(course)) {
-                        this.errorMessajeText.setText("El curso ya está registrado en el sistema");
-                        this.errorMessajeText.setVisible(true);
-                        return;
-                    }
-                    courseDAO.addCourse (course);
-                    this.errorMessajeText.setText("Curso registrado exitosamente");
-                    this.errorMessajeText.setVisible(true);
-                } else {
-                    this.errorMessajeText.setText("Algunos campos contienen datos inválidos");
-                    this.errorMessajeText.setVisible(true);
+                    guiCoursesController.loadCourseButtons();
+                    Stage stage = (Stage) registerButton.getScene().getWindow();
+                    stage.close();
+                }else{
+                    new AlertPopUpGenerator().showCustomMessage(AlertType.ERROR, "Error", "Algunos campos contienen datos inválidos");
                 }
-
-            } else {
-                this.errorMessajeText.setText("Faltan campos por llenar");
-                this.errorMessajeText.setVisible(true);
+            }else{
+                new AlertPopUpGenerator().showCustomMessage(AlertType.ERROR, "Error", "Faltan campos por llenar");
             }
-        }catch(DataInsertionException | DataRetrievalException exception){
+        }catch(DataInsertionException exception){
             new AlertPopUpGenerator().showConnectionErrorMessage();
+        }catch(DuplicatedPrimaryKeyException exception){
+            new AlertPopUpGenerator().showCustomMessage(AlertType.ERROR, "Error", "El NRC ya está usado");
         }
+    }
+
+    public GuiCoursesController getGuiCoursesController() {
+        return guiCoursesController;
+    }
+    public void setGuiCoursesController(GuiCoursesController guiCoursesController) {
+        this.guiCoursesController = guiCoursesController;
     }
 
     private boolean allTextFieldsContainsCorrectValues(){
         Pattern nrcPattern = Pattern.compile("^[0-9]{5}$");
-        Matcher nrcMatcher = nrcPattern.matcher(this.nrcTextField.getText());
+        Matcher nrcMatcher = nrcPattern.matcher(nrcTextField.getText());
 
         return nrcMatcher.find();
-        
     }
-
 }

@@ -1,9 +1,9 @@
 package mx.uv.fei.logic.daos.exceptions;
 
+import org.junit.Test;
+
 import mx.uv.fei.logic.daos.LoginDAO;
 import mx.uv.fei.logic.exceptions.LoginException;
-import org.junit.Test;
-import static org.junit.Assert.*;
 
 public class LoginDAOExceptionsTest {
     

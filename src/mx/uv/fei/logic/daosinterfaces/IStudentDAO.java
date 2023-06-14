@@ -1,13 +1,15 @@
 package mx.uv.fei.logic.daosinterfaces;
 
 import java.util.ArrayList;
+
 import mx.uv.fei.logic.domain.Student;
-import mx.uv.fei.logic.exceptions.DataRetrievalException;
 import mx.uv.fei.logic.exceptions.DataInsertionException;
+import mx.uv.fei.logic.exceptions.DataRetrievalException;
+import mx.uv.fei.logic.exceptions.DuplicatedPrimaryKeyException;
 
 public interface IStudentDAO {
-    public void addStudent (Student student) throws DataInsertionException;
-    public void modifyStudentData(Student newStudentData, Student originalStudentData) throws DataRetrievalException, DataInsertionException;
+    public int addStudent(Student student) throws DataInsertionException, DuplicatedPrimaryKeyException;
+    public int modifyStudentData(Student student) throws DataInsertionException, DuplicatedPrimaryKeyException;
     public ArrayList<Student> getStudents() throws DataRetrievalException;
     public ArrayList<Student> getStudentList() throws DataRetrievalException;
     public ArrayList<Student> getAvailableStudents() throws DataRetrievalException;

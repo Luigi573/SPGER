@@ -21,19 +21,22 @@ public class StudentsCoursesDAO implements IStudentsCoursesDAO{
     }
 
     @Override
-    public void addStudentCourse (String studentMatricle, String courseNRC) throws DataInsertionException{
+    public int addStudentCourse (String studentMatricle, String courseNRC) throws DataInsertionException{
+        int result = 0;
+
         try{
             String query = "INSERT INTO EstudiantesCurso (Matrícula, NRC) VALUES (?, ?)";
             PreparedStatement preparedStatement = 
             dataBaseManager.getConnection().prepareStatement(query);
             preparedStatement.setString(1, studentMatricle);
             preparedStatement.setInt(2, Integer.parseInt(courseNRC));
-            preparedStatement.executeUpdate();
+            result = preparedStatement.executeUpdate();
         }catch(SQLException e){
-            throw new DataInsertionException("Fallo al registrar estudiantes al curso. Verifique su conexion e intentelo de nuevo");
+            throw new DataInsertionException("Fallo al registrar estudiantes al curso. Inténtelo de nuevo más tarde");
         }finally{
             dataBaseManager.closeConnection();
         }
+        return result;
     }
 
     @Override
@@ -51,7 +54,7 @@ public class StudentsCoursesDAO implements IStudentsCoursesDAO{
             resultSet.close();
             dataBaseManager.closeConnection();
         }catch(SQLException e){
-            throw new DataRetrievalException("Fallo al recuperar la informacion. Verifique su conexion e intentelo de nuevo");
+            throw new DataRetrievalException("Fallo al recuperar la informacion. Inténtelo de nuevo más tarde");
         }finally{
             dataBaseManager.closeConnection();
         }
@@ -70,14 +73,14 @@ public class StudentsCoursesDAO implements IStudentsCoursesDAO{
             
             preparedStatement.executeUpdate();
         }catch(SQLException e){
-            throw new DataInsertionException("Fallo al eliminar el estudiante del curso. Verifique su conexion e intentelo de nuevo");
+            throw new DataInsertionException("Fallo al eliminar el estudiante del curso. Inténtelo de nuevo más tarde");
         }finally{
             dataBaseManager.closeConnection();
         }
     } 
     
     public ArrayList<Course> getStudentCourses(String matricle) throws DataRetrievalException{
-        ArrayList<Course> courseList = new ArrayList();
+        ArrayList<Course> courseList = new ArrayList<>();
         PreparedStatement statement;
         String query = "SELECT c.NRC, c.NumPersonal, c.nombre, c.sección, c.bloque, up.nombre, up.apellidoPaterno, up.apellidoMaterno, "
                 + "pe.fechaInicio, pe.fechaFin FROM EstudiantesCurso ec LEFT JOIN Cursos c ON ec.NRC = c.NRC "
@@ -98,7 +101,7 @@ public class StudentsCoursesDAO implements IStudentsCoursesDAO{
                 course.setBlock(resultSet.getInt("c.bloque"));
                 course.setNrc(resultSet.getInt("c.NRC"));
                 
-                if(!resultSet.wasNull()){
+                if(resultSet.getString("c.NumPersonal") != null){
                     Professor professor = new Professor();
                     course.setProfessor(professor);
                     
@@ -106,11 +109,17 @@ public class StudentsCoursesDAO implements IStudentsCoursesDAO{
                     course.getProfessor().setName(resultSet.getString("up.nombre"));
                     course.getProfessor().setFirstSurname(resultSet.getString("up.apellidoPaterno"));
                     course.getProfessor().setSecondSurname(resultSet.getString("up.apellidoMaterno"));
-                    
+                }else{
+                    course.setProfessor(null);
+                }
+                
+                if(resultSet.getDate("pe.fechaInicio") != null && resultSet.getDate("pe.fechaFin") != null){
                     ScholarPeriod period = new ScholarPeriod();
                     course.setScholarPeriod(period);
                     course.getScholarPeriod().setStartDate(resultSet.getDate("pe.fechaInicio"));
                     course.getScholarPeriod().setEndDate(resultSet.getDate("pe.fechaFin"));
+                }else{
+                    course.setScholarPeriod(null);
                 }
                 
                 courseList.add(course);

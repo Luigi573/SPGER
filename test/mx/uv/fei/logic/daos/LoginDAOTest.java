@@ -1,19 +1,24 @@
 package mx.uv.fei.logic.daos;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.fail;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
 import java.sql.SQLException;
+import java.sql.Statement;
+
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
 import mx.uv.fei.dataaccess.DataBaseManager;
 import mx.uv.fei.logic.domain.AcademicBodyHead;
 import mx.uv.fei.logic.domain.DegreeBoss;
 import mx.uv.fei.logic.domain.Professor;
 import mx.uv.fei.logic.domain.Student;
 import mx.uv.fei.logic.exceptions.LoginException;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import static org.junit.Assert.*;
 
 public class LoginDAOTest {
     private static AcademicBodyHead preloadedAcademicBodyHead;
@@ -152,6 +157,7 @@ public class LoginDAOTest {
             
             userStatement.close();
         }catch(SQLException exception){
+            exception.printStackTrace();
             fail("Couldn't connect to DB");
         }finally{
             dataBaseManager.closeConnection();

@@ -1,16 +1,14 @@
 package mx.uv.fei.gui.controllers.users;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import mx.uv.fei.gui.AlertPopUpGenerator;
@@ -27,8 +25,8 @@ import mx.uv.fei.logic.domain.Student;
 import mx.uv.fei.logic.domain.UserType;
 import mx.uv.fei.logic.domain.statuses.ProfessorStatus;
 import mx.uv.fei.logic.domain.statuses.StudentStatus;
-import mx.uv.fei.logic.exceptions.DataRetrievalException;
 import mx.uv.fei.logic.exceptions.DataInsertionException;
+import mx.uv.fei.logic.exceptions.DuplicatedPrimaryKeyException;
 
 public class GuiRegisterUserController{
     private GuiUsersController guiUsersController;
@@ -37,8 +35,6 @@ public class GuiRegisterUserController{
     private TextField alternateEmailTextField;
     @FXML
     private TextField emailTextField;
-    @FXML
-    private Text errorMessajeText;
     @FXML
     private TextField firstSurnameTextField;
     @FXML
@@ -95,8 +91,7 @@ public class GuiRegisterUserController{
                     registerStudent();
                 }
 
-                new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "Éxito", "Usuario registrado exitosamente");
-                //guiUsersController.loadUserButtons();
+                guiUsersController.loadUserButtons();
                 Stage stage = (Stage) registerButton.getScene().getWindow();
                 stage.close();
             }else{
@@ -109,13 +104,13 @@ public class GuiRegisterUserController{
     @FXML
     private void typeComboBoxController(ActionEvent event){
         if(typeComboBox.getValue().equals(UserType.STUDENT.getValue())){
-            matricleOrStaffNumberText.setText("Matrícula: ");
-            matricleOrStaffNumberTextField.setPrefWidth(303);
-            matricleOrStaffNumberTextField.setLayoutX(479);
+            matricleOrStaffNumberText.setText("Matrícula: *");
+            matricleOrStaffNumberTextField.setPrefWidth(295);
+            matricleOrStaffNumberTextField.setLayoutX(487);
         } else {
-            matricleOrStaffNumberText.setText("Número de Personal: ");
-            matricleOrStaffNumberTextField.setPrefWidth(219);
-            matricleOrStaffNumberTextField.setLayoutX(563);        
+            matricleOrStaffNumberText.setText("Número de Personal: *");
+            matricleOrStaffNumberTextField.setPrefWidth(211);
+            matricleOrStaffNumberTextField.setLayoutX(571);        
         }
     }
 
@@ -135,13 +130,12 @@ public class GuiRegisterUserController{
             director.setPhoneNumber(telephoneNumberTextField.getText());
             director.setStatus(ProfessorStatus.ACTIVE.getValue());
             director.setStaffNumber(Integer.parseInt(matricleOrStaffNumberTextField.getText()));
-            if(directorDAO.theDirectorIsAlreadyRegisted(director)){
-                new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "Error", "El usuario ya está registrado en el sistema");
-                return;
-            }
             directorDAO.addDirector (director);
-        }catch(DataRetrievalException | DataInsertionException e){
+            new AlertPopUpGenerator().showCustomMessage(AlertType.INFORMATION, "Éxito", "Director registrado exitosamente");
+        }catch(DataInsertionException e){
             new AlertPopUpGenerator().showConnectionErrorMessage();
+        }catch(DuplicatedPrimaryKeyException e) {
+            new AlertPopUpGenerator().showCustomMessage(AlertType.ERROR, "Error", "El número de personal ya está usado");
         }
     }
     private void registerAcademicBodyHead(){
@@ -156,15 +150,12 @@ public class GuiRegisterUserController{
             academicBodyHead.setPhoneNumber(telephoneNumberTextField.getText());
             academicBodyHead.setStatus(ProfessorStatus.ACTIVE.getValue());
             academicBodyHead.setStaffNumber(Integer.parseInt(matricleOrStaffNumberTextField.getText()));
-            if(academicBodyHeadDAO.theAcademicBodyHeadIsAlreadyRegisted(academicBodyHead)){
-                new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "Error", "El usuario ya está registrado en el sistema");
-                return;
-            }
-            academicBodyHeadDAO.addAcademicBodyHead (academicBodyHead);
-        }catch(DataRetrievalException e){
-            new AlertPopUpGenerator().showConnectionErrorMessage();
+            academicBodyHeadDAO.addAcademicBodyHead(academicBodyHead);
+            new AlertPopUpGenerator().showCustomMessage(AlertType.INFORMATION, "Éxito", "Miembro de Cuerpo Académico registrado exitosamente");
         }catch(DataInsertionException e){
             new AlertPopUpGenerator().showConnectionErrorMessage();
+        }catch(DuplicatedPrimaryKeyException e) {
+            new AlertPopUpGenerator().showCustomMessage(AlertType.ERROR, "Error", "El número de personal ya está usado");
         }
     }
     private void registerDegreeBoss(){
@@ -179,15 +170,12 @@ public class GuiRegisterUserController{
             degreeBoss.setPhoneNumber(telephoneNumberTextField.getText());
             degreeBoss.setStatus(ProfessorStatus.ACTIVE.getValue());
             degreeBoss.setStaffNumber(Integer.parseInt(matricleOrStaffNumberTextField.getText()));
-            if(degreeBossDAO.theDegreeBossIsAlreadyRegisted(degreeBoss)){
-                new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "Error", "El usuario ya está registrado en el sistema");
-                return;
-            }
-            degreeBossDAO.addDegreeBoss (degreeBoss);
-        }catch(DataRetrievalException e){
-            new AlertPopUpGenerator().showConnectionErrorMessage();
+            degreeBossDAO.addDegreeBoss(degreeBoss);
+            new AlertPopUpGenerator().showCustomMessage(AlertType.INFORMATION, "Éxito", "Jefe de Carrera registrado exitosamente");
         }catch(DataInsertionException e){
             new AlertPopUpGenerator().showConnectionErrorMessage();
+        }catch(DuplicatedPrimaryKeyException e) {
+            new AlertPopUpGenerator().showCustomMessage(AlertType.ERROR, "Error", "El número de personal ya está usado");
         }
         
     }
@@ -203,15 +191,12 @@ public class GuiRegisterUserController{
             professor.setPhoneNumber(telephoneNumberTextField.getText());
             professor.setStatus(ProfessorStatus.ACTIVE.getValue());
             professor.setStaffNumber(Integer.parseInt(matricleOrStaffNumberTextField.getText()));
-            if(professorDAO.theProfessorIsAlreadyRegisted(professor)){
-                new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "Error", "El usuario ya está registrado en el sistema");
-                return;
-            }
-            professorDAO.addProfessor (professor);
-        }catch(DataRetrievalException e){
-            new AlertPopUpGenerator().showConnectionErrorMessage();
+            professorDAO.addProfessor(professor);
+            new AlertPopUpGenerator().showCustomMessage(AlertType.INFORMATION, "Éxito", "Profesor registrado exitosamente");
         }catch(DataInsertionException e){
             new AlertPopUpGenerator().showConnectionErrorMessage();
+        }catch(DuplicatedPrimaryKeyException e) {
+            new AlertPopUpGenerator().showCustomMessage(AlertType.ERROR, "Error", "El número de personal ya está usado");
         }
     }
     private void registerStudent(){
@@ -226,21 +211,20 @@ public class GuiRegisterUserController{
             student.setPhoneNumber(telephoneNumberTextField.getText());
             student.setStatus(StudentStatus.AVAILABLE.getValue());
             student.setMatricle(matricleOrStaffNumberTextField.getText());
-            if(studentDAO.theStudentIsAlreadyRegisted(student.toString())){
-                new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "Error", "El usuario ya está registrado en el sistema");
-                return;
-            }
             studentDAO.addStudent (student);
-        } catch (DataInsertionException | DataRetrievalException ex) {
-            Logger.getLogger(GuiRegisterUserController.class.getName()).log(Level.SEVERE, null, ex);
+            new AlertPopUpGenerator().showCustomMessage(AlertType.INFORMATION, "Éxito", "Estudiante registrado exitosamente");
+        }catch(DataInsertionException e) {
+            new AlertPopUpGenerator().showConnectionErrorMessage();
+        }catch(DuplicatedPrimaryKeyException e) {
+            new AlertPopUpGenerator().showCustomMessage(AlertType.ERROR, "Error", "La Matrícula ya está usada");
         }
     }
     private boolean allTextFieldsContainsCorrectValues(){
         Pattern namesPattern = Pattern.compile("([A-Z][a-z]+)\\s?([A-Z][a-z]+)?\\s?([A-Z][a-z]+)?\\s?([A-Z][a-z]+)?"),
                 firstSurnamePattern = Pattern.compile("([A-Z][a-z]+)\\s?([A-Z][a-z]+)?\\s?([A-Z][a-z]+)?\\s?([A-Z][a-z]+)?"),
                 secondSurnamePattern = Pattern.compile("([A-Z][a-z]+)\\s?([A-Z][a-z]+)?\\s?([A-Z][a-z]+)?\\s?([A-Z][a-z]+)?"),
-                emailPattern = Pattern.compile("^(.+)@(\\S+)$"),
-                alternateEmailPattern = Pattern.compile("^(.+)@(\\S+)$"),
+                emailPattern = Pattern.compile("^(.+)@uv.mx$"),
+                alternateEmailPattern = Pattern.compile("^(.+)@uv.mx$"),
                 telephoneNumberPattern = Pattern.compile("^[0-9]{10}$"),
                 matricleOrStaffNumberPattern = Pattern.compile("");
     

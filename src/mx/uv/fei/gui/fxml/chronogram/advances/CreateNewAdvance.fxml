@@ -29,7 +29,7 @@
       <Pane layoutY="76.0" prefHeight="330.0" prefWidth="54.0" />
       <Pane prefHeight="54.0" prefWidth="593.0">
          <children>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="182.0" layoutY="2.0" prefHeight="30.0" prefWidth="194.0" text="[NombreEE]">
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="182.0" layoutY="2.0" prefHeight="30.0" prefWidth="194.0" text="[nombre]">
                <font>
                   <Font size="20.0" />
                </font>

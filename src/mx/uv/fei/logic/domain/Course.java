@@ -1,27 +1,36 @@
 package mx.uv.fei.logic.domain;
 
 public class Course {
-    private int nrc;
-    private ScholarPeriod scholarPeriod;
-    private String name;
-    private int section;
     private int block;
-    private Professor professor; //cambiar a Profesor
+    private String name;
+    private int nrc;
+    private Professor professor;
+    private ScholarPeriod scholarPeriod;
+    private int section;
+    private String status;
 
-    public void setNrc(int nrc) {
-        this.nrc = nrc;
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public int getNrc() {
         return this.nrc;
     }
 
+    public void setNrc(int nrc) {
+        this.nrc = nrc;
+    }
+
     public ScholarPeriod getScholarPeriod() {
         return scholarPeriod;
     }
 
-    public void setScholarPeriod(ScholarPeriod period) {
-        this.scholarPeriod = period;
+    public void setScholarPeriod(ScholarPeriod scholarPeriod) {
+        this.scholarPeriod = scholarPeriod;
     }
 
     public String getName() {

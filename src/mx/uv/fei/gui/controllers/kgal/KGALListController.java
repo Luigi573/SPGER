@@ -2,22 +2,21 @@ package mx.uv.fei.gui.controllers.kgal;
 
 import java.io.IOException;
 import java.util.ArrayList;
+
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.stage.Stage;
 import javafx.scene.control.TextField;
-import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.layout.VBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import mx.uv.fei.gui.AlertPopUpGenerator;
-import mx.uv.fei.logic.domain.KGAL;
 import mx.uv.fei.logic.daos.KGALDAO;
+import mx.uv.fei.logic.domain.KGAL;
 import mx.uv.fei.logic.domain.User;
-
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
 
 public class KGALListController {

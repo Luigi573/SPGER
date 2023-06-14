@@ -32,7 +32,7 @@ import mx.uv.fei.logic.exceptions.DataRetrievalException;
 import mx.uv.fei.logic.exceptions.DataInsertionException;
 
 public class ModifyResearchPaneController{
-    private ArrayList<ComboBox> directorComboBoxes;
+    private ArrayList<ComboBox<Director>> directorComboBoxes;
     private int researchId;
     private User user;
     

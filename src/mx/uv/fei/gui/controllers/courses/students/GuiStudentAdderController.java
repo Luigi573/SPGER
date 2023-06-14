@@ -111,7 +111,7 @@ public class GuiStudentAdderController{
         for(Node studentPane : studentsVBox.getChildren()){
             if( ((RadioButton)((Pane)studentPane).getChildren().get(4)).isSelected() ){
                 try{
-                    studentCoursesDAO.addStudentCourse (
+                    studentCoursesDAO.addStudentCourse(
                         ((Label)((Pane)studentPane).getChildren().get(3)).getText(), 
                         guiUsersCourseController.getCourseInformationController().getNrc()
                     );
@@ -195,6 +195,7 @@ public class GuiStudentAdderController{
         }catch(DataRetrievalException e) {
             new AlertPopUpGenerator().showConnectionErrorMessage();
         }
+
     }
 
     public GuiUsersCourseController getGuiUsersCourseController(){

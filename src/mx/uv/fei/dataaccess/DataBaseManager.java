@@ -19,18 +19,10 @@ public class DataBaseManager {
             dataBaseUserPropertiesFile = new Properties();
             dataBaseUserPropertiesFile.load(fis);
         } catch (IOException e) {
-            Logger.getLogger(DataBaseManager.class.getName()).log(Level.WARNING, null, e);
+            Logger.getLogger(DataBaseManager.class.getName()).log(Level.SEVERE, null, e);
         }
     }
     
-    private void connect() throws SQLException{
-        connection = DriverManager.getConnection(
-            this.dataBaseUserPropertiesFile.getProperty("DATABASE_NAME"),
-            this.dataBaseUserPropertiesFile.getProperty("DATABASE_USER"),
-            this.dataBaseUserPropertiesFile.getProperty("DATABASE_PASSWORD")
-        );
-    }
-
     public Connection getConnection() throws SQLException {
         this.connect();
         return connection;
@@ -46,5 +38,13 @@ public class DataBaseManager {
                 Logger.getLogger(DataBaseManager.class.getName()).log(Level.SEVERE, null, exception);
             }
         }
+    }
+
+    private void connect() throws SQLException{
+        connection = DriverManager.getConnection(
+            dataBaseUserPropertiesFile.getProperty("DATABASE_NAME"),
+            dataBaseUserPropertiesFile.getProperty("DATABASE_USER"),
+            dataBaseUserPropertiesFile.getProperty("DATABASE_PASSWORD")
+        );
     }
 }

@@ -17,19 +17,25 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.DirectoryChooser;
+import javafx.stage.Stage;
 import mx.uv.fei.gui.AlertPopUpGenerator;
 import mx.uv.fei.gui.controllers.HeaderPaneController;
+import mx.uv.fei.gui.controllers.research.ResearchManagerController;
 import mx.uv.fei.logic.daos.ResearchReportDAO;
+import mx.uv.fei.logic.domain.ResearchProject;
+import mx.uv.fei.logic.domain.User;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
@@ -42,7 +48,8 @@ import net.sf.jasperreports.view.JasperViewer;
 
 public class GuiResearchReportController {
     private final DirectoryChooser directoryChooser = new DirectoryChooser();
-    
+    private User user;
+
     @FXML
     private Pane backgroundPane;
     @FXML
@@ -73,11 +80,9 @@ public class GuiResearchReportController {
     private Text showValidatedText;
     @FXML
     private ToggleButton showValidatedToggleButton;
-    
+
     @FXML
     private void initialize(){
-         /*
-
         researchesVBox.getChildren().clear();
         ResearchReportDAO researchesReportDAO = new ResearchReportDAO();
         ArrayList<ResearchProject> researches = new ArrayList<>();
@@ -88,7 +93,7 @@ public class GuiResearchReportController {
         }
         
         try{
-            for(Research research : researches){
+            for(ResearchProject research : researches){
                 FXMLLoader researchItemControllerLoader = new FXMLLoader(
                     getClass().getResource("/mx/uv/fei/gui/fxml/reports/ResearchItem.fxml")
                 );
@@ -103,13 +108,37 @@ public class GuiResearchReportController {
         }
     }
     @FXML
+    private void backButtonController(ActionEvent event) {
+        try{
+            FXMLLoader loader = new FXMLLoader(
+                getClass().getResource("/mx/uv/fei/gui/fxml/research/ResearchManager.fxml")
+            );
+            Parent researchManager = loader.load();
+
+            ResearchManagerController researchManagerController = loader.getController();
+            researchManagerController.setUser(user);
+            researchManagerController.loadHeader();
+
+            Scene scene = new Scene(researchManager);
+            String css = getClass().getResource("/mx/uv/fei/gui/stylesfiles/Styles.css").toExternalForm();
+            scene.getStylesheets().add(css);
+            Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+            stage.setTitle("Administrar Cursos");
+            stage.setScene(scene);
+            stage.setResizable(false);
+            stage.show();
+        }catch(IOException e){
+            new AlertPopUpGenerator().showMissingFilesMessage();
+        }
+    }
+    @FXML
     private void generateReportButtonController(ActionEvent event){
         if(selectedResearchesVBox.getChildren().isEmpty()){
             new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "Error", "No se puede generar un reporte vacío.");
             return;
         }
 
-        directoryChooser.setTitle("Seleccionar rrrrrrrrrrrrrrrrrrrrrrrrrrrruta");
+        directoryChooser.setTitle("Seleccionar Ruta");
         File choosedDirectory = directoryChooser.showDialog(null);
         if(choosedDirectory == null){
             return;
@@ -129,9 +158,10 @@ public class GuiResearchReportController {
             InputStream inputStream = Files.newInputStream(path.toAbsolutePath());
             JasperReport report = (JasperReport) JRLoader.loadObject(inputStream);
             
-            JRBeanArrayDataSource researchesReportDataSource = new JRBeanArrayDataSource(researches.toArray());
+            JRBeanArrayDataSource researchesData = new JRBeanArrayDataSource(researches.toArray());
+
             HashMap<String, Object> parameters = new HashMap<>();
-            parameters.put("researchesReportDataSource", researchesReportDataSource);
+            parameters.put("researchesData", researchesData);
 
             OutputStream reportFinale = new FileOutputStream(choosedDirectory.getAbsolutePath() + "/Reporte.pdf");
 
@@ -140,8 +170,11 @@ public class GuiResearchReportController {
             view.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
             view.setVisible(true);
             JasperExportManager.exportReportToPdfStream(jasperPrint, reportFinale);
+
+            inputStream.close();
+            reportFinale.close();
             
-        }catch(IOException exception){
+        }catch(IOException ioe){
             new AlertPopUpGenerator().showMissingFilesMessage();
         }catch(JRException jre){
             new AlertPopUpGenerator().showMissingFilesMessage();
@@ -180,7 +213,7 @@ public class GuiResearchReportController {
         }
         
         try{
-            for(Research research : researches){
+            for(ResearchProject research : researches){
                 FXMLLoader researchItemControllerLoader = new FXMLLoader(
                     getClass().getResource("/mx/uv/fei/gui/fxml/reports/ResearchItem.fxml")
                 );
@@ -275,20 +308,25 @@ public class GuiResearchReportController {
     public VBox getSelectedResearchesVBox(){
         return selectedResearchesVBox;
     }
-
+    public User getUser() {
+        return user;
+    }
+    public void setUser(User user) {
+        this.user = user;
+    }
     public void loadHeader(){
-        FXMLLoader headerLoader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/HeaderPane.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/HeaderPane.fxml"));
         
         try{
-            Pane header = headerLoader.load();
-            header.getStyleClass().add("/mx/uv/fei/gui/stylesfiles/Styles.css");
-            backgroundPane.getChildren().add(header);
-            HeaderPaneController headerPaneController = headerLoader.getController();
-            //headerPaneController.setTitle("Generar Reporte de Anteproshectos");
-            //headerPaneController.setVisibleNRCLabel(false);
+            Pane header = loader.load();
             
+            if(user != null){
+                HeaderPaneController controller = (HeaderPaneController)loader.getController();
+                controller.setUser(user);
+            }
+            backgroundPane.getChildren().add(header);
         }catch(IOException exception){
             new AlertPopUpGenerator().showMissingFilesMessage();
-        }*/
+        }
     }
 }

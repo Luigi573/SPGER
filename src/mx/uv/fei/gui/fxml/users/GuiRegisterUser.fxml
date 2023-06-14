@@ -14,59 +14,59 @@
             <Font size="25.0" />
          </font>
       </Text>
-      <Text layoutX="14.0" layoutY="96.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nombre(s):">
+      <Text layoutX="14.0" layoutY="96.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nombre(s): *">
          <font>
             <Font size="15.0" />
          </font>
       </Text>
-      <TextField fx:id="namesTextField" layoutX="101.0" layoutY="79.0" prefHeight="24.0" prefWidth="262.0" />
-      <Text layoutX="14.0" layoutY="136.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Apellido Paterno:">
+      <TextField fx:id="namesTextField" layoutX="113.0" layoutY="79.0" prefHeight="24.0" prefWidth="250.0" />
+      <Text layoutX="14.0" layoutY="136.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Apellido Paterno: *">
          <font>
             <Font size="15.0" />
          </font>
       </Text>
-      <Text layoutX="14.0" layoutY="176.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Apellido Materno:">
+      <TextField fx:id="firstSurnameTextField" layoutX="158.0" layoutY="119.0" prefHeight="24.0" prefWidth="205.0" />
+      <Text layoutX="14.0" layoutY="176.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Apellido Materno: *">
          <font>
             <Font size="15.0" />
          </font>
       </Text>
-      <Text layoutX="14.0" layoutY="216.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Correo Electronico:">
+      <TextField fx:id="secondSurnameTextField" layoutX="162.0" layoutY="159.0" prefHeight="24.0" prefWidth="199.0" />
+      <Text layoutX="14.0" layoutY="216.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Correo Electronico: *">
          <font>
             <Font size="15.0" />
          </font>
       </Text>
-      <TextField fx:id="firstSurnameTextField" layoutX="146.0" layoutY="119.0" prefHeight="24.0" prefWidth="217.0" />
-      <TextField fx:id="secondSurnameTextField" layoutX="150.0" layoutY="159.0" prefHeight="24.0" prefWidth="211.0" />
-      <TextField fx:id="emailTextField" layoutX="164.0" layoutY="199.0" prefHeight="17.0" prefWidth="199.0" />
-      <Text layoutX="400.0" layoutY="96.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Correo Alterno:">
+      <TextField fx:id="emailTextField" layoutX="173.0" layoutY="199.0" prefHeight="24.0" prefWidth="190.0" />
+      <Text layoutX="400.0" layoutY="96.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Correo Alterno: *">
          <font>
             <Font size="15.0" />
          </font>
       </Text>
-      <Text layoutX="400.0" layoutY="137.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Numero de Telefono:">
+      <TextField fx:id="alternateEmailTextField" layoutX="528.0" layoutY="79.0" prefHeight="24.0" prefWidth="256.0" />
+      <Text layoutX="400.0" layoutY="137.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Numero de Telefono: *">
          <font>
             <Font size="15.0" />
          </font>
       </Text>
-      <Text layoutX="400.0" layoutY="216.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tipo:">
+      <TextField fx:id="telephoneNumberTextField" layoutX="572.0" layoutY="120.0" prefHeight="24.0" prefWidth="211.0" />
+      <Text layoutX="400.0" layoutY="216.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tipo: *">
          <font>
             <Font size="15.0" />
          </font>
       </Text>
-      <Text fx:id="matricleOrStaffNumberText" layoutX="400.0" layoutY="176.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Matricula: ">
+      <ComboBox fx:id="typeComboBox" layoutX="452.0" layoutY="199.0" onAction="#typeComboBoxController" prefHeight="24.0" prefWidth="330.0" promptText="--Seleccionar Tipo--" />
+      <Text fx:id="matricleOrStaffNumberText" layoutX="400.0" layoutY="176.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Matricula: *">
          <font>
             <Font size="15.0" />
          </font>
       </Text>
-      <TextField fx:id="alternateEmailTextField" layoutX="524.0" layoutY="79.0" prefHeight="24.0" prefWidth="260.0" />
-      <TextField fx:id="telephoneNumberTextField" layoutX="566.0" layoutY="120.0" prefHeight="24.0" prefWidth="217.0" />
-      <ComboBox fx:id="typeComboBox" layoutX="449.0" layoutY="199.0" onAction="#typeComboBoxController" prefHeight="24.0" prefWidth="333.0" />
+      <TextField fx:id="matricleOrStaffNumberTextField" layoutX="489.0" layoutY="160.0" prefHeight="24.0" prefWidth="293.0" />
       <Button fx:id="registerButton" layoutX="625.0" layoutY="259.0" mnemonicParsing="false" onAction="#registerButtonController" prefHeight="48.0" prefWidth="128.0" text="Registrar" />
-      <Text fx:id="errorMessajeText" fill="RED" layoutX="31.0" layoutY="288.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" visible="false">
+      <Text layoutX="18.0" layoutY="298.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*: Campos Obligatorios" wrappingWidth="190.0">
          <font>
-            <Font size="18.0" />
+            <Font size="16.0" />
          </font>
       </Text>
-      <TextField fx:id="matricleOrStaffNumberTextField" layoutX="479.0" layoutY="160.0" prefHeight="24.0" prefWidth="303.0" />
    </children>
 </Pane>

@@ -1,6 +1,7 @@
 package mx.uv.fei.gui.controllers;
 
 import java.io.IOException;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,10 +15,6 @@ import mx.uv.fei.logic.domain.User;
 
 public class AcademicBodyHeadVBoxPaneController{
     private User user;
-    
-    private void initialize() {
-        
-    }    
 
     @FXML
     private void goToResearchManager(ActionEvent event) {

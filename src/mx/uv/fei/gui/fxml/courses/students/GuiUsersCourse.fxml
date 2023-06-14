@@ -10,6 +10,7 @@
 
 <Pane fx:id="backgroundPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
    <children>
+      <Button fx:id="backButton" layoutX="17.0" layoutY="90.0" mnemonicParsing="false" onAction="#backButtonController" prefHeight="24.0" prefWidth="70.0" text="Atras" />
       <ScrollPane layoutX="17.0" layoutY="122.0" prefHeight="465.0" prefWidth="989.0">
          <content>
             <VBox prefHeight="463.0" prefWidth="973.0">

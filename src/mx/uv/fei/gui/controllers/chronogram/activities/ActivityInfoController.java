@@ -3,6 +3,7 @@ package mx.uv.fei.gui.controllers.chronogram.activities;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,21 +17,21 @@ import javafx.scene.control.TextArea;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
+import javafx.stage.Stage;
 import mx.uv.fei.gui.AlertPopUpGenerator;
 import mx.uv.fei.gui.controllers.HeaderPaneController;
 import mx.uv.fei.gui.controllers.chronogram.advances.CreateNewAdvanceController;
 import mx.uv.fei.gui.controllers.chronogram.advances.AdvanceVBoxPaneController;
 import mx.uv.fei.logic.daos.AdvanceDAO;
-import mx.uv.fei.logic.exceptions.DataInsertionException;
-import mx.uv.fei.logic.domain.Activity;
 import mx.uv.fei.logic.daos.FileDAO;
+import mx.uv.fei.logic.domain.Activity;
 import mx.uv.fei.logic.domain.Advance;
 import mx.uv.fei.logic.domain.Course;
 import mx.uv.fei.logic.domain.Professor;
 import mx.uv.fei.logic.domain.User;
+import mx.uv.fei.logic.exceptions.DataInsertionException;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
 
 public class ActivityInfoController{
@@ -70,7 +71,7 @@ public class ActivityInfoController{
     
     @FXML
     public void initialize() {
-        filesList = new ArrayList();
+        filesList = new ArrayList<>();
     }
     
     @FXML
@@ -124,7 +125,7 @@ public class ActivityInfoController{
     private void deliverActivity(ActionEvent event) {
         int result;
         int successfulSaves = 0;
-        ArrayList<String> failedSaves = new ArrayList();
+        ArrayList<String> failedSaves = new ArrayList<>();
         
         for (File file : filesList) {
             if (file != null) {

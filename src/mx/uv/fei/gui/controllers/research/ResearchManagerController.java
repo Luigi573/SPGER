@@ -17,6 +17,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import mx.uv.fei.gui.AlertPopUpGenerator;
 import mx.uv.fei.gui.controllers.HeaderPaneController;
+import mx.uv.fei.gui.controllers.reports.GuiResearchReportController;
 import mx.uv.fei.logic.daos.ResearchDAO;
 import mx.uv.fei.logic.domain.ResearchProject;
 import mx.uv.fei.logic.domain.User;
@@ -73,6 +74,9 @@ public class ResearchManagerController {
         
         try{
             Parent parent = loader.load();
+            GuiResearchReportController guiResearchReportController = loader.getController();
+            guiResearchReportController.setUser(user);
+            guiResearchReportController.loadHeader();
             Scene scene = new Scene(parent);
             String css = this.getClass().getResource("/mx/uv/fei/gui/stylesfiles/Styles.css").toExternalForm();
             scene.getStylesheets().add(css);
@@ -179,7 +183,6 @@ public class ResearchManagerController {
     }
     public void loadHeader(){
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/HeaderPane.fxml"));
-        
         try{
             Pane header = loader.load();
             
