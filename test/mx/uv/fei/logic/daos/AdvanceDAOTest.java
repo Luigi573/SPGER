@@ -49,7 +49,7 @@ public class AdvanceDAOTest {
             }
             
             preloadedAdvance = new Advance();
-            preloadedAdvance.setActivityId(activityId);
+            preloadedAdvance.setActivityID(activityId);
             
             String advanceQuery = "INSERT INTO Avances(IdActividad, título, comentario, fecha) VALUES(?,?,?,?)";
             PreparedStatement advanceStatement = dataBaseManager.getConnection().prepareStatement(advanceQuery, Statement.RETURN_GENERATED_KEYS);
@@ -63,7 +63,7 @@ public class AdvanceDAOTest {
             ResultSet generatedAdvanceKeys = advanceStatement.getGeneratedKeys();
             
             if(generatedAdvanceKeys.next()){
-                preloadedAdvance.setId(generatedAdvanceKeys.getInt(1));
+                preloadedAdvance.setAdvanceID(generatedAdvanceKeys.getInt(1));
             }
         }catch(SQLException exception){
             fail("Test failed, couldn't connect to DB");
@@ -103,7 +103,7 @@ public class AdvanceDAOTest {
     @Test
     public void testGetAdvanceList() throws DataRetrievalException {
         AdvanceDAO instance = new AdvanceDAO();
-        ArrayList<Advance> advanceList = instance.getAdvanceList(activityId);
+        ArrayList<Advance> advanceList = instance.getActivityAdvanceList(activityId);
         
         System.out.println("Retrieved advance data: ");
         System.out.println("Title: " + advanceList.get(0).getTitle());
@@ -119,15 +119,15 @@ public class AdvanceDAOTest {
         int advanceID = 8;
         AdvanceDAO instance = new AdvanceDAO();
         Advance advance1 = new Advance();
-        advance1.setId(8);
+        advance1.setAdvanceID(8);
         advance1.setTitle("Avance de prueba unitaria num2");
         advance1.setComment("Este avance también es una prueba");
         Advance expResult = advance1;
-        /*Advance result = instance.getAdvanceByID(advanceID);
+        Advance result = instance.getAdvanceByID(advanceID);
         System.out.println(expResult);
         System.out.println(result);
         System.out.println(expResult.equals(result));
-        assertEquals(expResult, result);*/
+        assertEquals(expResult, result);
         fail("This test case is incomplete");
     }    
     

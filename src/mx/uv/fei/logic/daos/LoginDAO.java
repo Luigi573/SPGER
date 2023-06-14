@@ -3,7 +3,6 @@ package mx.uv.fei.logic.daos;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
 import mx.uv.fei.dataaccess.DataBaseManager;
 import mx.uv.fei.logic.daosinterfaces.ILoginDAO;
 import mx.uv.fei.logic.domain.AcademicBodyHead;
@@ -84,6 +83,7 @@ public class LoginDAO implements ILoginDAO{
         return academicBodyHead;
     }
     
+    @Override
     public Director logInDirector(String emailAddress, String password) throws LoginException {
         Director director = new Director();
         PreparedStatement statement;

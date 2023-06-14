@@ -15,8 +15,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import mx.uv.fei.gui.controllers.chronogram.activities.ActivityInfoController;
-import mx.uv.fei.gui.controllers.chronogram.advances.AdvanceInfoController;
+import mx.uv.fei.gui.AlertPopUpGenerator;
 import mx.uv.fei.gui.controllers.chronogram.activities.ActivityFileItemController;
 import mx.uv.fei.logic.daos.AdvanceDAO;
 import mx.uv.fei.logic.daos.FileDAO;
@@ -51,7 +50,7 @@ public class ModifyAdvanceController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/AdvanceInfo.fxml"));
             Parent parent = loader.load();
             AdvanceInfoController controller = (AdvanceInfoController)loader.getController();
-            controller.setAdvanceInfo(advance);
+            controller.setAdvance(advance);
             
             Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
             Scene scene = new Scene(parent);

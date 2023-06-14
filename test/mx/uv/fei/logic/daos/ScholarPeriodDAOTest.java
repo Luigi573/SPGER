@@ -2,18 +2,15 @@ package mx.uv.fei.logic.daos;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
 import mx.uv.fei.dataaccess.DataBaseManager;
 import mx.uv.fei.logic.domain.ScholarPeriod;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
@@ -75,55 +72,32 @@ public class ScholarPeriodDAOTest{
     }
 
     @Test
-    public void getScholarPeriodTest(){
-        try {
-            ScholarPeriodDAO instance = new ScholarPeriodDAO();
-            ScholarPeriod result = instance.getScholarPeriod(preloadedScholarPeriod.getScholarPeriodId());
-            assertTrue(result.equals(preloadedScholarPeriod));
-        }catch(DataRetrievalException exception){
-            fail("Couldn't connect to DB");
-        }finally{
-            dataBaseManager.closeConnection();
-        }
+    public void getScholarPeriodTest() throws DataRetrievalException{
+        ScholarPeriodDAO instance = new ScholarPeriodDAO();
+        ScholarPeriod result = instance.getScholarPeriod(preloadedScholarPeriod.getScholarPeriodId());
+        
+        assertTrue(result.equals(preloadedScholarPeriod));
     }
 
     @Test
-    public void getScholarPeriodTestFail(){
-        try {
-            ScholarPeriodDAO instance = new ScholarPeriodDAO();
-            ScholarPeriod result = instance.getScholarPeriod(preloadedScholarPeriod.getScholarPeriodId());
-            assertTrue(!result.equals(failedScholarPeriod));
-        }catch(DataRetrievalException exception){
-            fail("Couldn't connect to DB");
-        }finally{
-            dataBaseManager.closeConnection();
-        }
+    public void getScholarPeriodTestFail()  throws DataRetrievalException{
+        ScholarPeriodDAO instance = new ScholarPeriodDAO();
+        ScholarPeriod result = instance.getScholarPeriod(preloadedScholarPeriod.getScholarPeriodId());
+        assertTrue(!result.equals(failedScholarPeriod));
     }
 
     @Test
-    public void getScholarPeriodsTest(){
-        try {
-            ScholarPeriodDAO instance = new ScholarPeriodDAO();
-            ArrayList<ScholarPeriod> result = instance.getScholarPeriods();
-            assertTrue(result.contains(preloadedScholarPeriod));
-        }catch(DataRetrievalException exception){
-            fail("Couldn't connect to DB");
-        }finally{
-            dataBaseManager.closeConnection();
-        }
+    public void getScholarPeriodsTest() throws DataRetrievalException{
+        ScholarPeriodDAO instance = new ScholarPeriodDAO();
+        ArrayList<ScholarPeriod> result = instance.getScholarPeriods();
+        assertTrue(result.contains(preloadedScholarPeriod));
     }
 
     @Test
-    public void getScholarPeriodsTestFail(){
-        try {
-            ScholarPeriodDAO instance = new ScholarPeriodDAO();
-            ArrayList<ScholarPeriod> result = instance.getScholarPeriods();
+    public void getScholarPeriodsTestFail() throws DataRetrievalException{
+        ScholarPeriodDAO instance = new ScholarPeriodDAO();
+        ArrayList<ScholarPeriod> result = instance.getScholarPeriods();
 
-            assertTrue(!result.contains(failedScholarPeriod));
-        }catch(DataRetrievalException exception){
-            fail("Couldn't connect to DB");
-        }finally{
-            dataBaseManager.closeConnection();
-        }
+        assertTrue(!result.contains(failedScholarPeriod));
     }
 }

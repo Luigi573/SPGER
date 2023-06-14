@@ -1,24 +1,21 @@
 package mx.uv.fei.logic.daos;
 
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
-
 import mx.uv.fei.dataaccess.DataBaseManager;
 import mx.uv.fei.logic.domain.AcademicBodyHead;
 import mx.uv.fei.logic.domain.statuses.ProfessorStatus;
 import mx.uv.fei.logic.exceptions.DataInsertionException;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
 import mx.uv.fei.logic.exceptions.DuplicatedPrimaryKeyException;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 public class AcademicBodyHeadDAOTest {
     private static DataBaseManager dataBaseManager;
@@ -130,115 +127,69 @@ public class AcademicBodyHeadDAOTest {
     }
     
     @Test
-    public void addAcademicBodyHeadTest() {
-        try {
-            AcademicBodyHeadDAO instance = new AcademicBodyHeadDAO();
-            int result = instance.addAcademicBodyHead(preloadedAcademicBodyHeadForAddAcademicBodyHeadTest);
-            assertTrue(result > 0);
-        }catch(DataInsertionException exception){
-            fail("Couldn't connect to DB");
-        }catch(DuplicatedPrimaryKeyException e) {
-            fail("Duplicated primary key");
-        }finally{
-            dataBaseManager.closeConnection();
-        }
+    public void addAcademicBodyHeadTest() throws DataInsertionException{
+        AcademicBodyHeadDAO instance = new AcademicBodyHeadDAO();
+        
+        int result = instance.addAcademicBodyHead(preloadedAcademicBodyHeadForAddAcademicBodyHeadTest);
+        assertTrue(result > 0);
     }
 
     @Test
-    public void getAcademicBodyHeadTest() {
-        try {
-            AcademicBodyHeadDAO instance = new AcademicBodyHeadDAO();
-            AcademicBodyHead result = instance.getAcademicBodyHead(preloadedAcademicBodyHead.getStaffNumber());
-            assertTrue(result.equals(preloadedAcademicBodyHead));
-        }catch(DataRetrievalException exception){
-            fail("Couldn't connect to DB");
-        }finally{
-            dataBaseManager.closeConnection();
-        }
+    public void getAcademicBodyHeadTest() throws DataRetrievalException{
+        AcademicBodyHeadDAO instance = new AcademicBodyHeadDAO();
+        AcademicBodyHead result = instance.getAcademicBodyHead(preloadedAcademicBodyHead.getStaffNumber());
+        assertTrue(result.equals(preloadedAcademicBodyHead));
     }
 
     @Test
-    public void getAcademicBodyHeadTestFail() {
-        try {
-            AcademicBodyHeadDAO instance = new AcademicBodyHeadDAO();
-            AcademicBodyHead result = instance.getAcademicBodyHead(preloadedAcademicBodyHead.getStaffNumber());
-            assertTrue(!result.equals(preloadedAcademicBodyHeadForAddAcademicBodyHeadTest));
-        }catch(DataRetrievalException exception){
-            fail("Couldn't connect to DB");
-        }finally{
-            dataBaseManager.closeConnection();
-        }
+    public void getAcademicBodyHeadTestFail() throws DataRetrievalException{
+        AcademicBodyHeadDAO instance = new AcademicBodyHeadDAO();
+        AcademicBodyHead result = instance.getAcademicBodyHead(preloadedAcademicBodyHead.getStaffNumber());
+        
+        assertTrue(!result.equals(preloadedAcademicBodyHeadForAddAcademicBodyHeadTest));
     }
     
     @Test
-    public void getAcademicBodyHeadsTest() {
-        try {
-            AcademicBodyHeadDAO instance = new AcademicBodyHeadDAO();
-            ArrayList<AcademicBodyHead> result = instance.getAcademicBodyHeads();
-            assertTrue(result.contains(preloadedAcademicBodyHead));
-        }catch(DataRetrievalException exception){
-            fail("Couldn't connect to DB");
-        }finally{
-            dataBaseManager.closeConnection();
-        }
+    public void getAcademicBodyHeadsTest() throws DataRetrievalException{
+        AcademicBodyHeadDAO instance = new AcademicBodyHeadDAO();
+        ArrayList<AcademicBodyHead> result = instance.getAcademicBodyHeads();
+        
+        assertTrue(result.contains(preloadedAcademicBodyHead));
     }
 
     @Test
     public void getAcademicBodyHeadsTestFail() {
-        try {
-            AcademicBodyHeadDAO instance = new AcademicBodyHeadDAO();
-            ArrayList<AcademicBodyHead> result = instance.getAcademicBodyHeads();
-            assertTrue(!result.contains(preloadedAcademicBodyHeadForAddAcademicBodyHeadTest));
-        }catch(DataRetrievalException exception){
-            fail("Couldn't connect to DB");
-        }finally{
-            dataBaseManager.closeConnection();
-        }
+        AcademicBodyHeadDAO instance = new AcademicBodyHeadDAO();
+        ArrayList<AcademicBodyHead> result = instance.getAcademicBodyHeads();
+        
+        assertTrue(!result.contains(preloadedAcademicBodyHeadForAddAcademicBodyHeadTest));
     }
 
     @Test
-    public void getSpecifiedAcademicBodyHeadsTest() {
-        try {
-            AcademicBodyHeadDAO instance = new AcademicBodyHeadDAO();
-            ArrayList<AcademicBodyHead> result = instance.getSpecifiedAcademicBodyHeads("F");
-            assertTrue(result.contains(preloadedAcademicBodyHead));
-        }catch(DataRetrievalException exception){
-            fail("Couldn't connect to DB");
-        }finally{
-            dataBaseManager.closeConnection();
-        }
+    public void getSpecifiedAcademicBodyHeadsTest() throws DataRetrievalException{
+        AcademicBodyHeadDAO instance = new AcademicBodyHeadDAO();
+        ArrayList<AcademicBodyHead> result = instance.getSpecifiedAcademicBodyHeads("F");
+        
+        assertTrue(result.contains(preloadedAcademicBodyHead));
     }
 
     @Test
-    public void getSpecifiedAcademicBodyHeadsTestFail() {
-        try {
-            AcademicBodyHeadDAO instance = new AcademicBodyHeadDAO();
-            ArrayList<AcademicBodyHead> result = instance.getSpecifiedAcademicBodyHeads("F");
-            assertTrue(!result.contains(preloadedAcademicBodyHeadForAddAcademicBodyHeadTest));
-        }catch(DataRetrievalException exception){
-            fail("Couldn't connect to DB");
-        }finally{
-            dataBaseManager.closeConnection();
-        }
+    public void getSpecifiedAcademicBodyHeadsTestFail() throws DataRetrievalException{
+        AcademicBodyHeadDAO instance = new AcademicBodyHeadDAO();
+        ArrayList<AcademicBodyHead> result = instance.getSpecifiedAcademicBodyHeads("F");
+        
+        assertTrue(!result.contains(preloadedAcademicBodyHeadForAddAcademicBodyHeadTest));
     }
 
     @Test
-    public void modifyAcademicBodyHeadDataTest() {
-        try {
-            AcademicBodyHeadDAO instance = new AcademicBodyHeadDAO();
-            preloadedAcademicBodyHead.setName("Felipe Tobar");
-            preloadedAcademicBodyHead.setFirstSurname("Guzmán");
-            preloadedAcademicBodyHead.setSecondSurname("Toral");
-            preloadedAcademicBodyHead.setEmailAddress("fetoguto901@gmail.com");
-            int result = instance.modifyAcademicBodyHeadData(preloadedAcademicBodyHead);
-            assertTrue(result > 0);
-        }catch(DataInsertionException exception){
-            fail("Couldn't connect to DB");
-        }catch(DuplicatedPrimaryKeyException e) {
-            fail("Duplicated primary key");
-        }finally{
-            dataBaseManager.closeConnection();
-        }
-
+    public void modifyAcademicBodyHeadDataTest() throws DataInsertionException{
+        AcademicBodyHeadDAO instance = new AcademicBodyHeadDAO();
+        preloadedAcademicBodyHead.setName("Felipe Tobar");
+        preloadedAcademicBodyHead.setFirstSurname("Guzmán");
+        preloadedAcademicBodyHead.setSecondSurname("Toral");
+        preloadedAcademicBodyHead.setEmailAddress("fetoguto901@gmail.com");
+        
+        int result = instance.modifyAcademicBodyHeadData(preloadedAcademicBodyHead);
+        assertTrue(result > 0);
     }
 }
