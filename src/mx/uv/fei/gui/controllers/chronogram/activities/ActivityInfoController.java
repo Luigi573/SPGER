@@ -72,6 +72,7 @@ public class ActivityInfoController{
     @FXML
     public void initialize() {
         filesList = new ArrayList<>();
+        loadActivityFiles();
     }
     
     @FXML
@@ -108,7 +109,7 @@ public class ActivityInfoController{
         
         if (file != null){
             try{
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/ActivityFileItem.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/activities/ActivityFileItem.fxml"));
                 Pane pane = loader.load();
                 ActivityFileItemController controller = (ActivityFileItemController)loader.getController();
                 controller.setFile(file);
@@ -121,9 +122,11 @@ public class ActivityInfoController{
         }
     }
     
+    
+    
     @FXML
     private void deliverActivity(ActionEvent event) {
-        int result;
+        int result1, result2;
         int successfulSaves = 0;
         ArrayList<String> failedSaves = new ArrayList<>();
         
@@ -131,8 +134,9 @@ public class ActivityInfoController{
             if (file != null) {
                 FileDAO fileDAO = new FileDAO();
                 try {
-                    result = fileDAO.addFile(file.getPath());
-                    if (result > 0) {
+                    result1 = fileDAO.addFile(file.getPath());
+                    if (result1 > 0) {
+                        result2 = fileDAO.addActivityFile(result1, activity.getId());
                         successfulSaves = successfulSaves + 1;
                     }
                 } catch (DataInsertionException die) {
@@ -177,7 +181,7 @@ public class ActivityInfoController{
     @FXML
     private void createNewAdvance(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/CreateNewAdvance.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/advances/CreateNewAdvance.fxml"));
             Parent parent = loader.load();
             CreateNewAdvanceController createNewAdvanceController = (CreateNewAdvanceController)loader.getController();
             createNewAdvanceController.setActivity(activity);
@@ -196,6 +200,43 @@ public class ActivityInfoController{
     public void removeFiles(ActionEvent event) {
         fileVBox.getChildren().clear();
         filesList.clear();
+    }
+    
+    private void loadActivityFiles(){
+        ArrayList<Integer> fileIdList = new ArrayList();
+        FileDAO fileDAO = new FileDAO();
+        try {
+            fileIdList = fileDAO.getFilesByActivity(activity.getId());
+        } catch (DataRetrievalException exception) {
+            new AlertPopUpGenerator().showConnectionErrorMessage();
+        }
+        
+        String path;
+        File file;
+        for (int fileId : fileIdList) {
+            try {
+                path = fileDAO.getFileByID(fileId).getFilePath();
+
+                if (path != null) {
+                    file = new File(path);
+                    
+                    try{
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/activities/ActivityFileItem.fxml"));
+                        Pane pane = loader.load();
+                        ActivityFileItemController controller = (ActivityFileItemController)loader.getController();
+                        controller.setFile(file);
+                        controller.hideDownloadButton();
+                        fileVBox.getChildren().add(pane);
+                        filesList.add(file);
+                    } catch (IOException exception) {
+                        new AlertPopUpGenerator().showMissingFilesMessage();
+                    }
+                }
+                
+            } catch (DataRetrievalException exception) {
+                new AlertPopUpGenerator().showConnectionErrorMessage();
+            }
+        }
     }
     
     protected void loadHeader(){

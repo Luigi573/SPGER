@@ -89,7 +89,7 @@ public class KGALDAOTest {
      * Test of addKGAL method, of class KGALDAO.
      */
     @Test
-    public void testAddKGALSuccesful() throws DataInsertionException {
+    public void testAddKGALSuccessful() throws DataInsertionException {
         System.out.println("addKGALSuccesful");
         KGAL insertedKgal = new KGAL();
         insertedKgal.setDescription("LGAC de Prueba");
@@ -146,17 +146,9 @@ public class KGALDAOTest {
     
     @Test
     public void testGetKGALListFail() throws DataRetrievalException {
-        System.out.println("getKGALListFailure");
+        System.out.println("getKGALList Fail");
         KGALDAO instance = new KGALDAO();
         ArrayList<KGAL> expResult = new ArrayList();
-        KGAL kgal1 = new KGAL();
-        KGAL kgal2 = new KGAL();
-        kgal1.setKgalID(kgalId);
-        kgal2.setKgalID(kgalId2);
-        kgal1.setDescription("Precargada para junit tests"); //First KGAL matches
-        kgal2.setDescription("Descripción incorrecta"); //Second KGAL doesn't match
-        expResult.add(kgal1);
-        expResult.add(kgal2);
         ArrayList<KGAL> result = instance.getKGALList();
         
         for(int i = 0; i < result.size(); i++) {
@@ -218,7 +210,7 @@ public class KGALDAOTest {
      * Test of updateKGALDescription method, of class KGALDAO.
      */
     @Test
-    public void testUpdateKGALDescriptionSuccess() throws DataRetrievalException {
+    public void testUpdateKGALDescriptionSuccessful() throws DataRetrievalException {
         System.out.println("updateKGALDescription");
         String description = "Esta LGAC ha sido modificada";
         KGALDAO instance = new KGALDAO();

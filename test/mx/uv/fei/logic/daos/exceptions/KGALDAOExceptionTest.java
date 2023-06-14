@@ -1,14 +1,8 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/UnitTests/JUnit4TestClass.java to edit this template
- */
-package mx.uv.fei.logic.daos;
+package mx.uv.fei.logic.daos.exceptions;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import mx.uv.fei.dataaccess.DataBaseManager;
+import mx.uv.fei.logic.daos.KGALDAO;
 import mx.uv.fei.logic.domain.KGAL;
 import mx.uv.fei.logic.exceptions.DataInsertionException;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
@@ -38,31 +32,7 @@ public class KGALDAOExceptionTest {
     
     @BeforeClass
     public static void setUpClass() {
-//        dataBaseManager = new DataBaseManager();
-//        preloadedKgal = new KGAL();
-//        PreparedStatement KGALStatement;
-//        String KGALQuery = "insert into LGAC(descripción) values(?)";
-//        
-//        try {
-//            KGALStatement = dataBaseManager.getConnection().prepareStatement(KGALQuery, PreparedStatement.RETURN_GENERATED_KEYS);
-//            KGALStatement.setString(1, "Precargada para junit tests");
-//            
-//            KGALStatement.executeUpdate();
-//            ResultSet generatedKGAL = KGALStatement.getGeneratedKeys();
-//            
-//            if (generatedKGAL.next()) {
-//                kgalId = generatedKGAL.getInt(1);
-//            }
-//            
-//            preloadedKgal.setKgalID(kgalId);
-//            preloadedKgal.setDescription("Precargada para junit tests");
-//            nextAvailableId = kgalId + 1;
-//            System.out.println("ID de la LGAC precargada: " + kgalId + " \nID de la proxima LGAC en guardarse: " + nextAvailableId);
-//        } catch (SQLException exception) {
-//            fail("El test falló, no se pudo conectar a la BD");
-//        } finally {
-//            dataBaseManager.closeConnection();
-//        }
+
     }
     
     @AfterClass

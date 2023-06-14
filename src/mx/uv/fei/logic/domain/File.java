@@ -19,4 +19,13 @@ public class File {
     public String getFilePath() {
         return this.filePath;
     }
+    
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof File)) {
+            return false;
+        }
+            File file = (File) o;
+            return this.filePath.equals(file.filePath);
+    }
 }

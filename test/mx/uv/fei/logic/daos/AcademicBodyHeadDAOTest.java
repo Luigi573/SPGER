@@ -127,7 +127,7 @@ public class AcademicBodyHeadDAOTest {
     }
     
     @Test
-    public void addAcademicBodyHeadTest() throws DataInsertionException{
+    public void addAcademicBodyHeadTest() throws DataInsertionException, DuplicatedPrimaryKeyException{
         AcademicBodyHeadDAO instance = new AcademicBodyHeadDAO();
         
         int result = instance.addAcademicBodyHead(preloadedAcademicBodyHeadForAddAcademicBodyHeadTest);
@@ -158,7 +158,7 @@ public class AcademicBodyHeadDAOTest {
     }
 
     @Test
-    public void getAcademicBodyHeadsTestFail() {
+    public void getAcademicBodyHeadsTestFail() throws DataRetrievalException {
         AcademicBodyHeadDAO instance = new AcademicBodyHeadDAO();
         ArrayList<AcademicBodyHead> result = instance.getAcademicBodyHeads();
         
@@ -182,7 +182,7 @@ public class AcademicBodyHeadDAOTest {
     }
 
     @Test
-    public void modifyAcademicBodyHeadDataTest() throws DataInsertionException{
+    public void modifyAcademicBodyHeadDataTest() throws DataInsertionException, DuplicatedPrimaryKeyException{
         AcademicBodyHeadDAO instance = new AcademicBodyHeadDAO();
         preloadedAcademicBodyHead.setName("Felipe Tobar");
         preloadedAcademicBodyHead.setFirstSurname("Guzmán");
