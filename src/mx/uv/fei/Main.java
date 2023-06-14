@@ -10,21 +10,8 @@ public class Main extends Application{
     @Override
     public void start(Stage arg0) throws Exception{
         Parent guiUsuarios;
-        FXMLLoader loader = new FXMLLoader(
-            getClass().getResource("/mx/uv/fei/gui/fxml/Login.fxml")
-            //getClass().getResource("/mx/uv/fei/gui/fxml/kgal/KGALList.fxml")
-            //getClass().getResource("/mx/uv/fei/gui/fxml/research/ResearchManager.fxml")
-            //getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/activities/ModifyActivity.fxml")// tha xavier gui
-            //getClass().getResource("/mx/uv/fei/gui/fxml/courses/GuiCourses.fxml")
-            //getClass().getResource("/mx/uv/fei/gui/fxml/users/GuiUsers.fxml")
-            //getClass().getResource("/mx/uv/fei/gui/fxml/reports/GuiResearchReport.fxml")
-        );
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/Login.fxml"));
         guiUsuarios = loader.load();
-        //TODO
-
-        //Que funcione la integracion
-        //Encriptar properties
-        //Preguntarle al xavier sobre que onda con los cronogramas
         
         Scene scene = new Scene(guiUsuarios);
         Stage stage = new Stage();

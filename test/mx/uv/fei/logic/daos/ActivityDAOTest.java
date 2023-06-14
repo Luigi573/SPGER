@@ -68,7 +68,6 @@ public class ActivityDAOTest {
                 preloadedActivity.setId(generatedActivity.getInt(1));
             }
         }catch(SQLException exception){
-            exception.printStackTrace();
             fail("Test failed, couldn't connect to DB");
         }finally{
             dataBaseManager.closeConnection();
@@ -175,7 +174,7 @@ public class ActivityDAOTest {
         System.out.println("Description: " + activity.getDescription());
         
         ActivityDAO instance = new ActivityDAO();
-        assertTrue(instance.isBlank(activity));
+        assertTrue(!instance.isBlank(activity));
     }
     @Test
     public void testIsValidDateSuccess() {
@@ -213,8 +212,7 @@ public class ActivityDAOTest {
     @Test
     public void testIsValidTitleFail(){
         Activity activity = new Activity();
-        activity.setTitle("This is not a valid title for an activity. "
-                + "It is too long to actually display it and the DB only accepts up to 50 char");
+        activity.setTitle("This is not a valid title for an activity. It is too long to actually display it and the DB only accepts up to 50 char");
         ActivityDAO instance = new ActivityDAO();
         
         assertTrue(!instance.isValidTitle(activity));

@@ -37,16 +37,6 @@ public class FileDAO implements IFileDAO {
         }
         return generatedId;
     }
-
-    @Override
-    public int addFilesList() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-    
-    @Override
-    public int updateFilePath(String filePath) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }    
     
     @Override
     public File getFileByID(int fileID) throws DataRetrievalException {

@@ -72,14 +72,9 @@ public class ModifyUserInformationController{
     }
     @FXML
     private void modifyButtonController(ActionEvent event){
-        if(!namesTextField.getText().trim().isEmpty() &&
-           !firstSurnameTextField.getText().trim().isEmpty() &&
-           !secondSurnameTextField.getText().trim().isEmpty() &&
-           !emailTextField.getText().trim().isEmpty() &&
-           !alternateEmailTextField.getText().trim().isEmpty() &&
-           !telephoneNumberTextField.getText().trim().isEmpty() &&
-           !matricleOrStaffNumberTextField.getText().trim().isEmpty() &&
-           statusComboBox.getValue() != null){
+        if(!namesTextField.getText().trim().isEmpty() && !firstSurnameTextField.getText().trim().isEmpty() && !secondSurnameTextField.getText().trim().isEmpty() 
+                && !emailTextField.getText().trim().isEmpty() && !alternateEmailTextField.getText().trim().isEmpty() && !telephoneNumberTextField.getText().trim().isEmpty() &&
+           !matricleOrStaffNumberTextField.getText().trim().isEmpty() && statusComboBox.getValue() != null){
             if(allTextFieldsContainsCorrectValues()){
                 if(userInformationController.getUserType().equals(UserType.DIRECTOR.getValue())){
                     modifyDirector(event);
@@ -322,7 +317,7 @@ public class ModifyUserInformationController{
                 emailPattern = Pattern.compile("^(.+)@uv.mx$"),
                 alternateEmailPattern = Pattern.compile("^(.+)@uv.mx$"),
                 telephoneNumberPattern = Pattern.compile("^[0-9]{10}$"),
-                matricleOrStaffNumberPattern = Pattern.compile("");
+                matricleOrStaffNumberPattern;
     
         if(userInformationController.getUserType().equals(UserType.STUDENT.getValue())){
             matricleOrStaffNumberPattern = Pattern.compile("^[z][S][0-9]{8}$");
@@ -332,20 +327,14 @@ public class ModifyUserInformationController{
 
         Matcher namesMatcher = namesPattern.matcher(namesTextField.getText()),
                 firstSurnameMatcher = firstSurnamePattern.matcher(firstSurnameTextField.getText()),
-                secondSurnameMatcher = secondSurnamePattern.matcher(secondSurnameTextField.getText()),
+                secondSurnameMatcher = secondSurnamePattern.matcher(secondSurnameTextField.getText()),  
                 emailMatcher = emailPattern.matcher(emailTextField.getText()),
                 alternateEmailMatcher = alternateEmailPattern.matcher(alternateEmailTextField.getText()),
                 telephoneNumberMatcher = telephoneNumberPattern.matcher(telephoneNumberTextField.getText()),
                 matricleOrStaffNumberMatcher = matricleOrStaffNumberPattern.matcher(matricleOrStaffNumberTextField.getText());
 
-        if(namesMatcher.find() && firstSurnameMatcher.find() &&
-           secondSurnameMatcher.find() && emailMatcher.find() &&
-           alternateEmailMatcher.find() && telephoneNumberMatcher.find() &&
-           matricleOrStaffNumberMatcher.find()){
-            return true;
-        }
-
-        return false;
+        return namesMatcher.find() && firstSurnameMatcher.find() && secondSurnameMatcher.find() && emailMatcher.find() &&
+                alternateEmailMatcher.find() && telephoneNumberMatcher.find() && matricleOrStaffNumberMatcher.find();
     }
     private void returnToGuiUsers(ActionEvent event, User user){
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/users/GuiUsers.fxml"));
@@ -367,7 +356,7 @@ public class ModifyUserInformationController{
 
                 stage.show();
             }
-        }catch(IllegalStateException | IOException exception){
+        }catch(IOException exception){
             new AlertPopUpGenerator().showConnectionErrorMessage();
         }
     }

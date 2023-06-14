@@ -39,7 +39,6 @@ public class AdminMenuPaneController{
                 stage.show();
             }
         }catch(IOException exception){
-            exception.printStackTrace();
             new AlertPopUpGenerator().showConnectionErrorMessage();
         }
     }

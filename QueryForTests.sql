@@ -4,28 +4,28 @@
 /*Para consultar por los metodos get*/
 
 /*
-INSERT INTO Usuarios (nombre, apellidoPaterno, apellidoMaterno, correo, contraseña, correoAlterno, númeroTeléfono, estado)
+INSERT INTO Usuarios (nombre, apellidoPaterno, apellidoMaterno, correo, contraseña, correoAlterno, numeroTelefono, estado)
     VALUES ('Luis Roberto', 'Justo', 'Moreno', 'lurojumo342@gmail.com', NULL, 'lurojumo343@gmail.com', '2288563472', 'Activo');
 INSERT INTO Estudiantes (IdUsuario, Matrícula) VALUES (1, 'zS10000001');
 
-INSERT INTO Usuarios (nombre, apellidoPaterno, apellidoMaterno, correo, contraseña, correoAlterno, númeroTeléfono, estado)
+INSERT INTO Usuarios (nombre, apellidoPaterno, apellidoMaterno, correo, contraseña, correoAlterno, numeroTelefono, estado)
     VALUES ('Jorge Alberto', 'Guevara', 'Cerdán', 'jaga234@gmail.com', NULL, 'jaga243@gmail.com', '2283487254', 'No Disponible');
 INSERT INTO Profesores (IdUsuario, NumPersonal) VALUES (2, 100000001);
 
-INSERT INTO Usuarios (nombre, apellidoPaterno, apellidoMaterno, correo, contraseña, correoAlterno, númeroTeléfono, estado)
+INSERT INTO Usuarios (nombre, apellidoPaterno, apellidoMaterno, correo, contraseña, correoAlterno, numeroTelefono, estado)
     VALUES ('Luis Roberto', 'Justo', 'Moreno', 'lurojumo342@gmail.com', NULL, 'lurojumo343@gmail.com', '2288563472', 'Disponible');
 
-INSERT INTO Usuarios (nombre, apellidoPaterno, apellidoMaterno, correo, contraseña, correoAlterno, númeroTeléfono, estado)
+INSERT INTO Usuarios (nombre, apellidoPaterno, apellidoMaterno, correo, contraseña, correoAlterno, numeroTelefono, estado)
     VALUES ('Miguel Gilberto', 'Chavez', 'Gonzalez', 'migichago998@gmail.com', NULL, 'migichago999@gmail.com', '2281647833', 'Disponible');
 INSERT INTO Profesores (IdUsuario, NumPersonal) VALUES (3, 100000002);
 INSERT INTO Directores (NumPersonal) VALUES (100000002);
 
-INSERT INTO Usuarios (nombre, apellidoPaterno, apellidoMaterno, correo, contraseña, correoAlterno, númeroTeléfono, estado)
+INSERT INTO Usuarios (nombre, apellidoPaterno, apellidoMaterno, correo, contraseña, correoAlterno, numeroTelefono, estado)
     VALUES ('José René', 'Mendoza', 'Gonzalez', 'joremago112@gmail.com', NULL, 'joremago111@gmail.com', '2288563333', 'Disponible');
 INSERT INTO Profesores (IdUsuario, NumPersonal) VALUES (4, 100000003);
 INSERT INTO ResponsablesCA (NumPersonal) VALUES (100000003);
 
-INSERT INTO Usuarios (nombre, apellidoPaterno, apellidoMaterno, correo, contraseña, correoAlterno, númeroTeléfono, estado)
+INSERT INTO Usuarios (nombre, apellidoPaterno, apellidoMaterno, correo, contraseña, correoAlterno, numeroTelefono, estado)
     VALUES ('Mauricio', 'Ortega', 'Mújica', 'cricoso222@gmail.com', NULL, 'cricoso232@gmail.com', '2284627839', 'No Disponible');
 INSERT INTO Profesores (IdUsuario, NumPersonal) VALUES (5, 100000004);
 INSERT INTO JefesCarrera (NumPersonal) VALUES (100000004);

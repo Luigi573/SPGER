@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import mx.uv.fei.dataaccess.DataBaseManager;
 import mx.uv.fei.logic.daosinterfaces.IActivityDAO;
 import mx.uv.fei.logic.domain.Activity;
+import mx.uv.fei.logic.domain.statuses.ActivityStatus;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
 import mx.uv.fei.logic.exceptions.DataInsertionException;
 
@@ -20,9 +21,8 @@ public class ActivityDAO implements IActivityDAO{
     @Override
     public int addActivity(Activity activity) throws DataInsertionException{
         int generatedId = 0;
-        //Add return flag
         PreparedStatement statement;
-        String query = "INSERT INTO Actividades(título, descripción, fechaInicio, fechaFin, IdAnteproyecto) VALUES (?,?,?,?,?)";
+        String query = "INSERT INTO Actividades(título, descripción, fechaInicio, fechaFin, IdAnteproyecto, estado) VALUES (?,?,?,?,?, ?)";
         
         try{
             statement = dataBaseManager.getConnection().prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
@@ -32,12 +32,13 @@ public class ActivityDAO implements IActivityDAO{
             statement.setDate(3, activity.getStartDate());
             statement.setDate(4, activity.getDueDate());
             statement.setInt(5, activity.getResearchId());
+            statement.setString(6, ActivityStatus.ACTIVE.getValue());
             
             statement.executeUpdate();
             ResultSet resultSet = statement.getGeneratedKeys();
             
             if(resultSet.next()){
-                generatedId = resultSet.getInt("IdActividad");
+                generatedId = resultSet.getInt(1);
             }
         }catch(SQLException exception){
             throw new DataInsertionException("Error al agregar actividad. Verifique su conexion e intentelo de nuevo");
@@ -52,7 +53,7 @@ public class ActivityDAO implements IActivityDAO{
     public ArrayList<Activity> getActivityList(int researchId) throws DataRetrievalException{
         ArrayList<Activity> activityList = new ArrayList();
         PreparedStatement statement;
-        String query = "SELECT a.IdActividad, a.IdAnteproyecto, IdArchivo, a.título, a.descripción, a.fechaInicio, a.fechaFin, a.comentario, a.retroalimentación "
+        String query = "SELECT IdActividad, a.IdAnteproyecto, a.título, a.descripción, a.fechaInicio, a.fechaFin, a.comentario, a.retroalimentación"
                 + "FROM Actividades a INNER JOIN Anteproyectos ap ON a.IdAnteproyecto = ap.IdAnteproyecto WHERE a.IdAnteproyecto IN(?) "
                 + "ORDER BY fechaFin, fechaInicio, título ASC";
         
@@ -66,13 +67,19 @@ public class ActivityDAO implements IActivityDAO{
             while(resultSet.next()){
                 Activity activity = new Activity();
                 
-                activity.setId(resultSet.getInt("a.IdActividad"));
+                activity.setId(resultSet.getInt("IdActividad"));
                 activity.setTitle(resultSet.getString("a.título"));
                 activity.setDescription(resultSet.getString("a.descripción"));
                 activity.setStartDate(resultSet.getDate("a.fechaInicio"));
                 activity.setDueDate(resultSet.getDate("a.fechaFin"));
                 activity.setComment(resultSet.getString("a.comentario"));
                 activity.setFeedback(resultSet.getString("a.retroalimentación"));
+                
+                if(activity.getComment() != null){
+                    activity.setStatus(ActivityStatus.DELIVERED);
+                }else if(activity.getFeedback() != null){
+                    activity.setStatus(ActivityStatus.REVIEWED);
+                }
                 
                 activityList.add(activity);
             }
@@ -84,6 +91,7 @@ public class ActivityDAO implements IActivityDAO{
         
         return activityList;
     }
+    
     @Override
     public int modifyActivity(Activity activity) throws DataInsertionException{
         int result = 0;
@@ -152,27 +160,18 @@ public class ActivityDAO implements IActivityDAO{
     }
     @Override
     public boolean assertActivity(Activity activity){
-        return !isNull(activity) && !isBlank(activity) && isValidDate(activity);
+        return !isBlank(activity) && isValidDate(activity);
     }
+    
     public boolean isBlank(Activity activity){
         return activity.getTitle().isBlank() && activity.getDescription().isBlank();
     }
-    public boolean isNull(Activity activity){
-        if(activity != null){
-            if(activity.getTitle() != null && activity.getDescription() != null){
-                if(activity.getStartDate() != null && activity.getDueDate() != null){
-                    return false;
-                }
-            }
-        }
-        
-        return true;
-    }
+    
     public boolean isValidDate(Activity activity){
         return activity.getStartDate().compareTo(activity.getDueDate()) <= 0;
     }
     
     public boolean isValidTitle(Activity activity){
-        return activity.getTitle().trim().length() < 50;
+        return activity.getTitle().length() <= 50;
     }
 }

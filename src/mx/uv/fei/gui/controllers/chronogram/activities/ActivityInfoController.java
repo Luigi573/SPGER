@@ -248,6 +248,15 @@ public class ActivityInfoController{
         startDateLabel.setText(activity.getStartDate().toString());
         dueDateLabel.setText(activity.getDueDate().toString());
         descriptionText.setText(activity.getDescription());
+        
+        if(activity.getComment() != null || activity.getFeedback() != null){
+            addAdvanceButton.setVisible(false);
+            commentTextArea.setEditable(false);
+            deliveryButton.setVisible(false);
+            editButton.setVisible(false);
+            uploadFileButton.setVisible(false);
+            removeFilesButton.setVisible(false);
+        }
     }
     
     protected void setCourse(Course course){

@@ -26,7 +26,7 @@ public class ProfessorDAO implements IProfessorDAO{
         int generatedId = 0;
         try{
             String queryToInsertProfessorDataToUsersColumns = "INSERT INTO Usuarios (nombre, apellidoPaterno, apellidoMaterno, correo, correoAlterno, " +
-                            "númeroTeléfono, estado) VALUES (?, ?, ?, ?, ?, ?, ?)";
+                            "numeroTelefono, estado) VALUES (?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement preparedStatementToInsertProfessorDataToUsersColumns = 
                 dataBaseManager.getConnection().prepareStatement(queryToInsertProfessorDataToUsersColumns, PreparedStatement.RETURN_GENERATED_KEYS);
             preparedStatementToInsertProfessorDataToUsersColumns.setString(1, professor.getName());
@@ -72,7 +72,7 @@ public class ProfessorDAO implements IProfessorDAO{
         try{
             String queryForUpdateUserData = "UPDATE Usuarios SET nombre = ?, " + 
                            "apellidoPaterno = ?, apellidoMaterno = ?, correo = ?, " + 
-                           "correoAlterno = ?, númeroTeléfono = ?, estado = ? " +
+                           "correoAlterno = ?, numeroTelefono = ?, estado = ? " +
                            "WHERE IdUsuario = ?";
             PreparedStatement preparedStatement = 
                 dataBaseManager.getConnection().prepareStatement(queryForUpdateUserData);
@@ -122,7 +122,7 @@ public class ProfessorDAO implements IProfessorDAO{
                 professor.setEmailAddress(resultSet.getString("correo"));
                 professor.setPassword(resultSet.getString("contraseña"));
                 professor.setAlternateEmail(resultSet.getString("correoAlterno"));
-                professor.setPhoneNumber(resultSet.getString("númeroTeléfono"));
+                professor.setPhoneNumber(resultSet.getString("numeroTelefono"));
                 professor.setStatus(resultSet.getString("estado"));
                 professor.setStaffNumber(resultSet.getInt("NumPersonal"));
                 professors.add(professor);
@@ -130,7 +130,7 @@ public class ProfessorDAO implements IProfessorDAO{
             resultSet.close();
             dataBaseManager.closeConnection();
         }catch(SQLException e) {
-            e.printStackTrace();
+              ;
             throw new DataRetrievalException("Fallo al recuperar la informacion. Inténtelo de nuevo más tarde");
         }finally{
             dataBaseManager.closeConnection();
@@ -158,7 +158,7 @@ public class ProfessorDAO implements IProfessorDAO{
                 professor.setEmailAddress(resultSet.getString("correo"));
                 professor.setPassword(resultSet.getString("contraseña"));
                 professor.setAlternateEmail(resultSet.getString("correoAlterno"));
-                professor.setPhoneNumber(resultSet.getString("númeroTeléfono"));
+                professor.setPhoneNumber(resultSet.getString("numeroTelefono"));
                 professor.setStatus(resultSet.getString("estado"));
                 professor.setStaffNumber(resultSet.getInt("NumPersonal"));
                 professors.add(professor);
@@ -182,6 +182,7 @@ public class ProfessorDAO implements IProfessorDAO{
             String query = "SELECT * FROM Usuarios U INNER JOIN Profesores P ON U.IdUsuario = P.IdUsuario WHERE P.NumPersonal = ?";
             PreparedStatement preparedStatement = dataBaseManager.getConnection().prepareStatement(query);
             preparedStatement.setInt(1, staffNumber);
+            
             ResultSet resultSet = preparedStatement.executeQuery();
             if(resultSet.next()){
                 professor.setUserId(resultSet.getInt("IdUsuario"));
@@ -191,7 +192,7 @@ public class ProfessorDAO implements IProfessorDAO{
                 professor.setEmailAddress(resultSet.getString("correo"));
                 professor.setPassword(resultSet.getString("contraseña"));
                 professor.setAlternateEmail(resultSet.getString("correoAlterno"));
-                professor.setPhoneNumber(resultSet.getString("númeroTeléfono"));
+                professor.setPhoneNumber(resultSet.getString("numeroTelefono"));
                 professor.setStatus(resultSet.getString("estado"));
                 professor.setStaffNumber(resultSet.getInt("NumPersonal"));
             }
@@ -199,6 +200,7 @@ public class ProfessorDAO implements IProfessorDAO{
             resultSet.close();
             dataBaseManager.closeConnection();
         }catch(SQLException e){
+              ;
             throw new DataRetrievalException("Fallo al recuperar la informacion. Inténtelo de nuevo más tarde");
         }finally{
             dataBaseManager.closeConnection();

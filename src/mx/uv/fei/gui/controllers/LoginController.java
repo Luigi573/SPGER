@@ -39,27 +39,27 @@ public class LoginController{
 
             try{
                 //Matricle and StaffNumber have their type default values if user is not found (null or '0')
-                Student student = loginDAO.logInStudent(idTextField.getText(), passwordField.getText());
+                Student student = loginDAO.logInStudent(idTextField.getText(), passwordField.getText().trim());
 
                 if(student.getMatricle() != null){
                     openMainMenu(event, student);
                 }else{
-                    AcademicBodyHead academicBodyHead = loginDAO.logInAcademicBodyHead(idTextField.getText(), passwordField.getText());
+                    AcademicBodyHead academicBodyHead = loginDAO.logInAcademicBodyHead(idTextField.getText(), passwordField.getText().trim());
 
                     if((academicBodyHead.getStaffNumber() > 0)){
                         openMainMenu(event, academicBodyHead);
                     }else{
-                        DegreeBoss admin = loginDAO.logInAdmin(idTextField.getText(), passwordField.getText());
+                        DegreeBoss admin = loginDAO.logInAdmin(idTextField.getText(), passwordField.getText().trim());
                         
                         if((admin.getStaffNumber() > 0)){
                             openMainMenu(event, admin);
                         }else{
-                            Director director = loginDAO.logInDirector(idTextField.getText(), passwordField.getText());
+                            Director director = loginDAO.logInDirector(idTextField.getText(), passwordField.getText().trim());
                             
                             if(director.getStaffNumber() > 0){
                                 openMainMenu(event, director);
                             }else{
-                                Professor professor = loginDAO.logInProfessor(idTextField.getText(), passwordField.getText());
+                                Professor professor = loginDAO.logInProfessor(idTextField.getText(), passwordField.getText().trim());
 
                                 if((professor.getStaffNumber() > 0)){
                                     openMainMenu(event, professor);
@@ -98,7 +98,7 @@ public class LoginController{
             
             Stage oldStage = (Stage)((Node)event.getSource()).getScene().getWindow();
             oldStage.close();
-        }catch(IOException exception){            
+        }catch(IOException exception){
             new AlertPopUpGenerator().showMissingFilesMessage();
         }
     }

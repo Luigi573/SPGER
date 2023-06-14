@@ -569,11 +569,13 @@ public class ResearchDAO implements IResearchDAO{
                 statement.setNull(9, java.sql.Types.VARCHAR);
             }
             
+            
+            
             for(int i = 0; i < 3; i++){
                 if(i < research.getDirectors().size()){
-                    statement.setInt(i + 11, research.getDirectors().get(i).getDirectorId());
+                    statement.setInt(i + 10, research.getDirectors().get(i).getDirectorId());
                 }else{
-                    statement.setNull(i + 11, java.sql.Types.INTEGER);
+                    statement.setNull(i + 10, java.sql.Types.INTEGER);
                 }
             }
             
@@ -581,7 +583,7 @@ public class ResearchDAO implements IResearchDAO{
             
             result = statement.executeUpdate();
         }catch(SQLException exception){
-            exception.printStackTrace();
+              ;
             throw new DataInsertionException("Error de conexión. Inténtelo de nuevo más tarde");
         }finally{
             dataBaseManager.closeConnection();

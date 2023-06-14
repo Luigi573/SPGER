@@ -21,15 +21,13 @@ public class ActivityFileItemController {
     
     @FXML
     private Button downloadFileButton;
-    
     @FXML
     private Label FileNameLabel;
-
     @FXML
     private Pane pKGALListElement;
 
     @FXML
-    void downloadFile(ActionEvent event) {
+    private void downloadFile(ActionEvent event) {
         DirectoryChooser directoryChooser = new DirectoryChooser();
         directoryChooser.setTitle("Seleccione un directorio");
         File selectedDirectory = directoryChooser.showDialog((Stage)((Node)event.getSource()).getScene().getWindow());

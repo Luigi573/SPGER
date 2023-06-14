@@ -6,7 +6,5 @@ import mx.uv.fei.logic.exceptions.DataRetrievalException;
 
 public interface IFileDAO {
     public int addFile(String filePath) throws DataInsertionException;
-    public int addFilesList();
-    public int updateFilePath(String filePath) throws DataInsertionException;
     public File getFileByID(int fileID) throws DataRetrievalException;
 }

@@ -26,7 +26,7 @@ public class DegreeBossDAO implements IDegreeBossDAO{
         int generatedId = 0;
         try{
             String queryToInsertDegreeBossDataToUserColumns = 
-                "INSERT INTO Usuarios (nombre, apellidoPaterno, apellidoMaterno, correo, correoAlterno, númeroTeléfono, estado) " + 
+                "INSERT INTO Usuarios (nombre, apellidoPaterno, apellidoMaterno, correo, correoAlterno, numeroTelefono, estado) " + 
                 "VALUES (?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement preparedStatementToInsertDegreeBossDataToUserColumns = 
                 dataBaseManager.getConnection().prepareStatement(
@@ -84,7 +84,7 @@ public class DegreeBossDAO implements IDegreeBossDAO{
         try{
             String query = "UPDATE Usuarios SET nombre = ?, " + 
                            "apellidoPaterno = ?, apellidoMaterno = ?, correo = ?, " + 
-                           "correoAlterno = ?, númeroTeléfono = ?, estado = ? " +
+                           "correoAlterno = ?, numeroTelefono = ?, estado = ? " +
                            "WHERE IdUsuario = ?";
             
             PreparedStatement preparedStatement = dataBaseManager.getConnection().prepareStatement(query);
@@ -136,7 +136,7 @@ public class DegreeBossDAO implements IDegreeBossDAO{
                 degreeBoss.setEmailAddress(resultSet.getString("correo"));
                 degreeBoss.setPassword(resultSet.getString("contraseña"));
                 degreeBoss.setAlternateEmail(resultSet.getString("correoAlterno"));
-                degreeBoss.setPhoneNumber(resultSet.getString("númeroTeléfono"));
+                degreeBoss.setPhoneNumber(resultSet.getString("numeroTelefono"));
                 degreeBoss.setStatus(resultSet.getString("estado"));
                 degreeBoss.setStaffNumber(resultSet.getInt("NumPersonal"));
                 degreeBosses.add(degreeBoss);
@@ -171,7 +171,7 @@ public class DegreeBossDAO implements IDegreeBossDAO{
                 degreeBoss.setEmailAddress(resultSet.getString("correo"));
                 degreeBoss.setPassword(resultSet.getString("contraseña"));
                 degreeBoss.setAlternateEmail(resultSet.getString("correoAlterno"));
-                degreeBoss.setPhoneNumber(resultSet.getString("númeroTeléfono"));
+                degreeBoss.setPhoneNumber(resultSet.getString("numeroTelefono"));
                 degreeBoss.setStatus(resultSet.getString("estado"));
                 degreeBoss.setStaffNumber(resultSet.getInt("NumPersonal"));
                 degreeBosses.add(degreeBoss);
@@ -206,7 +206,7 @@ public class DegreeBossDAO implements IDegreeBossDAO{
                 degreeBoss.setEmailAddress(resultSet.getString("correo"));
                 degreeBoss.setPassword(resultSet.getString("contraseña"));
                 degreeBoss.setAlternateEmail(resultSet.getString("correoAlterno"));
-                degreeBoss.setPhoneNumber(resultSet.getString("númeroTeléfono"));
+                degreeBoss.setPhoneNumber(resultSet.getString("numeroTelefono"));
                 degreeBoss.setStatus(resultSet.getString("estado"));
                 degreeBoss.setStaffNumber(resultSet.getInt("NumPersonal"));
             }

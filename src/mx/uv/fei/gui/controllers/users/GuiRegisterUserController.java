@@ -63,12 +63,9 @@ public class GuiRegisterUserController{
     }
     @FXML
     private void registerButtonController(ActionEvent event){
-        if(!namesTextField.getText().trim().isEmpty() &&
-           !firstSurnameTextField.getText().trim().isEmpty() &&
-           !secondSurnameTextField.getText().trim().isEmpty() &&
-           !emailTextField.getText().trim().isEmpty() &&
-           !alternateEmailTextField.getText().trim().isEmpty() &&
-           !telephoneNumberTextField.getText().trim().isEmpty() &&
+        if(!namesTextField.getText().trim().isEmpty() && !firstSurnameTextField.getText().trim().isEmpty() &&
+           !secondSurnameTextField.getText().trim().isEmpty() && !emailTextField.getText().trim().isEmpty() &&
+           !alternateEmailTextField.getText().trim().isEmpty() && !telephoneNumberTextField.getText().trim().isEmpty() &&
            !matricleOrStaffNumberTextField.getText().trim().isEmpty()){
             if(allTextFieldsContainsCorrectValues()){
                 if(typeComboBox.getValue().equals(UserType.DIRECTOR.getValue())){
@@ -226,7 +223,7 @@ public class GuiRegisterUserController{
                 emailPattern = Pattern.compile("^(.+)@uv.mx$"),
                 alternateEmailPattern = Pattern.compile("^(.+)@uv.mx$"),
                 telephoneNumberPattern = Pattern.compile("^[0-9]{10}$"),
-                matricleOrStaffNumberPattern = Pattern.compile("");
+                matricleOrStaffNumberPattern;
     
         if(typeComboBox.getValue().equals(UserType.STUDENT.getValue())){
             matricleOrStaffNumberPattern = Pattern.compile("^[z][S][0-9]{8}$");

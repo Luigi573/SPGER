@@ -55,7 +55,7 @@ public class CreateActivityController{
 
             ActivityDAO activityDAO = new ActivityDAO();
 
-            if(!activityDAO.isBlank(activity)){
+            if(activityDAO.isBlank(activity)){
                 if(activityDAO.isValidTitle(activity)){
                     try{
                         if(activityDAO.addActivity(activity) > 0){

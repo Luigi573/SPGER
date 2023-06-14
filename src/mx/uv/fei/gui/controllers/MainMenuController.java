@@ -75,6 +75,7 @@ public class MainMenuController{
             
             headerPane.getChildren().setAll(header);
         }catch(IOException exception){
+              ;
             new AlertPopUpGenerator().showMissingFilesMessage();
         }
     }
@@ -126,6 +127,7 @@ public class MainMenuController{
                     }
                 }
             }catch(DataRetrievalException exception){
+                  ;
                 new AlertPopUpGenerator().showConnectionErrorMessage();
             }
         }
