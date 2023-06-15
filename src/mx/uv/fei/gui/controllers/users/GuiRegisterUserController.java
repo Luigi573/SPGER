@@ -222,6 +222,8 @@ public class GuiRegisterUserController{
                !matricleOrStaffNumberTextField.getText().trim().isEmpty();
     }
     private String specifiedInvalidDataMessageError(){
+        String message = "";
+
         Pattern namesPattern = Pattern.compile("^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ]+(?: [A-Za-zÁÉÍÓÚÜÑáéíóúüñ]+)*$"),
                 firstSurnamePattern = Pattern.compile("^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ]+(?: [A-Za-zÁÉÍÓÚÜÑáéíóúüñ]+)*$"),
                 secondSurnamePattern = Pattern.compile("^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ]+(?: [A-Za-zÁÉÍÓÚÜÑáéíóúüñ]+)*$"),
@@ -245,33 +247,65 @@ public class GuiRegisterUserController{
                 matricleOrStaffNumberMatcher = matricleOrStaffNumberPattern.matcher(matricleOrStaffNumberTextField.getText());
 
         if(!namesMatcher.find()){
-            return "El campo para introducir el nombre contiene datos inválidos";
+            if(message.equals("")){
+                message = "nombre";
+            }else{
+                message = message + ", nombre";
+            }
         }
 
         if(!firstSurnameMatcher.find()){
-            return "El campo para introducir el apellido paterno contiene datos inválidos";
+            if(message.equals("")){
+                message = "apellido paterno";
+            }else{
+                message = message + ", apellido paterno";
+            }
         }
 
         if(!secondSurnameMatcher.find()){
-            return "El campo para introducir el apellido materno contiene datos inválidos";
+            if(message.equals("")){
+                message = "apellido materno";
+            }else{
+                message = message + ", apellido materno";
+            }
         }
 
         if(!emailMatcher.find()){
-            return "El campo para introducir el correo electrónico contiene datos inválidos";
+            if(message.equals("")){
+                message = "correo electrónico";
+            }else{
+                message = message + ", correo electrónico";
+            }
         }
 
         if(!alternateEmailMatcher.find()){
-            return "El campo para introducir el correo alterno contiene datos inválidos";
+            if(message.equals("")){
+                message = "correo alterno";
+            }else{
+                message = message + ", correo alterno";
+            }
         }
 
         if(!telephoneNumberMatcher.find()){
-            return "El campo para introducir el número de telefono contiene datos inválidos";
+            if(message.equals("")){
+                message = "número de teléfono";
+            }else{
+                message = message + ", número de teléfono";
+            }
         }
 
         if(!matricleOrStaffNumberMatcher.find()){
-            return "El campo para introducir la matrícula o el numero de personal contiene datos inválidos";
+            if(message.equals("")){
+                message = "matrícula o número de personal";
+            }else{
+                message = message + ", matrícula o número de personal";
+            }
         }
 
-        return "";
+        if(!message.equals("")){
+            message = "Los campos que tienen datos inválidos son: " + message + ".";
+        }
+
+        return message;
     }
 }
