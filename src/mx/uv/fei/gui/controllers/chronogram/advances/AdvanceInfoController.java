@@ -72,6 +72,10 @@ public class AdvanceInfoController{
             Parent parent = loader.load();
             ActivityInfoController controller = (ActivityInfoController)loader.getController();
             controller.setActivity(activity);
+            controller.setCourse(course);
+            controller.setUser(user);
+            controller.loadAdvances();
+            controller.loadHeader();
             
             Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
             Scene scene = new Scene(parent);

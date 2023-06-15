@@ -110,10 +110,10 @@ public class ModifyResearchPaneController{
             ResearchProject research = new ResearchProject();
             
             research.setId(researchId);
-            research.setTitle(titleTextField.getText().trim());
+            research.setTitle(titleTextField.getText());
             research.setDueDate(Date.valueOf(dueDatePicker.getValue()));
             research.setStartDate(Date.valueOf(startDatePicker.getValue()));
-            research.setDescription(descriptionTextArea.getText().trim());
+            research.setDescription(descriptionTextArea.getText());
             
             for(ComboBox<Director> directorComboBox : directorComboBoxes){
                 if(directorComboBox.getValue() != null){
@@ -128,9 +128,9 @@ public class ModifyResearchPaneController{
                 research.setStudent(studentComboBox.getValue());
             }
             
-            research.setExpectedResult(expectedResultTextArea.getText().trim());
-            research.setSuggestedBibliography(suggestedBibliographyTextArea.getText().trim());
-            research.setRequirements(requirementsTextArea.getText().trim());
+            research.setExpectedResult(expectedResultTextArea.getText());
+            research.setSuggestedBibliography(suggestedBibliographyTextArea.getText());
+            research.setRequirements(requirementsTextArea.getText());
             
             if(researchDAO.isValidDate(research)){
                 if(!researchDAO.isBlank(research)){
@@ -161,7 +161,7 @@ public class ModifyResearchPaneController{
             KGALComboBox.getSelectionModel().select(research.getKgal());
         }
         
-        for(int i = 0; i < 3; i++){
+        for(int i = 0; i < research.getDirectors().size(); i++){
             if(research.getDirectors().get(i) != null){
                 directorComboBoxes.get(i).getSelectionModel().select(research.getDirectors().get(i));
             }

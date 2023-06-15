@@ -139,10 +139,9 @@ public class ActivityDAOTest {
     
     @Test
     public void testSetFeedback() throws Exception {
-        Activity activity = new Activity();
-        activity.setFeedback("");
+        ActivityDAO instance = new ActivityDAO();
         
-        
+        assertTrue(instance.setFeedback("Bien hecho, pasó en extra", preloadedActivity.getId()) > 0);
     }
     
     @Test

@@ -102,7 +102,7 @@ public class ModifyUserInformationController{
             new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "Error", "Faltan campos por llenar");
         }
     }
-
+    
     public String getAlternateEmail(){
         return alternateEmailTextField.getText();
     }
@@ -208,7 +208,7 @@ public class ModifyUserInformationController{
         student.setPhoneNumber(telephoneNumberTextField.getText());
         student.setStatus(statusComboBox.getValue());
         student.setMatricle(matricleOrStaffNumberTextField.getText());
-
+        
         try{
             studentDAO.modifyStudentData(student);
             new AlertPopUpGenerator().showCustomMessage(AlertType.INFORMATION, "Éxito", "Estudiante modificado exitosamente");
@@ -311,11 +311,11 @@ public class ModifyUserInformationController{
         }
     }
     private boolean allTextFieldsContainsCorrectValues(){
-        Pattern namesPattern = Pattern.compile("([A-Z][a-z]+)\\s?([A-Z][a-z]+)?\\s?([A-Z][a-z]+)?\\s?([A-Z][a-z]+)?"),
-                firstSurnamePattern = Pattern.compile("([A-Z][a-z]+)\\s?([A-Z][a-z]+)?\\s?([A-Z][a-z]+)?\\s?([A-Z][a-z]+)?"),
-                secondSurnamePattern = Pattern.compile("([A-Z][a-z]+)\\s?([A-Z][a-z]+)?\\s?([A-Z][a-z]+)?\\s?([A-Z][a-z]+)?"),
+        Pattern namesPattern = Pattern.compile("^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ]+(?: [A-Za-zÁÉÍÓÚÜÑáéíóúüñ]+)*$"),
+                firstSurnamePattern = Pattern.compile("^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ]+(?: [A-Za-zÁÉÍÓÚÜÑáéíóúüñ]+)*$"),
+                secondSurnamePattern = Pattern.compile("^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ]+(?: [A-Za-zÁÉÍÓÚÜÑáéíóúüñ]+)*$"),
                 emailPattern = Pattern.compile("^(.+)@uv.mx$"),
-                alternateEmailPattern = Pattern.compile("^(.+)@uv.mx$"),
+                alternateEmailPattern = Pattern.compile("^[\\w.%+-]+@[\\w.-]+\\.[a-zA-Z]{2,}$"),
                 telephoneNumberPattern = Pattern.compile("^[0-9]{10}$"),
                 matricleOrStaffNumberPattern;
     

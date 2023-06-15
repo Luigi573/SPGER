@@ -48,8 +48,9 @@ public class ActivityDAOExceptionsTest {
     @Test(expected = DataInsertionException.class)
     public void testSetFeedback() throws Exception {
         Activity activity = new Activity();
+        activity.setId(0);
         ActivityDAO instance = new ActivityDAO();
         
-        instance.addActivity(activity);
+        instance.setFeedback("Retroalimentación excepción", activity.getId());
     }    
 }

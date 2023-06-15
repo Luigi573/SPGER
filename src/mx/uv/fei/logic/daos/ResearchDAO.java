@@ -288,7 +288,7 @@ public class ResearchDAO implements IResearchDAO{
                 research.setStartDate(resultSet.getDate("a.fechaInicio"));
                 
                 //Concatenating column names since they're almost the same
-                for(int i = 0; i < 3; i++){
+                for(int i = 1; i <= 3; i++){
                     Director director = new Director();
                     director.setDirectorId(resultSet.getInt("a.IdDirector"+ i));
                     
@@ -316,7 +316,9 @@ public class ResearchDAO implements IResearchDAO{
                 research.getStudent().setMatricle(resultSet.getString("a.Matrícula"));
                 
                 if(!resultSet.wasNull()){
-                    research.getStudent().setName(resultSet.getString("estudianteAsignado"));
+                    research.getStudent().setName(resultSet.getString("ue.nombre"));
+                    research.getStudent().setFirstSurname(resultSet.getString("ue.apellidoPaterno"));
+                    research.getStudent().setSecondSurname(resultSet.getString("ue.apellidoMaterno"));
                 }
                 
                 researchProjectList.add(research);
@@ -357,7 +359,7 @@ public class ResearchDAO implements IResearchDAO{
                 research.setStartDate(resultSet.getDate("a.fechaInicio"));
                 
                 //Concatenating column names since they're almost the same
-                for(int i = 0; i < 3; i++){
+                 for(int i = 1; i <= 3; i++){
                     Director director = new Director();
                     director.setDirectorId(resultSet.getInt("a.IdDirector"+ i));
                     
@@ -385,7 +387,9 @@ public class ResearchDAO implements IResearchDAO{
                 research.getStudent().setMatricle(resultSet.getString("a.Matrícula"));
                 
                 if(!resultSet.wasNull()){
-                    research.getStudent().setName(resultSet.getString("estudianteAsignado"));
+                    research.getStudent().setName(resultSet.getString("ue.nombre"));
+                    research.getStudent().setFirstSurname(resultSet.getString("ue.apellidoPaterno"));
+                    research.getStudent().setSecondSurname(resultSet.getString("ue.apellidoMaterno"));
                 }
                 
                 researchProjectList.add(research);
@@ -426,7 +430,7 @@ public class ResearchDAO implements IResearchDAO{
                 research.setStartDate(resultSet.getDate("a.fechaInicio"));
                 
                 //Concatenating column names since they're almost the same
-                for(int i = 0; i < 3; i++){
+                 for(int i = 1; i <= 3; i++){
                     Director director = new Director();
                     director.setDirectorId(resultSet.getInt("a.IdDirector"+ i));
                     
@@ -454,7 +458,9 @@ public class ResearchDAO implements IResearchDAO{
                 research.getStudent().setMatricle(resultSet.getString("a.Matrícula"));
                 
                 if(!resultSet.wasNull()){
-                    research.getStudent().setName(resultSet.getString("estudianteAsignado"));
+                    research.getStudent().setName(resultSet.getString("ue.nombre"));
+                    research.getStudent().setFirstSurname(resultSet.getString("ue.apellidoPaterno"));
+                    research.getStudent().setSecondSurname(resultSet.getString("ue.apellidoMaterno"));
                 }
                 
                 researchProjectList.add(research);
@@ -495,7 +501,7 @@ public class ResearchDAO implements IResearchDAO{
                 research.setStartDate(resultSet.getDate("a.fechaInicio"));
                 
                 //Concatenating column names since they're almost the same
-                for(int i = 0; i < 3; i++){
+                 for(int i = 1; i <= 3; i++){
                     Director director = new Director();
                     director.setDirectorId(resultSet.getInt("a.IdDirector"+ i));
                     
@@ -523,7 +529,9 @@ public class ResearchDAO implements IResearchDAO{
                 research.getStudent().setMatricle(resultSet.getString("a.Matrícula"));
                 
                 if(!resultSet.wasNull()){
-                    research.getStudent().setName(resultSet.getString("estudianteAsignado"));
+                    research.getStudent().setName(resultSet.getString("ue.nombre"));
+                    research.getStudent().setFirstSurname(resultSet.getString("ue.apellidoPaterno"));
+                    research.getStudent().setSecondSurname(resultSet.getString("ue.apellidoMaterno"));
                 }
                 
                 researchProjectList.add(research);
