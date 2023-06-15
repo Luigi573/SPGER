@@ -288,7 +288,7 @@ public class ResearchDAO implements IResearchDAO{
                 research.setStartDate(resultSet.getDate("a.fechaInicio"));
                 
                 //Concatenating column names since they're almost the same
-                for(int i = 0; i < 3; i++){
+                for(int i = 1; i <= 3; i++){
                     Director director = new Director();
                     director.setDirectorId(resultSet.getInt("a.IdDirector"+ i));
                     
@@ -316,7 +316,7 @@ public class ResearchDAO implements IResearchDAO{
                 research.getStudent().setMatricle(resultSet.getString("a.Matrícula"));
                 
                 if(!resultSet.wasNull()){
-                    research.getStudent().setName(resultSet.getString("estudianteAsignado"));
+                    research.getStudent().setName(resultSet.getString("ue.nombre"));
                 }
                 
                 researchProjectList.add(research);
@@ -357,7 +357,7 @@ public class ResearchDAO implements IResearchDAO{
                 research.setStartDate(resultSet.getDate("a.fechaInicio"));
                 
                 //Concatenating column names since they're almost the same
-                for(int i = 0; i < 3; i++){
+                for(int i = 1; i <= 3; i++){
                     Director director = new Director();
                     director.setDirectorId(resultSet.getInt("a.IdDirector"+ i));
                     
@@ -385,7 +385,7 @@ public class ResearchDAO implements IResearchDAO{
                 research.getStudent().setMatricle(resultSet.getString("a.Matrícula"));
                 
                 if(!resultSet.wasNull()){
-                    research.getStudent().setName(resultSet.getString("estudianteAsignado"));
+                    research.getStudent().setName(resultSet.getString("ue.nombre"));
                 }
                 
                 researchProjectList.add(research);
@@ -426,7 +426,7 @@ public class ResearchDAO implements IResearchDAO{
                 research.setStartDate(resultSet.getDate("a.fechaInicio"));
                 
                 //Concatenating column names since they're almost the same
-                for(int i = 0; i < 3; i++){
+                for(int i = 1; i <= 3; i++){
                     Director director = new Director();
                     director.setDirectorId(resultSet.getInt("a.IdDirector"+ i));
                     
@@ -454,7 +454,7 @@ public class ResearchDAO implements IResearchDAO{
                 research.getStudent().setMatricle(resultSet.getString("a.Matrícula"));
                 
                 if(!resultSet.wasNull()){
-                    research.getStudent().setName(resultSet.getString("estudianteAsignado"));
+                    research.getStudent().setName(resultSet.getString("ue.nombre"));
                 }
                 
                 researchProjectList.add(research);
@@ -495,7 +495,7 @@ public class ResearchDAO implements IResearchDAO{
                 research.setStartDate(resultSet.getDate("a.fechaInicio"));
                 
                 //Concatenating column names since they're almost the same
-                for(int i = 0; i < 3; i++){
+                for(int i = 1; i <= 3; i++){
                     Director director = new Director();
                     director.setDirectorId(resultSet.getInt("a.IdDirector"+ i));
                     
@@ -523,7 +523,7 @@ public class ResearchDAO implements IResearchDAO{
                 research.getStudent().setMatricle(resultSet.getString("a.Matrícula"));
                 
                 if(!resultSet.wasNull()){
-                    research.getStudent().setName(resultSet.getString("estudianteAsignado"));
+                    research.getStudent().setName(resultSet.getString("ue.nombre"));
                 }
                 
                 researchProjectList.add(research);
@@ -569,11 +569,13 @@ public class ResearchDAO implements IResearchDAO{
                 statement.setNull(9, java.sql.Types.VARCHAR);
             }
             
+            
+            
             for(int i = 0; i < 3; i++){
                 if(i < research.getDirectors().size()){
-                    statement.setInt(i + 11, research.getDirectors().get(i).getDirectorId());
+                    statement.setInt(i + 10, research.getDirectors().get(i).getDirectorId());
                 }else{
-                    statement.setNull(i + 11, java.sql.Types.INTEGER);
+                    statement.setNull(i + 10, java.sql.Types.INTEGER);
                 }
             }
             
@@ -581,7 +583,7 @@ public class ResearchDAO implements IResearchDAO{
             
             result = statement.executeUpdate();
         }catch(SQLException exception){
-            exception.printStackTrace();
+              ;
             throw new DataInsertionException("Error de conexión. Inténtelo de nuevo más tarde");
         }finally{
             dataBaseManager.closeConnection();

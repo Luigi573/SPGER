@@ -26,7 +26,7 @@ public class DirectorDAO implements IDirectorDAO{
         int generatedId = 0;
         try{
             String queryToInsertDirectorDataToUserColumns = 
-                "INSERT INTO Usuarios (nombre, apellidoPaterno, apellidoMaterno, correo, correoAlterno, númeroTeléfono, estado) VALUES (?, ?, ?, ?, ?, ?, ?)";
+                "INSERT INTO Usuarios (nombre, apellidoPaterno, apellidoMaterno, correo, correoAlterno, numeroTelefono, estado) VALUES (?, ?, ?, ?, ?, ?, ?)";
             
             PreparedStatement preparedStatementToInsertDirectorDataToUsersColumns = 
                 dataBaseManager.getConnection().prepareStatement(
@@ -84,7 +84,7 @@ public class DirectorDAO implements IDirectorDAO{
         try{
             String queryForUpdateUserData = "UPDATE Usuarios SET nombre = ?, " + 
                            "apellidoPaterno = ?, apellidoMaterno = ?, correo = ?, " + 
-                           "correoAlterno = ?, númeroTeléfono = ?, estado = ? " +
+                           "correoAlterno = ?, numeroTelefono = ?, estado = ? " +
                            "WHERE IdUsuario = ?";
             PreparedStatement preparedStatement = dataBaseManager.getConnection().prepareStatement(queryForUpdateUserData);
             preparedStatement.setString(1, director.getName());
@@ -164,7 +164,7 @@ public class DirectorDAO implements IDirectorDAO{
                 director.setEmailAddress(resultSet.getString("correo"));
                 director.setPassword(resultSet.getString("contraseña"));
                 director.setAlternateEmail(resultSet.getString("correoAlterno"));
-                director.setPhoneNumber(resultSet.getString("númeroTeléfono"));
+                director.setPhoneNumber(resultSet.getString("numeroTelefono"));
                 director.setStatus(resultSet.getString("estado"));
                 director.setStaffNumber(resultSet.getInt("NumPersonal"));
                 directors.add(director);
@@ -198,7 +198,7 @@ public class DirectorDAO implements IDirectorDAO{
                 director.setEmailAddress(resultSet.getString("correo"));
                 director.setPassword(resultSet.getString("contraseña"));
                 director.setAlternateEmail(resultSet.getString("correoAlterno"));
-                director.setPhoneNumber(resultSet.getString("númeroTeléfono"));
+                director.setPhoneNumber(resultSet.getString("numeroTelefono"));
                 director.setStatus(resultSet.getString("estado"));
                 director.setStaffNumber(resultSet.getInt("NumPersonal"));
                 directors.add(director);
@@ -231,7 +231,7 @@ public class DirectorDAO implements IDirectorDAO{
                 director.setEmailAddress(resultSet.getString("correo"));
                 director.setPassword(resultSet.getString("contraseña"));
                 director.setAlternateEmail(resultSet.getString("correoAlterno"));
-                director.setPhoneNumber(resultSet.getString("númeroTeléfono"));
+                director.setPhoneNumber(resultSet.getString("numeroTelefono"));
                 director.setStatus(resultSet.getString("estado"));
                 director.setStaffNumber(resultSet.getInt("NumPersonal"));
             }

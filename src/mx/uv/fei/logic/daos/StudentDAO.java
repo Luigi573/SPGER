@@ -26,7 +26,7 @@ public class StudentDAO implements IStudentDAO{
         int generatedId = 0;
         try{
             String queryToInsertStudentDataToUserColumns = "INSERT INTO Usuarios (nombre, apellidoPaterno, apellidoMaterno, correo, " +
-                "correoAlterno, númeroTeléfono, estado) VALUES (?, ?, ?, ?, ?, ?, ?)";
+                "correoAlterno, numeroTelefono, estado) VALUES (?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement preparedStatementToInsertStudentDataToUsersColumns = 
                 dataBaseManager.getConnection().prepareStatement(queryToInsertStudentDataToUserColumns, PreparedStatement.RETURN_GENERATED_KEYS);
             preparedStatementToInsertStudentDataToUsersColumns.setString(1, student.getName());
@@ -71,7 +71,7 @@ public class StudentDAO implements IStudentDAO{
         try {
             String queryForUpdateUserData = "UPDATE Usuarios SET nombre = ?, " + 
                            "apellidoPaterno = ?, apellidoMaterno = ?, correo = ?, " + 
-                           "correoAlterno = ?, númeroTeléfono = ?, estado = ?" +
+                           "correoAlterno = ?, numeroTelefono = ?, estado = ?" +
                            "WHERE IdUsuario = ?";
             PreparedStatement preparedStatementForUpdateUserData = 
                 dataBaseManager.getConnection().prepareStatement(queryForUpdateUserData);
@@ -116,7 +116,7 @@ public class StudentDAO implements IStudentDAO{
                 student.setEmailAddress(resultSet.getString("correo"));
                 student.setPassword(resultSet.getString("contraseña"));
                 student.setAlternateEmail(resultSet.getString("correoAlterno"));
-                student.setPhoneNumber(resultSet.getString("númeroTeléfono"));
+                student.setPhoneNumber(resultSet.getString("numeroTelefono"));
                 student.setStatus(resultSet.getString("estado"));
                 student.setUserId(resultSet.getInt("IdUsuario"));
                 student.setMatricle(resultSet.getString("Matrícula"));
@@ -177,7 +177,7 @@ public class StudentDAO implements IStudentDAO{
                 student.setEmailAddress(resultSet.getString("correo"));
                 student.setPassword(resultSet.getString("contraseña"));
                 student.setAlternateEmail(resultSet.getString("correoAlterno"));
-                student.setPhoneNumber(resultSet.getString("númeroTeléfono"));
+                student.setPhoneNumber(resultSet.getString("numeroTelefono"));
                 student.setStatus(resultSet.getString("estado"));
                 student.setUserId(resultSet.getInt("IdUsuario"));
                 student.setMatricle(resultSet.getString("Matrícula"));
@@ -210,7 +210,7 @@ public class StudentDAO implements IStudentDAO{
                 student.setEmailAddress(resultSet.getString("correo"));
                 student.setPassword(resultSet.getString("contraseña"));
                 student.setAlternateEmail(resultSet.getString("correoAlterno"));
-                student.setPhoneNumber(resultSet.getString("númeroTeléfono"));
+                student.setPhoneNumber(resultSet.getString("numeroTelefono"));
                 student.setStatus(resultSet.getString("estado"));
                 student.setUserId(resultSet.getInt("IdUsuario"));
                 student.setMatricle(resultSet.getString("Matrícula"));
@@ -242,7 +242,7 @@ public class StudentDAO implements IStudentDAO{
                 student.setEmailAddress(resultSet.getString("correo"));
                 student.setPassword(resultSet.getString("contraseña"));
                 student.setAlternateEmail(resultSet.getString("correoAlterno"));
-                student.setPhoneNumber(resultSet.getString("númeroTeléfono"));
+                student.setPhoneNumber(resultSet.getString("numeroTelefono"));
                 student.setStatus(resultSet.getString("estado"));
                 student.setUserId(resultSet.getInt("IdUsuario"));
                 student.setMatricle(resultSet.getString("Matrícula"));
@@ -277,7 +277,7 @@ public class StudentDAO implements IStudentDAO{
                 student.setEmailAddress(resultSet.getString("correo"));
                 student.setPassword(resultSet.getString("contraseña"));
                 student.setAlternateEmail(resultSet.getString("correoAlterno"));
-                student.setPhoneNumber(resultSet.getString("númeroTeléfono"));
+                student.setPhoneNumber(resultSet.getString("numeroTelefono"));
                 student.setStatus(resultSet.getString("estado"));
                 student.setUserId(resultSet.getInt("IdUsuario"));
                 student.setMatricle(resultSet.getString("Matrícula"));
@@ -311,7 +311,7 @@ public class StudentDAO implements IStudentDAO{
                 student.setEmailAddress(resultSet.getString("correo"));
                 student.setPassword(resultSet.getString("contraseña"));
                 student.setAlternateEmail(resultSet.getString("correoAlterno"));
-                student.setPhoneNumber(resultSet.getString("númeroTeléfono"));
+                student.setPhoneNumber(resultSet.getString("numeroTelefono"));
                 student.setStatus(resultSet.getString("estado"));
                 student.setUserId(resultSet.getInt("IdUsuario"));
                 student.setMatricle(resultSet.getString("Matrícula"));
@@ -346,7 +346,7 @@ public class StudentDAO implements IStudentDAO{
                 student.setEmailAddress(resultSet.getString("correo"));
                 student.setPassword(resultSet.getString("contraseña"));
                 student.setAlternateEmail(resultSet.getString("correoAlterno"));
-                student.setPhoneNumber(resultSet.getString("númeroTeléfono"));
+                student.setPhoneNumber(resultSet.getString("numeroTelefono"));
                 student.setStatus(resultSet.getString("estado"));
                 student.setUserId(resultSet.getInt("IdUsuario"));
                 student.setMatricle(resultSet.getString("Matrícula"));

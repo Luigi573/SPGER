@@ -42,7 +42,7 @@ public class DirectorDAOTest {
             preloadedDirector.setStatus(ProfessorStatus.ACTIVE.getValue());
             preloadedDirector.setStaffNumber(489328392);
 
-            String userQuery = "INSERT INTO Usuarios(nombre, apellidoPaterno, apellidoMaterno, correo, correoAlterno, númeroTeléfono, estado) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            String userQuery = "INSERT INTO Usuarios(nombre, apellidoPaterno, apellidoMaterno, correo, correoAlterno, numeroTelefono, estado) VALUES (?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement userStatement = dataBaseManager.getConnection().prepareStatement(userQuery, Statement.RETURN_GENERATED_KEYS);
             userStatement.setString(1, preloadedDirector.getName());
             userStatement.setString(2, preloadedDirector.getFirstSurname());

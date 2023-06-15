@@ -68,7 +68,7 @@ public class CourseDAO implements ICourseDAO{
     }
 
     @Override
-    public int modifyCourseData(Course course) throws DataInsertionException, DuplicatedPrimaryKeyException{
+    public int modifyCourseData(Course course, int oldNrc) throws DataInsertionException, DuplicatedPrimaryKeyException{
         int result = 0;
         try{
             String query = "UPDATE Cursos SET NRC = ?, IdPeriodoEscolar = ?, NumPersonal = ?, nombre = ?, " + 
@@ -92,7 +92,8 @@ public class CourseDAO implements ICourseDAO{
             preparedStatement.setInt(5, course.getSection());
             preparedStatement.setInt(6, course.getBlock());
             preparedStatement.setString(7, course.getStatus());
-            preparedStatement.setInt(8, course.getNrc());
+            preparedStatement.setInt(8, oldNrc);
+            
             result = preparedStatement.executeUpdate();
         }catch(SQLIntegrityConstraintViolationException e){
             throw new DuplicatedPrimaryKeyException("Curso ya registrado en el sistema");
@@ -112,9 +113,9 @@ public class CourseDAO implements ICourseDAO{
         try{
             Statement statement = dataBaseManager.getConnection().createStatement();
             String query = "SELECT c.NRC, c.NumPersonal, c.nombre, c.sección, c.bloque, c.estado, up.nombre, up.apellidoPaterno, up.apellidoMaterno, "
-                         + "pe.IdPeriodoEscolar, pe.fechaInicio, pe.fechaFin FROM Cursos c LEFT JOIN EstudiantesCurso ec ON c.NRC = ec.NRC "
-                         + "LEFT JOIN PeriodosEscolares pe ON c.IdPeriodoEscolar = pe.IdPeriodoEscolar "
-                         + "LEFT JOIN Profesores p ON c.NumPersonal = p.NumPersonal LEFT JOIN Usuarios up ON p.IdUsuario = up.IdUsuario";
+                    + "pe.IdPeriodoEscolar, pe.fechaInicio, pe.fechaFin FROM Cursos c  LEFT JOIN PeriodosEscolares pe "
+                    + "ON c.IdPeriodoEscolar = pe.IdPeriodoEscolar LEFT JOIN Profesores p ON c.NumPersonal = p.NumPersonal "
+                    + "LEFT JOIN Usuarios up ON p.IdUsuario = up.IdUsuario";
             
             ResultSet resultSet = statement.executeQuery(query);
             while(resultSet.next()){

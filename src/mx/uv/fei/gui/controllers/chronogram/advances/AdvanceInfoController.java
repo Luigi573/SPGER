@@ -12,22 +12,34 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import mx.uv.fei.gui.AlertPopUpGenerator;
 import mx.uv.fei.gui.controllers.HeaderPaneController;
+import mx.uv.fei.gui.controllers.chronogram.activities.ActivityFileItemController;
+import mx.uv.fei.gui.controllers.chronogram.activities.ActivityInfoController;
+import mx.uv.fei.logic.daos.FileDAO;
+import mx.uv.fei.logic.domain.Activity;
 import mx.uv.fei.logic.domain.Advance;
 import mx.uv.fei.logic.domain.Course;
+import mx.uv.fei.logic.domain.File;
 import mx.uv.fei.logic.domain.Professor;
 import mx.uv.fei.logic.domain.User;
+import mx.uv.fei.logic.exceptions.DataRetrievalException;
 
 public class AdvanceInfoController{
+    private Activity activity;
     private Advance advance;
     private Course course;
     private User user;
     
     @FXML
     private Button editButton;
+    @FXML
+    private Button feedbackButton;
+    @FXML
+    private Button saveChangesButton;
     @FXML
     private Pane headerPane;
     @FXML
@@ -38,11 +50,39 @@ public class AdvanceInfoController{
     private Label statusLabel;
     @FXML
     private TextArea commentTextArea;
+    @FXML
+    private VBox advanceFileVBox;
 
     @FXML
-    private void editAdvance(ActionEvent event) {
-        
+    private void initialize(){
+        saveChangesButton.setVisible(false);
+        commentTextArea.setEditable(false);
     }
+    
+    @FXML
+    private void editAdvance(ActionEvent event) {
+        saveChangesButton.setVisible(true);
+        commentTextArea.setEditable(true);
+    }
+    
+     @FXML
+    private void returnToAdvanceList(ActionEvent event) {
+        try{
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/ActivityInfo.fxml"));
+            Parent parent = loader.load();
+            ActivityInfoController controller = (ActivityInfoController)loader.getController();
+            controller.setActivity(activity);
+            
+            Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+            Scene scene = new Scene(parent);
+            stage.setTitle("SPGER");
+            stage.setScene(scene);
+            stage.show();
+        }catch(IOException exception){
+            new AlertPopUpGenerator().showMissingFilesMessage();
+        }
+    }
+    
     @FXML
     private void openFeedbackPopUp(ActionEvent event) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/advances/FeedbackPopUp.fxml"));
@@ -69,6 +109,12 @@ public class AdvanceInfoController{
             new AlertPopUpGenerator().showMissingFilesMessage();
         }
     }
+    
+    @FXML
+    private void saveChanges(ActionEvent event){
+        
+    }
+    
     public void loadHeader(){
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/HeaderPane.fxml"));
         
@@ -84,15 +130,38 @@ public class AdvanceInfoController{
         }
     }
     
+    public void setActivity(Activity activity){
+        this.activity = activity;
+    }
+    
     public void setAdvance(Advance advance){
         this.advance = advance;
         
-        commentTextArea.setText(advance.getComments());
+        commentTextArea.setText(advance.getComment());
         dateLabel.setText(advance.getDate().toString());
         titleLabel.setText(advance.getTitle());
+        statusLabel.setText(advance.getState());
+                
+        FileDAO fileDAO = new FileDAO();
+        File file;
         
-        if(!commentTextArea.getText().isEmpty()){
-            commentTextArea.setEditable(false);
+        if(advance.getFileID() != 0) {
+            try {
+                file = fileDAO.getFileByID(advance.getFileID());
+                
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/ActivityFileItem.fxml"));               
+                try {
+                    Pane advancePane = loader.load();
+                    ActivityFileItemController controller = (ActivityFileItemController)loader.getController();
+                    controller.setFile(file.getFilePath());
+
+                    advanceFileVBox.getChildren().add(advancePane);
+                } catch(IOException exception){
+                    new AlertPopUpGenerator().showMissingFilesMessage();
+                }
+            } catch (DataRetrievalException exception) {
+                new AlertPopUpGenerator().showConnectionErrorMessage();
+            }
         }
     }
     
@@ -104,6 +173,9 @@ public class AdvanceInfoController{
         
         if(Professor.class.isAssignableFrom(user.getClass())){
             commentTextArea.setEditable(false);
+            editButton.setVisible(false);
+        }else{
+            feedbackButton.setVisible(false);
         }
     }
 }

@@ -126,14 +126,14 @@ public class ModifyCourseInformationController{
     private void modifyButtonController(ActionEvent event){
 
         try{
-            if(!nrcTextField.getText().isEmpty() &&
-               blockComboBox.getValue() != null &&
-               educativeExperienceComboBox.getValue() != null &&
-               sectionComboBox.getValue() != null &&
-               professorComboBox.getValue() != null &&
-               scholarPeriodComboBox.getValue() != null){
-                if(allTextFieldsContainsCorrectValues()){
+            if(!nrcTextField.getText().isEmpty() && blockComboBox.getValue() != null &&
+               educativeExperienceComboBox.getValue() != null && sectionComboBox.getValue() != null &&
+               professorComboBox.getValue() != null && scholarPeriodComboBox.getValue() != null){
+                
+                if(isValidNrc()){
                     CourseDAO courseDAO = new CourseDAO();
+                    
+                    int oldNrc = course.getNrc();
                     course.setName((String)educativeExperienceComboBox.getValue());
                     course.setNrc(Integer.parseInt(nrcTextField.getText()));
                     course.setSection(Integer.parseInt(sectionComboBox.getValue()));
@@ -147,7 +147,7 @@ public class ModifyCourseInformationController{
                         course.setScholarPeriod(scholarPeriodComboBox.getValue());
                     }
                     
-                    courseDAO.modifyCourseData(course);
+                    courseDAO.modifyCourseData(course, oldNrc);
                     new AlertPopUpGenerator().showCustomMessage(AlertType.INFORMATION, "Éxito", "Curso modificado exitosamente");
                     returnToGuiCourses(event);
                 }else{
@@ -162,7 +162,6 @@ public class ModifyCourseInformationController{
             new AlertPopUpGenerator().showCustomMessage(AlertType.ERROR, "Error", "El NRC ya está usado");
         }
     }
-
 
     public Course getCourse() {
         return course;
@@ -234,19 +233,20 @@ public class ModifyCourseInformationController{
         this.user = user;
     }
 
-    private boolean allTextFieldsContainsCorrectValues(){
+    private boolean isValidNrc(){
         Pattern nrcPattern = Pattern.compile("^[0-9]{5}$");
         Matcher nrcMatcher = nrcPattern.matcher(nrcTextField.getText());
+        
         if(nrcMatcher.find()){
             return true;
         }
         return false;
     }
+    
     private void returnToGuiCourses(ActionEvent event){
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/courses/GuiCourses.fxml"));
         
         try{
-            
             Parent parent = loader.load();
             GuiCoursesController controller = (GuiCoursesController)loader.getController();
             controller.setUser(user);
@@ -262,7 +262,6 @@ public class ModifyCourseInformationController{
             stage.show();
             
         }catch(IOException exception){
-            exception.printStackTrace();
             new AlertPopUpGenerator().showConnectionErrorMessage();
         }
     }

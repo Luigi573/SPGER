@@ -42,7 +42,7 @@ public class ProfessorDAOTest {
             preloadedProfessor.setStatus(ProfessorStatus.ACTIVE.getValue());
             preloadedProfessor.setStaffNumber(879823947);
 
-            String userQuery = "INSERT INTO Usuarios(nombre, apellidoPaterno, apellidoMaterno, correo, correoAlterno, númeroTeléfono, estado) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            String userQuery = "INSERT INTO Usuarios(nombre, apellidoPaterno, apellidoMaterno, correo, correoAlterno, numeroTelefono, estado) VALUES (?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement userStatement = dataBaseManager.getConnection().prepareStatement(userQuery, Statement.RETURN_GENERATED_KEYS);
             userStatement.setString(1, preloadedProfessor.getName());
             userStatement.setString(2, preloadedProfessor.getFirstSurname());
@@ -165,7 +165,7 @@ public class ProfessorDAOTest {
             ArrayList<Professor> result = instance.getProfessors();
             assertTrue(result.contains(preloadedProfessor));
         }catch(DataRetrievalException exception){
-            exception.printStackTrace();
+              ;
             fail("Couldn't connect to DB");
         }finally{
             dataBaseManager.closeConnection();

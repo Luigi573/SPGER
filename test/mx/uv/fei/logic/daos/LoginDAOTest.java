@@ -157,7 +157,7 @@ public class LoginDAOTest {
             
             userStatement.close();
         }catch(SQLException exception){
-            exception.printStackTrace();
+              ;
             fail("Couldn't connect to DB");
         }finally{
             dataBaseManager.closeConnection();

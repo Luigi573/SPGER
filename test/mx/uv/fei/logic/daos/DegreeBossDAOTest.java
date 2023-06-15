@@ -42,7 +42,7 @@ public class DegreeBossDAOTest {
             preloadedDegreeBoss.setStatus(ProfessorStatus.ACTIVE.getValue());
             preloadedDegreeBoss.setStaffNumber(489247839);
 
-            String userQuery = "INSERT INTO Usuarios(nombre, apellidoPaterno, apellidoMaterno, correo, correoAlterno, númeroTeléfono, estado) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            String userQuery = "INSERT INTO Usuarios(nombre, apellidoPaterno, apellidoMaterno, correo, correoAlterno, numeroTelefono, estado) VALUES (?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement userStatement = dataBaseManager.getConnection().prepareStatement(userQuery, Statement.RETURN_GENERATED_KEYS);
             userStatement.setString(1, preloadedDegreeBoss.getName());
             userStatement.setString(2, preloadedDegreeBoss.getFirstSurname());

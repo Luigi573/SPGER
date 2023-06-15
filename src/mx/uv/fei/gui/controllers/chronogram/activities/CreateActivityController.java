@@ -56,7 +56,7 @@ public class CreateActivityController{
             ActivityDAO activityDAO = new ActivityDAO();
 
             if(!activityDAO.isBlank(activity)){
-                if(activityDAO.isValidLength(activity)){
+                if(activityDAO.isValidTitle(activity)){
                     try{
                         if(activityDAO.addActivity(activity) > 0){
                             new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.INFORMATION, "Mensaje de éxito", "Actividad creada exitosamente");

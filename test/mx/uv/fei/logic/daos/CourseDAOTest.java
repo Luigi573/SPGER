@@ -71,12 +71,13 @@ public class CourseDAOTest{
     @AfterClass
     public static void tearDownClass(){
         PreparedStatement statement;
-        String queryToDeleteCourse = "DELETE FROM Cursos WHERE NRC = ? || NRC = ?";
+        String queryToDeleteCourse = "DELETE FROM Cursos WHERE NRC IN(?,?)";
         
         try{
             statement = dataBaseManager.getConnection().prepareStatement(queryToDeleteCourse);
             statement.setInt(1, preloadedCourse.getNrc());
             statement.setInt(2, preloadedCourseForAddCourseTest.getNrc());
+            
             statement.executeUpdate();
             statement.close();
         }catch(SQLException exception){
@@ -102,21 +103,15 @@ public class CourseDAOTest{
     }
 
     @Test
-    public void modifyCourseDataTest() {
-        try {
-            CourseDAO instance = new CourseDAO();
-            preloadedCourse.setName("Proyecto Guiado");;
-            preloadedCourse.setBlock(7);
-            preloadedCourse.setSection(2);
-            int result = instance.modifyCourseData(preloadedCourse);
-            assertTrue(result > 0);
-        }catch(DataInsertionException e) {
-            fail("Couldn't connect to DB");
-        }catch(DuplicatedPrimaryKeyException e) {
-            fail("Duplicated primary key");
-        }finally{
-            dataBaseManager.closeConnection();
-        }
+    public void modifyCourseDataTest() throws DataInsertionException, DuplicatedPrimaryKeyException{
+        CourseDAO instance = new CourseDAO();
+        preloadedCourse.setName("Proyecto Guiado");
+        preloadedCourse.setBlock(7);
+        preloadedCourse.setSection(2);
+        preloadedCourse.setNrc(56752);
+
+        int result = instance.modifyCourseData(preloadedCourse, 67489);
+        assertTrue(result > 0);
     }
 
     @Test

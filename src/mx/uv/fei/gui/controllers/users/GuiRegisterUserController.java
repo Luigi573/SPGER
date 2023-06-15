@@ -3,6 +3,8 @@ package mx.uv.fei.gui.controllers.users;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.text.WordUtils;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert.AlertType;
@@ -63,14 +65,8 @@ public class GuiRegisterUserController{
     }
     @FXML
     private void registerButtonController(ActionEvent event){
-        if(!namesTextField.getText().trim().isEmpty() &&
-           !firstSurnameTextField.getText().trim().isEmpty() &&
-           !secondSurnameTextField.getText().trim().isEmpty() &&
-           !emailTextField.getText().trim().isEmpty() &&
-           !alternateEmailTextField.getText().trim().isEmpty() &&
-           !telephoneNumberTextField.getText().trim().isEmpty() &&
-           !matricleOrStaffNumberTextField.getText().trim().isEmpty()){
-            if(allTextFieldsContainsCorrectValues()){
+        if(allTextFieldsContainsData()){
+            if(specifiedInvalidDataMessageError().equals("")){
                 if(typeComboBox.getValue().equals(UserType.DIRECTOR.getValue())){
                     registerDirector();
                 }
@@ -95,7 +91,7 @@ public class GuiRegisterUserController{
                 Stage stage = (Stage) registerButton.getScene().getWindow();
                 stage.close();
             }else{
-                new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "Error", "Algunos campos contienen datos inválidos");
+                new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "Error", specifiedInvalidDataMessageError());
             }
         }else{
             new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "Error", "Faltan campos por llenar");
@@ -122,9 +118,9 @@ public class GuiRegisterUserController{
         try {
             DirectorDAO directorDAO = new DirectorDAO();
             Director director = new Director();
-            director.setName(namesTextField.getText());
-            director.setFirstSurname(firstSurnameTextField.getText());
-            director.setSecondSurname(secondSurnameTextField.getText());
+            director.setName(WordUtils.capitalize(namesTextField.getText().toLowerCase()));
+            director.setFirstSurname(WordUtils.capitalize(firstSurnameTextField.getText().toLowerCase()));
+            director.setSecondSurname(WordUtils.capitalize(secondSurnameTextField.getText().toLowerCase()));
             director.setEmailAddress(emailTextField.getText());
             director.setAlternateEmail(alternateEmailTextField.getText());
             director.setPhoneNumber(telephoneNumberTextField.getText());
@@ -142,9 +138,9 @@ public class GuiRegisterUserController{
         try {
             AcademicBodyHeadDAO academicBodyHeadDAO = new AcademicBodyHeadDAO();
             AcademicBodyHead academicBodyHead = new AcademicBodyHead();
-            academicBodyHead.setName(namesTextField.getText());
-            academicBodyHead.setFirstSurname(firstSurnameTextField.getText());
-            academicBodyHead.setSecondSurname(secondSurnameTextField.getText());
+            academicBodyHead.setName(WordUtils.capitalize(namesTextField.getText().toLowerCase()));
+            academicBodyHead.setFirstSurname(WordUtils.capitalize(firstSurnameTextField.getText().toLowerCase()));
+            academicBodyHead.setSecondSurname(WordUtils.capitalize(secondSurnameTextField.getText().toLowerCase()));
             academicBodyHead.setEmailAddress(emailTextField.getText());
             academicBodyHead.setAlternateEmail(alternateEmailTextField.getText());
             academicBodyHead.setPhoneNumber(telephoneNumberTextField.getText());
@@ -162,9 +158,9 @@ public class GuiRegisterUserController{
         try {
             DegreeBossDAO degreeBossDAO = new DegreeBossDAO();
             DegreeBoss degreeBoss = new DegreeBoss();
-            degreeBoss.setName(namesTextField.getText());
-            degreeBoss.setFirstSurname(firstSurnameTextField.getText());
-            degreeBoss.setSecondSurname(secondSurnameTextField.getText());
+            degreeBoss.setName(WordUtils.capitalize(namesTextField.getText().toLowerCase()));
+            degreeBoss.setFirstSurname(WordUtils.capitalize(firstSurnameTextField.getText().toLowerCase()));
+            degreeBoss.setSecondSurname(WordUtils.capitalize(secondSurnameTextField.getText().toLowerCase()));
             degreeBoss.setEmailAddress(emailTextField.getText());
             degreeBoss.setAlternateEmail(alternateEmailTextField.getText());
             degreeBoss.setPhoneNumber(telephoneNumberTextField.getText());
@@ -183,9 +179,9 @@ public class GuiRegisterUserController{
         try {
             ProfessorDAO professorDAO = new ProfessorDAO();
             Professor professor = new Professor();
-            professor.setName(namesTextField.getText());
-            professor.setFirstSurname(firstSurnameTextField.getText());
-            professor.setSecondSurname(secondSurnameTextField.getText());
+            professor.setName(WordUtils.capitalize(namesTextField.getText().toLowerCase()));
+            professor.setFirstSurname(WordUtils.capitalize(firstSurnameTextField.getText().toLowerCase()));
+            professor.setSecondSurname(WordUtils.capitalize(secondSurnameTextField.getText().toLowerCase()));
             professor.setEmailAddress(emailTextField.getText());
             professor.setAlternateEmail(alternateEmailTextField.getText());
             professor.setPhoneNumber(telephoneNumberTextField.getText());
@@ -203,9 +199,9 @@ public class GuiRegisterUserController{
         try {
             StudentDAO studentDAO = new StudentDAO();
             Student student = new Student();
-            student.setName(namesTextField.getText());
-            student.setFirstSurname(firstSurnameTextField.getText());
-            student.setSecondSurname(secondSurnameTextField.getText());
+            student.setName(WordUtils.capitalize(namesTextField.getText().toLowerCase()));
+            student.setFirstSurname(WordUtils.capitalize(firstSurnameTextField.getText().toLowerCase()));
+            student.setSecondSurname(WordUtils.capitalize(secondSurnameTextField.getText().toLowerCase()));
             student.setEmailAddress(emailTextField.getText());
             student.setAlternateEmail(alternateEmailTextField.getText());
             student.setPhoneNumber(telephoneNumberTextField.getText());
@@ -219,14 +215,20 @@ public class GuiRegisterUserController{
             new AlertPopUpGenerator().showCustomMessage(AlertType.ERROR, "Error", "La Matrícula ya está usada");
         }
     }
-    private boolean allTextFieldsContainsCorrectValues(){
-        Pattern namesPattern = Pattern.compile("([A-Z][a-z]+)\\s?([A-Z][a-z]+)?\\s?([A-Z][a-z]+)?\\s?([A-Z][a-z]+)?"),
-                firstSurnamePattern = Pattern.compile("([A-Z][a-z]+)\\s?([A-Z][a-z]+)?\\s?([A-Z][a-z]+)?\\s?([A-Z][a-z]+)?"),
-                secondSurnamePattern = Pattern.compile("([A-Z][a-z]+)\\s?([A-Z][a-z]+)?\\s?([A-Z][a-z]+)?\\s?([A-Z][a-z]+)?"),
+    private boolean allTextFieldsContainsData(){
+        return !namesTextField.getText().trim().isEmpty() && !firstSurnameTextField.getText().trim().isEmpty() &&
+               !secondSurnameTextField.getText().trim().isEmpty() && !emailTextField.getText().trim().isEmpty() &&
+               !alternateEmailTextField.getText().trim().isEmpty() && !telephoneNumberTextField.getText().trim().isEmpty() &&
+               !matricleOrStaffNumberTextField.getText().trim().isEmpty();
+    }
+    private String specifiedInvalidDataMessageError(){
+        Pattern namesPattern = Pattern.compile("^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ]+(?: [A-Za-zÁÉÍÓÚÜÑáéíóúüñ]+)*$"),
+                firstSurnamePattern = Pattern.compile("^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ]+(?: [A-Za-zÁÉÍÓÚÜÑáéíóúüñ]+)*$"),
+                secondSurnamePattern = Pattern.compile("^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ]+(?: [A-Za-zÁÉÍÓÚÜÑáéíóúüñ]+)*$"),
                 emailPattern = Pattern.compile("^(.+)@uv.mx$"),
-                alternateEmailPattern = Pattern.compile("^(.+)@uv.mx$"),
+                alternateEmailPattern = Pattern.compile("^[\\w.%+-]+@[\\w.-]+\\.[a-zA-Z]{2,}$"),
                 telephoneNumberPattern = Pattern.compile("^[0-9]{10}$"),
-                matricleOrStaffNumberPattern = Pattern.compile("");
+                matricleOrStaffNumberPattern;
     
         if(typeComboBox.getValue().equals(UserType.STUDENT.getValue())){
             matricleOrStaffNumberPattern = Pattern.compile("^[z][S][0-9]{8}$");
@@ -242,13 +244,34 @@ public class GuiRegisterUserController{
                 telephoneNumberMatcher = telephoneNumberPattern.matcher(telephoneNumberTextField.getText()),
                 matricleOrStaffNumberMatcher = matricleOrStaffNumberPattern.matcher(matricleOrStaffNumberTextField.getText());
 
-        if(namesMatcher.find() && firstSurnameMatcher.find() &&
-           secondSurnameMatcher.find() && emailMatcher.find() &&
-           alternateEmailMatcher.find() && telephoneNumberMatcher.find() &&
-           matricleOrStaffNumberMatcher.find()){
-            return true;
+        if(!namesMatcher.find()){
+            return "El campo para introducir el nombre contiene datos inválidos";
         }
 
-        return false;
+        if(!firstSurnameMatcher.find()){
+            return "El campo para introducir el apellido paterno contiene datos inválidos";
+        }
+
+        if(!secondSurnameMatcher.find()){
+            return "El campo para introducir el apellido materno contiene datos inválidos";
+        }
+
+        if(!emailMatcher.find()){
+            return "El campo para introducir el correo electrónico contiene datos inválidos";
+        }
+
+        if(!alternateEmailMatcher.find()){
+            return "El campo para introducir el correo alterno contiene datos inválidos";
+        }
+
+        if(!telephoneNumberMatcher.find()){
+            return "El campo para introducir el número de telefono contiene datos inválidos";
+        }
+
+        if(!matricleOrStaffNumberMatcher.find()){
+            return "El campo para introducir la matrícula o el numero de personal contiene datos inválidos";
+        }
+
+        return "";
     }
 }

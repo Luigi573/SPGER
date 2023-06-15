@@ -7,10 +7,6 @@ import mx.uv.fei.logic.exceptions.LoginException;
 
 public class LoginDAOExceptionsTest {
     
-    public LoginDAOExceptionsTest() {
-        
-    }
-
     @Test(expected = LoginException.class)
     public void testLogInStudent() throws LoginException {
         LoginDAO instance = new LoginDAO();

@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.text.WordUtils;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -72,15 +74,8 @@ public class ModifyUserInformationController{
     }
     @FXML
     private void modifyButtonController(ActionEvent event){
-        if(!namesTextField.getText().trim().isEmpty() &&
-           !firstSurnameTextField.getText().trim().isEmpty() &&
-           !secondSurnameTextField.getText().trim().isEmpty() &&
-           !emailTextField.getText().trim().isEmpty() &&
-           !alternateEmailTextField.getText().trim().isEmpty() &&
-           !telephoneNumberTextField.getText().trim().isEmpty() &&
-           !matricleOrStaffNumberTextField.getText().trim().isEmpty() &&
-           statusComboBox.getValue() != null){
-            if(allTextFieldsContainsCorrectValues()){
+        if(allTextFieldsContainsData()){
+            if(specifiedInvalidDataMessageError().equals("")){
                 if(userInformationController.getUserType().equals(UserType.DIRECTOR.getValue())){
                     modifyDirector(event);
                 }
@@ -101,7 +96,7 @@ public class ModifyUserInformationController{
                     modifyStudent(event);
                 }
             }else{
-                new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "Error", "Algunos campos tienen datos inválidos");
+                new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "Error", specifiedInvalidDataMessageError());
             }
         }else{
             new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "Error", "Faltan campos por llenar");
@@ -205,9 +200,9 @@ public class ModifyUserInformationController{
     private void modifyStudent(ActionEvent event){
         StudentDAO studentDAO = new StudentDAO();
         Student student = (Student)userToModify;
-        student.setName(namesTextField.getText());
-        student.setFirstSurname(firstSurnameTextField.getText());
-        student.setSecondSurname(secondSurnameTextField.getText());
+        student.setName(WordUtils.capitalize(namesTextField.getText().toLowerCase()));
+        student.setFirstSurname(WordUtils.capitalize(firstSurnameTextField.getText().toLowerCase()));
+        student.setSecondSurname(WordUtils.capitalize(secondSurnameTextField.getText().toLowerCase()));
         student.setEmailAddress(emailTextField.getText());
         student.setAlternateEmail(alternateEmailTextField.getText());
         student.setPhoneNumber(telephoneNumberTextField.getText());
@@ -227,9 +222,9 @@ public class ModifyUserInformationController{
     private void modifyProfessor(ActionEvent event){
         ProfessorDAO professorDAO = new ProfessorDAO();
         Professor professor = (Professor)userToModify;
-        professor.setName(namesTextField.getText());
-        professor.setFirstSurname(firstSurnameTextField.getText());
-        professor.setSecondSurname(secondSurnameTextField.getText());
+        professor.setName(WordUtils.capitalize(namesTextField.getText().toLowerCase()));
+        professor.setFirstSurname(WordUtils.capitalize(firstSurnameTextField.getText().toLowerCase()));
+        professor.setSecondSurname(WordUtils.capitalize(secondSurnameTextField.getText().toLowerCase()));
         professor.setEmailAddress(emailTextField.getText());
         professor.setAlternateEmail(alternateEmailTextField.getText());
         professor.setPhoneNumber(telephoneNumberTextField.getText());
@@ -249,9 +244,9 @@ public class ModifyUserInformationController{
     private void modifyDirector(ActionEvent event){
         DirectorDAO directorDAO = new DirectorDAO();
         Director director = (Director)userToModify;
-        director.setName(namesTextField.getText());
-        director.setFirstSurname(firstSurnameTextField.getText());
-        director.setSecondSurname(secondSurnameTextField.getText());
+        director.setName(WordUtils.capitalize(namesTextField.getText().toLowerCase()));
+        director.setFirstSurname(WordUtils.capitalize(firstSurnameTextField.getText().toLowerCase()));
+        director.setSecondSurname(WordUtils.capitalize(secondSurnameTextField.getText().toLowerCase()));
         director.setEmailAddress(emailTextField.getText());
         director.setAlternateEmail(alternateEmailTextField.getText());
         director.setPhoneNumber(telephoneNumberTextField.getText());
@@ -271,9 +266,9 @@ public class ModifyUserInformationController{
     private void modifyAcademicBodyHead(ActionEvent event){
         AcademicBodyHeadDAO academicBodyHeadDAO = new AcademicBodyHeadDAO();
         AcademicBodyHead academicBodyHead = (AcademicBodyHead)userToModify;
-        academicBodyHead.setName(namesTextField.getText());
-        academicBodyHead.setFirstSurname(firstSurnameTextField.getText());
-        academicBodyHead.setSecondSurname(secondSurnameTextField.getText());
+        academicBodyHead.setName(WordUtils.capitalize(namesTextField.getText().toLowerCase()));
+        academicBodyHead.setFirstSurname(WordUtils.capitalize(firstSurnameTextField.getText().toLowerCase()));
+        academicBodyHead.setSecondSurname(WordUtils.capitalize(secondSurnameTextField.getText().toLowerCase()));
         academicBodyHead.setEmailAddress(emailTextField.getText());
         academicBodyHead.setAlternateEmail(alternateEmailTextField.getText());
         academicBodyHead.setPhoneNumber(telephoneNumberTextField.getText());
@@ -293,9 +288,9 @@ public class ModifyUserInformationController{
     private void modifyDegreeBoss(ActionEvent event){
         DegreeBossDAO degreeBossDAO = new DegreeBossDAO();
         DegreeBoss degreeBoss = (DegreeBoss)userToModify;
-        degreeBoss.setName(namesTextField.getText());
-        degreeBoss.setFirstSurname(firstSurnameTextField.getText());
-        degreeBoss.setSecondSurname(secondSurnameTextField.getText());
+        degreeBoss.setName(WordUtils.capitalize(namesTextField.getText().toLowerCase()));
+        degreeBoss.setFirstSurname(WordUtils.capitalize(firstSurnameTextField.getText().toLowerCase()));
+        degreeBoss.setSecondSurname(WordUtils.capitalize(secondSurnameTextField.getText().toLowerCase()));
         degreeBoss.setEmailAddress(emailTextField.getText());
         degreeBoss.setAlternateEmail(alternateEmailTextField.getText());
         degreeBoss.setPhoneNumber(telephoneNumberTextField.getText());
@@ -315,14 +310,20 @@ public class ModifyUserInformationController{
             new AlertPopUpGenerator().showCustomMessage(AlertType.ERROR, "Error", "El número de personal ya está usado");
         }
     }
-    private boolean allTextFieldsContainsCorrectValues(){
-        Pattern namesPattern = Pattern.compile("([A-Z][a-z]+)\\s?([A-Z][a-z]+)?\\s?([A-Z][a-z]+)?\\s?([A-Z][a-z]+)?"),
-                firstSurnamePattern = Pattern.compile("([A-Z][a-z]+)\\s?([A-Z][a-z]+)?\\s?([A-Z][a-z]+)?\\s?([A-Z][a-z]+)?"),
-                secondSurnamePattern = Pattern.compile("([A-Z][a-z]+)\\s?([A-Z][a-z]+)?\\s?([A-Z][a-z]+)?\\s?([A-Z][a-z]+)?"),
+    private boolean allTextFieldsContainsData(){
+        return !namesTextField.getText().trim().isEmpty() && !firstSurnameTextField.getText().trim().isEmpty() &&
+               !secondSurnameTextField.getText().trim().isEmpty() && !emailTextField.getText().trim().isEmpty() &&
+               !alternateEmailTextField.getText().trim().isEmpty() && !telephoneNumberTextField.getText().trim().isEmpty() &&
+               !matricleOrStaffNumberTextField.getText().trim().isEmpty() && statusComboBox.getValue() != null;
+    }
+    private String specifiedInvalidDataMessageError(){
+        Pattern namesPattern = Pattern.compile("^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ]+(?: [A-Za-zÁÉÍÓÚÜÑáéíóúüñ]+)*$"),
+                firstSurnamePattern = Pattern.compile("^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ]+(?: [A-Za-zÁÉÍÓÚÜÑáéíóúüñ]+)*$"),
+                secondSurnamePattern = Pattern.compile("^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ]+(?: [A-Za-zÁÉÍÓÚÜÑáéíóúüñ]+)*$"),
                 emailPattern = Pattern.compile("^(.+)@uv.mx$"),
-                alternateEmailPattern = Pattern.compile("^(.+)@uv.mx$"),
+                alternateEmailPattern = Pattern.compile("^[\\w.%+-]+@[\\w.-]+\\.[a-zA-Z]{2,}$"),
                 telephoneNumberPattern = Pattern.compile("^[0-9]{10}$"),
-                matricleOrStaffNumberPattern = Pattern.compile("");
+                matricleOrStaffNumberPattern;
     
         if(userInformationController.getUserType().equals(UserType.STUDENT.getValue())){
             matricleOrStaffNumberPattern = Pattern.compile("^[z][S][0-9]{8}$");
@@ -338,14 +339,35 @@ public class ModifyUserInformationController{
                 telephoneNumberMatcher = telephoneNumberPattern.matcher(telephoneNumberTextField.getText()),
                 matricleOrStaffNumberMatcher = matricleOrStaffNumberPattern.matcher(matricleOrStaffNumberTextField.getText());
 
-        if(namesMatcher.find() && firstSurnameMatcher.find() &&
-           secondSurnameMatcher.find() && emailMatcher.find() &&
-           alternateEmailMatcher.find() && telephoneNumberMatcher.find() &&
-           matricleOrStaffNumberMatcher.find()){
-            return true;
+        if(!namesMatcher.find()){
+            return "El campo para introducir el nombre contiene datos inválidos";
         }
 
-        return false;
+        if(!firstSurnameMatcher.find()){
+            return "El campo para introducir el apellido paterno contiene datos inválidos";
+        }
+
+        if(!secondSurnameMatcher.find()){
+            return "El campo para introducir el apellido materno contiene datos inválidos";
+        }
+
+        if(!emailMatcher.find()){
+            return "El campo para introducir el correo electrónico contiene datos inválidos";
+        }
+
+        if(!alternateEmailMatcher.find()){
+            return "El campo para introducir el correo alterno contiene datos inválidos";
+        }
+
+        if(!telephoneNumberMatcher.find()){
+            return "El campo para introducir el número de telefono contiene datos inválidos";
+        }
+
+        if(!matricleOrStaffNumberMatcher.find()){
+            return "El campo para introducir la matrícula o el numero de personal contiene datos inválidos";
+        }
+
+        return "";
     }
     private void returnToGuiUsers(ActionEvent event, User user){
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/users/GuiUsers.fxml"));
@@ -367,7 +389,7 @@ public class ModifyUserInformationController{
 
                 stage.show();
             }
-        }catch(IllegalStateException | IOException exception){
+        }catch(IOException exception){
             new AlertPopUpGenerator().showConnectionErrorMessage();
         }
     }

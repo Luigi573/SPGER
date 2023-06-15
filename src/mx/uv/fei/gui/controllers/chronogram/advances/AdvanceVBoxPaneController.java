@@ -58,6 +58,7 @@ public class AdvanceVBoxPaneController{
         
         titleLabel.setText(advance.getTitle());
         dateLabel.setText(advance.getDate().toString());
+        statusLabel.setText(advance.getState());
     }
     
     public void setCourse(Course course){

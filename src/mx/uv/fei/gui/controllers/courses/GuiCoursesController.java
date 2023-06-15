@@ -51,15 +51,15 @@ public class GuiCoursesController{
     private void registerCourseButtonController(ActionEvent event){
         Parent guiRegisterCourse;
         try{
-            FXMLLoader loader = new FXMLLoader(
-                getClass().getResource("/mx/uv/fei/gui/fxml/courses/GuiRegisterCourse.fxml")
-            );
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/courses/GuiRegisterCourse.fxml"));
             guiRegisterCourse = loader.load();
             GuiRegisterCourseController guiRegisterCourseController = loader.getController();
             guiRegisterCourseController.setGuiCoursesController(this);
+            
             Scene scene = new Scene(guiRegisterCourse);
             String css = getClass().getResource("/mx/uv/fei/gui/stylesfiles/Styles.css").toExternalForm();
             scene.getStylesheets().add(css);
+            
             Stage stage = new Stage();
             stage.setTitle("Registrar Curso");
             stage.initModality(Modality.WINDOW_MODAL);
@@ -90,9 +90,7 @@ public class GuiCoursesController{
         CourseDAO courseDAO = new CourseDAO();
         try {
             Course course = courseDAO.getCourse(courseInformationController.getNrc());
-            FXMLLoader modifyCourseInformationControllerLoader = new FXMLLoader(
-                getClass().getResource("/mx/uv/fei/gui/fxml/courses/ModifyCourseInformation.fxml")
-            );
+            FXMLLoader modifyCourseInformationControllerLoader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/courses/ModifyCourseInformation.fxml"));
             VBox modifyCourseInformationVBox = modifyCourseInformationControllerLoader.load();
             ModifyCourseInformationController modifyCourseInformationController = modifyCourseInformationControllerLoader.getController();
             modifyCourseInformationController.setEducativeExperience(course.getName());
@@ -100,6 +98,7 @@ public class GuiCoursesController{
             modifyCourseInformationController.setSection(Integer.toString(course.getSection()));
             modifyCourseInformationController.setBlock(Integer.toString(course.getBlock()));
             modifyCourseInformationController.setStatus(course.getStatus());
+            
             if(course.getProfessor() != null){
                 ProfessorDAO professorDAO = new ProfessorDAO();
                 Professor professor = professorDAO.getProfessor(course.getProfessor().getStaffNumber());
@@ -166,6 +165,7 @@ public class GuiCoursesController{
     public void loadCourseButtons(){
         coursesVBox.getChildren().clear();
         CourseDAO courseDAO = new CourseDAO();
+        
         try{
             ArrayList<Course> courses = courseDAO.getCourses();
             courseButtonMaker(courses);
@@ -201,9 +201,7 @@ public class GuiCoursesController{
     private void courseButtonMaker(ArrayList<Course> courses){
         try {
             for(Course course : courses){
-                FXMLLoader courseItemControllerLoader = new FXMLLoader(
-                    getClass().getResource("/mx/uv/fei/gui/fxml/courses/Course.fxml")
-                );
+                FXMLLoader courseItemControllerLoader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/courses/Course.fxml"));
                 Pane courseItemPane = courseItemControllerLoader.load();
                 CourseController courseController = courseItemControllerLoader.getController();
                 courseController.setName(course.getName());

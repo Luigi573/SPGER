@@ -73,7 +73,6 @@ public class ResearchInfoPaneController{
             container.setContent(researchInfoPane);
             researchManagerController.loadResearches(0);
         }catch(IOException exception){
-            exception.printStackTrace();
             new AlertPopUpGenerator().showMissingFilesMessage();
         }
     }

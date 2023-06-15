@@ -15,6 +15,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.DialogPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -42,6 +43,8 @@ public class ModifyResearchPaneController{
     private ComboBox<Director> director2ComboBox;
     @FXML
     private ComboBox<Director> director3ComboBox;
+    @FXML
+    private DialogPane dialogPane;
     @FXML
     private ComboBox<KGAL> KGALComboBox;
     @FXML
@@ -90,8 +93,13 @@ public class ModifyResearchPaneController{
     @FXML
     private void cancelChanges(ActionEvent event){
         Alert confirmationMessage = new Alert(Alert.AlertType.CONFIRMATION);
-        confirmationMessage.setHeaderText("Guardar cambios");
-        confirmationMessage.setContentText("¿Está seguro que desea modificar la actividad y volver al cronograma?");
+        confirmationMessage.setHeaderText("Descartar cambios");
+        confirmationMessage.setContentText("¿Está seguro que cancelar la modificación del anteproeycto?");
+
+        dialogPane = confirmationMessage.getDialogPane();
+        String css = getClass().getResource("/mx/uv/fei/gui/stylesfiles/Styles.css").toExternalForm();
+        dialogPane.getStylesheets().add(css);
+        dialogPane.getStyleClass().add("dialog");
         
         Optional<ButtonType> choice = confirmationMessage.showAndWait();
         if(choice.isPresent() && choice.get() == ButtonType.OK){
@@ -100,9 +108,14 @@ public class ModifyResearchPaneController{
     }
     @FXML
     private void saveChanges(ActionEvent event){
-        Alert confirmationMessage = new Alert(Alert.AlertType.CONFIRMATION);
-        confirmationMessage.setHeaderText("Descartar cambios");
-        confirmationMessage.setContentText("¿Está seguro que cancelar la modificación del anteproeycto?");
+        Alert confirmationMessage = new Alert(Alert.AlertType.CONFIRMATION);        
+        confirmationMessage.setHeaderText("Guardar cambios");
+        confirmationMessage.setContentText("¿Está seguro que desea guardar las modificaciones del anteproyecto?");
+
+        dialogPane = confirmationMessage.getDialogPane();
+        String css = getClass().getResource("/mx/uv/fei/gui/stylesfiles/Styles.css").toExternalForm();
+        dialogPane.getStylesheets().add(css);
+        dialogPane.getStyleClass().add("dialog");
         
         Optional<ButtonType> choice = confirmationMessage.showAndWait();
         if(choice.isPresent() && choice.get() == ButtonType.OK){
@@ -110,10 +123,10 @@ public class ModifyResearchPaneController{
             ResearchProject research = new ResearchProject();
             
             research.setId(researchId);
-            research.setTitle(titleTextField.getText().trim());
+            research.setTitle(titleTextField.getText());
             research.setDueDate(Date.valueOf(dueDatePicker.getValue()));
             research.setStartDate(Date.valueOf(startDatePicker.getValue()));
-            research.setDescription(descriptionTextArea.getText().trim());
+            research.setDescription(descriptionTextArea.getText());
             
             for(ComboBox<Director> directorComboBox : directorComboBoxes){
                 if(directorComboBox.getValue() != null){
@@ -128,9 +141,9 @@ public class ModifyResearchPaneController{
                 research.setStudent(studentComboBox.getValue());
             }
             
-            research.setExpectedResult(expectedResultTextArea.getText().trim());
-            research.setSuggestedBibliography(suggestedBibliographyTextArea.getText().trim());
-            research.setRequirements(requirementsTextArea.getText().trim());
+            research.setExpectedResult(expectedResultTextArea.getText());
+            research.setSuggestedBibliography(suggestedBibliographyTextArea.getText());
+            research.setRequirements(requirementsTextArea.getText());
             
             if(researchDAO.isValidDate(research)){
                 if(!researchDAO.isBlank(research)){
@@ -144,7 +157,7 @@ public class ModifyResearchPaneController{
                         new AlertPopUpGenerator().showConnectionErrorMessage();
                     }
                 }else{
-                    new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.WARNING, "No se puede modificar el anteproyecto", "Favor de llenar todos los campos");
+                    new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.WARNING, "No se puede modificar el anteproyecto", "Favor de llenar todos los campos obligatorios");
                 }
             }else{
                 new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.WARNING, "No se puede modificar el anteproyecto", "Favor de introducir una fecha válida");
@@ -161,10 +174,10 @@ public class ModifyResearchPaneController{
             KGALComboBox.getSelectionModel().select(research.getKgal());
         }
         
-        for(int i = 0; i < 3; i++){
-            if(research.getDirectors().get(i) != null){
-                directorComboBoxes.get(i).getSelectionModel().select(research.getDirectors().get(i));
-            }
+        int directorComboBoxesIndex = 0;
+        for(Director director : research.getDirectors()){
+            directorComboBoxes.get(directorComboBoxesIndex).getSelectionModel().select(director);
+            directorComboBoxesIndex++;
         }
         
         if(research.getStudent().getName() != null){
@@ -192,6 +205,7 @@ public class ModifyResearchPaneController{
                 ResearchManagerController controller = (ResearchManagerController)loader.getController();
                 controller.setUser(user);
                 controller.loadHeader();
+                controller.loadResearches(0);
             }
             
             Scene scene = new Scene(parent);

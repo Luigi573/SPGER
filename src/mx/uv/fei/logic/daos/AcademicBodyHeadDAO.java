@@ -26,7 +26,7 @@ public class AcademicBodyHeadDAO implements IAcademicBodyHeadDAO{
         int generatedId = 0;
         try{
             String queryToInsertAcademicBodyHeadDataToUserColumns = 
-                "INSERT INTO Usuarios (nombre, apellidoPaterno, apellidoMaterno, correo, correoAlterno, númeroTeléfono, estado) VALUES (?, ?, ?, ?, ?, ?, ?)";
+                "INSERT INTO Usuarios (nombre, apellidoPaterno, apellidoMaterno, correo, correoAlterno, numeroTelefono, estado) VALUES (?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement preparedStatementToInsertAcademicBodyHeadDataToUserColumns = 
                 dataBaseManager.getConnection().prepareStatement(queryToInsertAcademicBodyHeadDataToUserColumns, PreparedStatement.RETURN_GENERATED_KEYS);
             preparedStatementToInsertAcademicBodyHeadDataToUserColumns.setString(1, academicBodyHead.getName());
@@ -80,7 +80,7 @@ public class AcademicBodyHeadDAO implements IAcademicBodyHeadDAO{
         try{
             String queryForUpdateUserData = "UPDATE Usuarios SET nombre = ?, " + 
                            "apellidoPaterno = ?, apellidoMaterno = ?, correo = ?, " + 
-                           "correoAlterno = ?, númeroTeléfono = ?, estado = ? " +
+                           "correoAlterno = ?, numeroTelefono = ?, estado = ? " +
                            "WHERE IdUsuario = ?";
             PreparedStatement preparedStatement = dataBaseManager.getConnection().prepareStatement(queryForUpdateUserData);
             preparedStatement.setString(1, academicBodyHead.getName());
@@ -129,7 +129,7 @@ public class AcademicBodyHeadDAO implements IAcademicBodyHeadDAO{
                 academicBodyHead.setEmailAddress(resultSet.getString("correo"));
                 academicBodyHead.setPassword(resultSet.getString("contraseña"));
                 academicBodyHead.setAlternateEmail(resultSet.getString("correoAlterno"));
-                academicBodyHead.setPhoneNumber(resultSet.getString("númeroTeléfono"));
+                academicBodyHead.setPhoneNumber(resultSet.getString("numeroTelefono"));
                 academicBodyHead.setStatus(resultSet.getString("estado"));
                 academicBodyHead.setStaffNumber(resultSet.getInt("NumPersonal"));
                 academicBodyHeads.add(academicBodyHead);
@@ -163,7 +163,7 @@ public class AcademicBodyHeadDAO implements IAcademicBodyHeadDAO{
                 academicBodyHead.setEmailAddress(resultSet.getString("correo"));
                 academicBodyHead.setPassword(resultSet.getString("contraseña"));
                 academicBodyHead.setAlternateEmail(resultSet.getString("correoAlterno"));
-                academicBodyHead.setPhoneNumber(resultSet.getString("númeroTeléfono"));
+                academicBodyHead.setPhoneNumber(resultSet.getString("numeroTelefono"));
                 academicBodyHead.setStatus(resultSet.getString("estado"));
                 academicBodyHead.setStaffNumber(resultSet.getInt("NumPersonal"));
                 academicBodyHeads.add(academicBodyHead);
@@ -196,7 +196,7 @@ public class AcademicBodyHeadDAO implements IAcademicBodyHeadDAO{
                 academicBodyHead.setEmailAddress(resultSet.getString("correo"));
                 academicBodyHead.setPassword(resultSet.getString("contraseña"));
                 academicBodyHead.setAlternateEmail(resultSet.getString("correoAlterno"));
-                academicBodyHead.setPhoneNumber(resultSet.getString("númeroTeléfono"));
+                academicBodyHead.setPhoneNumber(resultSet.getString("numeroTelefono"));
                 academicBodyHead.setStatus(resultSet.getString("estado"));
                 academicBodyHead.setStaffNumber(resultSet.getInt("NumPersonal"));
             }
