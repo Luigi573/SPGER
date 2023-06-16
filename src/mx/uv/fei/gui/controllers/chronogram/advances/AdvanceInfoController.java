@@ -51,7 +51,7 @@ public class AdvanceInfoController{
     @FXML
     private TextArea commentTextArea;
     @FXML
-    private VBox advanceFileVBox;
+    private VBox fileVBox;
 
     @FXML
     private void initialize(){
@@ -157,13 +157,13 @@ public class AdvanceInfoController{
             try {
                 file = fileDAO.getFileByID(advance.getFileID());
                 
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/ActivityFileItem.fxml"));               
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/activities/ActivityFileItem.fxml"));               
                 try {
                     Pane advancePane = loader.load();
                     ActivityFileItemController controller = (ActivityFileItemController)loader.getController();
                     controller.setFile(file.getFilePath());
 
-                    advanceFileVBox.getChildren().add(advancePane);
+                    fileVBox.getChildren().add(advancePane);
                 } catch(IOException exception){
                     new AlertPopUpGenerator().showMissingFilesMessage();
                 }

@@ -79,14 +79,21 @@ public class FileDAO implements IFileDAO {
         return fileIdList;
     }
     
-    public int addActivityFile(int fileId, int activityId) throws DataInsertionException {
+    public int addActivityFile(String filePath, int activityId) throws DataInsertionException {
         int generatedId = 0;
-        String query = "insert into ArchivosActividad(IdArchivo, IdActividad) values(?, ?)";
+        
+        String activityFileQuery = "insert into ArchivosActividad(IdArchivo, IdActividad) values(?, ?)";
+        
+        
+        
         
         if (activityId > 0 && fileId > 0) {
             try {
-                Connection connection = dataBaseManager.getConnection();
-                PreparedStatement statement = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
+                dataBaseManager.getConnection().setAutoCommit(false);
+                
+                addFile(filePath);
+                
+                PreparedStatement statement = dataBaseManager.getConnection().prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
                 statement.setInt(1, fileId);
                 statement.setInt(2, activityId);
 
