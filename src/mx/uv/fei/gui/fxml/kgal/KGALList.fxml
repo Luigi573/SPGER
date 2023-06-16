@@ -8,21 +8,39 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.uv.fei.gui.fxcontrollers.manageKGAL.KGALListController">
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.uv.fei.gui.fxcontrollers.manageKGAL.KGALListController">
    <children>
-      <Button fx:id="btnNewKGAL" layoutX="449.0" layoutY="351.0" mnemonicParsing="false" onAction="#switchToCreateNewKGALScene" text="Crear nueva LGAC" />
-      <Button fx:id="btnCancel" layoutX="364.0" layoutY="351.0" mnemonicParsing="false" onAction="#exitKGALListScene" text="Regresar" />
-      <Text layoutX="118.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Administrar Líneas de Generación y Administración de Conocimiento" textAlignment="CENTER" wrappingWidth="363.3359375">
+      <Pane fx:id="headerPane" prefHeight="100.0" prefWidth="1024.0" />
+      <Button fx:id="btnNewKGAL" layoutX="840.0" layoutY="551.0" mnemonicParsing="false" onAction="#switchToCreateNewKGALScene" text="Crear nueva LGAC">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Button>
+      <Button fx:id="btnCancel" layoutX="743.0" layoutY="551.0" mnemonicParsing="false" onAction="#exitKGALListScene" text="Regresar">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Button>
+      <Text layoutX="1.0" layoutY="126.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Administrar Líneas de Generación y Administración de Conocimiento" textAlignment="CENTER" wrappingWidth="1021.3333282470703">
+         <font>
+            <Font name="System Bold" size="29.0" />
+         </font>
+      </Text>
+      <ScrollPane hbarPolicy="NEVER" layoutX="52.0" layoutY="189.0" prefHeight="344.0" prefWidth="920.0">
+        <content>
+            <VBox fx:id="vBoxKGALList" prefHeight="340.0" prefWidth="918.0" />
+        </content>
+      </ScrollPane>
+      <TextField fx:id="tfSearch" layoutX="51.0" layoutY="138.0" prefHeight="35.0" prefWidth="835.0">
          <font>
             <Font size="20.0" />
          </font>
-      </Text>
-      <ScrollPane hbarPolicy="NEVER" layoutX="39.0" layoutY="141.0" prefHeight="189.0" prefWidth="522.0">
-        <content>
-            <VBox fx:id="vBoxKGALList" prefHeight="180.0" prefWidth="522.0" />
-        </content>
-      </ScrollPane>
-      <TextField fx:id="tfSearch" layoutX="40.0" layoutY="97.0" prefHeight="25.0" prefWidth="469.0" />
-      <Button fx:id="btnSearch" layoutX="510.0" layoutY="97.0" mnemonicParsing="false" onAction="#searchKGALByDescription" text="Buscar" />
+      </TextField>
+      <Button fx:id="btnSearch" layoutX="893.0" layoutY="138.0" mnemonicParsing="false" onAction="#searchKGALByDescription" text="Buscar">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Button>
    </children>
 </Pane>

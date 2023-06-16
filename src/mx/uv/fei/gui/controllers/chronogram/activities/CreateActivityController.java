@@ -61,7 +61,7 @@ public class CreateActivityController{
                         if(activityDAO.addActivity(activity) > 0){
                             new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.INFORMATION, "Mensaje de éxito", "Actividad creada exitosamente");
                             
-                            returnToChronogram(event);
+                            goBack(event);
                         }
                     }catch(DataInsertionException exception){
                         new AlertPopUpGenerator().showConnectionErrorMessage();
@@ -134,28 +134,6 @@ public class CreateActivityController{
             headerPane.getChildren().setAll(header);
         }catch(IOException exception){
             new AlertPopUpGenerator().showConnectionErrorMessage();
-        }
-    }
-    
-    private void returnToChronogram(ActionEvent event){
-        try{
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/Chronogram.fxml"));
-            Parent parent = loader.load();
-            ChronogramController controller = (ChronogramController)loader.getController();
-            controller.setCourse(course);
-            controller.setUser(user);
-            controller.loadHeader();
-
-            Scene scene = new Scene(parent);
-            String css = this.getClass().getResource("/mx/uv/fei/gui/stylesfiles/Styles.css").toExternalForm();
-            scene.getStylesheets().add(css);
-
-            Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-            stage.setTitle("SPGER");
-            stage.setScene(scene);
-            stage.show();
-        }catch(IOException exception){
-            new AlertPopUpGenerator().showMissingFilesMessage();
         }
     }
 }

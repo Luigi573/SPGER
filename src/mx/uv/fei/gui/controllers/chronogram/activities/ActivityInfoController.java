@@ -250,8 +250,6 @@ public class ActivityInfoController{
             Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
             stage.setScene(scene);
             stage.show();
-            
-            
         }catch(IOException exception){
             new AlertPopUpGenerator().showMissingFilesMessage();
         }
@@ -309,7 +307,7 @@ public class ActivityInfoController{
         dueDateLabel.setText(activity.getDueDate().toString());
         descriptionText.setText(activity.getDescription());
         
-        if(activity.getStatus().equals(ActivityStatus.DELIVERED) || activity.getStatus().equals(ActivityStatus.REVIEWED )){
+        if(!activity.getStatus().equals(ActivityStatus.ACTIVE)){
             addAdvanceButton.setVisible(false);
             commentTextArea.setEditable(false);
             deliveryButton.setVisible(false);
@@ -321,6 +319,12 @@ public class ActivityInfoController{
         if(!activity.getStatus().equals(ActivityStatus.DELIVERED)){
             modifyDeliveryButton.setVisible(false);
         }
+        
+        if(!activity.getStatus().equals(ActivityStatus.REVIEWED)){
+            feedbackButton.setVisible(false);
+        }
+        
+        loadActivityFiles();
     }
     
     public void setCourse(Course course){
@@ -342,7 +346,7 @@ public class ActivityInfoController{
         }
     }
     
-      private void loadActivityFiles(){
+    private void loadActivityFiles(){
         ArrayList<Integer> fileIdList = new ArrayList();
         FileDAO fileDAO = new FileDAO();
         try {
@@ -350,7 +354,7 @@ public class ActivityInfoController{
         } catch (DataRetrievalException exception) {
             new AlertPopUpGenerator().showConnectionErrorMessage();
         }
-        
+
         String path;
         File file;
         for (int fileId : fileIdList) {
@@ -359,23 +363,22 @@ public class ActivityInfoController{
 
                 if (path != null) {
                     file = new File(path);
-                    
+
                     try{
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/activities/ActivityFileItem.fxml"));
                         Pane pane = loader.load();
                         ActivityFileItemController controller = (ActivityFileItemController)loader.getController();
                         controller.setFile(file);
-                        
+
                         fileVBox.getChildren().add(pane);
                         filesList.add(file);
                     } catch (IOException exception) {
                         new AlertPopUpGenerator().showMissingFilesMessage();
                     }
                 }
-            } catch (DataRetrievalException exception) {
+              }catch (DataRetrievalException exception) {
                 new AlertPopUpGenerator().showConnectionErrorMessage();
             }
         }
     }
-    
 }

@@ -60,7 +60,7 @@ public class FileDAO implements IFileDAO {
     }
     
     public ArrayList<Integer> getFilesByActivity(int activityID) throws DataRetrievalException {
-        String query = "select * from ArchivosActividades where IdActividad = ?";
+        String query = "select * from ArchivosActividad where IdActividad = ?";
         ArrayList<Integer> fileIdList = new ArrayList();
         
         try {
@@ -72,6 +72,7 @@ public class FileDAO implements IFileDAO {
                 fileIdList.add(resultSet.getInt("IdArchivo"));
             }
         } catch (SQLException exception){
+            exception.printStackTrace();
             throw new DataRetrievalException("No fue posible recuperar los archivos. Por favor intente de nuevo más tarde.");
         }
         
@@ -80,7 +81,7 @@ public class FileDAO implements IFileDAO {
     
     public int addActivityFile(int fileId, int activityId) throws DataInsertionException {
         int generatedId = 0;
-        String query = "insert into ArchivosActividades(IdArchivo, IdActividad) values(?, ?)";
+        String query = "insert into ArchivosActividad(IdArchivo, IdActividad) values(?, ?)";
         
         if (activityId > 0 && fileId > 0) {
             try {
