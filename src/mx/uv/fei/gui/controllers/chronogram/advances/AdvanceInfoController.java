@@ -66,9 +66,9 @@ public class AdvanceInfoController{
     }
     
      @FXML
-    private void returnToAdvanceList(ActionEvent event) {
+    private void goBack(ActionEvent event) {
         try{
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/ActivityInfo.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/activities/ActivityInfo.fxml"));
             Parent parent = loader.load();
             ActivityInfoController controller = (ActivityInfoController)loader.getController();
             controller.setActivity(activity);
@@ -77,8 +77,12 @@ public class AdvanceInfoController{
             controller.loadAdvances();
             controller.loadHeader();
             
-            Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
             Scene scene = new Scene(parent);
+            String css = this.getClass().getResource("/mx/uv/fei/gui/stylesfiles/Styles.css").toExternalForm();
+            scene.getStylesheets().add(css);
+            
+            Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+            
             stage.setTitle("SPGER");
             stage.setScene(scene);
             stage.show();

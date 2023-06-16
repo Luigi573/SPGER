@@ -16,6 +16,7 @@ import org.junit.Test;
 import mx.uv.fei.dataaccess.DataBaseManager;
 import mx.uv.fei.logic.domain.AcademicBodyHead;
 import mx.uv.fei.logic.domain.DegreeBoss;
+import mx.uv.fei.logic.domain.Director;
 import mx.uv.fei.logic.domain.Professor;
 import mx.uv.fei.logic.domain.Student;
 import mx.uv.fei.logic.exceptions.LoginException;
@@ -24,26 +25,51 @@ public class LoginDAOTest {
     private static AcademicBodyHead preloadedAcademicBodyHead;
     private static DataBaseManager dataBaseManager;
     private static DegreeBoss preloadedAdmin;
+    private static Director preloadedDirector;
     private static Professor preloadedProfessor;
     private static Student preloadedStudent;
-    
-    public LoginDAOTest() {
         
-    }
-    
     @BeforeClass
     public static void setUpClass() {
         dataBaseManager = new DataBaseManager();
         
+        preloadedAcademicBodyHead = new AcademicBodyHead();
+        preloadedAcademicBodyHead.setName("Ulises");
+        preloadedAcademicBodyHead.setFirstSurname("Marinero");
+        preloadedAcademicBodyHead.setSecondSurname("Aguilar");
+        preloadedAcademicBodyHead.setEmailAddress("umarinero@uv.mx");
+        preloadedAcademicBodyHead.setStaffNumber(47532);
+        
+        preloadedAdmin = new DegreeBoss();
+        preloadedAdmin.setName("Jorge Octavio");
+        preloadedAdmin.setFirstSurname("Ocharán");
+        preloadedAdmin.setSecondSurname("Hernández");
+        preloadedAdmin.setEmailAddress("jorocharan@uv.mx");
+        preloadedAdmin.setStaffNumber(68532);
+        
+        preloadedDirector = new Director();
+        preloadedDirector.setStaffNumber(85432);
+        preloadedDirector.setSecondSurname("Ezzio Othoniel");
+        preloadedDirector.setName("Acosta");
+        preloadedDirector.setFirstSurname("Canseco");
+        preloadedDirector.setEmailAddress("ezacosta@uv.mx");
+        
+        preloadedProfessor = new Professor();
+        preloadedProfessor.setStaffNumber(64582);
+        preloadedProfessor.setName("Jose Luis");
+        preloadedProfessor.setFirstSurname("Cuellar");
+        preloadedProfessor.setSecondSurname("Cessa");
+        preloadedProfessor.setEmailAddress("luicuellar@uv.mx");
+        
+        preloadedStudent = new Student();
+        preloadedStudent.setMatricle("zS23587532");
+        preloadedStudent.setName("Xavier Arian");
+        preloadedStudent.setFirstSurname("Olivares");
+        preloadedStudent.setSecondSurname("Sánchez");
+        preloadedStudent.setEmailAddress("zS23587532@estudiantes.uv.mx");
+        
         try{
             //Adding an admin
-            preloadedAdmin = new DegreeBoss();
-            preloadedAdmin.setName("Jorge Octavio");
-            preloadedAdmin.setFirstSurname("Ocharán");
-            preloadedAdmin.setSecondSurname("Hernández");
-            preloadedAdmin.setEmailAddress("gmartinez@uv.mx");
-            preloadedAdmin.setStaffNumber(68532);
-            
             String userQuery = "INSERT INTO Usuarios(nombre, apellidoPaterno, apellidoMaterno, correo, contraseña) VALUES(?, ?, ?, ?, SHA2(?, 256))";
             PreparedStatement userStatement = dataBaseManager.getConnection().prepareStatement(userQuery, Statement.RETURN_GENERATED_KEYS);
             userStatement.setString(1, preloadedAdmin.getName());
@@ -72,13 +98,6 @@ public class LoginDAOTest {
             adminStatement.close();
             
             //Adding a professor
-            preloadedProfessor = new Professor();
-            preloadedProfessor.setName("Juan Carlos");
-            preloadedProfessor.setFirstSurname("Pérez");
-            preloadedProfessor.setSecondSurname("Arriaga");
-            preloadedProfessor.setEmailAddress("elrevo@uv.com");
-            preloadedProfessor.setStaffNumber(64582);
-            
             userStatement.setString(1, preloadedProfessor.getName());
             userStatement.setString(2, preloadedProfessor.getFirstSurname());
             userStatement.setString(3, preloadedProfessor.getSecondSurname());
@@ -97,13 +116,6 @@ public class LoginDAOTest {
             professorStatement.executeUpdate();
             
             //Adding a student
-            preloadedStudent = new Student();
-            preloadedStudent.setName("Xavier Arian");
-            preloadedStudent.setFirstSurname("Olivares");
-            preloadedStudent.setSecondSurname("Sánchez");
-            preloadedStudent.setEmailAddress("zS21013906@estudiantes.uv.mx");
-            preloadedStudent.setMatricle("zS29613906");
-            
             userStatement.setString(1, preloadedStudent.getName());
             userStatement.setString(2, preloadedStudent.getFirstSurname());
             userStatement.setString(3, preloadedStudent.getSecondSurname());
@@ -125,13 +137,6 @@ public class LoginDAOTest {
             studentStatement.close();
             
             //Adding an Academic Body Head
-            preloadedAcademicBodyHead = new AcademicBodyHead();
-            preloadedAcademicBodyHead.setName("Maria de los Ángeles");
-            preloadedAcademicBodyHead.setFirstSurname("Arenas");
-            preloadedAcademicBodyHead.setSecondSurname("Valdez");
-            preloadedAcademicBodyHead.setEmailAddress("umarinero@uv.mx");
-            preloadedAcademicBodyHead.setStaffNumber(47532);
-            
             userStatement.setString(1, preloadedAcademicBodyHead.getName());
             userStatement.setString(2, preloadedAcademicBodyHead.getFirstSurname());
             userStatement.setString(3, preloadedAcademicBodyHead.getSecondSurname());
@@ -155,9 +160,31 @@ public class LoginDAOTest {
             academicBodyHeadStatement.executeUpdate();
             academicBodyHeadStatement.close();
             
+            //Adding a director
+            userStatement.setString(1, preloadedDirector.getName());
+            userStatement.setString(2, preloadedDirector.getFirstSurname());
+            userStatement.setString(3, preloadedDirector.getSecondSurname());
+            userStatement.setString(4, preloadedDirector.getEmailAddress());
+            userStatement.setString(5, "pensamientoDeCampirán2020");
+            userStatement.executeUpdate();
+            
+            ResultSet generatedDirectorKeys = userStatement.getGeneratedKeys();
+            if(generatedDirectorKeys.next()){
+                preloadedDirector.setUserId(generatedDirectorKeys.getInt(1));
+            }
+            
+            professorStatement.setInt(1, preloadedDirector.getStaffNumber());
+            professorStatement.setInt(2, preloadedDirector.getUserId());
+            professorStatement.executeUpdate();
+            
+            String directorQuery = "INSERT INTO Directores(NumPersonal) VALUES(?)";
+            PreparedStatement directorStatement = dataBaseManager.getConnection().prepareStatement(directorQuery, PreparedStatement.RETURN_GENERATED_KEYS);
+            
+            directorStatement.setInt(1, preloadedDirector.getStaffNumber());
+            directorStatement.executeUpdate();
+            
             userStatement.close();
         }catch(SQLException exception){
-              ;
             fail("Couldn't connect to DB");
         }finally{
             dataBaseManager.closeConnection();
@@ -166,15 +193,15 @@ public class LoginDAOTest {
     
     @AfterClass
     public static void tearDownClass(){
-        PreparedStatement statement;
-        String query = "DELETE FROM Usuarios WHERE IdUsuario IN(?, ?, ?, ?)";
+        String query = "DELETE FROM Usuarios WHERE IdUsuario IN(?, ?, ?, ?, ?)";
         
         try{
-            statement = dataBaseManager.getConnection().prepareStatement(query);
+            PreparedStatement statement = dataBaseManager.getConnection().prepareStatement(query);
             statement.setInt(1, preloadedAdmin.getUserId());
             statement.setInt(2, preloadedProfessor.getUserId());
             statement.setInt(3, preloadedStudent.getUserId());
             statement.setInt(4, preloadedAcademicBodyHead.getUserId());
+            statement.setInt(5, preloadedDirector.getUserId());
             statement.executeUpdate();
             
             statement.close();
@@ -188,15 +215,7 @@ public class LoginDAOTest {
     @Test
     public void testLogInStudent() throws LoginException{
         LoginDAO instance = new LoginDAO();
-        Student result = instance.logInStudent("zS29613906", "MeLoveCats1234");
-        
-        System.out.println("Expected data: ");
-        System.out.println("Student Name: " + preloadedStudent);
-        System.out.println("Matricle: " + preloadedStudent.getMatricle());
-        
-        System.out.println("\nActual data: ");
-        System.out.println("Student Name: " + result);
-        System.out.println("Matricle: " + result.getMatricle());
+        Student result = instance.logInStudent("zS23587532", "MeLoveCats1234");
         
         assertEquals(preloadedStudent, result);
     }
@@ -204,7 +223,7 @@ public class LoginDAOTest {
     @Test
     public void testLogInStudentFail() throws LoginException{
         LoginDAO instance = new LoginDAO();
-        Student result = instance.logInStudent("zS29613906", "Xavier0573");
+        Student result = instance.logInStudent("zS23587532", "Xavier0573");
         
         System.out.println("Testing LogStudent with wrong password");
         
@@ -212,27 +231,17 @@ public class LoginDAOTest {
     }
 
     @Test
-    public void testLogInprofessor() throws LoginException{
+    public void testLogInProfessor() throws LoginException{
         LoginDAO instance = new LoginDAO();
-        Professor result = instance.logInProfessor("elrevo@uv.com", "password");
-        
-        System.out.println("Expected data: ");
-        System.out.println("Professor name: " + preloadedProfessor);
-        System.out.println("Staff Number: " + preloadedProfessor.getStaffNumber());
-        System.out.println("Email Address: " + preloadedProfessor.getEmailAddress());
-        
-        System.out.println("\nActual data: ");
-        System.out.println("Admin name: " + result);
-        System.out.println("Staff Number: " + result.getStaffNumber());
-        System.out.println("Email Address: " + result.getEmailAddress());
-        
+        Professor result = instance.logInProfessor("luicuellar", "password");
+                
         assertEquals(preloadedProfessor, result);
     }
     
     @Test
-    public void testLogInprofessorFail() throws LoginException{
+    public void testLogInProfessorFail() throws LoginException{
         LoginDAO instance = new LoginDAO();
-        Professor result = instance.logInProfessor("jaguevara@uv.mx", "contraseña");
+        Professor result = instance.logInProfessor("luicuellar", "contraseña");
         
         System.out.println("Testing LogInProfessor with wrong password");
         
@@ -242,17 +251,8 @@ public class LoginDAOTest {
     @Test
     public void testLogInAdmin() throws LoginException{
         LoginDAO instance = new LoginDAO();
-        DegreeBoss result = instance.logInAdmin("gmartinez@uv.mx", "vivaElDiseño2023");
+        DegreeBoss result = instance.logInAdmin("jorocharan", "vivaElDiseño2023");
         
-        System.out.println("Expected data: ");
-        System.out.println("Admin name: " + preloadedAdmin);
-        System.out.println("Staff Number: " + preloadedAdmin.getStaffNumber());
-        System.out.println("Email Address: " + preloadedAdmin.getEmailAddress());
-        
-        System.out.println("\nActual data: ");
-        System.out.println("Admin name: " + result);
-        System.out.println("Staff Number: " + result.getStaffNumber());
-        System.out.println("Email Address: " + preloadedAdmin.getEmailAddress());
         
         assertEquals(preloadedAdmin, result);
     }
@@ -260,7 +260,7 @@ public class LoginDAOTest {
     @Test
     public void testLogInAdminFail() throws LoginException{
         LoginDAO instance = new LoginDAO();
-        DegreeBoss result = instance.logInAdmin("gmartinez@uv.mx", "viv34567");
+        DegreeBoss result = instance.logInAdmin("jorocharan", "viv34567");
         
         System.out.println("Testing LogInAdmin with wrong password");
         
@@ -270,15 +270,7 @@ public class LoginDAOTest {
     @Test
     public void testLogInAcademicBodyHead() throws LoginException{
         LoginDAO instance = new LoginDAO();
-        AcademicBodyHead result = instance.logInAcademicBodyHead("umarinero@uv.mx", "programaciónOOP5462");
-        
-        System.out.println("Expected data: ");
-        System.out.println("Academic body head name: " + preloadedAcademicBodyHead);
-        System.out.println("Staff Number: " + preloadedAcademicBodyHead.getStaffNumber());
-        
-        System.out.println("\nActual data: ");
-        System.out.println("Academic body head: " + result);
-        System.out.println("Staff Number: " + result.getStaffNumber());
+        AcademicBodyHead result = instance.logInAcademicBodyHead("umarinero", "programaciónOOP5462");
         
         assertEquals(preloadedAcademicBodyHead, result);
     }
@@ -286,11 +278,26 @@ public class LoginDAOTest {
     @Test
     public void testLogInAcademicBodyHeadFail() throws LoginException{
         LoginDAO instance = new LoginDAO();
-        AcademicBodyHead result = instance.logInAcademicBodyHead("umarinero@uv.mx", "prograee24");
+        AcademicBodyHead result = instance.logInAcademicBodyHead("umarinero", "prograee24");
         
         System.out.println("\nTesting LogInAcademicBody with wrong password");
         
         assertNotEquals(preloadedAcademicBodyHead, result);
     }
-
+    
+    @Test
+    public void testLogInDirector() throws LoginException {
+        LoginDAO instance = new LoginDAO();
+        Director result = instance.logInDirector("ezacosta", "pensamientoDeCampirán2020");
+        
+        assertEquals(preloadedDirector, result);
+    }
+    
+    @Test
+    public void testLogInDirectorFail() throws LoginException {
+        LoginDAO instance = new LoginDAO();
+        Director result = instance.logInDirector("ezacosta", "habilidadesDePensamiento");
+        
+        assertNotEquals(preloadedDirector, result);
+    }
 }

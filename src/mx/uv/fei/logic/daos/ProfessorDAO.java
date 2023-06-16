@@ -130,7 +130,7 @@ public class ProfessorDAO implements IProfessorDAO{
             resultSet.close();
             dataBaseManager.closeConnection();
         }catch(SQLException e) {
-              ;
+               
             throw new DataRetrievalException("Fallo al recuperar la informacion. Inténtelo de nuevo más tarde");
         }finally{
             dataBaseManager.closeConnection();
@@ -200,7 +200,7 @@ public class ProfessorDAO implements IProfessorDAO{
             resultSet.close();
             dataBaseManager.closeConnection();
         }catch(SQLException e){
-              ;
+               
             throw new DataRetrievalException("Fallo al recuperar la informacion. Inténtelo de nuevo más tarde");
         }finally{
             dataBaseManager.closeConnection();

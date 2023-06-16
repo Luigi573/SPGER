@@ -77,6 +77,31 @@ public class CreateActivityController{
         }
     }
     
+    @FXML
+    private void goBack(ActionEvent event){
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/Chronogram.fxml"));
+        
+        try{
+            Parent parent = loader.load();
+            ChronogramController controller = (ChronogramController)loader.getController();
+            controller.setCourse(course);
+            controller.setUser(user);
+            controller.loadHeader();
+
+            Scene scene = new Scene(parent);
+            String css = this.getClass().getResource("/mx/uv/fei/gui/stylesfiles/Styles.css").toExternalForm();
+            scene.getStylesheets().add(css);
+            
+            Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+            stage.setScene(scene);
+            stage.show();
+            
+            
+        }catch(IOException exception){
+            new AlertPopUpGenerator().showMissingFilesMessage();
+        }
+    }
+    
     public void setResearchId(int researchId){
         this.researchId = researchId;
     }

@@ -26,77 +26,101 @@ public class ResearchProject {
     public void setDueDate(Date dueDate) {
         this.dueDate = dueDate;
     }
+    
+    public Date getDueDate() {
+        return dueDate;
+    }
+    
     public void setStartDate(Date startDate) {
         this.startDate = startDate;
     }
+    
+    public Date getStartDate() {
+        return startDate;
+    }
+    
     public void addDirector(Director director) {
         if(directors.size() <= 3){
             directors.add(director);
         }
     }
-    public void setId(int id) {
-        this.id = id;
-    }
-    public void setKgal(KGAL kgal) {
-        this.kgal = kgal;
-    }
-    public void setValidationStatus(String validationStatus) {
-        this.validationStatus = validationStatus;
-    }
-    public void setDescription(String description) {
-        this.description = description;
-    }
-    public void setExpectedResult(String expectedResult) {
-        this.expectedResult = expectedResult;
-    }
-    public void setRequirements(String requirements) {
-        this.requirements = requirements;
-    }
-    public void setSuggestedBibliography(String suggestedBibliography) {
-        this.suggestedBibliography = suggestedBibliography;
-    }
-    public void setTitle(String title) {
-        this.title = title;
-    }
-    public void setStudent(Student student) {
-        this.student = student;
-    }
-    public Date getDueDate() {
-        return dueDate;
-    }
-    public Date getStartDate() {
-        return startDate;
-    }
+    
     public ArrayList<Director> getDirectors(){
         return directors;
     }
+    
+    public void setId(int id) {
+        this.id = id;
+    }
+    
     public int getId() {
         return id;
     }
+    
+    public void setKgal(KGAL kgal) {
+        this.kgal = kgal;
+    }
+    
     public KGAL getKgal() {
         return kgal;
     }
+    
+    public void setValidationStatus(String validationStatus) {
+        this.validationStatus = validationStatus;
+    }
+    
     public String getValidationStatus() {
         return validationStatus;
     }
+    
+    public void setDescription(String description) {
+        this.description = description;
+    }
+    
     public String getDescription() {
         return description;
     }
+    
+    public void setExpectedResult(String expectedResult) {
+        this.expectedResult = expectedResult;
+    }
+    
     public String getExpectedResult() {
         return expectedResult;
     }
+    
+    public void setRequirements(String requirements) {
+        this.requirements = requirements;
+    }
+    
     public String getRequirements() {
         return requirements;
     }
+    
+    public void setSuggestedBibliography(String suggestedBibliography) {
+        this.suggestedBibliography = suggestedBibliography;
+    }
+    
     public String getSuggestedBibliography() {
         return suggestedBibliography;
     }
+    
+    public void setTitle(String title) {
+        this.title = title;
+    }
+    
     public String getTitle() {
         return title;
     }
+    
+    public void setStudent(Student student) {
+        this.student = student;
+    }
+
     public Student getStudent() {
         return student;
     }
+    
     public void printData() {
         System.out.println("ID: " + id);
         System.out.println("Title: " + title);
@@ -115,6 +139,7 @@ public class ResearchProject {
         System.out.println("KGAL: " + kgal.getDescription());
         System.out.println("Student: " + student.getName());
     }
+    
     @Override
     public boolean equals(Object obj){
         if(obj instanceof ResearchProject researchProject){
@@ -123,6 +148,7 @@ public class ResearchProject {
         
         return false;
     }
+    
     @Override
     public String toString(){
         return title;

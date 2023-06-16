@@ -176,7 +176,7 @@ public class ActivityDAOTest {
         assertTrue(!instance.isBlank(activity));
     }
     @Test
-    public void testIsValidDateSuccess() {
+    public void testIsValidDate(){
         Activity activity = preloadedActivity;
         ActivityDAO instance = new ActivityDAO();
         

@@ -591,7 +591,7 @@ public class ResearchDAO implements IResearchDAO{
             
             result = statement.executeUpdate();
         }catch(SQLException exception){
-              ;
+               
             throw new DataInsertionException("Error de conexión. Inténtelo de nuevo más tarde");
         }finally{
             dataBaseManager.closeConnection();

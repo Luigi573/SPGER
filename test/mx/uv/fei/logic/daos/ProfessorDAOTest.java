@@ -165,7 +165,7 @@ public class ProfessorDAOTest {
             ArrayList<Professor> result = instance.getProfessors();
             assertTrue(result.contains(preloadedProfessor));
         }catch(DataRetrievalException exception){
-              ;
+               
             fail("Couldn't connect to DB");
         }finally{
             dataBaseManager.closeConnection();
