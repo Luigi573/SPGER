@@ -26,7 +26,7 @@ public class ProfessorDAO implements IProfessorDAO{
         int generatedId = 0;
         try{
             String queryToInsertProfessorDataToUsersColumns = "INSERT INTO Usuarios (nombre, apellidoPaterno, apellidoMaterno, correo, correoAlterno, " +
-                            "numeroTelefono, estado) VALUES (?, ?, ?, ?, ?, ?, ?)";
+                            "numeroTelefono, estado, contraseña) VALUES (?, ?, ?, ?, ?, ?, ?, SHA2(?, 256))";
             PreparedStatement preparedStatementToInsertProfessorDataToUsersColumns = 
                 dataBaseManager.getConnection().prepareStatement(queryToInsertProfessorDataToUsersColumns, PreparedStatement.RETURN_GENERATED_KEYS);
             preparedStatementToInsertProfessorDataToUsersColumns.setString(1, professor.getName());
@@ -36,6 +36,7 @@ public class ProfessorDAO implements IProfessorDAO{
             preparedStatementToInsertProfessorDataToUsersColumns.setString(5, professor.getAlternateEmail());
             preparedStatementToInsertProfessorDataToUsersColumns.setString(6, professor.getPhoneNumber());
             preparedStatementToInsertProfessorDataToUsersColumns.setString(7, professor.getStatus());
+            preparedStatementToInsertProfessorDataToUsersColumns.setString(8, professor.getPassword());
             preparedStatementToInsertProfessorDataToUsersColumns.executeUpdate();
 
             ResultSet resultSet = preparedStatementToInsertProfessorDataToUsersColumns.getGeneratedKeys();
