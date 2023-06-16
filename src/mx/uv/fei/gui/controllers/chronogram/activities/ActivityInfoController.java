@@ -131,7 +131,7 @@ public class ActivityInfoController{
     @FXML
     private void deliverActivity(ActionEvent event) {
         if(!commentTextArea.getText().trim().isEmpty()){
-            int result;
+            int fileResult;
             int successfulSaves = 0;
             ArrayList<String> failedSaves = new ArrayList<>();
 
@@ -139,9 +139,14 @@ public class ActivityInfoController{
                 if (file != null) {
                     FileDAO fileDAO = new FileDAO();
                     try {
-                        result = fileDAO.addFile(file.getPath());
-                        if (result > 0) {
+                        fileResult = fileDAO.addFile(file.getPath());
+                        
+                        if (fileResult > 0) {
                             successfulSaves = successfulSaves + 1;
+                        }
+                        
+                        if (activityFileResult > 0) {
+                            
                         }
                     } catch (DataInsertionException die) {
                         failedSaves.add(file.getName());
@@ -380,5 +385,26 @@ public class ActivityInfoController{
                 new AlertPopUpGenerator().showConnectionErrorMessage();
             }
         }
+    }
+    
+    private int linkFileToActivity (int fileId) {
+        int activityFileResult;
+        int successfulSaves = 0;
+        ArrayList<String> failedSaves = new ArrayList<>();
+        
+        for (File file : filesList) {
+                if (file != null) {
+                    FileDAO fileDAO = new FileDAO();
+                    try {
+                        activityFileResult = fileDAO.addActivityFile(fileId, activity.getId());
+                        
+                        if (activityFileResult > 0) {
+                            successfulSaves = successfulSaves + 1;
+                        }
+                    } catch (DataInsertionException die) {
+                        failedSaves.add(file.getName());
+                    }
+                }
+            }
     }
 }
