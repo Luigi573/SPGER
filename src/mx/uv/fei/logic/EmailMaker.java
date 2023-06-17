@@ -21,14 +21,14 @@ public class EmailMaker {
         Properties prop = new Properties();
         prop.put("mail.smtp.auth", true);
         prop.put("mail.smtp.starttls.enable", "true");
-        prop.put("mail.smtp.host", "smtp.mailtrap.io");
+        prop.put("mail.smtp.host", "smtp.gmail.com");
         prop.put("mail.smtp.port", "587");
-        prop.put("mail.smtp.ssl.trust", "smtp.mailtrap.io");
+        prop.put("mail.smtp.ssl.trust", "smtp.gmail.com");
 
         Session session = Session.getInstance(prop, new Authenticator(){
             @Override
             protected PasswordAuthentication getPasswordAuthentication(){
-                return new PasswordAuthentication("spger", "S13q,V&tIg");
+                return new PasswordAuthentication("spger69@gmail.com", "hweclbzypgfowgzc");
             }
         });
 
@@ -37,9 +37,9 @@ public class EmailMaker {
             message.setFrom(new InternetAddress("spger69@gmail.com"));
             message.setRecipients(
               Message.RecipientType.TO, InternetAddress.parse(destinationEmail));
-            message.setSubject("Quíubo");
+            message.setSubject("Que obo");
 
-            String msg = "Esta es tu contraseña para ingresar al sistema: " + password;
+            String msg = "Esta es tu contraseña para ingresar al SPGER: " + password;
 
             MimeBodyPart mimeBodyPart = new MimeBodyPart();
             mimeBodyPart.setContent(msg, "text/html; charset=utf-8");

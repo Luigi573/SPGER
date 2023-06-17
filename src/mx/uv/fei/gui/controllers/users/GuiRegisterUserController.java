@@ -340,7 +340,7 @@ public class GuiRegisterUserController{
           .concat(specialChar)
           .concat(totalChars);
         List<Character> pwdChars = combinedChars.chars()
-          .mapToObj(c -> (char) c)
+          .mapToObj(character -> (char) character)
           .collect(Collectors.toList());
         Collections.shuffle(pwdChars);
         String password = pwdChars.stream()

@@ -42,8 +42,9 @@ public class UserInformationController{
         guiUsersController.openModifyUserPane(this);
     }
     @FXML
-    private void sendEmailWithItsPasswordButtonController(ActionEvent event) {
+    private void sendEmailWithItsPasswordButtonController(ActionEvent event){
         new EmailMaker().sendPassword(getEmail(), getUserPassword());
+        new EmailMaker().sendPassword(getAlternateEmail(), getUserPassword());
     }
 
     public String getAlternateEmail(){
