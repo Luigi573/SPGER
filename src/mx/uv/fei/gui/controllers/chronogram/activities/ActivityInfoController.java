@@ -139,15 +139,12 @@ public class ActivityInfoController{
                 if (file != null) {
                     FileDAO fileDAO = new FileDAO();
                     try {
-                        fileResult = fileDAO.addFile(file.getPath());
+                        fileResult = fileDAO.addActivityFile(file.getPath(), activity.getId());
                         
                         if (fileResult > 0) {
                             successfulSaves = successfulSaves + 1;
                         }
-                        
-                        if (activityFileResult > 0) {
-                            
-                        }
+
                     } catch (DataInsertionException die) {
                         failedSaves.add(file.getName());
                     }
@@ -311,6 +308,7 @@ public class ActivityInfoController{
         startDateLabel.setText(activity.getStartDate().toString());
         dueDateLabel.setText(activity.getDueDate().toString());
         descriptionText.setText(activity.getDescription());
+        commentTextArea.setText(activity.getComment());
         
         if(!activity.getStatus().equals(ActivityStatus.ACTIVE)){
             addAdvanceButton.setVisible(false);
@@ -319,6 +317,7 @@ public class ActivityInfoController{
             editButton.setVisible(false);
             uploadFileButton.setVisible(false);
             removeFilesButton.setVisible(false);
+            commentTextArea.setEditable(false);
         }
         
         if(!activity.getStatus().equals(ActivityStatus.DELIVERED)){
@@ -352,59 +351,34 @@ public class ActivityInfoController{
     }
     
     private void loadActivityFiles(){
-        ArrayList<Integer> fileIdList = new ArrayList();
+        ArrayList<mx.uv.fei.logic.domain.File> activityFilesList = new ArrayList();
         FileDAO fileDAO = new FileDAO();
         try {
-            fileIdList = fileDAO.getFilesByActivity(activity.getId());
+            activityFilesList = fileDAO.getFilesByActivity(activity.getId());
+            for (mx.uv.fei.logic.domain.File listFile : activityFilesList) {
+                System.out.println(listFile);
+            }
         } catch (DataRetrievalException exception) {
-            new AlertPopUpGenerator().showConnectionErrorMessage();
+            new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.ERROR, "Ocurrió un error", exception.getMessage());
         }
-
         String path;
         File file;
-        for (int fileId : fileIdList) {
-            try {
-                path = fileDAO.getFileByID(fileId).getFilePath();
+        for (mx.uv.fei.logic.domain.File fileFromList : activityFilesList) {
+            path = fileFromList.getFilePath();
+            if (path != null) {
+                file = new File(path);
+                try {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/activities/ActivityFileItem.fxml"));
+                    Pane pane = loader.load();
+                    ActivityFileItemController controller = (ActivityFileItemController) loader.getController();
+                    controller.setFile(file);
 
-                if (path != null) {
-                    file = new File(path);
-
-                    try{
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/activities/ActivityFileItem.fxml"));
-                        Pane pane = loader.load();
-                        ActivityFileItemController controller = (ActivityFileItemController)loader.getController();
-                        controller.setFile(file);
-
-                        fileVBox.getChildren().add(pane);
-                        filesList.add(file);
-                    } catch (IOException exception) {
-                        new AlertPopUpGenerator().showMissingFilesMessage();
-                    }
+                    fileVBox.getChildren().add(pane);
+                    filesList.add(file);
+                } catch (IOException exception) {
+                    new AlertPopUpGenerator().showMissingFilesMessage();
                 }
-              }catch (DataRetrievalException exception) {
-                new AlertPopUpGenerator().showConnectionErrorMessage();
             }
         }
-    }
-    
-    private int linkFileToActivity (int fileId) {
-        int activityFileResult;
-        int successfulSaves = 0;
-        ArrayList<String> failedSaves = new ArrayList<>();
-        
-        for (File file : filesList) {
-                if (file != null) {
-                    FileDAO fileDAO = new FileDAO();
-                    try {
-                        activityFileResult = fileDAO.addActivityFile(fileId, activity.getId());
-                        
-                        if (activityFileResult > 0) {
-                            successfulSaves = successfulSaves + 1;
-                        }
-                    } catch (DataInsertionException die) {
-                        failedSaves.add(file.getName());
-                    }
-                }
-            }
     }
 }
