@@ -4,15 +4,20 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import mx.uv.fei.logic.EmailMaker;
+import javafx.scene.control.Alert.AlertType;
+import mx.uv.fei.gui.AlertPopUpGenerator;
+import mx.uv.fei.logic.PasswordAndEmailMaker;
+import mx.uv.fei.logic.daos.UserDAO;
 import mx.uv.fei.logic.domain.User;
 import mx.uv.fei.logic.domain.UserType;
+import mx.uv.fei.logic.exceptions.DataInsertionException;
 
 public class UserInformationController{
     private GuiUsersController guiUsersController;
     private String userPassword;
     private UserController userController;
     private User user;
+    private User headerUser;
 
     @FXML
     private Label alternateEmailLabel;
@@ -43,8 +48,15 @@ public class UserInformationController{
     }
     @FXML
     private void sendEmailWithItsPasswordButtonController(ActionEvent event){
-        new EmailMaker().sendPassword(getEmail(), getUserPassword());
-        new EmailMaker().sendPassword(getAlternateEmail(), getUserPassword());
+        String userPassword = new PasswordAndEmailMaker().securePasswordMaker();
+        try{
+            new UserDAO().updatePassword(userPassword, user.getUserId());
+            new PasswordAndEmailMaker().sendPassword(getEmail(), userPassword);
+            new PasswordAndEmailMaker().sendPassword(getAlternateEmail(), userPassword);
+            new AlertPopUpGenerator().showCustomMessage(AlertType.INFORMATION, "Éxito", "Correo enviado exitosamente");
+        }catch(DataInsertionException e){
+            new AlertPopUpGenerator().showConnectionErrorMessage();
+        }
     }
 
     public String getAlternateEmail(){
@@ -64,6 +76,12 @@ public class UserInformationController{
     }
     public void setFirstSurname(String firstSurname){
         firstSurnameLabel.setText(firstSurname);
+    }
+    public User getHeaderUser() {
+        return headerUser;
+    }
+    public void setHeaderUser(User headerUser) {
+        this.headerUser = headerUser;
     }
     public String getNames(){
         return namesLabel.getText();
@@ -89,10 +107,10 @@ public class UserInformationController{
     public void setTelephoneNumber(String telephoneNumber){
         telephoneNumberLabel.setText(telephoneNumber);
     }
-    public User getUser() {
+    public User getUser(){
         return user;
     }
-    public void setUser(User user) {
+    public void setUser(User user){
         this.user = user;
     }
     public String getUserType(){

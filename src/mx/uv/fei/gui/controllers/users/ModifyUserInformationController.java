@@ -25,6 +25,7 @@ import mx.uv.fei.logic.daos.DegreeBossDAO;
 import mx.uv.fei.logic.daos.DirectorDAO;
 import mx.uv.fei.logic.daos.ProfessorDAO;
 import mx.uv.fei.logic.daos.StudentDAO;
+import mx.uv.fei.logic.daos.UserDAO;
 import mx.uv.fei.logic.domain.AcademicBodyHead;
 import mx.uv.fei.logic.domain.DegreeBoss;
 import mx.uv.fei.logic.domain.Director;
@@ -40,7 +41,7 @@ import mx.uv.fei.logic.exceptions.DuplicatedPrimaryKeyException;
 
 public class ModifyUserInformationController{
     private UserInformationController userInformationController;
-    private User user;
+    private User headerUser;
     private User userToModify;
 
     @FXML
@@ -70,30 +71,38 @@ public class ModifyUserInformationController{
 
     @FXML
     private void exitButtonController(ActionEvent event){
-        returnToGuiUsers(event, user);
+        returnToGuiUsers(event, headerUser);
     }
     @FXML
     private void modifyButtonController(ActionEvent event){
         if(allTextFieldsContainsData()){
             if(specifiedInvalidDataMessageError().equals("")){
-                if(userInformationController.getUserType().equals(UserType.DIRECTOR.getValue())){
-                    modifyDirector(event);
-                }
+                if(!emailTextField.getText().equals(alternateEmailTextField.getText())){
+                    if(specifiedDuplicatedEmailsMessageError(emailTextField.getText(), alternateEmailTextField.getText(), userToModify.getUserId()).equals("")){
+                        if(userInformationController.getUserType().equals(UserType.DIRECTOR.getValue())){
+                            modifyDirector(event);
+                        }
 
-                if(userInformationController.getUserType().equals(UserType.ACADEMIC_BODY_HEAD.getValue())){
-                    modifyAcademicBodyHead(event);
-                }
+                        if(userInformationController.getUserType().equals(UserType.ACADEMIC_BODY_HEAD.getValue())){
+                            modifyAcademicBodyHead(event);
+                        }
 
-                if(userInformationController.getUserType().equals(UserType.DEGREE_BOSS.getValue())){
-                    modifyDegreeBoss(event);
-                }
+                        if(userInformationController.getUserType().equals(UserType.DEGREE_BOSS.getValue())){
+                            modifyDegreeBoss(event);
+                        }
 
-                if(userInformationController.getUserType().equals(UserType.PROFESSOR.getValue())){
-                    modifyProfessor(event);
-                }
+                        if(userInformationController.getUserType().equals(UserType.PROFESSOR.getValue())){
+                            modifyProfessor(event);
+                        }
 
-                if(userInformationController.getUserType().equals(UserType.STUDENT.getValue())){
-                    modifyStudent(event);
+                        if(userInformationController.getUserType().equals(UserType.STUDENT.getValue())){
+                            modifyStudent(event);
+                        }
+                    }else{
+                        new AlertPopUpGenerator().showCustomMessage(AlertType.INFORMATION, "Error", specifiedDuplicatedEmailsMessageError(emailTextField.getText(), alternateEmailTextField.getText(), userToModify.getUserId()));
+                    }
+                }else{
+                    new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "Error", "El correo electrónico no puede ser el mismo que el correo alterno");
                 }
             }else{
                 new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "Error", specifiedInvalidDataMessageError());
@@ -154,16 +163,16 @@ public class ModifyUserInformationController{
     public void setUserInformationController(UserInformationController userInformationController){
         this.userInformationController = userInformationController;
     }
-    public User getUser() {
-        return user;
+    public User getHeaderUser(){
+        return headerUser;
     }
-    public void setUser(User user) {
-        this.user = user;
+    public void setHeaderUser(User headerUser){
+        this.headerUser = headerUser;
     }
-    public User getUserToModify() {
+    public User getUserToModify(){
         return userToModify;
     }
-    public void setUserToModify(User userToModify) {
+    public void setUserToModify(User userToModify){
         this.userToModify = userToModify;
     }
     public void setDataToStatusCombobox(String userType){
@@ -212,7 +221,7 @@ public class ModifyUserInformationController{
         try{
             studentDAO.modifyStudentData(student);
             new AlertPopUpGenerator().showCustomMessage(AlertType.INFORMATION, "Éxito", "Estudiante modificado exitosamente");
-            returnToGuiUsers(event, user);
+            returnToGuiUsers(event, headerUser);
         }catch(DataInsertionException e){
             new AlertPopUpGenerator().showConnectionErrorMessage();
         }catch(DuplicatedPrimaryKeyException e) {
@@ -234,7 +243,7 @@ public class ModifyUserInformationController{
         try{
             professorDAO.modifyProfessorData(professor);
             new AlertPopUpGenerator().showCustomMessage(AlertType.INFORMATION, "Éxito", "Profesor modificado exitosamente");
-            returnToGuiUsers(event, user);
+            returnToGuiUsers(event, headerUser);
         }catch(DataInsertionException e){
             new AlertPopUpGenerator().showConnectionErrorMessage();
         }catch(DuplicatedPrimaryKeyException e) {
@@ -256,7 +265,7 @@ public class ModifyUserInformationController{
         try{
             directorDAO.modifyDirectorData(director);
             new AlertPopUpGenerator().showCustomMessage(AlertType.INFORMATION, "Éxito", "Director modificado exitosamente");
-            returnToGuiUsers(event, user);
+            returnToGuiUsers(event, headerUser);
         }catch(DataInsertionException e){
             new AlertPopUpGenerator().showConnectionErrorMessage();
         }catch(DuplicatedPrimaryKeyException e) {
@@ -278,7 +287,7 @@ public class ModifyUserInformationController{
         try{
             academicBodyHeadDAO.modifyAcademicBodyHeadData(academicBodyHead);
             new AlertPopUpGenerator().showCustomMessage(AlertType.INFORMATION, "Éxito", "Miembro de Cuerpo Académico modificado exitosamente");
-            returnToGuiUsers(event, user);
+            returnToGuiUsers(event, headerUser);
         }catch(DataInsertionException e){
             new AlertPopUpGenerator().showConnectionErrorMessage();
         }catch(DuplicatedPrimaryKeyException e) {
@@ -299,11 +308,11 @@ public class ModifyUserInformationController{
 
         try{
             degreeBossDAO.modifyDegreeBossData(degreeBoss);
-            if(user.getUserId() == userToModify.getUserId()){
-                user = degreeBossDAO.getDegreeBoss(Integer.parseInt(getMatricleOrStaffNumber()));
+            if(headerUser.getUserId() == userToModify.getUserId()){
+                headerUser = degreeBossDAO.getDegreeBoss(Integer.parseInt(getMatricleOrStaffNumber()));
             }
             new AlertPopUpGenerator().showCustomMessage(AlertType.INFORMATION, "Éxito", "Jefe de Carrera modificado exitosamente");
-            returnToGuiUsers(event, user);
+            returnToGuiUsers(event, headerUser);
         }catch(DataInsertionException | DataRetrievalException e){
             new AlertPopUpGenerator().showConnectionErrorMessage();
         }catch(DuplicatedPrimaryKeyException e) {
@@ -403,14 +412,43 @@ public class ModifyUserInformationController{
 
         return message;
     }
-    private void returnToGuiUsers(ActionEvent event, User user){
+    private String specifiedDuplicatedEmailsMessageError(String email, String alternateEmail, int userId){
+        String message = "";
+        UserDAO userDAO = new UserDAO();
+        try{
+            if(!userDAO.theEmailIsAvailableToUseToModify(email, userId)){
+                if(message.equals("")){
+                    message = "correo electrónico";
+                }else{
+                    message = message + " y el correo electrónico";
+                }
+            }
+
+            if(!userDAO.theAlternateEmailIsAvailableToModify(alternateEmail, userId)){
+                if(message.equals("")){
+                    message = "correo alterno";
+                }else{
+                    message = message + " y el correo alterno";
+                }
+            }
+        }catch(DataRetrievalException e){
+            new AlertPopUpGenerator().showConnectionErrorMessage();
+        }
+
+        if(!message.equals("")){
+            message = "El " + message + " ya están usados.";
+        }
+
+        return message;
+    }
+    private void returnToGuiUsers(ActionEvent event, User headerUser){
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/users/GuiUsers.fxml"));
         
         try{
-            if(user != null){
+            if(headerUser != null){
                 Parent parent = loader.load();
                 GuiUsersController controller = (GuiUsersController)loader.getController();
-                controller.setUser(user);
+                controller.setHeaderUser(headerUser);
                 controller.loadHeader();
                 
                 Scene scene = new Scene(parent);

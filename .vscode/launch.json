@@ -6,13 +6,6 @@
     "configurations": [
         {
             "type": "java",
-            "name": "Main",
-            "request": "launch",
-            "mainClass": "Main",
-            "projectName": "SPGER_919676fc"
-        },
-        {
-            "type": "java",
             "name": "Debug",
             "request": "launch",
             "mainClass": "mx.uv.fei.Main",

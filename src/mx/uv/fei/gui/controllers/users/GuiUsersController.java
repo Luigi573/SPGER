@@ -35,7 +35,7 @@ import mx.uv.fei.logic.domain.UserType;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
 
 public class GuiUsersController{
-    private User user;
+    private User headerUser;
 
     @FXML
     private Pane backgroundPane;
@@ -74,6 +74,7 @@ public class GuiUsersController{
             stage.initModality(Modality.WINDOW_MODAL);
             stage.initOwner((Stage)((Node)event.getSource()).getScene().getWindow());
             stage.setScene(scene);
+            stage.setResizable(false);
             stage.show();
         }catch (IOException e){
             new AlertPopUpGenerator().showConnectionErrorMessage();
@@ -145,7 +146,7 @@ public class GuiUsersController{
             modifyUserInformationController.setMatricleOrStaffNumber(userInformationController.getMatricleOrStaffNumber());
             modifyUserInformationController.setStatus(userInformationController.getStatus());
             modifyUserInformationController.setUserToModify(userInformationController.getUser());
-            modifyUserInformationController.setUser(user);
+            modifyUserInformationController.setHeaderUser(userInformationController.getHeaderUser());
             modifyUserInformationController.setDataToStatusCombobox(userInformationController.getUserType());
             modifyUserInformationController.setLabelsCorrectBounds(userInformationController.getUserType());
             modifyUserInformationController.setUserInformationController(userInformationController);
@@ -203,11 +204,11 @@ public class GuiUsersController{
             new AlertPopUpGenerator().showConnectionErrorMessage();
         }
     }
-    public User getUser(){
-        return user;
+    public User getHeaderUser(){
+        return headerUser;
     }
-    public void setUser(User user){
-        this.user = user;
+    public void setHeaderUser(User headerUser){
+        this.headerUser = headerUser;
     }
     public void loadHeader(){
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/HeaderPane.fxml"));
@@ -216,8 +217,8 @@ public class GuiUsersController{
             Pane header = loader.load();
             HeaderPaneController headerPaneController = loader.getController();
 
-            if(user != null){
-                headerPaneController.setUser(user);
+            if(headerUser != null){
+                headerPaneController.setUser(headerUser);
             }
 
             header.getStyleClass().add("/mx/uv/fei/gui/stylesfiles/Styles.css");
@@ -347,6 +348,7 @@ public class GuiUsersController{
         try{
             VBox userInformationVBox = userInformationControllerLoader.load();
             UserInformationController userInformationController = userInformationControllerLoader.getController();
+            userInformationController.setHeaderUser(headerUser);
             userInformationController.setUser(director);
             userInformationController.setNames(director.getName());
             userInformationController.setFirstSurname(director.getFirstSurname());
@@ -362,7 +364,7 @@ public class GuiUsersController{
             userInformationController.setMatricleOrStaffNumberText();
             userInformationScrollPane.setContent(userInformationVBox);
             
-        }catch (IOException e){
+        }catch(IOException e){
             new AlertPopUpGenerator().showMissingFilesMessage();
         }
     }
@@ -374,6 +376,7 @@ public class GuiUsersController{
         try{
             VBox userInformationVBox = userInformationControllerLoader.load();
             UserInformationController userInformationController = userInformationControllerLoader.getController();
+            userInformationController.setHeaderUser(headerUser);
             userInformationController.setUser(academicBodyHead);
             userInformationController.setNames(academicBodyHead.getName());
             userInformationController.setFirstSurname(academicBodyHead.getFirstSurname());
@@ -402,6 +405,7 @@ public class GuiUsersController{
         try{
             VBox userInformationVBox = userInformationControllerLoader.load();
             UserInformationController userInformationController = userInformationControllerLoader.getController();
+            userInformationController.setHeaderUser(headerUser);
             userInformationController.setUser(degreeBoss);
             userInformationController.setNames(degreeBoss.getName());
             userInformationController.setFirstSurname(degreeBoss.getFirstSurname());
@@ -429,6 +433,7 @@ public class GuiUsersController{
         try{
             VBox userInformationVBox = userInformationControllerLoader.load();
             UserInformationController userInformationController = userInformationControllerLoader.getController();
+            userInformationController.setHeaderUser(headerUser);
             userInformationController.setUser(professor);
             userInformationController.setNames(professor.getName());
             userInformationController.setFirstSurname(professor.getFirstSurname());
@@ -456,6 +461,7 @@ public class GuiUsersController{
         try{
             VBox userInformationVBox = userInformationControllerLoader.load();
             UserInformationController userInformationController = userInformationControllerLoader.getController();
+            userInformationController.setHeaderUser(headerUser);
             userInformationController.setUser(student);
             userInformationController.setNames(student.getName());
             userInformationController.setFirstSurname(student.getFirstSurname());
