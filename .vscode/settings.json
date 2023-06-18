@@ -24,7 +24,15 @@
         "/home/luisalonso/Documentos/JavaDepencencies/commons-digester-2.1.jar",
         "/home/luisalonso/Documentos/JavaDepencencies/itextpdf-5.5.0.jar",
         "/home/luisalonso/Documentos/JavaDepencencies/itext-2.1.7.js4.jar",
-        "/home/luisalonso/Documentos/JavaDepencencies/jasperreports-6.14.0.jar"
+        "/home/luisalonso/Documentos/JavaDepencencies/jasperreports-6.14.0.jar",
+        "/home/luisalonso/Documentos/JavaDepencencies/commons-io-2.12.0.jar",
+        "/home/luisalonso/Documentos/JavaDepencencies/commons-lang3-3.11.jar",
+        "/home/luisalonso/Documentos/JavaDepencencies/commons-text-1.9.jar",
+        "/home/luisalonso/Documentos/JavaDepencencies/jakarta.mail-2.0.2.jar",
+        "/home/luisalonso/Documentos/JavaDepencencies/jakarta.activation-api-2.1.2.jar",
+        "/home/luisalonso/Documentos/JavaDepencencies/angus-activation-2.0.1.jar",
+        "/home/luisalonso/Documentos/JavaDepencencies/passay-1.6.3.jar",
+        "/home/luisalonso/Documentos/JavaDepencencies/java-mail-1.4.4.jar"
     ],
     "sqltools.connections": [
         {

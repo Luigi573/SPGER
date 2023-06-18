@@ -1,7 +1,13 @@
 package mx.uv.fei.gui.controllers.users;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+
+import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.text.WordUtils;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -12,6 +18,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import mx.uv.fei.gui.AlertPopUpGenerator;
+import mx.uv.fei.logic.EmailMaker;
 import mx.uv.fei.logic.daos.AcademicBodyHeadDAO;
 import mx.uv.fei.logic.daos.DegreeBossDAO;
 import mx.uv.fei.logic.daos.DirectorDAO;
@@ -63,11 +70,8 @@ public class GuiRegisterUserController{
     }
     @FXML
     private void registerButtonController(ActionEvent event){
-        if(!namesTextField.getText().trim().isEmpty() && !firstSurnameTextField.getText().trim().isEmpty() &&
-           !secondSurnameTextField.getText().trim().isEmpty() && !emailTextField.getText().trim().isEmpty() &&
-           !alternateEmailTextField.getText().trim().isEmpty() && !telephoneNumberTextField.getText().trim().isEmpty() &&
-           !matricleOrStaffNumberTextField.getText().trim().isEmpty()){
-            if(allTextFieldsContainsCorrectValues()){
+        if(allTextFieldsContainsData()){
+            if(specifiedInvalidDataMessageError().equals("")){
                 if(typeComboBox.getValue().equals(UserType.DIRECTOR.getValue())){
                     registerDirector();
                 }
@@ -92,9 +96,10 @@ public class GuiRegisterUserController{
                 Stage stage = (Stage) registerButton.getScene().getWindow();
                 stage.close();
             }else{
-                new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "Error", "Algunos campos contienen datos inválidos");
+                new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "Error", specifiedInvalidDataMessageError());
             }
         }else{
+            System.out.println(securePasswordGenerator());
             new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "Error", "Faltan campos por llenar");
         }
     }
@@ -119,15 +124,18 @@ public class GuiRegisterUserController{
         try {
             DirectorDAO directorDAO = new DirectorDAO();
             Director director = new Director();
-            director.setName(namesTextField.getText());
-            director.setFirstSurname(firstSurnameTextField.getText());
-            director.setSecondSurname(secondSurnameTextField.getText());
+            director.setName(WordUtils.capitalize(namesTextField.getText().toLowerCase()));
+            director.setFirstSurname(WordUtils.capitalize(firstSurnameTextField.getText().toLowerCase()));
+            director.setSecondSurname(WordUtils.capitalize(secondSurnameTextField.getText().toLowerCase()));
             director.setEmailAddress(emailTextField.getText());
             director.setAlternateEmail(alternateEmailTextField.getText());
             director.setPhoneNumber(telephoneNumberTextField.getText());
+            director.setPassword(securePasswordGenerator());
             director.setStatus(ProfessorStatus.ACTIVE.getValue());
             director.setStaffNumber(Integer.parseInt(matricleOrStaffNumberTextField.getText()));
-            directorDAO.addDirector (director);
+            directorDAO.addDirector(director);
+            new EmailMaker().sendPassword(director.getEmailAddress(), director.getPassword());
+            new EmailMaker().sendPassword(director.getAlternateEmail(), director.getPassword());
             new AlertPopUpGenerator().showCustomMessage(AlertType.INFORMATION, "Éxito", "Director registrado exitosamente");
         }catch(DataInsertionException e){
             new AlertPopUpGenerator().showConnectionErrorMessage();
@@ -139,15 +147,18 @@ public class GuiRegisterUserController{
         try {
             AcademicBodyHeadDAO academicBodyHeadDAO = new AcademicBodyHeadDAO();
             AcademicBodyHead academicBodyHead = new AcademicBodyHead();
-            academicBodyHead.setName(namesTextField.getText());
-            academicBodyHead.setFirstSurname(firstSurnameTextField.getText());
-            academicBodyHead.setSecondSurname(secondSurnameTextField.getText());
+            academicBodyHead.setName(WordUtils.capitalize(namesTextField.getText().toLowerCase()));
+            academicBodyHead.setFirstSurname(WordUtils.capitalize(firstSurnameTextField.getText().toLowerCase()));
+            academicBodyHead.setSecondSurname(WordUtils.capitalize(secondSurnameTextField.getText().toLowerCase()));
             academicBodyHead.setEmailAddress(emailTextField.getText());
             academicBodyHead.setAlternateEmail(alternateEmailTextField.getText());
             academicBodyHead.setPhoneNumber(telephoneNumberTextField.getText());
+            academicBodyHead.setPassword(securePasswordGenerator());
             academicBodyHead.setStatus(ProfessorStatus.ACTIVE.getValue());
             academicBodyHead.setStaffNumber(Integer.parseInt(matricleOrStaffNumberTextField.getText()));
             academicBodyHeadDAO.addAcademicBodyHead(academicBodyHead);
+            new EmailMaker().sendPassword(academicBodyHead.getEmailAddress(), academicBodyHead.getPassword());
+            new EmailMaker().sendPassword(academicBodyHead.getAlternateEmail(), academicBodyHead.getPassword());
             new AlertPopUpGenerator().showCustomMessage(AlertType.INFORMATION, "Éxito", "Miembro de Cuerpo Académico registrado exitosamente");
         }catch(DataInsertionException e){
             new AlertPopUpGenerator().showConnectionErrorMessage();
@@ -159,15 +170,18 @@ public class GuiRegisterUserController{
         try {
             DegreeBossDAO degreeBossDAO = new DegreeBossDAO();
             DegreeBoss degreeBoss = new DegreeBoss();
-            degreeBoss.setName(namesTextField.getText());
-            degreeBoss.setFirstSurname(firstSurnameTextField.getText());
-            degreeBoss.setSecondSurname(secondSurnameTextField.getText());
+            degreeBoss.setName(WordUtils.capitalize(namesTextField.getText().toLowerCase()));
+            degreeBoss.setFirstSurname(WordUtils.capitalize(firstSurnameTextField.getText().toLowerCase()));
+            degreeBoss.setSecondSurname(WordUtils.capitalize(secondSurnameTextField.getText().toLowerCase()));
             degreeBoss.setEmailAddress(emailTextField.getText());
             degreeBoss.setAlternateEmail(alternateEmailTextField.getText());
             degreeBoss.setPhoneNumber(telephoneNumberTextField.getText());
+            degreeBoss.setPassword(securePasswordGenerator());
             degreeBoss.setStatus(ProfessorStatus.ACTIVE.getValue());
             degreeBoss.setStaffNumber(Integer.parseInt(matricleOrStaffNumberTextField.getText()));
             degreeBossDAO.addDegreeBoss(degreeBoss);
+            new EmailMaker().sendPassword(degreeBoss.getEmailAddress(), degreeBoss.getPassword());
+            new EmailMaker().sendPassword(degreeBoss.getAlternateEmail(), degreeBoss.getPassword());
             new AlertPopUpGenerator().showCustomMessage(AlertType.INFORMATION, "Éxito", "Jefe de Carrera registrado exitosamente");
         }catch(DataInsertionException e){
             new AlertPopUpGenerator().showConnectionErrorMessage();
@@ -180,19 +194,22 @@ public class GuiRegisterUserController{
         try {
             ProfessorDAO professorDAO = new ProfessorDAO();
             Professor professor = new Professor();
-            professor.setName(namesTextField.getText());
-            professor.setFirstSurname(firstSurnameTextField.getText());
-            professor.setSecondSurname(secondSurnameTextField.getText());
+            professor.setName(WordUtils.capitalize(namesTextField.getText().toLowerCase()));
+            professor.setFirstSurname(WordUtils.capitalize(firstSurnameTextField.getText().toLowerCase()));
+            professor.setSecondSurname(WordUtils.capitalize(secondSurnameTextField.getText().toLowerCase()));
             professor.setEmailAddress(emailTextField.getText());
             professor.setAlternateEmail(alternateEmailTextField.getText());
             professor.setPhoneNumber(telephoneNumberTextField.getText());
+            professor.setPassword(securePasswordGenerator());
             professor.setStatus(ProfessorStatus.ACTIVE.getValue());
             professor.setStaffNumber(Integer.parseInt(matricleOrStaffNumberTextField.getText()));
             professorDAO.addProfessor(professor);
+            new EmailMaker().sendPassword(professor.getEmailAddress(), professor.getPassword());
+            new EmailMaker().sendPassword(professor.getAlternateEmail(), professor.getPassword());
             new AlertPopUpGenerator().showCustomMessage(AlertType.INFORMATION, "Éxito", "Profesor registrado exitosamente");
         }catch(DataInsertionException e){
             new AlertPopUpGenerator().showConnectionErrorMessage();
-        }catch(DuplicatedPrimaryKeyException e) {
+        }catch(DuplicatedPrimaryKeyException e){
             new AlertPopUpGenerator().showCustomMessage(AlertType.ERROR, "Error", "El número de personal ya está usado");
         }
     }
@@ -200,15 +217,18 @@ public class GuiRegisterUserController{
         try {
             StudentDAO studentDAO = new StudentDAO();
             Student student = new Student();
-            student.setName(namesTextField.getText());
-            student.setFirstSurname(firstSurnameTextField.getText());
-            student.setSecondSurname(secondSurnameTextField.getText());
+            student.setName(WordUtils.capitalize(namesTextField.getText().toLowerCase()));
+            student.setFirstSurname(WordUtils.capitalize(firstSurnameTextField.getText().toLowerCase()));
+            student.setSecondSurname(WordUtils.capitalize(secondSurnameTextField.getText().toLowerCase()));
             student.setEmailAddress(emailTextField.getText());
             student.setAlternateEmail(alternateEmailTextField.getText());
             student.setPhoneNumber(telephoneNumberTextField.getText());
+            student.setPassword(securePasswordGenerator());
             student.setStatus(StudentStatus.AVAILABLE.getValue());
             student.setMatricle(matricleOrStaffNumberTextField.getText());
-            studentDAO.addStudent (student);
+            new EmailMaker().sendPassword(student.getAlternateEmail(), student.getPassword());
+            studentDAO.addStudent(student);
+            //new EmailMaker().sendPassword(student.getEmailAddress(), student.getPassword());
             new AlertPopUpGenerator().showCustomMessage(AlertType.INFORMATION, "Éxito", "Estudiante registrado exitosamente");
         }catch(DataInsertionException e) {
             new AlertPopUpGenerator().showConnectionErrorMessage();
@@ -216,10 +236,18 @@ public class GuiRegisterUserController{
             new AlertPopUpGenerator().showCustomMessage(AlertType.ERROR, "Error", "La Matrícula ya está usada");
         }
     }
-    private boolean allTextFieldsContainsCorrectValues(){
-        Pattern namesPattern = Pattern.compile("^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ]+(?: [A-Za-zÁÉÍÓÚÜÑáéíóúüñ]+)*$"),
-                firstSurnamePattern = Pattern.compile("^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ]+(?: [A-Za-zÁÉÍÓÚÜÑáéíóúüñ]+)*$"),
-                secondSurnamePattern = Pattern.compile("^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ]+(?: [A-Za-zÁÉÍÓÚÜÑáéíóúüñ]+)*$"),
+    private boolean allTextFieldsContainsData(){
+        return !namesTextField.getText().trim().isEmpty() && !firstSurnameTextField.getText().trim().isEmpty() &&
+               !secondSurnameTextField.getText().trim().isEmpty() && !emailTextField.getText().trim().isEmpty() &&
+               !alternateEmailTextField.getText().trim().isEmpty() && !telephoneNumberTextField.getText().trim().isEmpty() &&
+               !matricleOrStaffNumberTextField.getText().trim().isEmpty();
+    }
+    private String specifiedInvalidDataMessageError(){
+        String message = "";
+
+        Pattern namesPattern = Pattern.compile("^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ\\s]+(?: [A-Za-zÁÉÍÓÚÜÑáéíóúüñ\\s]+)*$"),
+                firstSurnamePattern = Pattern.compile("^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ\\s]+(?: [A-Za-zÁÉÍÓÚÜÑáéíóúüñ\\s]+)*$"),
+                secondSurnamePattern = Pattern.compile("^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ\\s]+(?: [A-Za-zÁÉÍÓÚÜÑáéíóúüñ\\s]+)*$"),
                 emailPattern = Pattern.compile("^(.+)@uv.mx$"),
                 alternateEmailPattern = Pattern.compile("^[\\w.%+-]+@[\\w.-]+\\.[a-zA-Z]{2,}$"),
                 telephoneNumberPattern = Pattern.compile("^[0-9]{10}$"),
@@ -228,7 +256,7 @@ public class GuiRegisterUserController{
         if(typeComboBox.getValue().equals(UserType.STUDENT.getValue())){
             matricleOrStaffNumberPattern = Pattern.compile("^[z][S][0-9]{8}$");
         }else{
-            matricleOrStaffNumberPattern = Pattern.compile("^[0-9]{9}$");
+            matricleOrStaffNumberPattern = Pattern.compile("^[0-9]{1,}$");
         }
 
         Matcher namesMatcher = namesPattern.matcher(namesTextField.getText()),
@@ -239,13 +267,85 @@ public class GuiRegisterUserController{
                 telephoneNumberMatcher = telephoneNumberPattern.matcher(telephoneNumberTextField.getText()),
                 matricleOrStaffNumberMatcher = matricleOrStaffNumberPattern.matcher(matricleOrStaffNumberTextField.getText());
 
-        if(namesMatcher.find() && firstSurnameMatcher.find() &&
-           secondSurnameMatcher.find() && emailMatcher.find() &&
-           alternateEmailMatcher.find() && telephoneNumberMatcher.find() &&
-           matricleOrStaffNumberMatcher.find()){
-            return true;
+        if(!namesMatcher.find()){
+            if(message.equals("")){
+                message = "nombre";
+            }else{
+                message = message + ", nombre";
+            }
         }
 
-        return false;
+        if(!firstSurnameMatcher.find()){
+            if(message.equals("")){
+                message = "apellido paterno";
+            }else{
+                message = message + ", apellido paterno";
+            }
+        }
+
+        if(!secondSurnameMatcher.find()){
+            if(message.equals("")){
+                message = "apellido materno";
+            }else{
+                message = message + ", apellido materno";
+            }
+        }
+
+        if(!emailMatcher.find()){
+            if(message.equals("")){
+                message = "correo electrónico";
+            }else{
+                message = message + ", correo electrónico";
+            }
+        }
+
+        if(!alternateEmailMatcher.find()){
+            if(message.equals("")){
+                message = "correo alterno";
+            }else{
+                message = message + ", correo alterno";
+            }
+        }
+
+        if(!telephoneNumberMatcher.find()){
+            if(message.equals("")){
+                message = "número de teléfono";
+            }else{
+                message = message + ", número de teléfono";
+            }
+        }
+
+        if(!matricleOrStaffNumberMatcher.find()){
+            if(message.equals("")){
+                message = "matrícula o número de personal";
+            }else{
+                message = message + ", matrícula o número de personal";
+            }
+        }
+
+        if(!message.equals("")){
+            message = "Los campos que tienen datos inválidos son: " + message + ".";
+        }
+
+        return message;
+    }
+    private String securePasswordGenerator(){
+        String upperCaseLetters = RandomStringUtils.random(2, 65, 90, true, true);
+        String lowerCaseLetters = RandomStringUtils.random(2, 97, 122, true, true);
+        String numbers = RandomStringUtils.randomNumeric(2);
+        String specialChar = RandomStringUtils.random(2, 33, 47, false, false);
+        String totalChars = RandomStringUtils.randomAlphanumeric(2);
+        String combinedChars = upperCaseLetters.concat(lowerCaseLetters)
+          .concat(numbers)
+          .concat(specialChar)
+          .concat(totalChars);
+        List<Character> pwdChars = combinedChars.chars()
+          .mapToObj(character -> (char) character)
+          .collect(Collectors.toList());
+        Collections.shuffle(pwdChars);
+        String password = pwdChars.stream()
+          .collect(StringBuilder::new, StringBuilder::append, StringBuilder::append)
+          .toString();
+        return password;
     }
 }

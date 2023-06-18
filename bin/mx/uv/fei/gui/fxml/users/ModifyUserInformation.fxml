@@ -26,7 +26,7 @@
             </Label>
             <Label prefHeight="50.0" prefWidth="87.0">
                <graphic>
-                  <Button fx:id="modifyButton" mnemonicParsing="false" onAction="#modifyButtonController" prefHeight="24.0" prefWidth="86.0" text="Modificar" />
+                  <Button fx:id="modifyButton" mnemonicParsing="false" onAction="#modifyButtonController" prefHeight="24.0" prefWidth="86.0" text="Guardar" />
                </graphic>
             </Label>
          </children>

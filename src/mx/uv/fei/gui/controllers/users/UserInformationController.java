@@ -4,11 +4,13 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import mx.uv.fei.logic.EmailMaker;
 import mx.uv.fei.logic.domain.User;
 import mx.uv.fei.logic.domain.UserType;
 
 public class UserInformationController{
     private GuiUsersController guiUsersController;
+    private String userPassword;
     private UserController userController;
     private User user;
 
@@ -38,6 +40,11 @@ public class UserInformationController{
     @FXML
     private void editButtonController(ActionEvent event){
         guiUsersController.openModifyUserPane(this);
+    }
+    @FXML
+    private void sendEmailWithItsPasswordButtonController(ActionEvent event){
+        new EmailMaker().sendPassword(getEmail(), getUserPassword());
+        new EmailMaker().sendPassword(getAlternateEmail(), getUserPassword());
     }
 
     public String getAlternateEmail(){
@@ -93,6 +100,12 @@ public class UserInformationController{
     }
     public void setUserType(String userType){
         userTypeLabel.setText(userType);
+    }
+    public String getUserPassword() {
+        return userPassword;
+    }
+    public void setUserPassword(String userPassword) {
+        this.userPassword = userPassword;
     }
     public String getMatricleOrStaffNumber(){
         return matricleOrStaffNumberLabel.getText();

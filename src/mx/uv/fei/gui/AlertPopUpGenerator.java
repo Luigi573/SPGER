@@ -10,11 +10,9 @@ public class AlertPopUpGenerator {
     private DialogPane dialogPane;
 
     public void showConnectionErrorMessage() {
-
-
         Alert errorMessage = new Alert(Alert.AlertType.ERROR);
         errorMessage.setHeaderText("Error de conexión");
-        errorMessage.setContentText("Favor de verificar su conexión con la base de datos e inténtelo de nuevo");
+        errorMessage.setContentText("Hubo un error al conectarse al servidor, inténtelo más tarde");
 
         dialogPane = errorMessage.getDialogPane();
         String css = getClass().getResource("/mx/uv/fei/gui/stylesfiles/Styles.css").toExternalForm();
@@ -26,7 +24,7 @@ public class AlertPopUpGenerator {
     public void showMissingFilesMessage() {
         Alert errorMessage = new Alert(Alert.AlertType.ERROR);
         errorMessage.setHeaderText("Error");
-        errorMessage.setContentText("Fallo al cargar FXML, archivo no encontrado");
+        errorMessage.setContentText("Fallo al cargar la ventana");
 
         dialogPane = errorMessage.getDialogPane();
         String css = getClass().getResource("/mx/uv/fei/gui/stylesfiles/Styles.css").toExternalForm();

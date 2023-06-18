@@ -94,10 +94,6 @@
                               <VBox fx:id="fileVBox" prefHeight="106.0" prefWidth="790.0" />
                            </content>
                         </ScrollPane>
-                        <Button fx:id="deliveryButton" layoutX="680.0" layoutY="440.0" mnemonicParsing="false" onAction="#deliverActivity" prefHeight="35.0" prefWidth="126.0" text="Entregar">
-                           <font>
-                              <Font size="16.0" />
-                           </font></Button>
                         <Button fx:id="feedbackButton" layoutX="480.0" layoutY="440.0" mnemonicParsing="false" onAction="#openFeedbackPopUp" prefHeight="35.0" prefWidth="190.0" text="Retroalimentar">
                            <font>
                               <Font size="16.0" />
@@ -116,6 +112,15 @@
                               <Font size="16.0" />
                            </font>
                         </Button>
+                        <Button fx:id="modifyDeliveryButton" layoutX="640.0" layoutY="17.0" mnemonicParsing="false" onAction="#modifyActivityDelivery" prefHeight="35.0" prefWidth="166.0" text="Modificar entrega">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="deliveryButton" layoutX="680.0" layoutY="440.0" mnemonicParsing="false" onAction="#deliverActivity" prefHeight="35.0" prefWidth="126.0" text="Entregar">
+                           <font>
+                              <Font size="16.0" />
+                           </font></Button>
                      </children></AnchorPane>
             </content>
           </Tab>        
@@ -133,7 +138,7 @@
                               <VBox fx:id="advanceVBox" prefHeight="200.0" prefWidth="774.0" />
                            </content>
                         </ScrollPane>
-                        <Button fx:id="addAdvanceButton" layoutX="674.0" layoutY="18.0" mnemonicParsing="false" text="Agregar avance">
+                        <Button fx:id="addAdvanceButton" layoutX="674.0" layoutY="18.0" mnemonicParsing="false" onAction="#createNewAdvance" text="Agregar avance">
                            <font>
                               <Font size="15.0" />
                            </font></Button>

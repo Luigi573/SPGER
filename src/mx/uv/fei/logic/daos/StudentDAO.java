@@ -26,7 +26,7 @@ public class StudentDAO implements IStudentDAO{
         int generatedId = 0;
         try{
             String queryToInsertStudentDataToUserColumns = "INSERT INTO Usuarios (nombre, apellidoPaterno, apellidoMaterno, correo, " +
-                "correoAlterno, numeroTelefono, estado) VALUES (?, ?, ?, ?, ?, ?, ?)";
+                "correoAlterno, numeroTelefono, estado, contraseña) VALUES (?, ?, ?, ?, ?, ?, ?, SHA2(?, 256))";
             PreparedStatement preparedStatementToInsertStudentDataToUsersColumns = 
                 dataBaseManager.getConnection().prepareStatement(queryToInsertStudentDataToUserColumns, PreparedStatement.RETURN_GENERATED_KEYS);
             preparedStatementToInsertStudentDataToUsersColumns.setString(1, student.getName());
@@ -36,6 +36,7 @@ public class StudentDAO implements IStudentDAO{
             preparedStatementToInsertStudentDataToUsersColumns.setString(5, student.getAlternateEmail());
             preparedStatementToInsertStudentDataToUsersColumns.setString(6, student.getPhoneNumber());
             preparedStatementToInsertStudentDataToUsersColumns.setString(7, student.getStatus());
+            preparedStatementToInsertStudentDataToUsersColumns.setString(8, student.getPassword());
             preparedStatementToInsertStudentDataToUsersColumns.executeUpdate();
             ResultSet resultSet = preparedStatementToInsertStudentDataToUsersColumns.getGeneratedKeys();
             if(resultSet.next()){
