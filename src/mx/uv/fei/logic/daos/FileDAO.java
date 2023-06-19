@@ -1,6 +1,5 @@
 package mx.uv.fei.logic.daos;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.ResultSet;
@@ -8,6 +7,7 @@ import java.util.ArrayList;
 import mx.uv.fei.dataaccess.DataBaseManager;
 import mx.uv.fei.logic.daosinterfaces.IFileDAO;
 import mx.uv.fei.logic.domain.File;
+import mx.uv.fei.logic.exceptions.DataDeletionException;
 import mx.uv.fei.logic.exceptions.DataInsertionException;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
 
@@ -26,8 +26,7 @@ public class FileDAO implements IFileDAO {
             throw new DataInsertionException("Ruta de Archivo inválida.");
         } else {
             try {
-                Connection connection = dataBaseManager.getConnection();
-                PreparedStatement statement = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
+                PreparedStatement statement = dataBaseManager.getConnection().prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
                 statement.setString(1, filePath);
 
                 statement.executeUpdate();
@@ -49,8 +48,7 @@ public class FileDAO implements IFileDAO {
         File file = new File();
         if (fileID > 0) {
             try {
-                Connection connection = dataBaseManager.getConnection();
-                PreparedStatement statement = connection.prepareStatement(query);
+                PreparedStatement statement = dataBaseManager.getConnection().prepareStatement(query);
                 statement.setInt(1, fileID);
                 ResultSet resultSet = statement.executeQuery();
 
@@ -124,5 +122,23 @@ public class FileDAO implements IFileDAO {
             throw new DataRetrievalException("El ID de la actividad es menor a 1.");
         }
         return activityFilesList;
+    }
+    
+    public int removeActivityFile(int fileId) throws DataDeletionException{
+        int result = 0;
+        String query = "DELETE FROM Archivos WHERE IdArchivo IN(?)";
+        PreparedStatement statement;
+        
+        try{
+            statement = dataBaseManager.getConnection().prepareStatement(query);
+
+            statement.setInt(1, fileId);
+
+            result = statement.executeUpdate();
+        }catch(SQLException exception){
+            throw new DataDeletionException("Error al borrar archivos. No se puede establecer conexión con la base de datos");
+        }
+        
+        return result;
     }
 }

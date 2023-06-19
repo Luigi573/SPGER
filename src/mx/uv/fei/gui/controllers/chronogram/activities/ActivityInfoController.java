@@ -34,6 +34,7 @@ import mx.uv.fei.logic.domain.Course;
 import mx.uv.fei.logic.domain.Professor;
 import mx.uv.fei.logic.domain.User;
 import mx.uv.fei.logic.domain.statuses.ActivityStatus;
+import mx.uv.fei.logic.exceptions.DataDeletionException;
 import mx.uv.fei.logic.exceptions.DataInsertionException;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
 
@@ -130,11 +131,12 @@ public class ActivityInfoController{
     
     @FXML
     private void deliverActivity(ActionEvent event) {
-        if(!commentTextArea.getText().trim().isEmpty()){
+        if(commentTextArea.getText() != null){
             int fileResult;
             int successfulSaves = 0;
             ArrayList<String> failedSaves = new ArrayList<>();
-
+            
+            
             for (File file : filesList) {
                 if (file != null) {
                     FileDAO fileDAO = new FileDAO();
@@ -144,7 +146,6 @@ public class ActivityInfoController{
                         if (fileResult > 0) {
                             successfulSaves = successfulSaves + 1;
                         }
-
                     } catch (DataInsertionException die) {
                         failedSaves.add(file.getName());
                     }
@@ -159,6 +160,8 @@ public class ActivityInfoController{
                 ActivityDAO activityDAO = new ActivityDAO();
                 if(activityDAO.setComment(commentTextArea.getText().trim(), activity.getId()) > 0){
                     new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.INFORMATION, "", "Actividad entregada exitosamente");
+                    
+                    goBack(event);
                 }
             }catch(DataInsertionException exception){
                 new AlertPopUpGenerator().showConnectionErrorMessage();
@@ -230,6 +233,18 @@ public class ActivityInfoController{
     
     @FXML
     public void removeFiles(ActionEvent event) {
+        if(activity.getStatus().equals(ActivityStatus.DELIVERED)){
+            /*try{
+                FileDAO fileDAO = new FileDAO();
+                
+                for(File file : filesList){
+                    fileDAO.removeActivityFile(file.getAbsolutePath());
+                }
+            }catch(DataDeletionException exception){
+                new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.ERROR, "Error al borrar la actividad", exception.getMessage());
+            }*/
+        }
+        
         fileVBox.getChildren().clear();
         filesList.clear();
     }
@@ -353,14 +368,13 @@ public class ActivityInfoController{
     private void loadActivityFiles(){
         ArrayList<mx.uv.fei.logic.domain.File> activityFilesList = new ArrayList();
         FileDAO fileDAO = new FileDAO();
+        
         try {
             activityFilesList = fileDAO.getFilesByActivity(activity.getId());
-            for (mx.uv.fei.logic.domain.File listFile : activityFilesList) {
-                System.out.println(listFile);
-            }
         } catch (DataRetrievalException exception) {
-            new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.ERROR, "Ocurrió un error", exception.getMessage());
+            new AlertPopUpGenerator().showConnectionErrorMessage();
         }
+        
         String path;
         File file;
         for (mx.uv.fei.logic.domain.File fileFromList : activityFilesList) {

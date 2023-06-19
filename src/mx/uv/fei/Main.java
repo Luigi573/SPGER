@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class Main extends Application{
@@ -18,6 +19,10 @@ public class Main extends Application{
         stage.setTitle("SPGER");
         stage.setScene(scene);
         stage.setResizable(false);
+        
+        Image icon = new Image("./dependencies/images/spgerLogo.jpeg");
+        stage.getIcons().add(icon);
+        
         stage.show();
     }
     

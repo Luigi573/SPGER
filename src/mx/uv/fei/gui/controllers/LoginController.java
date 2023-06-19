@@ -11,6 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import mx.uv.fei.gui.AlertPopUpGenerator;
 import mx.uv.fei.logic.daos.LoginDAO;
@@ -94,6 +95,10 @@ public class LoginController{
             stage.setTitle("SPGER");
             stage.setScene(scene);
             stage.setResizable(false);
+            
+            Image icon = new Image("./dependencies/images/spgerLogo.jpeg");
+            stage.getIcons().add(icon);
+        
             stage.show();
             
             Stage oldStage = (Stage)((Node)event.getSource()).getScene().getWindow();
