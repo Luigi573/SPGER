@@ -1,12 +1,8 @@
 package mx.uv.fei.gui.controllers.users;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
-import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.text.WordUtils;
 
 import javafx.event.ActionEvent;
@@ -18,12 +14,13 @@ import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import mx.uv.fei.gui.AlertPopUpGenerator;
-import mx.uv.fei.logic.EmailMaker;
+import mx.uv.fei.logic.PasswordAndEmailMaker;
 import mx.uv.fei.logic.daos.AcademicBodyHeadDAO;
 import mx.uv.fei.logic.daos.DegreeBossDAO;
 import mx.uv.fei.logic.daos.DirectorDAO;
 import mx.uv.fei.logic.daos.ProfessorDAO;
 import mx.uv.fei.logic.daos.StudentDAO;
+import mx.uv.fei.logic.daos.UserDAO;
 import mx.uv.fei.logic.domain.AcademicBodyHead;
 import mx.uv.fei.logic.domain.DegreeBoss;
 import mx.uv.fei.logic.domain.Director;
@@ -33,6 +30,7 @@ import mx.uv.fei.logic.domain.UserType;
 import mx.uv.fei.logic.domain.statuses.ProfessorStatus;
 import mx.uv.fei.logic.domain.statuses.StudentStatus;
 import mx.uv.fei.logic.exceptions.DataInsertionException;
+import mx.uv.fei.logic.exceptions.DataRetrievalException;
 import mx.uv.fei.logic.exceptions.DuplicatedPrimaryKeyException;
 
 public class GuiRegisterUserController{
@@ -72,34 +70,40 @@ public class GuiRegisterUserController{
     private void registerButtonController(ActionEvent event){
         if(allTextFieldsContainsData()){
             if(specifiedInvalidDataMessageError().equals("")){
-                if(typeComboBox.getValue().equals(UserType.DIRECTOR.getValue())){
-                    registerDirector();
+                if(!emailTextField.getText().equals(alternateEmailTextField.getText())){
+                    if(specifiedDuplicatedEmailsMessageError(emailTextField.getText(), alternateEmailTextField.getText()).equals("")){
+                        if(typeComboBox.getValue().equals(UserType.DIRECTOR.getValue())){
+                            registerDirector();
+                        }
+                    
+                        if(typeComboBox.getValue().equals(UserType.ACADEMIC_BODY_HEAD.getValue())){
+                            registerAcademicBodyHead();
+                        }
+                    
+                        if(typeComboBox.getValue().equals(UserType.DEGREE_BOSS.getValue())){
+                            registerDegreeBoss();
+                        }
+                    
+                        if(typeComboBox.getValue().equals(UserType.PROFESSOR.getValue())){
+                            registerProfessor();
+                        }
+                    
+                        if(typeComboBox.getValue().equals(UserType.STUDENT.getValue())){
+                            registerStudent();
+                        }
+                        guiUsersController.loadUserButtons();
+                        Stage stage = (Stage) registerButton.getScene().getWindow();
+                        stage.close();
+                    }else{
+                        new AlertPopUpGenerator().showCustomMessage(AlertType.INFORMATION, "Error", specifiedDuplicatedEmailsMessageError(emailTextField.getText(), alternateEmailTextField.getText()));
+                    }
+                }else{
+                    new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "Error", "El correo electrónico no puede ser el mismo que el correo alterno");
                 }
-
-                if(typeComboBox.getValue().equals(UserType.ACADEMIC_BODY_HEAD.getValue())){
-                    registerAcademicBodyHead();
-                }
-
-                if(typeComboBox.getValue().equals(UserType.DEGREE_BOSS.getValue())){
-                    registerDegreeBoss();
-                }
-
-                if(typeComboBox.getValue().equals(UserType.PROFESSOR.getValue())){
-                    registerProfessor();
-                }
-
-                if(typeComboBox.getValue().equals(UserType.STUDENT.getValue())){
-                    registerStudent();
-                }
-
-                guiUsersController.loadUserButtons();
-                Stage stage = (Stage) registerButton.getScene().getWindow();
-                stage.close();
             }else{
                 new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "Error", specifiedInvalidDataMessageError());
             }
         }else{
-            System.out.println(securePasswordGenerator());
             new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "Error", "Faltan campos por llenar");
         }
     }
@@ -109,7 +113,7 @@ public class GuiRegisterUserController{
             matricleOrStaffNumberText.setText("Matrícula: *");
             matricleOrStaffNumberTextField.setPrefWidth(295);
             matricleOrStaffNumberTextField.setLayoutX(487);
-        } else {
+        }else{
             matricleOrStaffNumberText.setText("Número de Personal: *");
             matricleOrStaffNumberTextField.setPrefWidth(211);
             matricleOrStaffNumberTextField.setLayoutX(571);        
@@ -130,13 +134,13 @@ public class GuiRegisterUserController{
             director.setEmailAddress(emailTextField.getText());
             director.setAlternateEmail(alternateEmailTextField.getText());
             director.setPhoneNumber(telephoneNumberTextField.getText());
-            director.setPassword(securePasswordGenerator());
+            director.setPassword(new PasswordAndEmailMaker().securePasswordMaker());
             director.setStatus(ProfessorStatus.ACTIVE.getValue());
             director.setStaffNumber(Integer.parseInt(matricleOrStaffNumberTextField.getText()));
             directorDAO.addDirector(director);
-            new EmailMaker().sendPassword(director.getEmailAddress(), director.getPassword());
-            new EmailMaker().sendPassword(director.getAlternateEmail(), director.getPassword());
-            new AlertPopUpGenerator().showCustomMessage(AlertType.INFORMATION, "Éxito", "Director registrado exitosamente");
+            new PasswordAndEmailMaker().sendPassword(director.getEmailAddress(), director.getPassword());
+            new PasswordAndEmailMaker().sendPassword(director.getAlternateEmail(), director.getPassword());
+            new AlertPopUpGenerator().showCustomMessage(AlertType.INFORMATION, "Éxito", "Director registrado exitosamente"); 
         }catch(DataInsertionException e){
             new AlertPopUpGenerator().showConnectionErrorMessage();
         }catch(DuplicatedPrimaryKeyException e) {
@@ -153,12 +157,12 @@ public class GuiRegisterUserController{
             academicBodyHead.setEmailAddress(emailTextField.getText());
             academicBodyHead.setAlternateEmail(alternateEmailTextField.getText());
             academicBodyHead.setPhoneNumber(telephoneNumberTextField.getText());
-            academicBodyHead.setPassword(securePasswordGenerator());
+            academicBodyHead.setPassword(new PasswordAndEmailMaker().securePasswordMaker());
             academicBodyHead.setStatus(ProfessorStatus.ACTIVE.getValue());
             academicBodyHead.setStaffNumber(Integer.parseInt(matricleOrStaffNumberTextField.getText()));
             academicBodyHeadDAO.addAcademicBodyHead(academicBodyHead);
-            new EmailMaker().sendPassword(academicBodyHead.getEmailAddress(), academicBodyHead.getPassword());
-            new EmailMaker().sendPassword(academicBodyHead.getAlternateEmail(), academicBodyHead.getPassword());
+            new PasswordAndEmailMaker().sendPassword(academicBodyHead.getEmailAddress(), academicBodyHead.getPassword());
+            new PasswordAndEmailMaker().sendPassword(academicBodyHead.getAlternateEmail(), academicBodyHead.getPassword());
             new AlertPopUpGenerator().showCustomMessage(AlertType.INFORMATION, "Éxito", "Miembro de Cuerpo Académico registrado exitosamente");
         }catch(DataInsertionException e){
             new AlertPopUpGenerator().showConnectionErrorMessage();
@@ -176,12 +180,12 @@ public class GuiRegisterUserController{
             degreeBoss.setEmailAddress(emailTextField.getText());
             degreeBoss.setAlternateEmail(alternateEmailTextField.getText());
             degreeBoss.setPhoneNumber(telephoneNumberTextField.getText());
-            degreeBoss.setPassword(securePasswordGenerator());
+            degreeBoss.setPassword(new PasswordAndEmailMaker().securePasswordMaker());
             degreeBoss.setStatus(ProfessorStatus.ACTIVE.getValue());
             degreeBoss.setStaffNumber(Integer.parseInt(matricleOrStaffNumberTextField.getText()));
             degreeBossDAO.addDegreeBoss(degreeBoss);
-            new EmailMaker().sendPassword(degreeBoss.getEmailAddress(), degreeBoss.getPassword());
-            new EmailMaker().sendPassword(degreeBoss.getAlternateEmail(), degreeBoss.getPassword());
+            new PasswordAndEmailMaker().sendPassword(degreeBoss.getEmailAddress(), degreeBoss.getPassword());
+            new PasswordAndEmailMaker().sendPassword(degreeBoss.getAlternateEmail(), degreeBoss.getPassword());
             new AlertPopUpGenerator().showCustomMessage(AlertType.INFORMATION, "Éxito", "Jefe de Carrera registrado exitosamente");
         }catch(DataInsertionException e){
             new AlertPopUpGenerator().showConnectionErrorMessage();
@@ -200,12 +204,12 @@ public class GuiRegisterUserController{
             professor.setEmailAddress(emailTextField.getText());
             professor.setAlternateEmail(alternateEmailTextField.getText());
             professor.setPhoneNumber(telephoneNumberTextField.getText());
-            professor.setPassword(securePasswordGenerator());
+            professor.setPassword(new PasswordAndEmailMaker().securePasswordMaker());
             professor.setStatus(ProfessorStatus.ACTIVE.getValue());
             professor.setStaffNumber(Integer.parseInt(matricleOrStaffNumberTextField.getText()));
             professorDAO.addProfessor(professor);
-            new EmailMaker().sendPassword(professor.getEmailAddress(), professor.getPassword());
-            new EmailMaker().sendPassword(professor.getAlternateEmail(), professor.getPassword());
+            new PasswordAndEmailMaker().sendPassword(professor.getEmailAddress(), professor.getPassword());
+            new PasswordAndEmailMaker().sendPassword(professor.getAlternateEmail(), professor.getPassword());
             new AlertPopUpGenerator().showCustomMessage(AlertType.INFORMATION, "Éxito", "Profesor registrado exitosamente");
         }catch(DataInsertionException e){
             new AlertPopUpGenerator().showConnectionErrorMessage();
@@ -214,7 +218,7 @@ public class GuiRegisterUserController{
         }
     }
     private void registerStudent(){
-        try {
+        try{
             StudentDAO studentDAO = new StudentDAO();
             Student student = new Student();
             student.setName(WordUtils.capitalize(namesTextField.getText().toLowerCase()));
@@ -223,12 +227,12 @@ public class GuiRegisterUserController{
             student.setEmailAddress(emailTextField.getText());
             student.setAlternateEmail(alternateEmailTextField.getText());
             student.setPhoneNumber(telephoneNumberTextField.getText());
-            student.setPassword(securePasswordGenerator());
+            student.setPassword(new PasswordAndEmailMaker().securePasswordMaker());
             student.setStatus(StudentStatus.AVAILABLE.getValue());
             student.setMatricle(matricleOrStaffNumberTextField.getText());
-            new EmailMaker().sendPassword(student.getAlternateEmail(), student.getPassword());
             studentDAO.addStudent(student);
-            //new EmailMaker().sendPassword(student.getEmailAddress(), student.getPassword());
+            new PasswordAndEmailMaker().sendPassword(student.getEmailAddress(), student.getPassword());
+            new PasswordAndEmailMaker().sendPassword(student.getAlternateEmail(), student.getPassword());
             new AlertPopUpGenerator().showCustomMessage(AlertType.INFORMATION, "Éxito", "Estudiante registrado exitosamente");
         }catch(DataInsertionException e) {
             new AlertPopUpGenerator().showConnectionErrorMessage();
@@ -329,23 +333,33 @@ public class GuiRegisterUserController{
 
         return message;
     }
-    private String securePasswordGenerator(){
-        String upperCaseLetters = RandomStringUtils.random(2, 65, 90, true, true);
-        String lowerCaseLetters = RandomStringUtils.random(2, 97, 122, true, true);
-        String numbers = RandomStringUtils.randomNumeric(2);
-        String specialChar = RandomStringUtils.random(2, 33, 47, false, false);
-        String totalChars = RandomStringUtils.randomAlphanumeric(2);
-        String combinedChars = upperCaseLetters.concat(lowerCaseLetters)
-          .concat(numbers)
-          .concat(specialChar)
-          .concat(totalChars);
-        List<Character> pwdChars = combinedChars.chars()
-          .mapToObj(character -> (char) character)
-          .collect(Collectors.toList());
-        Collections.shuffle(pwdChars);
-        String password = pwdChars.stream()
-          .collect(StringBuilder::new, StringBuilder::append, StringBuilder::append)
-          .toString();
-        return password;
+    private String specifiedDuplicatedEmailsMessageError(String email, String alternateEmail){
+        String message = "";
+        UserDAO userDAO = new UserDAO();
+        try{
+            if(!userDAO.theEmailIsAvailableToUseToRegister(email)){
+                if(message.equals("")){
+                    message = "correo electrónico";
+                }else{
+                    message = message + " y el correo electrónico";
+                }
+            }
+
+            if(!userDAO.theAlternateEmailIsAvailableToRegister(alternateEmail)){
+                if(message.equals("")){
+                    message = "correo alterno";
+                }else{
+                    message = message + "y el correo alterno";
+                }
+            }
+        }catch(DataRetrievalException e){
+            new AlertPopUpGenerator().showConnectionErrorMessage();
+        }
+
+        if(!message.equals("")){
+            message = "El " + message + " ya están usados.";
+        }
+
+        return message;
     }
 }
