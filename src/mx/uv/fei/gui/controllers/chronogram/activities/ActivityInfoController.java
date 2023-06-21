@@ -135,7 +135,15 @@ public class ActivityInfoController{
             int fileResult;
             int successfulSaves = 0;
             ArrayList<String> failedSaves = new ArrayList<>();
-            
+            String activityDirectoryPath = "C:\\Users\\Jesús Manuel\\Desktop\\SPGER\\Evidencias\\" + String.valueOf(user.getUserId()) + user.getFirstSurname() + user.getSecondSurname() + user.getName() + "\\Actividades";
+            File userDirectory = new File(activityDirectoryPath);
+            if (!userDirectory.exists()) {
+                if (userDirectory.mkdirs()) {
+                    new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.INFORMATION, "Archivo guardado exitosamente.", "Se ha creado la copia del archivo correctamente.");
+                } else {
+                    new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.ERROR, "Error al guardar archivo", "No se pudo guardar la copia del archivo en el servidor.");
+                }
+            }
             
             for (File file : filesList) {
                 if (file != null) {

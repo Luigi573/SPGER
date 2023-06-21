@@ -65,7 +65,7 @@ public class AdvanceInfoController{
         commentTextArea.setEditable(true);
     }
     
-     @FXML
+    @FXML
     private void goBack(ActionEvent event) {
         try{
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/activities/ActivityInfo.fxml"));
@@ -175,7 +175,8 @@ public class AdvanceInfoController{
     
     public void setCourse(Course course){
         this.course = course;
-    }    
+    }  
+    
     public void setUser(User user){
         this.user = user;
         
