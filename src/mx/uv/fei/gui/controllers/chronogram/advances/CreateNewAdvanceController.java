@@ -70,7 +70,6 @@ public class CreateNewAdvanceController {
         } finally {
             if (result > 0) {
                 new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.INFORMATION, "Operación exitosa", "Se ha guardado el nuevo avance correctamente.");
-                
                 returnToAdvanceList(event);
             }
         }
