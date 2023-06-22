@@ -4,21 +4,41 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.uv.fei.gui.fxcontrollers.manageKGAL.UpdateKGALController">
+<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.uv.fei.gui.controllers.kgal.UpdateKGALController">
    <children>
-      <Text layoutX="163.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Modificar Descripción de LGAC">
+      <Text layoutX="235.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Modificar Descripción de LGAC">
          <font>
-            <Font size="20.0" />
+            <Font name="System Bold" size="38.0" />
          </font>
       </Text>
-      <TextField id="tfDescription" fx:id="tfDescription" layoutX="205.0" layoutY="217.0" prefHeight="25.0" prefWidth="272.0" promptText="max. 40 caracteres" />
-      <Label layoutX="81.0" layoutY="221.0" text="Nueva Descripción:" />
-      <Label layoutX="168.0" layoutY="153.0" text="ID:" />
-      <Button fx:id="btnSave" layoutX="518.0" layoutY="355.0" mnemonicParsing="false" onAction="#updateKGALDescription" text="Guardar" />
-      <Button fx:id="btnCancel" layoutX="430.0" layoutY="355.0" mnemonicParsing="false" onAction="#switchToKGALListScene" text="Cancelar" />
-      <Label fx:id="lID" layoutX="205.0" layoutY="153.0" text="ID del LGAC" />
+      <TextField id="tfDescription" fx:id="tfDescription" layoutX="351.0" layoutY="288.0" prefHeight="65.0" prefWidth="624.0" promptText="max. 40 caracteres">
+         <font>
+            <Font size="30.0" />
+         </font></TextField>
+      <Label layoutX="64.0" layoutY="298.0" text="Nueva Descripción:">
+         <font>
+            <Font name="System Bold" size="30.0" />
+         </font></Label>
+      <Label layoutX="418.0" layoutY="161.0" text="ID:">
+         <font>
+            <Font name="System Bold" size="36.0" />
+         </font></Label>
+      <Button fx:id="btnSave" layoutX="685.0" layoutY="492.0" mnemonicParsing="false" onAction="#updateKGALDescription" text="Guardar">
+         <font>
+            <Font size="30.0" />
+         </font></Button>
+      <Button fx:id="btnCancel" layoutX="183.0" layoutY="492.0" mnemonicParsing="false" onAction="#switchToKGALListScene" text="Cancelar">
+         <font>
+            <Font size="30.0" />
+         </font></Button>
+      <Label fx:id="lID" layoutX="483.0" layoutY="161.0" text="ID del LGAC">
+         <font>
+            <Font name="System Bold" size="36.0" />
+         </font></Label>
+      <Pane fx:id="headerPane" prefHeight="100.0" prefWidth="1024.0" />
    </children>
 </AnchorPane>
