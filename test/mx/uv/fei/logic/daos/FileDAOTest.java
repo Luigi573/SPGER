@@ -101,24 +101,7 @@ public class FileDAOTest {
             
         } catch (SQLException exception) {
             fail("El test falló al crear la conexión entre la actividad y el archivo precargados, no se pudo conectar a la BD");
-        }
-        
-//        String activityFileQuery = "SELECT IdArchivoActividad FROM ArchivosActividad ORDER BY IdArchivoActividad DESC";
-//        
-//        try {
-//            Statement statement = dataBaseManager.getConnection().createStatement();
-//            ResultSet resultSet = statement.executeQuery(activityFileQuery);
-//            
-//            if (resultSet.next()) {
-//                nextAvailableActivityFileId = resultSet.getInt(1) + 1;
-//                System.out.println("El próximo id disponible para archivo de actividad es: " + nextAvailableActivityFileId);
-//            }
-//        } catch (SQLException exception) {
-//            exception.printStackTrace();
-//            fail("El test falló al crear el archivo de la actividad, no se pudo conectar a la BD.");
-//        }
-        
-        
+        }       
     }
     
     @AfterClass

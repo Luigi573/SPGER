@@ -51,26 +51,31 @@ public class CreateNewAdvanceController {
 
     @FXML
     private void createAdvance(ActionEvent event) {
-        int savedFileGeneratedId = saveFile();
+        int savedFileGeneratedId = 0;
+        if (file != null) {
+            savedFileGeneratedId = saveFile();
+        }
         
-        Advance advance = new Advance();
-        advance.setActivityID(this.activity.getId());
-        advance.setFileID(savedFileGeneratedId);
-        advance.setTitle(advanceTitleTextField.getText());
-        advance.setComment(advanceCommentsTextArea.getText());
-        advance.setState("Por revisar");
-        
-        AdvanceDAO advanceDAO = new AdvanceDAO();
-        int result = 0;
-        
-        try {
-            result = advanceDAO.addAdvance(advance);
-        } catch (DataInsertionException exception) {
-            new AlertPopUpGenerator().showConnectionErrorMessage();
-        } finally {
-            if (result > 0) {
-                new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.INFORMATION, "Operación exitosa", "Se ha guardado el nuevo avance correctamente.");
-                returnToAdvanceList(event);
+        if (savedFileGeneratedId != -1) {
+            Advance advance = new Advance();
+            advance.setActivityID(this.activity.getId());
+            advance.setFileID(savedFileGeneratedId);
+            advance.setTitle(advanceTitleTextField.getText());
+            advance.setComment(advanceCommentsTextArea.getText());
+            advance.setState("Por revisar");
+
+            AdvanceDAO advanceDAO = new AdvanceDAO();
+            int result = 0;
+
+            try {
+                result = advanceDAO.addAdvance(advance);
+            } catch (DataInsertionException exception) {
+                new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.ERROR, "Error al crear el avance", exception.getMessage());
+            } finally {
+                if (result > 0) {
+                    new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.INFORMATION, "Operación exitosa", "Se ha guardado el nuevo avance correctamente.");
+                    returnToAdvanceList(event);
+                }
             }
         }
     }
@@ -153,10 +158,9 @@ public class CreateNewAdvanceController {
     private int saveFile() {
         int result = 0;
         
-        if (file.getPath() != null) {         
-            FileDAO fileDAO = new FileDAO();
-            
-            String newDirectoryPath = "C:\\Users\\Jesús Manuel\\Desktop\\SPGER\\Evidencias\\" + String.valueOf(user.getUserId()) + user.getFirstSurname() + user.getSecondSurname() + user.getName() + "\\Avances";
+        if (file.getPath() != null) {
+            System.out.println(System.getProperty("user.dir"));
+            String newDirectoryPath = System.getProperty("user.dir") + "\\Evidencias\\" + String.valueOf(user.getUserId()) + user.getFirstSurname() + user.getSecondSurname() + user.getName().replaceAll("\\s+", "") + "\\Avances";
             File userDirectory = new File(newDirectoryPath);
             if (!userDirectory.exists()) {
                 if (!userDirectory.mkdirs()) {
@@ -181,11 +185,14 @@ public class CreateNewAdvanceController {
                     new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.ERROR, "Error al guardar archivo", "No se pudo guardar la copia del archivo en el servidor.");
                 }
 
+                FileDAO fileDAO = new FileDAO();
                 try {
                     result = fileDAO.addFile(newFilePath);
                 } catch (DataInsertionException die) {
                     new AlertPopUpGenerator().showConnectionErrorMessage();
                 }
+            } else {
+                result = -1;
             }
         }
         return result;

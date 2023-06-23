@@ -28,21 +28,26 @@ public class AdvanceDAO implements IAdvanceDAO{
             PreparedStatement statement = dataBaseManager.getConnection().prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
             statement.setInt(1, advance.getActivityID());
             
-            if(advance.getFileID() > 0){
+            if (advance.getFileID() > 0) {
                 statement.setInt(2, advance.getFileID());
                 advance.setState("Entregado");
-            }else{
+            } else {
                 statement.setNull(2, Types.INTEGER);
+                advance.setState("Entregado");
             }
             
-            statement.setString(3, advance.getTitle());
+            if (!advance.getTitle().equals("")) {
+                statement.setString(3, advance.getTitle());
+            } else {
+                throw new DataInsertionException("El título del avance no puede estar vacío.");
+            }
             statement.setString(4, advance.getComment());
             statement.setString(5, advance.getState());
             
             statement.executeUpdate();
             
             ResultSet resultSet = statement.getGeneratedKeys();
-            if(resultSet.next()) {
+            if (resultSet.next()) {
                 generatedId = resultSet.getInt(1);
             }
         } catch (SQLException exception) {

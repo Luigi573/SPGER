@@ -26,6 +26,7 @@ public class AdvanceDAOTest {
     private static DataBaseManager dataBaseManager;
     private static int activityId;
     private static Advance preloadedAdvance;
+    private static int nextAvailableId;
     
     @BeforeClass
     public static void setUpClass() {
@@ -46,6 +47,7 @@ public class AdvanceDAOTest {
             
             if(generatedActivity.next()){
                 activityId = generatedActivity.getInt(1);
+                System.out.println(activityId);
             }
             
             preloadedAdvance = new Advance();
@@ -65,6 +67,8 @@ public class AdvanceDAOTest {
             if(generatedAdvanceKeys.next()){
                 preloadedAdvance.setAdvanceID(generatedAdvanceKeys.getInt(1));
             }
+            
+            nextAvailableId = preloadedAdvance.getAdvanceID() + 1;
         }catch(SQLException exception){
             fail("Test failed, couldn't connect to DB");
         }finally{
@@ -86,19 +90,34 @@ public class AdvanceDAOTest {
             fail("Couldn't delete preloaded activity. No DB connection");
         }
     }
-    ///////     Don't mind these tests, they aint mine and they're wrong
+    
     @Test
-    public void testAddAdvance() throws DataInsertionException {
+    public void testAddAdvanceSuccesful() throws DataInsertionException {
         System.out.println("addAdvance");
         Advance advance = new Advance();
-        advance.setTitle("Avance de prueba unitaria");
+        System.out.println(activityId);
+        advance.setActivityID(activityId);
+        advance.setTitle("Preloaded advance");
         advance.setComment("Este avance es una prueba");
+        advance.setFileID(0);
         AdvanceDAO instance = new AdvanceDAO();
-        int expResult = 1;
+        int expResult = nextAvailableId;
         int result = instance.addAdvance(advance);
         assertEquals(expResult, result);
     }
     
+    @Test(expected = DataInsertionException.class)
+    public void testAddAdvanceFail() throws DataInsertionException {
+        System.out.println("addAdvance");
+        Advance advance = new Advance();
+        advance.setAdvanceID(0);
+        advance.setTitle("Preloaded advance");
+        advance.setComment("This is a preloaded advance for testing getAdvanceList()");
+        AdvanceDAO instance = new AdvanceDAO();
+        int expResult = 0;
+        int result = instance.addAdvance(advance);
+        assertEquals(expResult, result);
+    }
     
     @Test
     public void testGetAdvanceList() throws DataRetrievalException {
@@ -139,5 +158,34 @@ public class AdvanceDAOTest {
         AdvanceDAO instance = new AdvanceDAO();
         int result = instance.setFeedback(preloadedAdvance);
         assertTrue(result > 0);
+    }
+    
+    /**
+     * Test of updateAdvanceInfo method, of class AdvanceDAO.
+     */
+    @Test
+    public void testUpdateAdvanceInfoSuccessful() throws DataRetrievalException {
+        System.out.println("updateAdvanceInfo Success");
+        int advanceToBeUpdatedID = preloadedAdvance.getAdvanceID();
+        Advance newAdvanceInfo = new Advance();
+        newAdvanceInfo.setTitle("Avance modificado por pruebas");
+        newAdvanceInfo.setComment("Este avance se modifico en un test de junit4");
+        AdvanceDAO instance = new AdvanceDAO();
+        int expResult = 1;
+        int result = instance.updateAdvanceInfo(advanceToBeUpdatedID, newAdvanceInfo);
+        assertEquals(expResult, result);
+    }
+    
+    @Test
+    public void testUpdateAdvanceInfoFail() throws DataRetrievalException {
+        System.out.println("updateAdvanceInfo Fail");
+        int advanceToBeUpdatedID = preloadedAdvance.getAdvanceID() + 1;
+        Advance newAdvanceInfo = new Advance();
+        newAdvanceInfo.setTitle("Avance modificado por pruebas");
+        newAdvanceInfo.setComment("Este avance se modifico en un test de junit4");
+        AdvanceDAO instance = new AdvanceDAO();
+        int expResult = 0;
+        int result = instance.updateAdvanceInfo(advanceToBeUpdatedID, newAdvanceInfo);
+        assertEquals(expResult, result);
     }
 }

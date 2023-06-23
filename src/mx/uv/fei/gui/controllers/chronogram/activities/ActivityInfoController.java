@@ -12,6 +12,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.Pane;
@@ -37,6 +38,7 @@ import mx.uv.fei.logic.domain.statuses.ActivityStatus;
 import mx.uv.fei.logic.exceptions.DataDeletionException;
 import mx.uv.fei.logic.exceptions.DataInsertionException;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
+import org.apache.commons.io.FileUtils;
 
 public class ActivityInfoController{
     private Activity activity;
@@ -134,40 +136,55 @@ public class ActivityInfoController{
         if(commentTextArea.getText() != null){
             int fileResult;
             int successfulSaves = 0;
-            ArrayList<String> failedSaves = new ArrayList<>();
+            ArrayList<String> failedSaves = new ArrayList();
+            ArrayList<String> failedCopiedFiles = new ArrayList();
             
-            String activityDirectoryPath = "C:\\Users\\Jesús Manuel\\Desktop\\SPGER\\Evidencias\\" + String.valueOf(user.getUserId()) + user.getFirstSurname() + user.getSecondSurname() + user.getName() + "\\Actividades";
+            String activityDirectoryPath = System.getProperty("user.dir") + "\\Evidencias\\" + String.valueOf(user.getUserId()) + user.getFirstSurname() + user.getSecondSurname() + user.getName().replaceAll("\\s+", "") + "\\Actividades";
             File activityDirectory = new File(activityDirectoryPath);
             if (!activityDirectory.exists()) {
                 if (!activityDirectory.mkdirs()) {
-                     new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.ERROR, "Error al guardar archivo", "No se pudo guardar la copia del archivo en el servidor.");
+                    new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.ERROR, "Error al guardar archivo", "No se pudo guardar la copia del archivo en el servidor.");
                 }
             }
             
-            String newFilePath = activityDirectoryPath + "\\";
-            //int uniqueFilePathComponent;
-            File fileCopy;
-            boolean willSaveFile = true;
             for (File file : filesList) {
-                newFilePath = newFilePath + file.getName();
-                fileCopy = new File(newFilePath);
-                        
-                if (file != null) {
-                    FileDAO fileDAO = new FileDAO();
+                String newFilePath = activityDirectoryPath + "\\" + file.getName();
+                File fileCopy = new File(newFilePath);
+                boolean willSaveFile = true;
+                
+                if (fileCopy.exists()) {
+                    ButtonType buttonPressed = new AlertPopUpGenerator().showConfirmationMessage(Alert.AlertType.CONFIRMATION, "El Archivo ya existe", "Previamente subió un archivo con el mismo nombre [" + file.getName() + "], ¿Desea sobreescribir dicho archivo?").get();
+                    if (buttonPressed != ButtonType.OK) {
+                        willSaveFile = false;
+                    }
+                }
+                           
+                if (willSaveFile) {
                     try {
-                        fileResult = fileDAO.addActivityFile(file.getPath(), activity.getId());
+                        FileUtils.copyFile(file, fileCopy);
                         
-                        if (fileResult > 0) {
-                            successfulSaves = successfulSaves + 1;
+                        FileDAO fileDAO = new FileDAO();
+                        try {
+                            fileResult = fileDAO.addActivityFile(fileCopy.getPath(), activity.getId());
+
+                            if (fileResult > 0) {
+                                successfulSaves = successfulSaves + 1;
+                            }
+                        } catch (DataInsertionException die) {
+                            failedSaves.add(file.getName());
                         }
-                    } catch (DataInsertionException die) {
-                        failedSaves.add(file.getName());
+                    } catch (IOException exception) {
+                        failedCopiedFiles.add(file.getName());
                     }
                 }
             }
 
             for (String fileName : failedSaves) {
-                new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.ERROR, "Error al guardar archivo", fileName);
+                new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.ERROR, "Error al guardar la ruta del archivo.", fileName);
+            }
+            
+            for (String fileName : failedCopiedFiles) {
+                new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.ERROR, "Error al guardar la copia del archivo en el servidor.", fileName);
             }
             
             try{
