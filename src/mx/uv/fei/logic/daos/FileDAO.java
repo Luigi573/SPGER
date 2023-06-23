@@ -1,6 +1,5 @@
 package mx.uv.fei.logic.daos;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.ResultSet;
@@ -125,16 +124,16 @@ public class FileDAO implements IFileDAO {
         return activityFilesList;
     }
     
-    public int removeActivityFile(int fileId) throws DataDeletionException{
+    public int removeActivityFile(String path) throws DataDeletionException{
         int result = 0;
-        String query = "DELETE FROM Archivos WHERE IdArchivo IN(?)";
+        String query = "DELETE FROM Archivos WHERE ruta = ?";
         PreparedStatement statement;
         
         try{
             statement = dataBaseManager.getConnection().prepareStatement(query);
-
-            statement.setInt(1, fileId);
-
+            
+            statement.setString(1, path);
+            
             result = statement.executeUpdate();
         }catch(SQLException exception){
             throw new DataDeletionException("Error al borrar archivos. No se puede establecer conexión con la base de datos");

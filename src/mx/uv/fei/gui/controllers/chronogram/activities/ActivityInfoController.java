@@ -3,6 +3,7 @@ package mx.uv.fei.gui.controllers.chronogram.activities;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -43,6 +44,7 @@ import org.apache.commons.io.FileUtils;
 public class ActivityInfoController{
     private Activity activity;
     private ArrayList<File> filesList;
+    private ArrayList<File> deletedFiles;
     private Course course;
     private User user;
     
@@ -80,6 +82,7 @@ public class ActivityInfoController{
     @FXML
     public void initialize() {
         filesList = new ArrayList();
+        deletedFiles = new ArrayList();
     }
     
     @FXML
@@ -144,6 +147,18 @@ public class ActivityInfoController{
             if (!activityDirectory.exists()) {
                 if (!activityDirectory.mkdirs()) {
                     new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.ERROR, "Error al guardar archivo", "No se pudo guardar la copia del archivo en el servidor.");
+                }
+            }
+            
+            for(File file : deletedFiles){
+                try{
+                    FileDAO fileDAO = new FileDAO();
+                    
+                    System.out.println("Deleting file : " + file.getPath());
+                    file.delete();
+                    fileDAO.removeActivityFile(file.getPath());
+                }catch(DataDeletionException exception){
+                    new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.ERROR, "Error al borrar la actividad", exception.getMessage());
                 }
             }
             
@@ -265,15 +280,9 @@ public class ActivityInfoController{
     @FXML
     public void removeFiles(ActionEvent event) {
         if(activity.getStatus().equals(ActivityStatus.DELIVERED)){
-            /*try{
-                FileDAO fileDAO = new FileDAO();
-                
-                for(File file : filesList){
-                    fileDAO.removeActivityFile(file.getAbsolutePath());
-                }
-            }catch(DataDeletionException exception){
-                new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.ERROR, "Error al borrar la actividad", exception.getMessage());
-            }*/
+            for(File file: filesList){
+                deletedFiles.add(file);
+            }
         }
         
         fileVBox.getChildren().clear();
@@ -406,18 +415,16 @@ public class ActivityInfoController{
             new AlertPopUpGenerator().showConnectionErrorMessage();
         }
         
-        String path;
-        File file;
         for (mx.uv.fei.logic.domain.File fileFromList : activityFilesList) {
-            path = fileFromList.getFilePath();
+            String path = fileFromList.getFilePath();
             if (path != null) {
-                file = new File(path);
+                File file = new File(path);
                 try {
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/activities/ActivityFileItem.fxml"));
                     Pane pane = loader.load();
                     ActivityFileItemController controller = (ActivityFileItemController) loader.getController();
                     controller.setFile(file);
-
+                    
                     fileVBox.getChildren().add(pane);
                     filesList.add(file);
                 } catch (IOException exception) {

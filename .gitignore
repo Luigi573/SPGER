@@ -9,3 +9,5 @@ nbproject/project.properties
 nbproject/private/private.xml
 nbproject/project.properties
 nbproject/private/private.xml
+src/dependencies/resources/DatabaseAccess.properties
+*.properties
