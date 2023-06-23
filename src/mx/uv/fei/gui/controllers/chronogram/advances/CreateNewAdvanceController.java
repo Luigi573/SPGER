@@ -159,7 +159,6 @@ public class CreateNewAdvanceController {
         int result = 0;
         
         if (file.getPath() != null) {
-            System.out.println(System.getProperty("user.dir"));
             String newDirectoryPath = System.getProperty("user.dir") + "\\Evidencias\\" + String.valueOf(user.getUserId()) + user.getFirstSurname() + user.getSecondSurname() + user.getName().replaceAll("\\s+", "") + "\\Avances";
             File userDirectory = new File(newDirectoryPath);
             if (!userDirectory.exists()) {
