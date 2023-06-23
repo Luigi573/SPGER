@@ -164,6 +164,10 @@ TextFlow {
     -fx-background-color: #36393e;
 }
 
+#mainMenuSpecificPane {
+    -fx-background-color: #36393e;
+}
+
 #researchButton {
     -fx-background-radius: 5;
     -fx-background-color: transparent;

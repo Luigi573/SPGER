@@ -78,5 +78,4 @@ public abstract class User {
     public String toString() {
         return name + " " + firstSurname + " " + secondSurname;
     }
-
 }
