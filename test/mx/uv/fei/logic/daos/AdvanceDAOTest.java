@@ -110,7 +110,7 @@ public class AdvanceDAOTest {
     public void testAddAdvanceFail() throws DataInsertionException {
         System.out.println("addAdvance");
         Advance advance = new Advance();
-        advance.setAdvanceID(0);
+        advance.setActivityID(0);
         advance.setTitle("Preloaded advance");
         advance.setComment("This is a preloaded advance for testing getAdvanceList()");
         AdvanceDAO instance = new AdvanceDAO();

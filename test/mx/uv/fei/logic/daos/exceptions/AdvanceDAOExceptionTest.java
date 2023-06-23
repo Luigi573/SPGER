@@ -75,65 +75,6 @@ public class AdvanceDAOExceptionTest {
     }
 
     /**
-     * Test of getAdvancesList method, of class AdvanceDAO.
-     */
-    @Test
-    public void testGetAdvancesList() throws Exception {
-        System.out.println("getAdvancesList");
-        AdvanceDAO instance = new AdvanceDAO();
-        ArrayList<Advance> expResult = null;
-        ArrayList<Advance> result = instance.getAdvancesList();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of getActivityAdvanceList method, of class AdvanceDAO.
-     */
-    @Test
-    public void testGetActivityAdvanceList() throws Exception {
-        System.out.println("getActivityAdvanceList");
-        int activityId = 0;
-        AdvanceDAO instance = new AdvanceDAO();
-        ArrayList<Advance> expResult = null;
-        ArrayList<Advance> result = instance.getActivityAdvanceList(activityId);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of setFeedback method, of class AdvanceDAO.
-     */
-    @Test
-    public void testSetFeedback() throws Exception {
-        System.out.println("setFeedback");
-        Advance advance = null;
-        AdvanceDAO instance = new AdvanceDAO();
-        int expResult = 0;
-        int result = instance.setFeedback(advance);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of getAdvanceByID method, of class AdvanceDAO.
-     */
-    @Test
-    public void testGetAdvanceByID() throws Exception {
-        System.out.println("getAdvanceByID");
-        int advanceID = 0;
-        AdvanceDAO instance = new AdvanceDAO();
-        Advance expResult = null;
-        Advance result = instance.getAdvanceByID(advanceID);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
      * Test of updateAdvanceInfo method, of class AdvanceDAO.
      */
     @Test
