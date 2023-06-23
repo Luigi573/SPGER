@@ -118,6 +118,7 @@ public class GuiResearchReportController {
             ResearchManagerController researchManagerController = loader.getController();
             researchManagerController.setUser(user);
             researchManagerController.loadHeader();
+            researchManagerController.loadResearches(0);
 
             Scene scene = new Scene(researchManager);
             String css = getClass().getResource("/mx/uv/fei/gui/stylesfiles/Styles.css").toExternalForm();

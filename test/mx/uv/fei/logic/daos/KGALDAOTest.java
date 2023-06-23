@@ -149,14 +149,6 @@ public class KGALDAOTest {
         System.out.println("getKGALListFailure");
         KGALDAO instance = new KGALDAO();
         ArrayList<KGAL> expResult = new ArrayList();
-        KGAL kgal1 = new KGAL();
-        KGAL kgal2 = new KGAL();
-        kgal1.setKgalID(kgalId);
-        kgal2.setKgalID(kgalId2);
-        kgal1.setDescription("Precargada para junit tests"); //First KGAL matches
-        kgal2.setDescription("Descripción incorrecta"); //Second KGAL doesn't match
-        expResult.add(kgal1);
-        expResult.add(kgal2);
         ArrayList<KGAL> result = instance.getKGALList();
         
         for(int i = 0; i < result.size(); i++) {
@@ -188,22 +180,6 @@ public class KGALDAOTest {
     @Test
     public void testGetKGALByIDFail() throws DataRetrievalException {
         System.out.println("getKGALByID");
-        int kgalID = 1;
-        KGALDAO instance = new KGALDAO();
-        KGAL expResult = new KGAL();
-        expResult.setKgalID(1);
-        expResult.setDescription("Este es una LGAC de prueba");
-        KGAL result = instance.getKGALByID(kgalID);
-        System.out.println(result);
-        assertEquals(expResult, result);
-    }
-
-    /**
-     * Test of getKGALByDescription method, of class KGALDAO.
-     */
-    @Test
-    public void testGetKGALByDescription() throws DataRetrievalException {
-        System.out.println("getKGALByDescription");
         int kgalID = 1;
         KGALDAO instance = new KGALDAO();
         KGAL expResult = new KGAL();

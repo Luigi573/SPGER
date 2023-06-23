@@ -151,7 +151,7 @@ public class ModifyCourseInformationController{
                     new AlertPopUpGenerator().showCustomMessage(AlertType.INFORMATION, "Éxito", "Curso modificado exitosamente");
                     returnToGuiCourses(event);
                 }else{
-                    new AlertPopUpGenerator().showCustomMessage(AlertType.ERROR, "Error", "Algunos campos contienen datos inválidos");
+                    new AlertPopUpGenerator().showCustomMessage(AlertType.ERROR, "Error", "El NRC es inválido");
                 }
             }else{
                 new AlertPopUpGenerator().showCustomMessage(AlertType.ERROR, "Error", "Faltan campos por llenar");

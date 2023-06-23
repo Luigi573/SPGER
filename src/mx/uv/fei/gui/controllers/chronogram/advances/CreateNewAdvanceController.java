@@ -10,6 +10,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
@@ -27,12 +28,13 @@ import mx.uv.fei.logic.domain.Advance;
 import mx.uv.fei.logic.domain.Course;
 import mx.uv.fei.logic.domain.User;
 import mx.uv.fei.logic.exceptions.DataInsertionException;
+import org.apache.commons.io.FileUtils;
 
 public class CreateNewAdvanceController {
     private Activity activity;
     private Course course;
     private User user;
-    private String filePath;
+    private File file;
     
     @FXML
     private Button createAdvanceButton;  
@@ -49,27 +51,31 @@ public class CreateNewAdvanceController {
 
     @FXML
     private void createAdvance(ActionEvent event) {
-        int savedFileGeneratedId = saveFile();
+        int savedFileGeneratedId = 0;
+        if (file != null) {
+            savedFileGeneratedId = saveFile();
+        }
         
-        Advance advance = new Advance();
-        advance.setActivityID(this.activity.getId());
-        advance.setFileID(savedFileGeneratedId);
-        advance.setTitle(advanceTitleTextField.getText());
-        advance.setComment(advanceCommentsTextArea.getText());
-        advance.setState("Por revisar");
-        
-        AdvanceDAO advanceDAO = new AdvanceDAO();
-        int result = 0;
-        
-        try {
-            result = advanceDAO.addAdvance(advance);
-        } catch (DataInsertionException exception) {
-            new AlertPopUpGenerator().showConnectionErrorMessage();
-        } finally {
-            if (result > 0) {
-                new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.INFORMATION, "Operación exitosa", "Se ha guardado el nuevo avance correctamente.");
-                
-                returnToAdvanceList(event);
+        if (savedFileGeneratedId != -1) {
+            Advance advance = new Advance();
+            advance.setActivityID(this.activity.getId());
+            advance.setFileID(savedFileGeneratedId);
+            advance.setTitle(advanceTitleTextField.getText());
+            advance.setComment(advanceCommentsTextArea.getText());
+            advance.setState("Por revisar");
+
+            AdvanceDAO advanceDAO = new AdvanceDAO();
+            int result = 0;
+
+            try {
+                result = advanceDAO.addAdvance(advance);
+            } catch (DataInsertionException exception) {
+                new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.ERROR, "Error al crear el avance", exception.getMessage());
+            } finally {
+                if (result > 0) {
+                    new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.INFORMATION, "Operación exitosa", "Se ha guardado el nuevo avance correctamente.");
+                    returnToAdvanceList(event);
+                }
             }
         }
     }
@@ -103,7 +109,7 @@ public class CreateNewAdvanceController {
     private void uploadFileToAdvance(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Seleccione el archivo a entregar");
-        File file = fileChooser.showOpenDialog((Stage)((Node)event.getSource()).getScene().getWindow());
+        file = fileChooser.showOpenDialog((Stage)((Node)event.getSource()).getScene().getWindow());
         
         if (file != null) {
             try {
@@ -114,7 +120,6 @@ public class CreateNewAdvanceController {
                     controller.hideDownloadButton();
                     
                     fileVBox.getChildren().setAll(pane);
-                    filePath = file.getPath();
                 } catch (IOException exception) {
                     new AlertPopUpGenerator().showMissingFilesMessage();
                 }
@@ -153,16 +158,43 @@ public class CreateNewAdvanceController {
     private int saveFile() {
         int result = 0;
         
-        if (this.filePath != null) {
-            FileDAO fileDAO = new FileDAO();
-            try {
-                result = fileDAO.addFile(this.filePath);
-            } catch (DataInsertionException die) {
-                new AlertPopUpGenerator().showConnectionErrorMessage();
+        if (file.getPath() != null) {
+            String newDirectoryPath = System.getProperty("user.dir") + "\\Evidencias\\" + String.valueOf(user.getUserId()) + user.getFirstSurname() + user.getSecondSurname() + user.getName().replaceAll("\\s+", "") + "\\Avances";
+            File userDirectory = new File(newDirectoryPath);
+            if (!userDirectory.exists()) {
+                if (!userDirectory.mkdirs()) {
+                    new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.ERROR, "Error al guardar archivo", "No se pudo guardar la copia del archivo en el servidor.");
+                }
+            }
+
+            String newFilePath = newDirectoryPath + "\\" + file.getName();
+            File fileCopy = new File(newFilePath);
+            boolean willSaveFile = true;
+            if (fileCopy.exists()) {
+                ButtonType buttonPressed = new AlertPopUpGenerator().showConfirmationMessage(Alert.AlertType.CONFIRMATION, "El Archivo ya existe", "Previamente subió un archivo con el mismo nombre, ¿Desea sobreescribir dicho archivo?").get();
+                if (buttonPressed != ButtonType.OK) {
+                    willSaveFile = false;
+                }
+            }
+            
+            if (willSaveFile) {
+                try {
+                    FileUtils.copyFile(file, fileCopy);
+                } catch (IOException exception) {
+                    new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.ERROR, "Error al guardar archivo", "No se pudo guardar la copia del archivo en el servidor.");
+                }
+
+                FileDAO fileDAO = new FileDAO();
+                try {
+                    result = fileDAO.addFile(newFilePath);
+                } catch (DataInsertionException die) {
+                    new AlertPopUpGenerator().showConnectionErrorMessage();
+                }
+            } else {
+                result = -1;
             }
         }
-        
         return result;
     }
-    
 }
+

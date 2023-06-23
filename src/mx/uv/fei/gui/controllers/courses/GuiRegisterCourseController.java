@@ -122,7 +122,7 @@ public class GuiRegisterCourseController {
                     Stage stage = (Stage) registerButton.getScene().getWindow();
                     stage.close();
                 }else{
-                    new AlertPopUpGenerator().showCustomMessage(AlertType.ERROR, "Error", "Algunos campos contienen datos inválidos");
+                    new AlertPopUpGenerator().showCustomMessage(AlertType.ERROR, "Error", "El NRC es inválido");
                 }
             }else{
                 new AlertPopUpGenerator().showCustomMessage(AlertType.ERROR, "Error", "Faltan campos por llenar");

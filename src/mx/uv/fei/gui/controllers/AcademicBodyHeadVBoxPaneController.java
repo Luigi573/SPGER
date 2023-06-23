@@ -25,6 +25,7 @@ public class AcademicBodyHeadVBoxPaneController{
             ResearchManagerController controller = (ResearchManagerController)loader.getController();
             controller.setUser(user);
             controller.loadHeader();
+            controller.loadResearches(0);
             
             Scene scene = new Scene(parent);
             String css = this.getClass().getResource("/mx/uv/fei/gui/stylesfiles/Styles.css").toExternalForm();

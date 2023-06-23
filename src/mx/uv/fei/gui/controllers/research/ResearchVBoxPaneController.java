@@ -10,12 +10,14 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import mx.uv.fei.gui.AlertPopUpGenerator;
 import mx.uv.fei.logic.domain.ResearchProject;
+import mx.uv.fei.logic.domain.User;
 import mx.uv.fei.logic.domain.statuses.ResearchProjectStatus;
 
 public class ResearchVBoxPaneController{
     private ResearchProject research;
     private ResearchManagerController researchManagerController;
     private ScrollPane container;
+    private User user;
     
     @FXML
     private AnchorPane researchPane;
@@ -33,6 +35,7 @@ public class ResearchVBoxPaneController{
             ResearchInfoPaneController controller = (ResearchInfoPaneController)loader.getController();
             controller.setResearch(research);
             controller.setContainer(container);
+            controller.setUser(user);
             controller.setResearchManagerController(researchManagerController);
             if(research.getValidationStatus().equals(ResearchProjectStatus.PROPOSED.getValue()) ){
                 controller.showValidateButton(true);
@@ -56,5 +59,11 @@ public class ResearchVBoxPaneController{
     }
     public void setContainer(ScrollPane container){
         this.container = container;
+    }
+    public User getUser() {
+        return user;
+    }
+    public void setUser(User user) {
+        this.user = user;
     }
 }

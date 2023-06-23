@@ -26,7 +26,7 @@ public class StudentDAO implements IStudentDAO{
         int generatedId = 0;
         try{
             String queryToInsertStudentDataToUserColumns = "INSERT INTO Usuarios (nombre, apellidoPaterno, apellidoMaterno, correo, " +
-                "correoAlterno, numeroTelefono, estado) VALUES (?, ?, ?, ?, ?, ?, ?)";
+                "correoAlterno, numeroTelefono, estado, contraseña) VALUES (?, ?, ?, ?, ?, ?, ?, SHA2(?, 256))";
             PreparedStatement preparedStatementToInsertStudentDataToUsersColumns = 
                 dataBaseManager.getConnection().prepareStatement(queryToInsertStudentDataToUserColumns, PreparedStatement.RETURN_GENERATED_KEYS);
             preparedStatementToInsertStudentDataToUsersColumns.setString(1, student.getName());
@@ -36,6 +36,7 @@ public class StudentDAO implements IStudentDAO{
             preparedStatementToInsertStudentDataToUsersColumns.setString(5, student.getAlternateEmail());
             preparedStatementToInsertStudentDataToUsersColumns.setString(6, student.getPhoneNumber());
             preparedStatementToInsertStudentDataToUsersColumns.setString(7, student.getStatus());
+            preparedStatementToInsertStudentDataToUsersColumns.setString(8, student.getPassword());
             preparedStatementToInsertStudentDataToUsersColumns.executeUpdate();
             ResultSet resultSet = preparedStatementToInsertStudentDataToUsersColumns.getGeneratedKeys();
             if(resultSet.next()){
@@ -96,6 +97,8 @@ public class StudentDAO implements IStudentDAO{
             throw new DuplicatedPrimaryKeyException("Estudiante ya registrado en el sistema");
         }catch(SQLException e){
             throw new DataInsertionException("Error al modificar estudiante. Inténtelo de nuevo más tarde");
+        }finally{
+            dataBaseManager.closeConnection();
         }
 
         return result;
@@ -124,8 +127,10 @@ public class StudentDAO implements IStudentDAO{
             }
             resultSet.close();
             dataBaseManager.getConnection().close();
-        } catch (SQLException e){
+        }catch(SQLException e){
             throw new DataRetrievalException("Error al recuperar la información. Verifique su conexión e intentelo de nuevo");
+        }finally{
+            dataBaseManager.closeConnection();
         }
 
         return students;
@@ -152,6 +157,8 @@ public class StudentDAO implements IStudentDAO{
             }
         }catch(SQLException exception){
             throw new DataRetrievalException("Error al recuperar estudiantes. Verifique su conexión e inténtelo de nuevo");
+        }finally{
+            dataBaseManager.closeConnection();
         }
         
         return studentList;
@@ -187,6 +194,8 @@ public class StudentDAO implements IStudentDAO{
             dataBaseManager.getConnection().close();
         }catch(SQLException exception){
             throw new DataRetrievalException("Error al recuperar la información. Verifique su conexión e intentelo de nuevo");
+        }finally{
+            dataBaseManager.closeConnection();
         }
 
         return students;
@@ -218,8 +227,10 @@ public class StudentDAO implements IStudentDAO{
             
             resultSet.close();
             dataBaseManager.getConnection().close();
-        } catch (SQLException e) {
+        }catch(SQLException e) {
             throw new DataRetrievalException("Error al recuperar la información. Verifique su conexión e intentelo de nuevo");
+        }finally{
+            dataBaseManager.closeConnection();
         }
 
         return student;
@@ -372,6 +383,8 @@ public class StudentDAO implements IStudentDAO{
             preparedStatementToInsertUserData.executeUpdate();
         }catch(SQLException e){
             throw new DataInsertionException("Error al eliminar estudiante de la tabla usuarios");
+        }finally{
+            dataBaseManager.closeConnection();
         }
     }
 }

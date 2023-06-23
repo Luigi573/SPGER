@@ -81,13 +81,47 @@ public class AdvanceInfoController{
      @FXML
     private void returnToAdvanceList(ActionEvent event) {
         try{
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/ActivityInfo.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/advances/ModifyAdvance.fxml"));
+            Parent parent = loader.load();
+            ModifyAdvanceController controller = (ModifyAdvanceController)loader.getController();
+            controller.setActivity(activity);
+            controller.setAdvance(advance);
+            controller.setCourse(course);
+            controller.setUser(user);
+            controller.loadHeader();
+            
+            Scene scene = new Scene(parent);
+            String css = this.getClass().getResource("/mx/uv/fei/gui/stylesfiles/Styles.css").toExternalForm();
+            scene.getStylesheets().add(css);
+            
+            Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+            stage.setTitle("SPGER");
+            stage.setScene(scene);
+            stage.show();
+        }catch(IOException exception){
+            exception.printStackTrace();
+            new AlertPopUpGenerator().showMissingFilesMessage();
+        }
+    }
+    
+    @FXML
+    private void goBack(ActionEvent event) {
+        try{
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/activities/ActivityInfo.fxml"));
             Parent parent = loader.load();
             ActivityInfoController controller = (ActivityInfoController)loader.getController();
             controller.setActivity(activity);
+            controller.setCourse(course);
+            controller.setUser(user);
+            controller.loadAdvances();
+            controller.loadHeader();
+            
+            Scene scene = new Scene(parent);
+            String css = this.getClass().getResource("/mx/uv/fei/gui/stylesfiles/Styles.css").toExternalForm();
+            scene.getStylesheets().add(css);
             
             Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-            Scene scene = new Scene(parent);
+            
             stage.setTitle("SPGER");
             stage.setScene(scene);
             stage.show();
@@ -157,7 +191,7 @@ public class AdvanceInfoController{
             try {
                 file = fileDAO.getFileByID(advance.getFileID());
                 
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/ActivityFileItem.fxml"));               
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/activities/ActivityFileItem.fxml"));               
                 try {
                     Pane advancePane = loader.load();
                     ActivityFileItemController controller = (ActivityFileItemController)loader.getController();
@@ -176,7 +210,8 @@ public class AdvanceInfoController{
     
     public void setCourse(Course course){
         this.course = course;
-    }    
+    }  
+    
     public void setUser(User user){
         this.user = user;
         

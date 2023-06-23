@@ -15,8 +15,12 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.uv.fei.gui.controllers.chronogram.activities.ActivityInfoController">
    <children>
+      <Button fx:id="returnButton" layoutX="21.0" layoutY="94.0" mnemonicParsing="false" onAction="#goBack" text="Volver">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Button>
       <Pane fx:id="headerPane" prefHeight="80.0" prefWidth="1024.0" />
-      <Pane fx:id="toolbarPane" layoutY="88.0" prefHeight="330.0" prefWidth="55.0" />
       <TabPane layoutX="119.0" layoutY="94.0" prefHeight="513.0" prefWidth="822.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
           <Tab closable="false" text="Información">

@@ -25,15 +25,21 @@ public class KGALListElementController {
     @FXML
     private Label kgalIdLabel;
     
+    @FXML
     public void switchToUpdateKGALScene(ActionEvent event) {
         try {  
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/manageKGAL/UpdateKGAL.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/kgal/UpdateKGAL.fxml"));
             Parent root = loader.load();
             UpdateKGALController controller = (UpdateKGALController)loader.getController();
             controller.setKGAL(kgal);
+            controller.setUser(user);
+            controller.loadHeader();
+            
+            Scene scene = new Scene(root);
+            String css = this.getClass().getResource("/mx/uv/fei/gui/stylesfiles/Styles.css").toExternalForm();
+            scene.getStylesheets().add(css);
             
             Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-            Scene scene = new Scene(root);
             stage.setScene(scene); 
             stage.show();     
         } catch (IOException e) {

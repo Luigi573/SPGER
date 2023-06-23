@@ -130,8 +130,11 @@ public class AddResearchController{
                             }catch(DataInsertionException exception){
                                 new AlertPopUpGenerator().showConnectionErrorMessage();
                             }
+<<<<<<< HEAD
                         }else{
                             new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "No se puede crear el anteproyecto", "Los directores deben ser diferentes");
+=======
+>>>>>>> 50f1c11 (Rebase)
                         }
                     }else{
                         new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "No se puede crear el anteproyecto", "Favor de llenar todos los campos");

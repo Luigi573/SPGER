@@ -125,7 +125,7 @@ public class StudentsCoursesDAO implements IStudentsCoursesDAO{
                 courseList.add(course);
             }
         }catch(SQLException exception){
-              ;
+               
             throw new DataRetrievalException("Error de conexión con la base de datos");
         }
         
