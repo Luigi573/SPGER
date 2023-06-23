@@ -42,8 +42,6 @@ public class CreateActivityController{
     
     @FXML
     private void createActivity(ActionEvent event) {
-        ActivityDAO activityDAO = new ActivityDAO();
-        
         if(startDatePicker.getValue() != null && dueDatePicker.getValue() != null){
             Date startDate = Date.valueOf(startDatePicker.getValue());
             Date dueDate = Date.valueOf(dueDatePicker.getValue());
@@ -54,6 +52,8 @@ public class CreateActivityController{
             activity.setStartDate(startDate);
             activity.setDueDate(dueDate);
             activity.setResearchId(researchId);
+            
+            ActivityDAO activityDAO = new ActivityDAO();
 
             if(!activityDAO.isBlank(activity)){
                 if(activityDAO.isValidTitle(activity)){

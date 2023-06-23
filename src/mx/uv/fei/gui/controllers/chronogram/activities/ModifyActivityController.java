@@ -46,24 +46,38 @@ public class ModifyActivityController{
         
         Optional<ButtonType> choice = confirmationMessage.showAndWait();
         if(choice.isPresent() && choice.get() == ButtonType.OK){
-            ActivityDAO activityDAO = new ActivityDAO();
-            
+            if(startDatePicker.getValue() != null && dueDatePicker.getValue() != null){
             activity.setDescription(activityDescriptionTextArea.getText().trim());
             activity.setTitle(activityTitleTextField.getText().trim());
             activity.setStartDate(Date.valueOf(startDatePicker.getValue()));
             activity.setDueDate(Date.valueOf(dueDatePicker.getValue()));
-        
-            if(activityDAO.assertActivity(activity)){
-                try{
-                    if(activityDAO.modifyActivity(activity) > 0){
-                        returnToChronogram(event);
+            
+            ActivityDAO activityDAO = new ActivityDAO();
+
+            if(!activityDAO.isBlank(activity)){
+                if(activityDAO.isValidTitle(activity)){
+                    if(activityDAO.isValidDate(activity)){
+                        try{
+                            if(activityDAO.addActivity(activity) > 0){
+                                new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.INFORMATION, "Mensaje de éxito", "Actividad creada exitosamente");
+
+                                returnToChronogram(event);
+                            }
+                        }catch(DataInsertionException exception){
+                            new AlertPopUpGenerator().showConnectionErrorMessage();
+                        }
+                    }else{
+                        new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.WARNING, "No se puede crear la actividad", "La fecha de inicio no puede ser mayor a la fecha fin y la fecha de inicio no puede ser anterior a la fecha actual");
                     }
-                }catch(DataInsertionException exception){
-                    new AlertPopUpGenerator().showConnectionErrorMessage();
+                }else{
+                    new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.WARNING, "No se puede crear la actividad", "El título es demasiado largo");
                 }
             }else{
-                new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.WARNING, "No se puede crear la actividad", "Favor de llenar todos los campos correctamente");
+                new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.WARNING, "No se puede crear la actividad", "Favor de llenar todos los campos");
             }
+        }else{
+            new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.WARNING, "No se puede crear la actividad", "Favor de seleccionar una fecha válida");
+        }
         }
     }
     @FXML
