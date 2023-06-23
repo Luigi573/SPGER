@@ -9,4 +9,5 @@ public interface IUserDAO{
     public boolean theEmailIsAvailableToUseToModify(String email, int userId) throws DataRetrievalException;
     public boolean theAlternateEmailIsAvailableToModify(String alternateEmail, int userId) throws DataRetrievalException;
     public int updatePassword(String userPassword, int userId) throws DataInsertionException;
+    public boolean hasUsersInTheDatabase() throws DataRetrievalException;
 }

@@ -65,7 +65,6 @@ public class MainMenuController{
         loadSpecialPanes();
     }
     public void loadHeader(){
-        headerPane.getChildren().clear();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/HeaderPane.fxml"));
         
         try{
@@ -75,7 +74,7 @@ public class MainMenuController{
             
             headerPane.getChildren().setAll(header);
         }catch(IOException exception){
-              ;
+               
             new AlertPopUpGenerator().showMissingFilesMessage();
         }
     }
@@ -151,15 +150,20 @@ public class MainMenuController{
     }    
     private void loadSpecialPanes(){
         if(DegreeBoss.class.isAssignableFrom(user.getClass())){
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/AdminMenuPane.fxml"));
-
+            FXMLLoader adminPaneLoader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/AdminMenuPane.fxml"));
+            FXMLLoader kgalPaneLoader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/ManageKGALpane.fxml"));
+            
             try{
-                Pane adminPane = loader.load();
-                AdminMenuPaneController controller = (AdminMenuPaneController)loader.getController();
+                Pane adminPane = adminPaneLoader.load();
+                AdminMenuPaneController controller = (AdminMenuPaneController)adminPaneLoader.getController();
                 controller.setUser(user);
                 
+                Pane kgalPane = kgalPaneLoader.load();
+                ManageKGALpaneController KgalController = (ManageKGALpaneController)kgalPaneLoader.getController();
+                KgalController.setUser(user);
 
                 courseVBox.getChildren().add(adminPane);
+                courseVBox.getChildren().add(kgalPane);
             }catch(IOException exception){
                 new AlertPopUpGenerator().showMissingFilesMessage();
             }

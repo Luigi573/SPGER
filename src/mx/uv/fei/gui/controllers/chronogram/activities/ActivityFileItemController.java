@@ -2,18 +2,18 @@ package mx.uv.fei.gui.controllers.chronogram.activities;
 
 import java.io.File;
 import java.io.IOException;
-
-import org.apache.commons.io.FileUtils;
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.Pane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import mx.uv.fei.gui.AlertPopUpGenerator;
+
+import org.apache.commons.io.FileUtils;
 
 
 public class ActivityFileItemController {

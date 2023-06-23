@@ -20,6 +20,7 @@ import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeBodyPart;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.mail.internet.MimeMultipart;
+import mx.uv.fei.gui.AlertPopUpGenerator;
 
 public class PasswordAndEmailMaker{
     public String securePasswordMaker(){
@@ -62,7 +63,7 @@ public class PasswordAndEmailMaker{
             message.setFrom(new InternetAddress("spger69@gmail.com"));
             message.setRecipients(
               Message.RecipientType.TO, InternetAddress.parse(destinationEmail));
-            message.setSubject("Contraseña para ingresar al sistema");
+            message.setSubject("Contraseña para ingresar al SPGER");
 
             String msg = "Esta es tu contraseña para ingresar al SPGER: " + password;
 
@@ -80,10 +81,10 @@ public class PasswordAndEmailMaker{
             attachmentBodyPart.attachFile(new File("path/to/file"));
             multipart.addBodyPart(attachmentBodyPart);
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (MessagingException e) {
-            e.printStackTrace();
+        }catch(IOException e){
+          new AlertPopUpGenerator().showConnectionErrorMessage();
+        }catch(MessagingException e){
+          new AlertPopUpGenerator().showConnectionErrorMessage();
         }
     }
 }

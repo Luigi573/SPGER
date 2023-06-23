@@ -18,6 +18,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import mx.uv.fei.gui.AlertPopUpGenerator;
 import mx.uv.fei.gui.controllers.HeaderPaneController;
+import mx.uv.fei.gui.controllers.MainMenuController;
 import mx.uv.fei.gui.controllers.chronogram.activities.ActivityPaneController;
 import mx.uv.fei.gui.controllers.chronogram.activities.CreateActivityController;
 import mx.uv.fei.logic.daos.ActivityDAO;
@@ -109,6 +110,27 @@ public class ChronogramController{
                 new AlertPopUpGenerator().showConnectionErrorMessage();
             }
        }
+    }
+    
+    @FXML
+    private void goBack(ActionEvent event){
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/MainMenu.fxml"));
+            Parent parent = loader.load();
+            MainMenuController controller = (MainMenuController)loader.getController();
+            controller.setUser(user);
+            controller.loadHeader();
+
+            Scene scene = new Scene(parent);
+            String css = this.getClass().getResource("/mx/uv/fei/gui/stylesfiles/Styles.css").toExternalForm();
+            scene.getStylesheets().add(css);
+
+            Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+            stage.setScene(scene);
+            stage.show();
+        }catch(IOException ex){
+            new AlertPopUpGenerator().showMissingFilesMessage();
+        }
     }
     
     public void setCourse(Course course){

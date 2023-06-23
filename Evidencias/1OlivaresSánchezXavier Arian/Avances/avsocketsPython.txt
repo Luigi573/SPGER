@@ -1,0 +1,21 @@
+import socket
+import sys
+
+ip_addr = input('Ingresa la IP para escanear los puertos: ')
+portList = [21,22,23,25,53,67,68,80,110,135,139,443,445,1110,2869,19780,50400]
+
+for port in portList:
+	try:
+		sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+		sock.settimeout(5)
+		status = sock.connect_ex((ip_addr, port))
+		if status == 0:
+			print(f"Puerto: {port} - Abierto")
+		else:
+			print(f"Puerto: {port} - Cerrado")
+		sock.close()
+	except socket.error as err:
+		print(f"Error de conexión: {err}")
+		sys.exit()
+
+Si estás leyendo esto el archivo fue sobreescrito.

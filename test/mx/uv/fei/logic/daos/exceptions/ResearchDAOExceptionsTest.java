@@ -1,13 +1,11 @@
 package mx.uv.fei.logic.daos.exceptions;
 
 import java.util.ArrayList;
-
-import org.junit.Test;
-
 import mx.uv.fei.logic.daos.ResearchDAO;
 import mx.uv.fei.logic.domain.ResearchProject;
 import mx.uv.fei.logic.exceptions.DataInsertionException;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
+import org.junit.Test;
 
 public class ResearchDAOExceptionsTest {
     

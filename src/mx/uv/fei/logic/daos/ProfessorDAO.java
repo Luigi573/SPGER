@@ -27,6 +27,7 @@ public class ProfessorDAO implements IProfessorDAO{
         try{
             String queryToInsertProfessorDataToUsersColumns = "INSERT INTO Usuarios (nombre, apellidoPaterno, apellidoMaterno, correo, correoAlterno, " +
                             "numeroTelefono, estado, contraseña) VALUES (?, ?, ?, ?, ?, ?, ?, SHA2(?, 256))";
+            
             PreparedStatement preparedStatementToInsertProfessorDataToUsersColumns = 
                 dataBaseManager.getConnection().prepareStatement(queryToInsertProfessorDataToUsersColumns, PreparedStatement.RETURN_GENERATED_KEYS);
             preparedStatementToInsertProfessorDataToUsersColumns.setString(1, professor.getName());
@@ -131,7 +132,6 @@ public class ProfessorDAO implements IProfessorDAO{
             resultSet.close();
             dataBaseManager.closeConnection();
         }catch(SQLException e) {
-              ;
             throw new DataRetrievalException("Fallo al recuperar la informacion. Inténtelo de nuevo más tarde");
         }finally{
             dataBaseManager.closeConnection();
@@ -201,7 +201,6 @@ public class ProfessorDAO implements IProfessorDAO{
             resultSet.close();
             dataBaseManager.closeConnection();
         }catch(SQLException e){
-              ;
             throw new DataRetrievalException("Fallo al recuperar la informacion. Inténtelo de nuevo más tarde");
         }finally{
             dataBaseManager.closeConnection();

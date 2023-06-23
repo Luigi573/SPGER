@@ -14,6 +14,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import mx.uv.fei.gui.AlertPopUpGenerator;
+import mx.uv.fei.gui.controllers.HeaderPaneController;
+import mx.uv.fei.gui.controllers.MainMenuController;
 import mx.uv.fei.logic.daos.KGALDAO;
 import mx.uv.fei.logic.domain.KGAL;
 import mx.uv.fei.logic.domain.User;
@@ -22,83 +24,122 @@ import mx.uv.fei.logic.exceptions.DataRetrievalException;
 public class KGALListController {
     private User user;
     
+    @FXML
+    private Pane headerPane;
     @FXML 
     private TextField tfSearch;
     @FXML
     private VBox vBoxKGALList;
     
     @FXML
-    public void initialize() {
-        KGALDAO kgalDAO = new KGALDAO();
-        vBoxKGALList.setSpacing(0);
-        ArrayList<KGAL> kgalList;
-        
-        try {
-             kgalList = kgalDAO.getKGALList();
-            for (KGAL kgal: kgalList) {
-                try {
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/manageKGAL/KGALListElement.fxml"));
-                    Pane pane = loader.load();
-                    KGALListElementController controller = (KGALListElementController)loader.getController();
-                    controller.setLabelText(kgal);
-                    controller.setKGAL(kgal);
-                    vBoxKGALList.getChildren().add(pane);
-                } catch (IOException exception) {
-                    new AlertPopUpGenerator().showMissingFilesMessage();
-                }
-            }
-            
-        } catch (DataRetrievalException exception) {
-            new AlertPopUpGenerator().showConnectionErrorMessage();
-        }
-        
-    }   
-    
-    public void searchKGALByDescription (ActionEvent event) {
+    private void searchKGALByDescription (ActionEvent event) {
         vBoxKGALList.getChildren().clear();
-        KGALDAO kgalDAO = new KGALDAO();
         vBoxKGALList.setSpacing(0);
-        ArrayList<KGAL> kgalList;
-        String description;
-        description = tfSearch.getText();
-
         
         try {
-             kgalList = kgalDAO.getKGALListByDescription(description);
+            KGALDAO kgalDAO = new KGALDAO();
+            ArrayList<KGAL> kgalList = kgalDAO.getKGALListByDescription(tfSearch.getText());
             for (KGAL kgal: kgalList) {
-                try {
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/manageKGAL/KGALListElement.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/kgal/KGALListElement.fxml"));
+                
+                try{
                     Pane pane = loader.load();
                     KGALListElementController controller = (KGALListElementController)loader.getController();
-                    controller.setLabelText(kgal);
+                    controller.setUser(user);
                     
                     vBoxKGALList.getChildren().add(pane);
-                } catch (IOException e) {
+                }catch(IOException exception){
                     new AlertPopUpGenerator().showMissingFilesMessage();
                 }
             }
-        } catch (DataRetrievalException exception) {
+        }catch(DataRetrievalException exception){
             new AlertPopUpGenerator().showConnectionErrorMessage();
         }
     }
-           
-    public void switchToCreateNewKGALScene(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/mx/uv/fei/gui/fxml/manageKGAL/createNewKGAL.fxml"));
-        Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root);
-        stage.setScene(scene); 
-        stage.show();       
+    
+    @FXML
+    private void switchToCreateNewKGALScene(ActionEvent event){
+        try{
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/kgal/createNewKGAL.fxml"));
+            Parent root = loader.load();
+            CreateNewKGALController controller = (CreateNewKGALController)loader.getController();
+            controller.setUser(user);
+            controller.loadHeader();
+        
+            Scene scene = new Scene(root);
+            String css = this.getClass().getResource("/mx/uv/fei/gui/stylesfiles/Styles.css").toExternalForm();
+            scene.getStylesheets().add(css);
+
+            Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+            stage.setScene(scene); 
+            stage.show();
+        }catch(IOException exception){
+            new AlertPopUpGenerator().showMissingFilesMessage();
+        }    
     }
     
-    public void exitKGALListScene(ActionEvent event) {
+    @FXML
+    private void exitKGALListScene(ActionEvent event) {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/mx/uv/fei/gui/fxml/manageKGAL/KGALList.fxml")); //should point to main menu
-            Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/kgal/MainMenu.fxml"));
+            Parent root = loader.load(); 
+            MainMenuController controller = (MainMenuController)loader.getController();
+            controller.setUser(user);
+            controller.loadHeader();
+            
             Scene scene = new Scene(root);
+            String css = this.getClass().getResource("/mx/uv/fei/gui/stylesfiles/Styles.css").toExternalForm();
+            scene.getStylesheets().add(css);
+            
+            Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
             stage.setScene(scene);
             stage.show();
         } catch (IOException e) {
             new AlertPopUpGenerator().showMissingFilesMessage();
         }
+    }
+    
+    public void loadHeader(){
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/HeaderPane.fxml"));
+        
+        try{
+            Pane header = loader.load();
+            HeaderPaneController controller = (HeaderPaneController)loader.getController();
+            controller.setUser(user);
+            
+            headerPane.getChildren().setAll(header);
+        }catch(IOException exception){
+            new AlertPopUpGenerator().showMissingFilesMessage();
+        }
+    }
+    
+    public void loadKgalList(){
+        vBoxKGALList.setSpacing(0);
+        
+        try {
+            KGALDAO kgalDAO = new KGALDAO();
+            ArrayList<KGAL> kgalList = kgalDAO.getKGALList();
+            
+            for (KGAL kgal: kgalList) {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/kgal/KGALListElement.fxml"));
+                
+                try {
+                    Pane pane = loader.load();
+                    KGALListElementController controller = (KGALListElementController)loader.getController();
+                    controller.setKGAL(kgal);
+                    controller.setUser(user);
+                    
+                    vBoxKGALList.getChildren().add(pane);
+                } catch (IOException exception) {
+                    new AlertPopUpGenerator().showMissingFilesMessage();
+                }
+            }
+        } catch (DataRetrievalException exception) {
+            new AlertPopUpGenerator().showConnectionErrorMessage();
+        }
+    }
+    
+    public void setUser(User user){
+        this.user = user;
     }
 }

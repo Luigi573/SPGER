@@ -16,7 +16,6 @@
             <VBox fx:id="activityListVBox" prefHeight="423.0" prefWidth="742.0" />
          </content>
       </ScrollPane>
-      <Pane layoutY="57.0" prefHeight="350.0" prefWidth="60.0" />
       <Pane layoutX="139.0" layoutY="81.0" prefHeight="87.0" prefWidth="571.0">
          <children>
             <Label fx:id="chronogramTitleLabel" alignment="TOP_LEFT" layoutX="20.0" layoutY="6.0" prefHeight="38.0" prefWidth="550.0" text="Mi cronograma" textAlignment="CENTER">
@@ -36,6 +35,11 @@
       <Button fx:id="createActivityButton" layoutX="833.0" layoutY="131.0" mnemonicParsing="false" onAction="#createActivity" text="Create Activity">
          <font>
             <Font size="14.0" />
+         </font>
+      </Button>
+      <Button fx:id="returnButton" layoutX="29.0" layoutY="91.0" mnemonicParsing="false" onAction="#goBack" text="Volver">
+         <font>
+            <Font size="16.0" />
          </font>
       </Button>
     </children>

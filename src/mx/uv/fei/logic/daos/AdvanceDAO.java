@@ -98,6 +98,7 @@ public class AdvanceDAO implements IAdvanceDAO{
                 advance.setComment(rs.getString("comentario"));
                 advance.setFeedback(rs.getString("retroalimentación"));
                 advance.setState(rs.getString("estado"));
+                advance.setFileID(rs.getInt("IdArchivo"));
                 
                advanceList.add(advance);
             }
