@@ -626,7 +626,7 @@ public class ResearchDAO implements IResearchDAO{
     public boolean areDirectorsDifferent(ResearchProject research){
         boolean result = true;
         
-        if(research.getDirectors().size() > 2){
+        if(research.getDirectors().size() >= 2){
             for(int i = 1; i < research.getDirectors().size(); i++){
                 result = research.getDirectors().get(i).equals(research.getDirectors().get(i - 1));
             }

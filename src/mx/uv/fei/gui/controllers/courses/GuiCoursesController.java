@@ -190,6 +190,7 @@ public class GuiCoursesController{
             }
 
             header.getStyleClass().add("/mx/uv/fei/gui/stylesfiles/Styles.css");
+            System.out.println(backgroundPane);
             backgroundPane.getChildren().add(header);
             
         }catch(IOException exception){

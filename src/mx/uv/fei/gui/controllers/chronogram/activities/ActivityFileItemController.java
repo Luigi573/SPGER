@@ -34,7 +34,7 @@ public class ActivityFileItemController {
             File downloadedFile = new File(downloadedFilePath);
 
             try {
-                FileUtils.copyFile(file,downloadedFile);
+                FileUtils.copyFile(file, downloadedFile);
                 new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.INFORMATION, "Operación exitosa", "Se ha descargado el archivo correctamente.");
             } catch (IOException exception) {
                 new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.ERROR, "Ocurrió un error", "No se pudo descargar el archivo. Por favor intente de nuevo más tarde.");
@@ -43,9 +43,11 @@ public class ActivityFileItemController {
     }
     
     public void setFile(String filePath) {
-        File newFile = new File(filePath);
-        this.file = newFile;
-        FileNameLabel.setText(file.getName());
+        if(filePath != null){
+            File newFile = new File(filePath);
+            this.file = newFile;
+            FileNameLabel.setText(file.getName());
+        }
     }
     
     public void setFile(File file) {

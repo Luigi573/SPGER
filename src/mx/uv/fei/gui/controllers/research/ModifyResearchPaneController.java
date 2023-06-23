@@ -38,11 +38,11 @@ public class ModifyResearchPaneController{
     private User user;
     
     @FXML
-    private ComboBox<Director> director1ComboBox;
+    private ComboBox<Director> directorComboBox;
     @FXML
-    private ComboBox<Director> director2ComboBox;
+    private ComboBox<Director> codirector1ComboBox;
     @FXML
-    private ComboBox<Director> director3ComboBox;
+    private ComboBox<Director> codirector2ComboBox;
     @FXML
     private DialogPane dialogPane;
     @FXML
@@ -76,9 +76,9 @@ public class ModifyResearchPaneController{
             ArrayList<Student> studentList = studentDAO.getStudents();
             
             directorComboBoxes = new ArrayList<>();
-            directorComboBoxes.add(director1ComboBox);
-            directorComboBoxes.add(director2ComboBox);
-            directorComboBoxes.add(director3ComboBox);
+            directorComboBoxes.add(directorComboBox);
+            directorComboBoxes.add(codirector1ComboBox);
+            directorComboBoxes.add(codirector2ComboBox);
             
             for(ComboBox<Director> directorComboBox : directorComboBoxes){
                 directorComboBox.setItems(FXCollections.observableArrayList(directorList));
@@ -147,14 +147,18 @@ public class ModifyResearchPaneController{
             
             if(researchDAO.isValidDate(research)){
                 if(!researchDAO.isBlank(research)){
-                    try{
-                        if(researchDAO.modifyResearch(research) > 0){
-                            new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.INFORMATION, "", "Cambios guardados exitosamente");
-                            
-                            returnToResearchManager(event);
+                    if(researchDAO.areDirectorsDifferent(research)){
+                        try{
+                            if(researchDAO.modifyResearch(research) > 0){
+                                new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.INFORMATION, "", "Cambios guardados exitosamente");
+
+                                returnToResearchManager(event);
+                            }
+                        }catch(DataInsertionException exception){
+                            new AlertPopUpGenerator().showConnectionErrorMessage();
                         }
-                    }catch(DataInsertionException exception){
-                        new AlertPopUpGenerator().showConnectionErrorMessage();
+                    }else{
+                        new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.WARNING, "No se puede modificar el anteproyecto", "Los directores tienen que ser diferentes");
                     }
                 }else{
                     new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.WARNING, "No se puede modificar el anteproyecto", "Favor de llenar todos los campos obligatorios");

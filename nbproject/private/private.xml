@@ -3,23 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/src/mx/uv/fei/logic/daos/ActivityDAO.java</file>
-            <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/src/mx/uv/fei/logic/daos/StudentsCoursesDAO.java</file>
-            <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/src/mx/uv/fei/logic/daos/FileDAO.java</file>
-            <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/src/mx/uv/fei/Main.java</file>
-            <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/src/mx/uv/fei/gui/controllers/kgal/KGALListController.java</file>
-            <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/src/mx/uv/fei/gui/controllers/chronogram/activities/ActivityFileItemController.java</file>
-            <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/test/mx/uv/fei/logic/daos/ResearchDAOTest.java</file>
-            <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/src/mx/uv/fei/logic/daos/CourseDAO.java</file>
-            <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/src/mx/uv/fei/gui/controllers/chronogram/activities/ModifyActivityController.java</file>
-            <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/test/mx/uv/fei/logic/daos/ActivityDAOTest.java</file>
+            <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/src/mx/uv/fei/gui/fxml/chronogram/advances/AdvanceInfo.fxml</file>
+            <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/src/mx/uv/fei/gui/controllers/chronogram/advances/AdvanceInfoController.java</file>
+            <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/src/mx/uv/fei/gui/controllers/chronogram/advances/AdvanceVBoxPaneController.java</file>
             <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/src/mx/uv/fei/gui/controllers/chronogram/activities/ActivityInfoController.java</file>
             <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/src/mx/uv/fei/gui/controllers/MainMenuController.java</file>
-            <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/src/mx/uv/fei/gui/controllers/chronogram/activities/CreateActivityController.java</file>
-            <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/src/mx/uv/fei/gui/controllers/ManageKGALpaneController.java</file>
-            <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/src/mx/uv/fei/gui/controllers/kgal/UpdateKGALController.java</file>
-            <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/src/mx/uv/fei/gui/controllers/kgal/CreateNewKGALController.java</file>
-            <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/src/mx/uv/fei/gui/controllers/kgal/KGALListElementController.java</file>
         </group>
     </open-files>
 </project-private>

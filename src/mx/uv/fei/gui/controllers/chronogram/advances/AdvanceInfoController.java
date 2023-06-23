@@ -19,6 +19,7 @@ import mx.uv.fei.gui.AlertPopUpGenerator;
 import mx.uv.fei.gui.controllers.HeaderPaneController;
 import mx.uv.fei.gui.controllers.chronogram.activities.ActivityFileItemController;
 import mx.uv.fei.gui.controllers.chronogram.activities.ActivityInfoController;
+import mx.uv.fei.logic.daos.AdvanceDAO;
 import mx.uv.fei.logic.daos.FileDAO;
 import mx.uv.fei.logic.domain.Activity;
 import mx.uv.fei.logic.domain.Advance;
@@ -39,8 +40,6 @@ public class AdvanceInfoController{
     @FXML
     private Button feedbackButton;
     @FXML
-    private Button saveChangesButton;
-    @FXML
     private Pane headerPane;
     @FXML
     private Label titleLabel;
@@ -52,17 +51,31 @@ public class AdvanceInfoController{
     private TextArea commentTextArea;
     @FXML
     private VBox fileVBox;
-
-    @FXML
-    private void initialize(){
-        saveChangesButton.setVisible(false);
-        commentTextArea.setEditable(false);
-    }
     
     @FXML
-    private void editAdvance(ActionEvent event) {
-        saveChangesButton.setVisible(true);
-        commentTextArea.setEditable(true);
+    private void modifyAdvance(ActionEvent event) {
+        try{
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/advances/ModifyAdvance.fxml"));
+            Parent parent = loader.load();
+            ModifyAdvanceController controller = (ModifyAdvanceController)loader.getController();
+            controller.setActivity(activity);
+            controller.setAdvance(advance);
+            controller.setCourse(course);
+            controller.setUser(user);
+            controller.loadHeader();
+            
+            Scene scene = new Scene(parent);
+            String css = this.getClass().getResource("/mx/uv/fei/gui/stylesfiles/Styles.css").toExternalForm();
+            scene.getStylesheets().add(css);
+            
+            Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+            stage.setTitle("SPGER");
+            stage.setScene(scene);
+            stage.show();
+        }catch(IOException exception){
+            exception.printStackTrace();
+            new AlertPopUpGenerator().showMissingFilesMessage();
+        }
     }
     
     @FXML
@@ -118,11 +131,6 @@ public class AdvanceInfoController{
         }
     }
     
-    @FXML
-    private void saveChanges(ActionEvent event){
-        
-    }
-    
     public void loadHeader(){
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/HeaderPane.fxml"));
         
@@ -161,8 +169,9 @@ public class AdvanceInfoController{
                 try {
                     Pane advancePane = loader.load();
                     ActivityFileItemController controller = (ActivityFileItemController)loader.getController();
-                    controller.setFile(file.getFilePath());
-
+                    if (file != null){
+                        controller.setFile(file.getFilePath());
+                    }
                     fileVBox.getChildren().add(advancePane);
                 } catch(IOException exception){
                     new AlertPopUpGenerator().showMissingFilesMessage();

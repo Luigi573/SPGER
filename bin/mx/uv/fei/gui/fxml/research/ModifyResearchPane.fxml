@@ -21,9 +21,9 @@
       <Label layoutX="7.0" layoutY="47.0" prefHeight="17.0" prefWidth="71.0" text="LGAC: " />
       <ComboBox fx:id="KGALComboBox" layoutX="50.0" layoutY="43.0" prefHeight="25.0" prefWidth="389.0" promptText="--Seleccionar LGAC--" />
       <Label layoutX="7.0" layoutY="89.0" prefHeight="17.0" prefWidth="87.0" text="Director(es):" />
-      <ComboBox fx:id="director1ComboBox" layoutX="91.0" layoutY="85.0" prefHeight="25.0" prefWidth="348.0" promptText="--Seleccionar director--" />
-      <ComboBox fx:id="director2ComboBox" layoutX="91.0" layoutY="119.0" prefHeight="25.0" prefWidth="348.0" promptText="--Seleccionar codirector--" />
-      <ComboBox fx:id="director3ComboBox" layoutX="91.0" layoutY="154.0" prefHeight="25.0" prefWidth="348.0" promptText="--Seleccionar codirector--" />
+      <ComboBox fx:id="directorComboBox" layoutX="91.0" layoutY="85.0" prefHeight="25.0" prefWidth="348.0" promptText="--Seleccionar director--" />
+      <ComboBox fx:id="codirector1ComboBox" layoutX="91.0" layoutY="119.0" prefHeight="25.0" prefWidth="348.0" promptText="--Seleccionar codirector--" />
+      <ComboBox fx:id="codirector2ComboBox" layoutX="91.0" layoutY="154.0" prefHeight="25.0" prefWidth="348.0" promptText="--Seleccionar codirector--" />
       <Label layoutX="8.0" layoutY="191.0" prefHeight="17.0" prefWidth="78.0" text="Asignado a:" />
       <ComboBox fx:id="studentComboBox" layoutX="91.0" layoutY="187.0" prefHeight="25.0" prefWidth="348.0" promptText="--Seleccionar estudiante--" />
       <Label layoutX="8.0" layoutY="230.0" prefHeight="17.0" prefWidth="109.0" text="Fecha de inicio: " />

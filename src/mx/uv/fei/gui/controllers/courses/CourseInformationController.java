@@ -44,12 +44,13 @@ public class CourseInformationController{
                 getClass().getResource("/mx/uv/fei/gui/fxml/courses/students/GuiUsersCourse.fxml")
             );
 
-            GuiUsersCourseController guiUsersCourseController = new GuiUsersCourseController();
+            guiUsersCourse = loader.load();
+            
+            GuiUsersCourseController guiUsersCourseController = loader.getController();
             guiUsersCourseController.setCourseInformationController(this);
             guiUsersCourseController.setUser(guiCoursesController.getUser());
-
-            loader.setController(guiUsersCourseController);
-            guiUsersCourse = loader.load();
+            guiUsersCourseController.loadHeader();
+            guiUsersCourseController.refreshStudents();
 
             Scene scene = new Scene(guiUsersCourse);
             String css = getClass().getResource("/mx/uv/fei/gui/stylesfiles/Styles.css").toExternalForm();
@@ -60,6 +61,7 @@ public class CourseInformationController{
             stage.setResizable(false);
             stage.show();
         }catch(IOException e){
+            e.printStackTrace();
             new AlertPopUpGenerator().showMissingFilesMessage();
         }   
     }

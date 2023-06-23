@@ -37,11 +37,11 @@ public class AddResearchController{
     @FXML
     private ComboBox<KGAL> KGALComboBox;
     @FXML
-    private ComboBox<Director> director1ComboBox;
+    private ComboBox<Director> directorComboBox;
     @FXML
-    private ComboBox<Director> director2ComboBox;
+    private ComboBox<Director> codirector1ComboBox;
     @FXML
-    private ComboBox<Director> director3ComboBox;
+    private ComboBox<Director> codirector2ComboBox;
     @FXML
     private ComboBox<Student> studentComboBox;
     @FXML
@@ -69,12 +69,12 @@ public class AddResearchController{
             ArrayList<Student> studentList = studentDAO.getStudents();
             
             directorComboBoxes = new ArrayList<>();
-            directorComboBoxes.add(director1ComboBox);
-            directorComboBoxes.add(director2ComboBox);
-            directorComboBoxes.add(director3ComboBox);
+            directorComboBoxes.add(directorComboBox);
+            directorComboBoxes.add(codirector1ComboBox);
+            directorComboBoxes.add(codirector2ComboBox);
             
-            for(ComboBox<Director> directorComboBox : directorComboBoxes){
-                directorComboBox.setItems(FXCollections.observableArrayList(directorList));
+            for(ComboBox<Director> directorComboBoxElement : directorComboBoxes){
+                directorComboBoxElement.setItems(FXCollections.observableArrayList(directorList));
             }
             
             KGALComboBox.setItems(FXCollections.observableArrayList(KGALList));
@@ -118,17 +118,18 @@ public class AddResearchController{
             if(allFieldsContainsCorrectValues()){
                 if(researchDAO.isValidDate(research)){
                     if(!researchDAO.isBlank(research)){
-                        try{
-                            if(researchDAO.addResearch(research) > 0){
-                                new AlertPopUpGenerator().showCustomMessage(AlertType.INFORMATION, "Éxito", "Anteproyecto creado exitosamente");
-                                
-                                researchManagerController.loadResearches(0);
-                                Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-                                stage.close();
+                        if(researchDAO.areDirectorsDifferent(research)){
+                            try{
+                                if(researchDAO.addResearch(research) > 0){
+                                    new AlertPopUpGenerator().showCustomMessage(AlertType.INFORMATION, "Éxito", "Anteproyecto creado exitosamente");
+
+                                    researchManagerController.loadResearches(0);
+                                    Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+                                    stage.close();
+                                }
+                            }catch(DataInsertionException exception){
+                                new AlertPopUpGenerator().showConnectionErrorMessage();
                             }
-    
-                        }catch(DataInsertionException exception){
-                            new AlertPopUpGenerator().showConnectionErrorMessage();
                         }
                     }else{
                         new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "No se puede crear el anteproyecto", "Favor de llenar todos los campos");
@@ -152,12 +153,7 @@ public class AddResearchController{
         Pattern titlePattern = Pattern.compile("([A-Z][a-z]+)\\s?([A-Z][a-z]+)?\\s?([A-Z][a-z]+)?\\s?([A-Z][a-z]+)?");
         Matcher titleMatcher = titlePattern.matcher(titleTextField.getText());
 
-        if(titleMatcher.find() && startDatePicker.getValue() != null && 
-           dueDatePicker.getValue() != null) {
-            return true;
-        }
-
-        return false;
+        return titleMatcher.find() && startDatePicker.getValue() != null && dueDatePicker.getValue() != null;
     }
 
 }

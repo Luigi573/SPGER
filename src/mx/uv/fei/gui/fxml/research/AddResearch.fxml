@@ -37,9 +37,9 @@
                   <Font size="14.0" />
                </font>
             </Label>
-            <ComboBox fx:id="director1ComboBox" layoutX="88.0" layoutY="90.0" prefHeight="25.0" prefWidth="215.0" promptText="--Seleccionar director--" />
-            <ComboBox fx:id="director2ComboBox" layoutX="88.0" layoutY="128.0" prefHeight="25.0" prefWidth="215.0" promptText="--Seleccionar codirector--" />
-            <ComboBox fx:id="director3ComboBox" layoutX="379.0" layoutY="128.0" prefHeight="25.0" prefWidth="221.0" promptText="--Seleccionar codirector--" />
+            <ComboBox fx:id="directorComboBox" layoutX="88.0" layoutY="90.0" prefHeight="25.0" prefWidth="215.0" promptText="--Seleccionar director--" />
+            <ComboBox fx:id="codirector1ComboBox" layoutX="88.0" layoutY="128.0" prefHeight="25.0" prefWidth="215.0" promptText="--Seleccionar codirector--" />
+            <ComboBox fx:id="codirector2ComboBox" layoutX="379.0" layoutY="128.0" prefHeight="25.0" prefWidth="221.0" promptText="--Seleccionar codirector--" />
             <Label layoutX="1.0" layoutY="164.0" text="Asignado a:">
                <font>
                   <Font size="14.0" />

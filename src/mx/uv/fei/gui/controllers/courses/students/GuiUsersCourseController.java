@@ -16,6 +16,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import mx.uv.fei.gui.AlertPopUpGenerator;
+import mx.uv.fei.gui.controllers.HeaderPaneController;
 import mx.uv.fei.gui.controllers.courses.CourseInformationController;
 import mx.uv.fei.gui.controllers.courses.GuiCoursesController;
 import mx.uv.fei.logic.daos.StudentDAO;
@@ -36,15 +37,12 @@ public class GuiUsersCourseController{
     @FXML
     private Pane backgroundPane;
     @FXML
+    private Pane headerPane;
+    @FXML
     private HBox professorsHBox;
     @FXML
     private VBox studentsVbox;
 
-    @FXML
-    private void initialize(){
-        loadHeader();
-        refreshStudents();
-    }
     @FXML
     private void addButtonController(ActionEvent event){
         Parent guiStudentAdder;
@@ -157,13 +155,19 @@ public class GuiUsersCourseController{
         this.user = user;
     }
 
-    private void loadHeader(){
+    public void loadHeader(){
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/HeaderPane.fxml"));
         
         try{
             Pane header = loader.load();
-            header.getStyleClass().add("/mx/uv/fei/gui/stylesfiles/Styles.css");
+            HeaderPaneController headerPaneController = loader.getController();
+
+            if(user != null){
+                headerPaneController.setUser(user);
+            }
+            
             backgroundPane.getChildren().add(header);
+            
         }catch(IOException exception){
             new AlertPopUpGenerator().showMissingFilesMessage();
         }
