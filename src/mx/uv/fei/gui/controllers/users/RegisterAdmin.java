@@ -71,14 +71,15 @@ public class RegisterAdmin{
                         new PasswordAndEmailMaker().sendPassword(degreeBoss.getEmailAddress(), degreeBoss.getPassword());
                         new PasswordAndEmailMaker().sendPassword(degreeBoss.getAlternateEmail(), degreeBoss.getPassword());
                         new AlertPopUpGenerator().showCustomMessage(AlertType.INFORMATION, "Éxito", "Jefe de Carrera registrado exitosamente");
+                        
+                        Stage stage = (Stage) registerButton.getScene().getWindow();
+                        stage.close();
                     }catch(DataInsertionException e){
                         new AlertPopUpGenerator().showConnectionErrorMessage();
                     }catch(DuplicatedPrimaryKeyException e){
                         new AlertPopUpGenerator().showCustomMessage(AlertType.ERROR, "Error", "El número de personal ya está usado");
                     }
 
-                    Stage stage = (Stage) registerButton.getScene().getWindow();
-                    stage.close();
                 }else{
                     new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "Error", "El correo electrónico no puede ser el mismo que el correo alterno");
                 }

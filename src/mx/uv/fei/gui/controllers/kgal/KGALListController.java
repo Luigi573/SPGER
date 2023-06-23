@@ -46,6 +46,7 @@ public class KGALListController {
                     Pane pane = loader.load();
                     KGALListElementController controller = (KGALListElementController)loader.getController();
                     controller.setUser(user);
+                    controller.setKGAL(kgal);
                     
                     kgalListVBox.getChildren().add(pane);
                 }catch(IOException exception){
@@ -81,7 +82,7 @@ public class KGALListController {
     @FXML
     private void exitKGALListScene(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/kgal/MainMenu.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/MainMenu.fxml"));
             Parent root = loader.load(); 
             MainMenuController controller = (MainMenuController)loader.getController();
             controller.setUser(user);

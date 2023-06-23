@@ -60,7 +60,7 @@ public class AdvanceDAO implements IAdvanceDAO{
     public ArrayList<Advance> getAdvancesList() throws DataRetrievalException {
         ArrayList<Advance> advancesList = new ArrayList();
         
-        String query = "select * from Avances";
+        String query = "SELECT * FROM Avances";
         try {
             Statement statement = dataBaseManager.getConnection().createStatement();
             ResultSet resultSet = statement.executeQuery(query);

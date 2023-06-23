@@ -34,10 +34,18 @@ public class CreateNewKGALController {
         try {
             KGALDAO kgalDAO = new KGALDAO();
             
-            if(kgalDAO.addKGAL(newKgal) > 0) {
-                switchToKGALListScene(event);
-                
-                new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.CONFIRMATION, "Operación exitosa", "Se ha guardado la nueva LGAC correctamente.");
+            if(kgalDAO.isBlank(newKgal)){
+                if(kgalDAO.isValidDescription(newKgal)){
+                    if(kgalDAO.addKGAL(newKgal) > 0) {
+                        switchToKGALListScene(event);
+
+                        new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.CONFIRMATION, "Operación exitosa", "Se ha guardado la nueva LGAC correctamente.");
+                    }
+                }else{
+                    new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.WARNING, "No se puede crear la LGAC", "La descripción es de máximo 40 caracteres");
+                }
+            }else{
+                new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.WARNING, "No se puede crear la LGAC", "Falta agregar una descripción");
             }
         } catch (DataInsertionException exception) {
             new AlertPopUpGenerator().showConnectionErrorMessage();

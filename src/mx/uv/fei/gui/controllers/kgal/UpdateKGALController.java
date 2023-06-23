@@ -18,6 +18,7 @@ import mx.uv.fei.gui.controllers.HeaderPaneController;
 import mx.uv.fei.logic.daos.KGALDAO;
 import mx.uv.fei.logic.domain.KGAL;
 import mx.uv.fei.logic.domain.User;
+import mx.uv.fei.logic.exceptions.DataInsertionException;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
 
 public class UpdateKGALController {
@@ -37,18 +38,27 @@ public class UpdateKGALController {
     
     @FXML
     private void updateKGALDescription(ActionEvent event) {
-        String newKgalDescription = descriptionTextField.getText();
+        kgal.setDescription(descriptionTextField.getText());
         int result = 0;
         KGALDAO kgalDAO = new KGALDAO();
         
         try {
-            result = kgalDAO.updateKGALDescription(this.kgal.getKgalID(), newKgalDescription);
-            if(result > 0) {
-                switchToKGALListScene(event);
-                
-                new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.CONFIRMATION, "Operación exitosa", "Se ha guardado la nueva Descripción de la LGAC correctamente.");
+            if(!kgalDAO.isBlank(kgal)){
+                if(kgalDAO.isValidDescription(kgal)){
+                    
+                    result = kgalDAO.updateKGALDescription(kgal.getKgalID(), kgal.getDescription());
+                    if(result > 0) {
+                        new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.CONFIRMATION, "Operación exitosa", "Se ha guardado la nueva LGAC correctamente.");
+                        
+                        switchToKGALListScene(event);
+                    }
+                }else{
+                    new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.WARNING, "No se puede crear la LGAC", "La descripción es de máximo 40 caracteres");
+                }
+            }else{
+                new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.WARNING, "No se puede crear la LGAC", "Falta agregar una descripción");
             }
-        } catch (DataRetrievalException dre) {
+        } catch (DataInsertionException dre) {
             new AlertPopUpGenerator().showConnectionErrorMessage();
         }
         

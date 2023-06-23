@@ -20,7 +20,7 @@ public class ScholarPeriodDAO implements IScholarPeriodDAO{
     public ArrayList<ScholarPeriod> getScholarPeriods() throws DataRetrievalException{
         ArrayList<ScholarPeriod> scholarPeriods = new ArrayList<>();
         PreparedStatement statement;
-        String query = "SELECT * FROM PeriodosEscolares";
+        String query = "SELECT * FROM PeriodosEscolares WHERE fechaFin > NOW()";
 
         try{
             statement = dataBaseManager.getConnection().prepareStatement(query);

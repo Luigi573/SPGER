@@ -44,7 +44,7 @@ public class FileDAO implements IFileDAO {
     
     @Override
     public File getFileByID(int fileID) throws DataRetrievalException {
-        String query = "select * from Archivos where IdArchivo = ?";
+        String query = "SELECT * FROM Archivos where IdArchivo = ?";
         File file = new File();
         if (fileID > 0) {
             try {

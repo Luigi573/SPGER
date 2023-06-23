@@ -97,7 +97,6 @@ public class ModifyAdvanceController {
         try {
             result = advanceDAO.updateAdvanceInfo(advance.getAdvanceID(), advance);
             if(advance.getFileID() == 0){
-                System.out.println(file.getPath());
                 fileDAO.removeActivityFile(file.getPath());
                 file.delete();
             }    

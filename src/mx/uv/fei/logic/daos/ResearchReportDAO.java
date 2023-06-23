@@ -24,7 +24,7 @@ public class ResearchReportDAO implements IResearchesReportDAO{
         ArrayList<ResearchProject> researches = new ArrayList<>();
 
         try{
-            if(query == ""){
+            if(query.isEmpty()){
                 query = "SELECT título FROM Anteproyectos WHERE título LIKE ?";
             }
             PreparedStatement preparedStatement = dataBaseManager.getConnection().prepareStatement(query);
