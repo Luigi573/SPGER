@@ -41,6 +41,10 @@ public class ResearchManagerController {
     private ToggleButton showValidatedButton;
 
     @FXML
+    private void initialize() {
+        loadResearches(0);
+    }
+    @FXML
     private void addResearch(ActionEvent event) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/research/AddResearch.fxml"));
         
@@ -160,7 +164,6 @@ public class ResearchManagerController {
                     ResearchVBoxPaneController controller = (ResearchVBoxPaneController)loader.getController();
                     controller.setResearchProject(research);
                     controller.setContainer(researchInfoScrollPane);
-                    controller.setUser(user);
                     controller.setResearchManagerController(this);
                     
                     researchVBox.getChildren().add(pane);
@@ -174,7 +177,9 @@ public class ResearchManagerController {
     }
 
     public void setUser(User user){
-        this.user = user; 
+        this.user = user;
+        
+         
     }
     public void loadHeader(){
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/HeaderPane.fxml"));

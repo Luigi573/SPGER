@@ -1,187 +1,151 @@
-*{
-    -fx-text-fill: #ffffff;
-}
-
 Text {
-    -fx-fill: #ffffff;
-}
-
-TextFlow {
-    -fx-background-color:#424549;
+    -fx-fill: white;
 }
 
 .root {
-    -fx-background-color:#1e2124;
+    -fx-background-color: #31B189;
+    /*-fx-background-color: #ff4800;*/
 }
 
 .anchor-pane {
-    -fx-background-color:#1e2124;
+    -fx-background-color: #31B189;
 }
 
 .button {
     -fx-background-radius: 50;
-    -fx-background-color: #7289da;
+    -fx-background-color: #FFE3B3;
     -fx-text-fill: #000000;
     -fx-cursor: hand;
 }
 
 .calendar-grid {
-    -fx-background-color: #36393e;
+    -fx-background-color: #FFC872;
 }
 
 .combo-box {
-    -fx-background-color:#829bf7;
+    -fx-background-color: #FFC872;
     -fx-text-fill: #000000;
 }
 
 .combo-box-popup {
-    -fx-background-color:#829bf7;
-    -fx-text-fill: #000000;
+    -fx-background-color: #FFC872;
 }
 
 .combo-box-popup .list-view {
-    -fx-background-color:#7289da;
+    -fx-background-color: #FFC872;
     -fx-text-fill: #000000;
     -fx-cell-size: 1.66667em;
 }
 
 .combo-box-popup .list-cell {
-    -fx-background-color: #7289da;
+    -fx-background-color: #FFE3B3;
     -fx-text-fill: #000000;
     -fx-cell-size: 1.66667em;
 }
 
 .date-picker {
-    -fx-background-color: #424549;
-    -fx-border-color: #424549;
-}
-
-.date-picker > .text-field {
-    -fx-border-color: #424549;
+    -fx-control-inner-background: #FFE3B3;
 }
 
 .date-picker .arrow-button {
-	-fx-background-color: #36393e;
+	-fx-background-color: #5a9e4b;
+	-fx-background-radius: 0;
 }
 
-.date-picker .arrow-button .arrow {
-	-fx-background-color:#ffffff;
-}
-
-.date-picker-popup {
-    -fx-border-color: #282b30;
-    -fx-background-color: #282b30;
-}
-
-.date-picker-popup > * > .day-cell{
-    -fx-background-color: #424549;
-    -fx-border-color: #424549;
+.date-picker .arrow-button:hover {
+	-fx-background-color: #497e3d;
 }
 
 .date-picker-popup > .month-year-pane {
-	-fx-background-color: #282b30;
-}
-
-.date-picker-popup .week-number-cell {
-    -fx-background-color: #36393e;
+	-fx-background-color: #eeb65b;
 }
 
 .dialog {
-    -fx-background-color:#1e2124;
+    -fx-background-color: #31B189;
 }
 
 .dialog:header *.header-panel {
-    -fx-background-color:#1e2124;
+    -fx-background-color: #31B189;
 }
 
 .label {
     -fx-background-color: transparent;
-    -fx-text-fill: #ffffff;
+    -fx-text-fill: #000000;
 }
 
 .scroll-bar:horizontal, .scroll-bar:vertical{
-    -fx-background-color: #36393e;
+    -fx-background-color: #5a9e4b;
 }
 
 .scroll-bar .increment-button ,
 .scroll-bar .decrement-button {
-    -fx-background-color : #585c61;
+    -fx-background-color : #7ACE67;
 }
 
 .scroll-bar .increment-arrow,
 .scroll-bar .decrement-arrow{
-    -fx-background-color : #36393e;
+    -fx-background-color : #5a9e4b;
 }
 
 .scroll-bar:horizontal .thumb,
 .scroll-bar:vertical .thumb {
-    -fx-background-color: #585c61;
+    -fx-background-color : #7ACE67;
 }
 
 .scroll-pane {
-    -fx-background:#585c61;
-    -fx-border-color:#585c61;
-}
-
-.text-area {
-    -fx-background-color:#424549;
+    -fx-background:  #7ACE67;
+    -fx-border-color:  #7ACE67;
 }
 
 .text-area .content {
-    -fx-background-color:#424549;
-    -fx-border-color:#424549;
+    -fx-background-color: #000000;
+    -fx-border-color: #62ca4a;
 }
 
 .text-field {
-    -fx-background-color:#424549;
+    -fx-background-color: #62ca4a;
 }
 
 .toggle-button {
     -fx-background-radius: 50;
-    -fx-background-color: #829bf7;
+    -fx-background-color: #FFE3B3;
     -fx-text-fill: #000000;
 }
 
 .toggle-button:selected {
-    -fx-background-color: #7289da;
+    -fx-background-color: #FFC872;
 }
 
 #courseButton {
     -fx-background-radius: 5;
     -fx-background-color: transparent;
-    -fx-border-color:#36393e;
-}
-
-#courseVBox {
-    -fx-background-color:#282b30;
+    -fx-border-color:#5a9e4b;
 }
 
 #headerBackground {
-    -fx-background-color: #7289da;
+    -fx-background-color: #217258;
 }
 
 #mainMenuSpecificPane {
-    -fx-background-color: #36393e;
-}
-
-#mainMenuSpecificPane {
-    -fx-background-color: #36393e;
+    -fx-border-color: #5a9e4b;
 }
 
 #researchButton {
     -fx-background-radius: 5;
     -fx-background-color: transparent;
-    -fx-border-color:#36393e;
+    -fx-border-color:#5a9e4b;
 }
 
 #userButton {
     -fx-background-radius: 5;
     -fx-background-color: transparent;
-    -fx-border-color:#36393e;
+    -fx-border-color:#5a9e4b;
 }
 
 #userPane {
-    -fx-background-color:#424549;
+    -fx-background-color: #62ca4a;
     -fx-background-radius: 5;
-    -fx-border-color: #36393e;
+    -fx-border-color: #5a9e4b;
 }
+
+

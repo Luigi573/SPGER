@@ -51,7 +51,7 @@ public class AdminMenuPaneController{
             if(user != null){
                 Parent parent = loader.load();
                 GuiUsersController controller = (GuiUsersController)loader.getController();
-                controller.setHeaderUser(user);
+                controller.setUser(user);
                 controller.loadHeader();
                 
                 Scene scene = new Scene(parent);

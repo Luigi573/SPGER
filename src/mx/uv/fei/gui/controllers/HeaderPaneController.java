@@ -50,9 +50,7 @@ public class HeaderPaneController{
     public void setUser(User user){
         this.user = user;
         
-        if(user != null){
-            usernameLabel.setText(user.toString());
-        }
+        usernameLabel.setText(user.toString());
     }
     
     public void setCourse(Course course){

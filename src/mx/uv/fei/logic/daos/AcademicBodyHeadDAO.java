@@ -26,7 +26,7 @@ public class AcademicBodyHeadDAO implements IAcademicBodyHeadDAO{
         int generatedId = 0;
         try{
             String queryToInsertAcademicBodyHeadDataToUserColumns = 
-                "INSERT INTO Usuarios (nombre, apellidoPaterno, apellidoMaterno, correo, correoAlterno, numeroTelefono, estado, contraseña) VALUES (?, ?, ?, ?, ?, ?, ?, SHA2(?, 256))";
+                "INSERT INTO Usuarios (nombre, apellidoPaterno, apellidoMaterno, correo, correoAlterno, numeroTelefono, estado) VALUES (?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement preparedStatementToInsertAcademicBodyHeadDataToUserColumns = 
                 dataBaseManager.getConnection().prepareStatement(queryToInsertAcademicBodyHeadDataToUserColumns, PreparedStatement.RETURN_GENERATED_KEYS);
             preparedStatementToInsertAcademicBodyHeadDataToUserColumns.setString(1, academicBodyHead.getName());
@@ -36,7 +36,6 @@ public class AcademicBodyHeadDAO implements IAcademicBodyHeadDAO{
             preparedStatementToInsertAcademicBodyHeadDataToUserColumns.setString(5, academicBodyHead.getAlternateEmail());
             preparedStatementToInsertAcademicBodyHeadDataToUserColumns.setString(6, academicBodyHead.getPhoneNumber());
             preparedStatementToInsertAcademicBodyHeadDataToUserColumns.setString(7, academicBodyHead.getStatus());
-            preparedStatementToInsertAcademicBodyHeadDataToUserColumns.setString(8, academicBodyHead.getPassword());
             preparedStatementToInsertAcademicBodyHeadDataToUserColumns.executeUpdate();
 
             ResultSet resultSet = preparedStatementToInsertAcademicBodyHeadDataToUserColumns.getGeneratedKeys();

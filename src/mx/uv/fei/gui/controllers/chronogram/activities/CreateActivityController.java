@@ -71,38 +71,13 @@ public class CreateActivityController{
                         new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.WARNING, "No se puede crear la actividad", "La fecha de inicio no puede ser mayor a la fecha fin y la fecha de inicio no puede ser anterior a la fecha actual");
                     }
                 }else{
-                    new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.WARNING, "No se puede crear la actividad", "Favor de llenar todos los campos");
+                    new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.WARNING, "No se puede crear la actividad", "El título es demasiado largo");
                 }
             }else{
-                new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.WARNING, "No se puede crear la actividad", "La fecha de inicio no puede ser después dr la fecha de fin");
+                new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.WARNING, "No se puede crear la actividad", "Favor de llenar todos los campos");
             }
         }else{
             new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.WARNING, "No se puede crear la actividad", "Favor de seleccionar una fecha válida");
-        }
-    }
-    
-    @FXML
-    private void goBack(ActionEvent event){
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/Chronogram.fxml"));
-        
-        try{
-            Parent parent = loader.load();
-            ChronogramController controller = (ChronogramController)loader.getController();
-            controller.setCourse(course);
-            controller.setUser(user);
-            controller.loadHeader();
-
-            Scene scene = new Scene(parent);
-            String css = this.getClass().getResource("/mx/uv/fei/gui/stylesfiles/Styles.css").toExternalForm();
-            scene.getStylesheets().add(css);
-            
-            Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-            stage.setScene(scene);
-            stage.show();
-            
-            
-        }catch(IOException exception){
-            new AlertPopUpGenerator().showMissingFilesMessage();
         }
     }
     
@@ -138,6 +113,28 @@ public class CreateActivityController{
             headerPane.getChildren().setAll(header);
         }catch(IOException exception){
             new AlertPopUpGenerator().showConnectionErrorMessage();
+        }
+    }
+    
+    private void returnToChronogram(ActionEvent event){
+        try{
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/Chronogram.fxml"));
+            Parent parent = loader.load();
+            ChronogramController controller = (ChronogramController)loader.getController();
+            controller.setCourse(course);
+            controller.setUser(user);
+            controller.loadHeader();
+
+            Scene scene = new Scene(parent);
+            String css = this.getClass().getResource("/mx/uv/fei/gui/stylesfiles/Styles.css").toExternalForm();
+            scene.getStylesheets().add(css);
+
+            Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+            stage.setTitle("SPGER");
+            stage.setScene(scene);
+            stage.show();
+        }catch(IOException exception){
+            new AlertPopUpGenerator().showMissingFilesMessage();
         }
     }
 }

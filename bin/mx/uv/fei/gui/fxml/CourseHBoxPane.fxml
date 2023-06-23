@@ -34,7 +34,7 @@
                   <Font size="18.0" />
                </font>
             </Label>
-            <Label layoutX="22.0" layoutY="146.0" text="Fecha fin:">
+            <Label layoutX="33.0" layoutY="148.0" text="End Fin:">
                <font>
                   <Font size="16.0" />
                </font>
@@ -44,17 +44,17 @@
                   <Font size="18.0" />
                </font>
             </Label>
-            <Label layoutX="27.0" layoutY="179.0" text="Profesor: ">
+            <Label layoutX="27.0" layoutY="193.0" text="Profesor: ">
                <font>
                   <Font size="16.0" />
                </font>
             </Label>
-            <Label fx:id="professorLabel" alignment="CENTER" layoutX="96.0" layoutY="178.0" prefHeight="27.0" prefWidth="195.0" text="[Nombre AP. AM.]" wrapText="true">
+            <Label fx:id="professorLabel" alignment="CENTER" layoutX="94.0" layoutY="191.0" prefHeight="27.0" prefWidth="195.0" text="[Nombre AP. AM.]" wrapText="true">
                <font>
                   <Font size="14.0" />
                </font>
             </Label>
-            <Button layoutX="108.0" layoutY="217.0" mnemonicParsing="false" onAction="#goToChronogram" text="Acceder">
+            <Button layoutX="106.0" layoutY="230.0" mnemonicParsing="false" onAction="#goToChronogram" text="Acceder">
                <font>
                   <Font size="18.0" />
                </font>

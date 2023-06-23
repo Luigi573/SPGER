@@ -5,7 +5,7 @@
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.layout.Pane?>
 
-<Pane fx:id="advancePane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="52.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.uv.fei.gui.controllers.chronogram.advances.ActivityFileItemController">
+<Pane fx:id="advancePane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="52.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.uv.fei.gui.controllers.chronogram.activities.ActivityFileItemController">
    <children>
       <Label fx:id="lFileName" layoutX="14.0" layoutY="18.0" prefHeight="17.0" prefWidth="227.0" text="Título del avance" />
       <Separator layoutX="-8.0" layoutY="52.0" prefHeight="4.0" prefWidth="461.0" />

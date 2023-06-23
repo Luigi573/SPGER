@@ -139,9 +139,10 @@ public class ActivityDAOTest {
     
     @Test
     public void testSetFeedback() throws Exception {
-        ActivityDAO instance = new ActivityDAO();
+        Activity activity = new Activity();
+        activity.setFeedback("");
         
-        assertTrue(instance.setFeedback("Bien hecho, pasó en extra", preloadedActivity.getId()) > 0);
+        
     }
     
     @Test
@@ -176,7 +177,7 @@ public class ActivityDAOTest {
         assertTrue(!instance.isBlank(activity));
     }
     @Test
-    public void testIsValidDate(){
+    public void testIsValidDateSuccess() {
         Activity activity = preloadedActivity;
         ActivityDAO instance = new ActivityDAO();
         

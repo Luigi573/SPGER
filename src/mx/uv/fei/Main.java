@@ -1,12 +1,11 @@
 package mx.uv.fei;
 
-import java.io.IOException;
+import java.util.HashMap;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import mx.uv.fei.gui.AlertPopUpGenerator;
 import mx.uv.fei.logic.daos.UserDAO;
@@ -49,4 +48,6 @@ public class Main extends Application{
     public static void main(String[] args) {
         launch(args);
     }
+
+    HashMap<String, String> coeeida = new HashMap<>(0, 0);
 }

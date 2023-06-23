@@ -11,13 +11,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import mx.uv.fei.gui.AlertPopUpGenerator;
-import mx.uv.fei.logic.domain.Activity;
 import mx.uv.fei.logic.domain.Advance;
 import mx.uv.fei.logic.domain.Course;
 import mx.uv.fei.logic.domain.User;
 
 public class AdvanceVBoxPaneController{
-    private Activity activity;
     private Advance advance;
     private Course course;
     private User user;
@@ -36,7 +34,6 @@ public class AdvanceVBoxPaneController{
         try{
             Parent parent = loader.load();
             AdvanceInfoController controller = (AdvanceInfoController)loader.getController();
-            controller.setActivity(activity);
             controller.setAdvance(advance);
             controller.setCourse(course);
             controller.setUser(user);
@@ -54,10 +51,6 @@ public class AdvanceVBoxPaneController{
         }catch(IOException exception){
             new AlertPopUpGenerator().showMissingFilesMessage();
         }
-    }
-    
-    public void setActivity(Activity activity){
-        this.activity = activity;
     }
     
     public void setAdvance(Advance advance){

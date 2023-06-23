@@ -26,7 +26,7 @@ public class DirectorDAO implements IDirectorDAO{
         int generatedId = 0;
         try{
             String queryToInsertDirectorDataToUserColumns = 
-                "INSERT INTO Usuarios (nombre, apellidoPaterno, apellidoMaterno, correo, correoAlterno, numeroTelefono, estado, contraseña) VALUES (?, ?, ?, ?, ?, ?, ?, SHA2(?, 256))";
+                "INSERT INTO Usuarios (nombre, apellidoPaterno, apellidoMaterno, correo, correoAlterno, numeroTelefono, estado) VALUES (?, ?, ?, ?, ?, ?, ?)";
             
             PreparedStatement preparedStatementToInsertDirectorDataToUsersColumns = 
                 dataBaseManager.getConnection().prepareStatement(
@@ -39,7 +39,6 @@ public class DirectorDAO implements IDirectorDAO{
             preparedStatementToInsertDirectorDataToUsersColumns.setString(5, director.getAlternateEmail());
             preparedStatementToInsertDirectorDataToUsersColumns.setString(6, director.getPhoneNumber());
             preparedStatementToInsertDirectorDataToUsersColumns.setString(7, director.getStatus());
-            preparedStatementToInsertDirectorDataToUsersColumns.setString(8, director.getPassword());
             preparedStatementToInsertDirectorDataToUsersColumns.executeUpdate();
 
             ResultSet resultSet = preparedStatementToInsertDirectorDataToUsersColumns.getGeneratedKeys();

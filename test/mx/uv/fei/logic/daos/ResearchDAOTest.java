@@ -14,6 +14,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import mx.uv.fei.dataaccess.DataBaseManager;
+import mx.uv.fei.logic.daos.ResearchDAO;
 import mx.uv.fei.logic.domain.ResearchProject;
 import mx.uv.fei.logic.exceptions.DataInsertionException;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
@@ -117,6 +118,21 @@ public class ResearchDAOTest {
         preloadedResearch.printData();
         int result = instance.modifyResearch(preloadedResearch);
         assertTrue(result > 0);
+    }
+
+    @Test
+    public void testGetDirectorsResearch() throws Exception{
+        
+    }
+
+    @Test
+    public void testGetStudentsResearch() throws Exception{
+        
+    }
+
+    @Test
+    public void testGetCourseResearch() throws Exception{
+        
     }
     
     @Test

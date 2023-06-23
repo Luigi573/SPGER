@@ -26,8 +26,8 @@ public class DegreeBossDAO implements IDegreeBossDAO{
         int generatedId = 0;
         try{
             String queryToInsertDegreeBossDataToUserColumns = 
-                "INSERT INTO Usuarios (nombre, apellidoPaterno, apellidoMaterno, correo, correoAlterno, numeroTelefono, estado, contraseña) " + 
-                "VALUES (?, ?, ?, ?, ?, ?, ?, SHA2(?, 256))";
+                "INSERT INTO Usuarios (nombre, apellidoPaterno, apellidoMaterno, correo, correoAlterno, numeroTelefono, estado) " + 
+                "VALUES (?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement preparedStatementToInsertDegreeBossDataToUserColumns = 
                 dataBaseManager.getConnection().prepareStatement(
                     queryToInsertDegreeBossDataToUserColumns, PreparedStatement.RETURN_GENERATED_KEYS
@@ -39,7 +39,6 @@ public class DegreeBossDAO implements IDegreeBossDAO{
             preparedStatementToInsertDegreeBossDataToUserColumns.setString(5, degreeBoss.getAlternateEmail());
             preparedStatementToInsertDegreeBossDataToUserColumns.setString(6, degreeBoss.getPhoneNumber());
             preparedStatementToInsertDegreeBossDataToUserColumns.setString(7, degreeBoss.getStatus());
-            preparedStatementToInsertDegreeBossDataToUserColumns.setString(8, degreeBoss.getPassword());
             preparedStatementToInsertDegreeBossDataToUserColumns.executeUpdate();
 
             ResultSet resultSet = preparedStatementToInsertDegreeBossDataToUserColumns.getGeneratedKeys();

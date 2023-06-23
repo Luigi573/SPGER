@@ -4,33 +4,19 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.uv.fei.gui.controllers.kgal.CreateNewKGALController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.uv.fei.gui.fxcontrollers.manageKGAL.CreateNewKGALController">
    <children>
       <Pane fx:id="headerPane" prefHeight="100.0" prefWidth="1024.0" />
       <TextField id="descriptionTextField" fx:id="descriptionTextField" layoutX="404.0" layoutY="226.0" prefHeight="44.0" prefWidth="452.0" promptText="max. 40 caracteres">
          <font>
-            <Font size="30.0" />
-         </font></TextField>
-      <Text layoutX="331.0" layoutY="157.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Crear Nueva LGAC">
-         <font>
-            <Font name="System Bold" size="42.0" />
+            <Font size="20.0" />
          </font>
       </Text>
-      <Label layoutX="206.0" layoutY="236.0" text="Descripción:">
-         <font>
-            <Font size="30.0" />
-         </font></Label>
-      <Button layoutX="685.0" layoutY="492.0" mnemonicParsing="false" onAction="#createNewKGAL" text="Guardar">
-         <font>
-            <Font size="30.0" />
-         </font></Button>
-      <Button layoutX="183.0" layoutY="492.0" mnemonicParsing="false" onAction="#switchToKGALListScene" text="Cancelar">
-         <font>
-            <Font size="30.0" />
-         </font></Button>
+      <Label layoutX="125.0" layoutY="179.0" text="Descripción:" />
+      <Button layoutX="508.0" layoutY="345.0" mnemonicParsing="false" onAction="#createNewKGAL" text="Guardar" />
+      <Button layoutX="420.0" layoutY="345.0" mnemonicParsing="false" onAction="#switchToKGALListScene" text="Cancelar" />
    </children>
 </AnchorPane>

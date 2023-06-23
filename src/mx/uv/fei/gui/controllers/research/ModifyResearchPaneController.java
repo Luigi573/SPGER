@@ -15,7 +15,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
-import javafx.scene.control.DialogPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -43,8 +42,6 @@ public class ModifyResearchPaneController{
     private ComboBox<Director> codirector1ComboBox;
     @FXML
     private ComboBox<Director> codirector2ComboBox;
-    @FXML
-    private DialogPane dialogPane;
     @FXML
     private ComboBox<KGAL> KGALComboBox;
     @FXML
@@ -95,11 +92,6 @@ public class ModifyResearchPaneController{
         Alert confirmationMessage = new Alert(Alert.AlertType.CONFIRMATION);
         confirmationMessage.setHeaderText("Descartar cambios");
         confirmationMessage.setContentText("¿Está seguro que cancelar la modificación del anteproeycto?");
-
-        dialogPane = confirmationMessage.getDialogPane();
-        String css = getClass().getResource("/mx/uv/fei/gui/stylesfiles/Styles.css").toExternalForm();
-        dialogPane.getStylesheets().add(css);
-        dialogPane.getStyleClass().add("dialog");
         
         Optional<ButtonType> choice = confirmationMessage.showAndWait();
         if(choice.isPresent() && choice.get() == ButtonType.OK){
@@ -111,11 +103,6 @@ public class ModifyResearchPaneController{
         Alert confirmationMessage = new Alert(Alert.AlertType.CONFIRMATION);        
         confirmationMessage.setHeaderText("Guardar cambios");
         confirmationMessage.setContentText("¿Está seguro que desea guardar las modificaciones del anteproyecto?");
-
-        dialogPane = confirmationMessage.getDialogPane();
-        String css = getClass().getResource("/mx/uv/fei/gui/stylesfiles/Styles.css").toExternalForm();
-        dialogPane.getStylesheets().add(css);
-        dialogPane.getStyleClass().add("dialog");
         
         Optional<ButtonType> choice = confirmationMessage.showAndWait();
         if(choice.isPresent() && choice.get() == ButtonType.OK){
@@ -209,7 +196,6 @@ public class ModifyResearchPaneController{
                 ResearchManagerController controller = (ResearchManagerController)loader.getController();
                 controller.setUser(user);
                 controller.loadHeader();
-                controller.loadResearches(0);
             }
             
             Scene scene = new Scene(parent);

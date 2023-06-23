@@ -39,6 +39,7 @@
                </font></TextField>
          </children>
       </Pane>
+      <Pane layoutY="76.0" prefHeight="330.0" prefWidth="54.0" />
       <Pane fx:id="headerPane" prefHeight="70.0" prefWidth="1024.0" />
       <Label layoutX="423.0" layoutY="78.0" text="Crear acitvidad">
          <font>
@@ -49,10 +50,5 @@
          <font>
             <Font size="18.0" />
          </font></TextArea>
-      <Button fx:id="returnButton" layoutX="41.0" layoutY="92.0" mnemonicParsing="false" onAction="#goBack" text="Volver">
-         <font>
-            <Font size="16.0" />
-         </font>
-      </Button>
    </children>
 </Pane>
