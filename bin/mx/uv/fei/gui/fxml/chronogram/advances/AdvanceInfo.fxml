@@ -10,7 +10,6 @@
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.uv.fei.gui.controllers.chronogram.advances.AdvanceInfoController">
    <children>
       <Pane fx:id="headerPane" prefHeight="80.0" prefWidth="1024.0" />
-      <Pane fx:id="toolbarPane" layoutY="102.0" prefHeight="330.0" prefWidth="60.0" />
       <Pane layoutX="78.0" layoutY="88.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="498.0" prefWidth="868.0">
          <children>
             <Label layoutX="34.0" layoutY="277.0" prefHeight="35.0" prefWidth="217.0" text="Archivo entregado:">
@@ -67,5 +66,10 @@
             </Button>
          </children>
       </Pane>
+      <Button fx:id="returnButton" layoutX="23.0" layoutY="88.0" mnemonicParsing="false" onAction="#goBack" text="Volver">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Button>
    </children>
 </Pane>
