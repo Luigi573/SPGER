@@ -42,6 +42,8 @@ public class CreateActivityController{
     
     @FXML
     private void createActivity(ActionEvent event) {
+        ActivityDAO activityDAO = new ActivityDAO();
+        
         if(startDatePicker.getValue() != null && dueDatePicker.getValue() != null){
             Date startDate = Date.valueOf(startDatePicker.getValue());
             Date dueDate = Date.valueOf(dueDatePicker.getValue());
@@ -53,18 +55,20 @@ public class CreateActivityController{
             activity.setDueDate(dueDate);
             activity.setResearchId(researchId);
 
-            ActivityDAO activityDAO = new ActivityDAO();
-
             if(!activityDAO.isBlank(activity)){
                 if(activityDAO.isValidTitle(activity)){
-                    try{
-                        if(activityDAO.addActivity(activity) > 0){
-                            new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.INFORMATION, "Mensaje de éxito", "Actividad creada exitosamente");
-                            
-                            goBack(event);
+                    if(activityDAO.isValidDate(activity)){
+                        try{
+                            if(activityDAO.addActivity(activity) > 0){
+                                new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.INFORMATION, "Mensaje de éxito", "Actividad creada exitosamente");
+
+                                goBack(event);
+                            }
+                        }catch(DataInsertionException exception){
+                            new AlertPopUpGenerator().showConnectionErrorMessage();
                         }
-                    }catch(DataInsertionException exception){
-                        new AlertPopUpGenerator().showConnectionErrorMessage();
+                    }else{
+                        new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.WARNING, "No se puede crear la actividad", "La fecha de inicio no puede ser mayor a la fecha fin y la fecha de inicio no puede ser anterior a la fecha actual");
                     }
                 }else{
                     new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.WARNING, "No se puede crear la actividad", "El título es demasiado largo");
