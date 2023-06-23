@@ -58,16 +58,22 @@ SET FOREIGN_KEY_CHECKS = 1;
 
 
 SET FOREIGN_KEY_CHECKS = 0;
-TRUNCATE Usuarios;
-TRUNCATE Estudiantes;
-TRUNCATE Profesores;
-TRUNCATE Directores;
-TRUNCATE ResponsablesCA;
-TRUNCATE JefesCarrera;
-TRUNCATE Cursos;
-TRUNCATE EstudiantesCurso;
+TRUNCATE Actividades;
 TRUNCATE Anteproyectos;
+TRUNCATE Archivos;
+TRUNCATE ArchivosActividad;
+TRUNCATE Avances;
+TRUNCATE CuerposAcademicos;
+TRUNCATE Cursos;
+TRUNCATE Directores;
+TRUNCATE Estudiantes;
+TRUNCATE EstudiantesCurso;
+TRUNCATE JefesCarrera;
+TRUNCATE LGAC;
 TRUNCATE PeriodosEscolares;
+TRUNCATE Profesores;
+TRUNCATE ResponsablesCA;
+TRUNCATE Usuarios;
 SET FOREIGN_KEY_CHECKS = 1;
 
 
