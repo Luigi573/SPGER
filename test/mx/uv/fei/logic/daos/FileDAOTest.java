@@ -1,23 +1,27 @@
 package mx.uv.fei.logic.daos;
 
-import mx.uv.fei.dataaccess.DataBaseManager;
-import mx.uv.fei.logic.domain.File;
-import mx.uv.fei.logic.exceptions.DataInsertionException;
-import mx.uv.fei.logic.exceptions.DataRetrievalException;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Test;
-import static org.junit.Assert.*;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.ResultSet;
-import java.util.ArrayList;
-import mx.uv.fei.logic.domain.Activity;
-import mx.uv.fei.logic.domain.statuses.ActivityStatus;
 import org.junit.Rule;
+import org.junit.Test;
 import org.junit.rules.ExpectedException;
+
+import mx.uv.fei.dataaccess.DataBaseManager;
+import mx.uv.fei.logic.domain.Activity;
+import mx.uv.fei.logic.domain.File;
+import mx.uv.fei.logic.domain.statuses.ActivityStatus;
+import mx.uv.fei.logic.exceptions.DataInsertionException;
+import mx.uv.fei.logic.exceptions.DataRetrievalException;
 
 public class FileDAOTest {
     private static DataBaseManager dataBaseManager;

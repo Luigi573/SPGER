@@ -4,12 +4,22 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
 
-<Pane fx:id="pKGALListElement" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="52.0" prefWidth="510.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.uv.fei.gui.fxcontrollers.manageKGAL.KGALListElementController">
+<Pane fx:id="pKGALListElement" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="880.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.uv.fei.gui.controllers.kgal.KGALListElementController">
    <children>
-      <Label fx:id="lKGALID" layoutX="14.0" layoutY="18.0" prefHeight="17.0" prefWidth="144.0" text="ID:" />
-      <Label fx:id="lKGALDescription" layoutX="86.0" layoutY="18.0" prefHeight="17.0" prefWidth="407.0" text="Descripción:" />
-      <Button fx:id="btnUpdate" layoutX="426.0" layoutY="14.0" mnemonicParsing="false" onAction="#switchToUpdateKGALScene" text="Modificar" />
-      <Separator layoutX="-32.0" layoutY="52.0" prefHeight="2.0" prefWidth="557.0" />
+      <Label fx:id="lKGALID" layoutX="14.0" layoutY="25.0" prefHeight="30.0" prefWidth="63.0" text="ID:">
+         <font>
+            <Font size="20.0" />
+         </font></Label>
+      <Label fx:id="lKGALDescription" layoutX="100.0" layoutY="21.0" prefHeight="38.0" prefWidth="645.0" text="Descripción:">
+         <font>
+            <Font size="20.0" />
+         </font></Label>
+      <Button fx:id="btnUpdate" layoutX="756.0" layoutY="18.0" mnemonicParsing="false" onAction="#switchToUpdateKGALScene" text="Modificar">
+         <font>
+            <Font size="20.0" />
+         </font></Button>
+      <Separator layoutY="80.0" prefHeight="2.0" prefWidth="900.0" />
    </children>
 </Pane>

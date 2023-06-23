@@ -1,5 +1,6 @@
 package mx.uv.fei.logic.daos;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.ResultSet;

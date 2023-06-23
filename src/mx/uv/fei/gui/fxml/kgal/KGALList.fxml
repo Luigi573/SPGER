@@ -8,7 +8,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.uv.fei.gui.fxcontrollers.manageKGAL.KGALListController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.uv.fei.gui.controllers.kgal.KGALListController">
    <children>
       <Button fx:id="btnNewKGAL" layoutX="816.0" layoutY="537.0" mnemonicParsing="false" onAction="#switchToCreateNewKGALScene" text="Crear nueva LGAC">
          <font>
@@ -18,9 +18,9 @@
          <font>
             <Font size="18.0" />
          </font></Button>
-      <ScrollPane hbarPolicy="NEVER" layoutX="67.0" layoutY="194.0" prefHeight="233.0" prefWidth="717.0">
+      <ScrollPane hbarPolicy="NEVER" layoutX="70.0" layoutY="198.0" prefHeight="327.0" prefWidth="885.0">
         <content>
-            <VBox fx:id="vBoxKGALList" prefHeight="180.0" prefWidth="522.0" />
+            <VBox fx:id="vBoxKGALList" prefHeight="325.0" prefWidth="883.0" />
         </content>
       </ScrollPane>
       <TextField fx:id="tfSearch" layoutX="74.0" layoutY="145.0" prefHeight="39.0" prefWidth="799.0">
@@ -31,7 +31,7 @@
          <font>
             <Font size="18.0" />
          </font></Button>
-      <Pane prefHeight="100.0" prefWidth="1024.0" />
+      <Pane fx:id="headerPane" prefHeight="100.0" prefWidth="1024.0" />
       <Text layoutX="-3.0" layoutY="133.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Administrar Líneas de Generación y Administración de Conocimiento" textAlignment="CENTER" wrappingWidth="1024.6692810058594">
          <font>
             <Font size="30.0" />

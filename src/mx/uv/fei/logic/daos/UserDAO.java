@@ -123,5 +123,26 @@ public class UserDAO implements IUserDAO{
 
         return result;
     }
+    @Override
+    public boolean hasUsersInTheDatabase() throws DataRetrievalException{
+        try {
+            Statement statement = dataBaseManager.getConnection().createStatement();
+            String query = "SELECT idUsuario FROM Usuarios";
+            ResultSet resultSet = statement.executeQuery(query);
+            if(resultSet.next()){
+                resultSet.close();
+                return true;
+            }
+
+            resultSet.close();
+            dataBaseManager.getConnection().close();
+        }catch(SQLException e){
+            throw new DataRetrievalException("Error al recuperar la información. Verifique su conexión e intentelo de nuevo");
+        }finally{
+            dataBaseManager.closeConnection();
+        }
+
+        return false;
+    }
     
 }

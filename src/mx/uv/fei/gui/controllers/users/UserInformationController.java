@@ -1,8 +1,13 @@
 package mx.uv.fei.gui.controllers.users;
 
+import java.util.Optional;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.Alert.AlertType;
 import mx.uv.fei.gui.AlertPopUpGenerator;
@@ -21,6 +26,8 @@ public class UserInformationController{
 
     @FXML
     private Label alternateEmailLabel;
+    @FXML
+    private DialogPane dialogPane;
     @FXML
     private Button editButton;
     @FXML
@@ -50,10 +57,22 @@ public class UserInformationController{
     private void sendEmailWithItsPasswordButtonController(ActionEvent event){
         String userPassword = new PasswordAndEmailMaker().securePasswordMaker();
         try{
-            new UserDAO().updatePassword(userPassword, user.getUserId());
-            new PasswordAndEmailMaker().sendPassword(getEmail(), userPassword);
-            new PasswordAndEmailMaker().sendPassword(getAlternateEmail(), userPassword);
-            new AlertPopUpGenerator().showCustomMessage(AlertType.INFORMATION, "Éxito", "Correo enviado exitosamente");
+            Alert confirmationMessage = new Alert(Alert.AlertType.CONFIRMATION);        
+            confirmationMessage.setHeaderText("Mandar Correo");
+            confirmationMessage.setContentText("¿Está seguro de que quiere generar una contraseña para el usuario seleccionado y mandarsela por correo?");
+
+            dialogPane = confirmationMessage.getDialogPane();
+            String css = getClass().getResource("/mx/uv/fei/gui/stylesfiles/Styles.css").toExternalForm();
+            dialogPane.getStylesheets().add(css);
+            dialogPane.getStyleClass().add("dialog");
+
+            Optional<ButtonType> choice = confirmationMessage.showAndWait();
+            if(choice.isPresent() && choice.get() == ButtonType.OK){
+                new UserDAO().updatePassword(userPassword, user.getUserId());
+                new PasswordAndEmailMaker().sendPassword(getEmail(), userPassword);
+                new PasswordAndEmailMaker().sendPassword(getAlternateEmail(), userPassword);
+                new AlertPopUpGenerator().showCustomMessage(AlertType.INFORMATION, "Éxito", "Correo enviado exitosamente");
+            }
         }catch(DataInsertionException e){
             new AlertPopUpGenerator().showConnectionErrorMessage();
         }

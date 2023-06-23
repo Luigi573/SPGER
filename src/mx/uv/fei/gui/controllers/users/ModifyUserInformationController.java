@@ -339,7 +339,7 @@ public class ModifyUserInformationController{
             matricleOrStaffNumberPattern = Pattern.compile("^[z][S][0-9]{8}$");
             emailPattern = Pattern.compile("^(.+)@estudiantes.uv.mx$");
         }else{
-            matricleOrStaffNumberPattern = Pattern.compile("^[0-9]{1,}$");
+            matricleOrStaffNumberPattern = Pattern.compile("^[0-9]{1,9}$");
             emailPattern = Pattern.compile("^(.+)@uv.mx$");
         }
 
