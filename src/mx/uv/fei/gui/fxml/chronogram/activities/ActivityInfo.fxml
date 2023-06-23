@@ -90,7 +90,7 @@
                         </Label>
                         <ScrollPane hbarPolicy="NEVER" layoutX="16.0" layoutY="62.0" prefHeight="181.0" prefWidth="791.0">
                            <content>
-                              <TextArea fx:id="commentTextArea" prefHeight="175.0" prefWidth="785.0" />
+                              <TextArea fx:id="commentTextArea" prefHeight="179.0" prefWidth="790.0" />
                            </content>
                         </ScrollPane>
                         <ScrollPane hbarPolicy="NEVER" layoutX="17.0" layoutY="294.0" prefHeight="140.0" prefWidth="792.0">

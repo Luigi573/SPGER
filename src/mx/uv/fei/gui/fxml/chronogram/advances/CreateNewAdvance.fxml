@@ -11,52 +11,52 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.uv.fei.gui.controllers.chronogram.advances.CreateNewAdvanceController">
    <children>
-      <Label layoutX="227.0" layoutY="152.0" prefHeight="45.0" prefWidth="93.0" text="Título:">
+      <Label layoutX="125.0" layoutY="144.0" prefHeight="45.0" prefWidth="93.0" text="Título:">
          <font>
             <Font size="30.0" />
          </font>
       </Label>
-      <TextField fx:id="advanceTitleTextField" layoutX="329.0" layoutY="157.0" prefHeight="35.0" prefWidth="483.0">
+      <TextField fx:id="advanceTitleTextField" layoutX="212.0" layoutY="149.0" prefHeight="35.0" prefWidth="695.0">
          <font>
             <Font size="16.0" />
          </font>
       </TextField>
-      <Label layoutX="227.0" layoutY="218.0" prefHeight="35.0" prefWidth="144.0" text="Comentarios:">
+      <Label layoutX="125.0" layoutY="197.0" prefHeight="35.0" prefWidth="144.0" text="Comentarios:">
          <font>
             <Font size="24.0" />
          </font>
       </Label>
       <Pane layoutY="76.0" prefHeight="330.0" prefWidth="54.0" />
       <Pane fx:id="headerPane" prefHeight="90.0" prefWidth="1024.0" />
-      <Button fx:id="returnButton" layoutX="221.0" layoutY="109.0" mnemonicParsing="false" onAction="#returnToAdvanceList" text="&lt;-" />
-      <Label layoutX="271.0" layoutY="111.0" text="Volver">
+      <Button fx:id="returnButton" layoutX="125.0" layoutY="108.0" mnemonicParsing="false" onAction="#returnToAdvanceList" text="&lt;-" />
+      <Label layoutX="163.0" layoutY="111.0" text="Volver">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
-      <Label layoutX="428.0" layoutY="97.0" text="Crear Avance">
+      <Label layoutX="423.0" layoutY="88.0" text="Crear Avance">
          <font>
             <Font size="32.0" />
          </font>
       </Label>
-      <ScrollPane hbarPolicy="NEVER" layoutX="221.0" layoutY="253.0" prefHeight="130.0" prefWidth="600.0">
+      <ScrollPane hbarPolicy="NEVER" layoutX="125.0" layoutY="236.0" prefHeight="147.0" prefWidth="782.0">
          <content>
-            <TextArea fx:id="advanceCommentsTextArea" prefHeight="128.0" prefWidth="598.0" wrapText="true" />
+            <TextArea fx:id="advanceCommentsTextArea" prefHeight="145.0" prefWidth="780.0" wrapText="true" />
          </content>
       </ScrollPane>
-      <Button fx:id="createAdvanceButton" layoutX="743.0" layoutY="523.0" mnemonicParsing="false" onAction="#createAdvance" prefHeight="35.0" prefWidth="77.0" text="Crear">
+      <Button fx:id="createAdvanceButton" layoutX="830.0" layoutY="522.0" mnemonicParsing="false" onAction="#createAdvance" prefHeight="35.0" prefWidth="77.0" text="Crear">
          <font>
             <Font size="16.0" />
          </font></Button>
-      <Label layoutX="221.0" layoutY="389.0" prefHeight="35.0" prefWidth="354.0" text="Archivo:">
+      <Label layoutX="122.0" layoutY="407.0" prefHeight="35.0" prefWidth="354.0" text="Archivo:">
          <font>
             <Font size="24.0" />
          </font>
       </Label>
-      <Button fx:id="uploadFileButton" layoutX="743.0" layoutY="389.0" mnemonicParsing="false" onAction="#uploadFileToAdvance" prefHeight="35.0" prefWidth="77.0" text="Subir">
+      <Button fx:id="uploadFileButton" layoutX="830.0" layoutY="407.0" mnemonicParsing="false" onAction="#uploadFileToAdvance" prefHeight="35.0" prefWidth="77.0" text="Subir">
          <font>
             <Font size="16.0" />
          </font></Button>
-      <VBox fx:id="fileVBox" layoutX="221.0" layoutY="421.0" prefHeight="70.0" prefWidth="600.0" />
+      <VBox fx:id="fileVBox" layoutX="117.0" layoutY="444.0" prefHeight="70.0" prefWidth="790.0" />
    </children>
 </Pane>

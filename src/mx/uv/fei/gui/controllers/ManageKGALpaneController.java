@@ -9,7 +9,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import mx.uv.fei.gui.AlertPopUpGenerator;
-import mx.uv.fei.gui.controllers.chronogram.ChronogramController;
 import mx.uv.fei.gui.controllers.kgal.KGALListController;
 import mx.uv.fei.logic.domain.User;
 

@@ -126,6 +126,7 @@ public class MainMenuController{
                     }
                 }
             }catch(DataRetrievalException exception){
+                  ;
                 new AlertPopUpGenerator().showConnectionErrorMessage();
             }
         }

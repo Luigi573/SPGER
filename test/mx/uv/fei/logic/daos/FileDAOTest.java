@@ -1,23 +1,27 @@
 package mx.uv.fei.logic.daos;
 
-import mx.uv.fei.dataaccess.DataBaseManager;
-import mx.uv.fei.logic.domain.File;
-import mx.uv.fei.logic.exceptions.DataInsertionException;
-import mx.uv.fei.logic.exceptions.DataRetrievalException;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Test;
-import static org.junit.Assert.*;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.ResultSet;
-import java.util.ArrayList;
-import mx.uv.fei.logic.domain.Activity;
-import mx.uv.fei.logic.domain.statuses.ActivityStatus;
 import org.junit.Rule;
+import org.junit.Test;
 import org.junit.rules.ExpectedException;
+
+import mx.uv.fei.dataaccess.DataBaseManager;
+import mx.uv.fei.logic.domain.Activity;
+import mx.uv.fei.logic.domain.File;
+import mx.uv.fei.logic.domain.statuses.ActivityStatus;
+import mx.uv.fei.logic.exceptions.DataInsertionException;
+import mx.uv.fei.logic.exceptions.DataRetrievalException;
 
 public class FileDAOTest {
     private static DataBaseManager dataBaseManager;
@@ -101,24 +105,7 @@ public class FileDAOTest {
             
         } catch (SQLException exception) {
             fail("El test falló al crear la conexión entre la actividad y el archivo precargados, no se pudo conectar a la BD");
-        }
-        
-//        String activityFileQuery = "SELECT IdArchivoActividad FROM ArchivosActividad ORDER BY IdArchivoActividad DESC";
-//        
-//        try {
-//            Statement statement = dataBaseManager.getConnection().createStatement();
-//            ResultSet resultSet = statement.executeQuery(activityFileQuery);
-//            
-//            if (resultSet.next()) {
-//                nextAvailableActivityFileId = resultSet.getInt(1) + 1;
-//                System.out.println("El próximo id disponible para archivo de actividad es: " + nextAvailableActivityFileId);
-//            }
-//        } catch (SQLException exception) {
-//            exception.printStackTrace();
-//            fail("El test falló al crear el archivo de la actividad, no se pudo conectar a la BD.");
-//        }
-        
-        
+        }       
     }
     
     @AfterClass

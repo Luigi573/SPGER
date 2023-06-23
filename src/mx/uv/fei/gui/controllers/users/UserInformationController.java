@@ -58,8 +58,8 @@ public class UserInformationController{
         String userPassword = new PasswordAndEmailMaker().securePasswordMaker();
         try{
             Alert confirmationMessage = new Alert(Alert.AlertType.CONFIRMATION);        
-            confirmationMessage.setHeaderText("Guardar cambios");
-            confirmationMessage.setContentText("¿Está seguro que desea guardar las modificaciones del anteproyecto?");
+            confirmationMessage.setHeaderText("Mandar Correo");
+            confirmationMessage.setContentText("¿Está seguro de que quiere generar una contraseña para el usuario seleccionado y mandarsela por correo?");
 
             dialogPane = confirmationMessage.getDialogPane();
             String css = getClass().getResource("/mx/uv/fei/gui/stylesfiles/Styles.css").toExternalForm();
