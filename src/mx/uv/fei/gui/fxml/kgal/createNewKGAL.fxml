@@ -11,7 +11,7 @@
 <AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.uv.fei.gui.controllers.kgal.CreateNewKGALController">
    <children>
       <Pane fx:id="headerPane" prefHeight="100.0" prefWidth="1024.0" />
-      <TextField id="tfDescription" fx:id="tfDescription" layoutX="404.0" layoutY="226.0" prefHeight="44.0" prefWidth="452.0" promptText="max. 40 caracteres">
+      <TextField id="descriptionTextField" fx:id="descriptionTextField" layoutX="404.0" layoutY="226.0" prefHeight="44.0" prefWidth="452.0" promptText="max. 40 caracteres">
          <font>
             <Font size="30.0" />
          </font></TextField>

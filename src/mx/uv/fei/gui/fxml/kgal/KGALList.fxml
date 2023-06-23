@@ -20,10 +20,10 @@
          </font></Button>
       <ScrollPane hbarPolicy="NEVER" layoutX="70.0" layoutY="198.0" prefHeight="327.0" prefWidth="885.0">
         <content>
-            <VBox fx:id="vBoxKGALList" prefHeight="325.0" prefWidth="883.0" />
+            <VBox fx:id="kgalListVBox" prefHeight="325.0" prefWidth="883.0" />
         </content>
       </ScrollPane>
-      <TextField fx:id="tfSearch" layoutX="74.0" layoutY="145.0" prefHeight="39.0" prefWidth="799.0">
+      <TextField fx:id="searchTextField" layoutX="74.0" layoutY="145.0" prefHeight="39.0" prefWidth="799.0">
          <font>
             <Font size="18.0" />
          </font></TextField>

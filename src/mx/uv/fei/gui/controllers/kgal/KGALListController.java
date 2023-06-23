@@ -27,18 +27,18 @@ public class KGALListController {
     @FXML
     private Pane headerPane;
     @FXML 
-    private TextField tfSearch;
+    private TextField searchTextField;
     @FXML
-    private VBox vBoxKGALList;
+    private VBox kgalListVBox;
     
     @FXML
     private void searchKGALByDescription (ActionEvent event) {
-        vBoxKGALList.getChildren().clear();
-        vBoxKGALList.setSpacing(0);
+        kgalListVBox.getChildren().clear();
+        kgalListVBox.setSpacing(0);
         
         try {
             KGALDAO kgalDAO = new KGALDAO();
-            ArrayList<KGAL> kgalList = kgalDAO.getKGALListByDescription(tfSearch.getText());
+            ArrayList<KGAL> kgalList = kgalDAO.getKGALListByDescription(searchTextField.getText());
             for (KGAL kgal: kgalList) {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/kgal/KGALListElement.fxml"));
                 
@@ -47,7 +47,7 @@ public class KGALListController {
                     KGALListElementController controller = (KGALListElementController)loader.getController();
                     controller.setUser(user);
                     
-                    vBoxKGALList.getChildren().add(pane);
+                    kgalListVBox.getChildren().add(pane);
                 }catch(IOException exception){
                     new AlertPopUpGenerator().showMissingFilesMessage();
                 }
@@ -114,7 +114,7 @@ public class KGALListController {
     }
     
     public void loadKgalList(){
-        vBoxKGALList.setSpacing(0);
+        kgalListVBox.setSpacing(0);
         
         try {
             KGALDAO kgalDAO = new KGALDAO();
@@ -129,7 +129,7 @@ public class KGALListController {
                     controller.setKGAL(kgal);
                     controller.setUser(user);
                     
-                    vBoxKGALList.getChildren().add(pane);
+                    kgalListVBox.getChildren().add(pane);
                 } catch (IOException exception) {
                     new AlertPopUpGenerator().showMissingFilesMessage();
                 }

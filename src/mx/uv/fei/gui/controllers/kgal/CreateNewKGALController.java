@@ -24,12 +24,12 @@ public class CreateNewKGALController {
     @FXML
     private Pane headerPane;
     @FXML
-    private TextField tfDescription;
+    private TextField descriptionTextField;
 
     @FXML
     public void createNewKGAL(ActionEvent event) {
         KGAL newKgal = new KGAL();
-        newKgal.setDescription(tfDescription.getText());
+        newKgal.setDescription(descriptionTextField.getText());
         
         try {
             KGALDAO kgalDAO = new KGALDAO();
@@ -43,7 +43,7 @@ public class CreateNewKGALController {
             new AlertPopUpGenerator().showConnectionErrorMessage();
         }
         
-        tfDescription.clear();
+        descriptionTextField.clear();
     }
 
     @FXML

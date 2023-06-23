@@ -112,7 +112,7 @@ public class ModifyActivityController{
             new AlertPopUpGenerator().showMissingFilesMessage();
         }
     }
-    public void setAcitivty(Activity activity){
+    public void setActivity(Activity activity){
         this.activity = activity;
         startDatePicker.setValue(activity.getStartDate().toLocalDate());
         dueDatePicker.setValue(activity.getDueDate().toLocalDate());

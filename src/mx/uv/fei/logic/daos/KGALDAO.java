@@ -1,6 +1,5 @@
 package mx.uv.fei.logic.daos;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -49,13 +48,12 @@ public class KGALDAO implements IKGALDAO {
         ArrayList<KGAL> kgalList = new ArrayList();
         String query = "select * from LGAC";
         try {
-            Connection connection = dataBaseManager.getConnection();
-            Statement statement = connection.createStatement();
-            ResultSet rs = statement.executeQuery(query);
-            while(rs.next()) {
+            Statement statement = dataBaseManager.getConnection().createStatement();
+            ResultSet resultSet = statement.executeQuery(query);
+            while(resultSet.next()) {
                 KGAL kgal = new KGAL();
-                kgal.setKgalID(rs.getInt("IdLGAC"));
-                kgal.setDescription(rs.getString("descripción"));
+                kgal.setKgalID(resultSet.getInt("IdLGAC"));
+                kgal.setDescription(resultSet.getString("descripción"));
                 
                 kgalList.add(kgal);
             }
@@ -70,16 +68,13 @@ public class KGALDAO implements IKGALDAO {
     public KGAL getKGALByID(int kgalID) throws DataRetrievalException { //Not Used
         String query = "select * from LGAC where IdLGAC=?";
         try {
-            Connection connection = dataBaseManager.getConnection();
-            PreparedStatement statement = connection.prepareStatement(query);
+            PreparedStatement statement = dataBaseManager.getConnection().prepareStatement(query);
             statement.setInt(1, kgalID);
-            ResultSet rs = statement.executeQuery();
+            ResultSet resultSet = statement.executeQuery();
             KGAL kgal = new KGAL();
-            if(rs.next()) {
-                kgal.setKgalID(rs.getInt("IdLGAC"));
-                kgal.setDescription(rs.getString("descripción"));
-            } else {
-                System.out.println("No encontramos ninguna LGAC que coincida con el ID proporcionado.");
+            if(resultSet.next()) {
+                kgal.setKgalID(resultSet.getInt("IdLGAC"));
+                kgal.setDescription(resultSet.getString("descripción"));
             }
             return kgal;            
         } catch (SQLException sql) {
@@ -91,17 +86,14 @@ public class KGALDAO implements IKGALDAO {
     public KGAL getKGALByDescription(String description) throws DataRetrievalException { //Not Used
         String query = "select * from LGAC where descripción=?";
         try {
-            Connection connection = dataBaseManager.getConnection();
-            PreparedStatement statement = connection.prepareStatement(query);
+            PreparedStatement statement = dataBaseManager.getConnection().prepareStatement(query);
             statement.setString(1, description);
             KGAL kgal = new KGAL();
             
-            ResultSet rs = statement.executeQuery();
-            if(rs.next()) {
-                kgal.setKgalID(rs.getInt("IdLGAC"));
-                kgal.setDescription(rs.getString("descripción"));
-            } else {
-                System.out.println("No encontramos ninguna LGAC que coincida con la descripción dada.");
+            ResultSet resultSet = statement.executeQuery();
+            if(resultSet.next()) {
+                kgal.setKgalID(resultSet.getInt("IdLGAC"));
+                kgal.setDescription(resultSet.getString("descripción"));
             }
             return kgal;            
         } catch (SQLException sql) {           
@@ -115,15 +107,14 @@ public class KGALDAO implements IKGALDAO {
         ArrayList<KGAL> kgalList = new ArrayList();
         
         try {
-            Connection connection = dataBaseManager.getConnection();
-            PreparedStatement statement = connection.prepareStatement(query);
+            PreparedStatement statement = dataBaseManager.getConnection().prepareStatement(query);
             statement.setString(1, "%" + description + "%");
             
-            ResultSet rs = statement.executeQuery();
-            while(rs.next()) {
+            ResultSet resultSet = statement.executeQuery();
+            while(resultSet.next()) {
                 KGAL kgal = new KGAL();
-                kgal.setKgalID(rs.getInt("IdLGAC"));
-                kgal.setDescription(rs.getString("descripción"));
+                kgal.setKgalID(resultSet.getInt("IdLGAC"));
+                kgal.setDescription(resultSet.getString("descripción"));
                 
                 kgalList.add(kgal);
             }

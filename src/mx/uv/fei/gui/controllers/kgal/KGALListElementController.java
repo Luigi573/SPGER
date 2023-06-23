@@ -21,13 +21,9 @@ public class KGALListElementController {
     private User user;
     
     @FXML
-    private Button btnUpdate;
+    private Label kgalDescriptionLabel;
     @FXML
-    private Label lKGALDescription;
-    @FXML
-    private Label lKGALID;     
-    @FXML
-    private Pane pKGALListElement;
+    private Label kgalIdLabel;
     
     @FXML
     public void switchToUpdateKGALScene(ActionEvent event) {
@@ -54,8 +50,8 @@ public class KGALListElementController {
     public void setKGAL(KGAL kgal) {
         this.kgal = kgal;
         
-        lKGALDescription.setText(kgal.getDescription());
-        lKGALID.setText("ID: " + kgal.getKgalID());
+        kgalDescriptionLabel.setText(kgal.getDescription());
+        kgalIdLabel.setText("ID: " + kgal.getKgalID());
     }
     
     public void setUser(User user){

@@ -62,17 +62,16 @@ public class AdvanceDAO implements IAdvanceDAO{
         
         String query = "select * from Avances";
         try {
-            Connection connection = dataBaseManager.getConnection();
-            Statement statement = connection.createStatement();
-            ResultSet rs = statement.executeQuery(query);
-            while(rs.next()) {
+            Statement statement = dataBaseManager.getConnection().createStatement();
+            ResultSet resultSet = statement.executeQuery(query);
+            while(resultSet.next()) {
                 Advance advance = new Advance();
-                advance.setAdvanceID(rs.getInt("IdAvances"));
-                advance.setActivityID(rs.getInt("IdActividad"));
-                advance.setFileID(rs.getInt("IdArchivo"));
-                advance.setTitle(rs.getString("título"));
-                advance.setComment(rs.getString("comentario"));
-                advance.setState(rs.getString("estado"));
+                advance.setAdvanceID(resultSet.getInt("IdAvances"));
+                advance.setActivityID(resultSet.getInt("IdActividad"));
+                advance.setFileID(resultSet.getInt("IdArchivo"));
+                advance.setTitle(resultSet.getString("título"));
+                advance.setComment(resultSet.getString("comentario"));
+                advance.setState(resultSet.getString("estado"));
                 
                advancesList.add(advance);
             }
@@ -93,17 +92,17 @@ public class AdvanceDAO implements IAdvanceDAO{
             
             statement.setInt(1, activityId);
             
-            ResultSet rs = statement.executeQuery();
-            while(rs.next()) {
+            ResultSet resultSet = statement.executeQuery();
+            while(resultSet.next()) {
                 Advance advance = new Advance();
-                advance.setAdvanceID(rs.getInt("IdAvance"));
-                advance.setActivityID(rs.getInt("IdActividad"));
-                advance.setTitle(rs.getString("título"));
-                advance.setDate(rs.getDate("fecha"));
-                advance.setComment(rs.getString("comentario"));
-                advance.setFeedback(rs.getString("retroalimentación"));
-                advance.setState(rs.getString("estado"));
-                advance.setFileID(rs.getInt("IdArchivo"));
+                advance.setAdvanceID(resultSet.getInt("IdAvance"));
+                advance.setActivityID(resultSet.getInt("IdActividad"));
+                advance.setTitle(resultSet.getString("título"));
+                advance.setDate(resultSet.getDate("fecha"));
+                advance.setComment(resultSet.getString("comentario"));
+                advance.setFeedback(resultSet.getString("retroalimentación"));
+                advance.setState(resultSet.getString("estado"));
+                advance.setFileID(resultSet.getInt("IdArchivo"));
                 
                advanceList.add(advance);
             }

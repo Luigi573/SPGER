@@ -25,15 +25,11 @@ public class UpdateKGALController {
     private User user;
     
     @FXML
-    private Button btnCancel;
-    @FXML
-    private Button btnSave;
-    @FXML
-    private Label lID;
+    private Label idLabel;
     @FXML
     private Pane headerPane;
     @FXML
-    private TextField tfDescription;
+    private TextField descriptionTextField;
 
     @FXML
     public void initialize() {
@@ -41,7 +37,7 @@ public class UpdateKGALController {
     
     @FXML
     private void updateKGALDescription(ActionEvent event) {
-        String newKgalDescription = tfDescription.getText();
+        String newKgalDescription = descriptionTextField.getText();
         int result = 0;
         KGALDAO kgalDAO = new KGALDAO();
         
@@ -98,8 +94,8 @@ public class UpdateKGALController {
     public void setKGAL(KGAL kgal) {
         this.kgal = kgal;
         
-        tfDescription.setText(kgal.getDescription());
-        lID.setText(Integer.toString(kgal.getKgalID()));
+        descriptionTextField.setText(kgal.getDescription());
+        idLabel.setText(Integer.toString(kgal.getKgalID()));
     }
     
     public void setUser(User user){

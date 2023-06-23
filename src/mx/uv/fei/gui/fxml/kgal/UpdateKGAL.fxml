@@ -15,7 +15,7 @@
             <Font name="System Bold" size="38.0" />
          </font>
       </Text>
-      <TextField id="tfDescription" fx:id="tfDescription" layoutX="351.0" layoutY="288.0" prefHeight="65.0" prefWidth="624.0" promptText="max. 40 caracteres">
+      <TextField id="descriptionTextField" fx:id="descriptionTextField" layoutX="351.0" layoutY="288.0" prefHeight="65.0" prefWidth="624.0" promptText="max. 40 caracteres">
          <font>
             <Font size="30.0" />
          </font></TextField>
@@ -35,7 +35,7 @@
          <font>
             <Font size="30.0" />
          </font></Button>
-      <Label fx:id="lID" layoutX="483.0" layoutY="161.0" text="ID del LGAC">
+      <Label fx:id="idLabel" layoutX="483.0" layoutY="161.0" text="ID del LGAC">
          <font>
             <Font name="System Bold" size="36.0" />
          </font></Label>

@@ -91,7 +91,7 @@ public class ActivityInfoController{
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/activities/ModifyActivity.fxml"));
             Parent parent = loader.load();
             ModifyActivityController controller = (ModifyActivityController)loader.getController();
-            controller.setAcitivty(activity);
+            controller.setActivity(activity);
             
             if(user != null){
                 controller.setUser(user);
@@ -154,7 +154,6 @@ public class ActivityInfoController{
                 try{
                     FileDAO fileDAO = new FileDAO();
                     
-                    System.out.println("Deleting file : " + file.getPath());
                     file.delete();
                     fileDAO.removeActivityFile(file.getPath());
                 }catch(DataDeletionException exception){
