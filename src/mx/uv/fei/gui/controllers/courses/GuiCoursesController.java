@@ -85,7 +85,6 @@ public class GuiCoursesController{
         }
     }
 
-    //This method only should be used by the CourseInformationController Class.
     public void openModifyCoursePane(CourseInformationController courseInformationController){
         CourseDAO courseDAO = new CourseDAO();
         try {
@@ -122,7 +121,7 @@ public class GuiCoursesController{
             new AlertPopUpGenerator().showConnectionErrorMessage();
         }
     }
-    //This method only should be used by the CourseController Class.
+    
     public void openPaneWithCourseInformation(String courseNRC){
         CourseDAO courseDAO = new CourseDAO();
         try{

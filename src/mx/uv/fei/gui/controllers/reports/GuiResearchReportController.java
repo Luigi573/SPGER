@@ -175,9 +175,7 @@ public class GuiResearchReportController {
             inputStream.close();
             reportFinale.close();
             
-        }catch(IOException ioe){
-            new AlertPopUpGenerator().showMissingFilesMessage();
-        }catch(JRException jre){
+        }catch(IOException | JRException ioe){
             new AlertPopUpGenerator().showMissingFilesMessage();
         }catch(DataRetrievalException e){
             new AlertPopUpGenerator().showConnectionErrorMessage();
@@ -245,7 +243,7 @@ public class GuiResearchReportController {
         }
     }
 
-    //This method only should be executed by the ResearchItemController Class, do not execute  method in another class.
+    
     public void setElementToSelectedResearchesVBox(String selectedResearchTitle){
         try{
             FXMLLoader selectedResearchItemControllerLoader = new FXMLLoader(
@@ -261,7 +259,7 @@ public class GuiResearchReportController {
             new AlertPopUpGenerator().showMissingFilesMessage();
         }
     }
-    //This method only should be executed by the SelectedResearchItemController Class, do not execute  method in another class.
+    
     public void setElementToResearchesVBox(String researchTitle){
         try{
             FXMLLoader researchItemControllerLoader = new FXMLLoader(
@@ -277,7 +275,7 @@ public class GuiResearchReportController {
             new AlertPopUpGenerator().showMissingFilesMessage();
         }
     }
-    //This method only should be executed by the ResearchItemController Class, do not execute  method in another class.
+    
     public void removeElementFromResearchesVBox(String researchItemControllerTitle){
         int researchesVBoxIndexForRemove = 0;
         for(Node hbox : ((VBox)researchesVBox).getChildren()){
@@ -289,7 +287,7 @@ public class GuiResearchReportController {
             researchesVBoxIndexForRemove++;
         }
     }
-    //This method only should be executed by the SelectedResearchItemController Class, do not execute  method in another class.
+    
     public void removeElementFromSelectedResearchesVBox(String selectedResearchItemControllerTitle){
         int selectedResearchesVBoxIndexForRemove = 0;
         for(Node hbox : ((VBox)selectedResearchesVBox).getChildren()){
@@ -301,11 +299,11 @@ public class GuiResearchReportController {
             selectedResearchesVBoxIndexForRemove++;
         }
     }
-    //This method only should be executed by the ResearchItemController Class, do not execute  method in another class.
+    
     public VBox getResearchesVBox(){
         return researchesVBox;
     }
-    //This method only should be executed by the SelectedResearchItemController Class, do not execute  method in another class.
+    
     public VBox getSelectedResearchesVBox(){
         return selectedResearchesVBox;
     }
