@@ -41,6 +41,7 @@ import mx.uv.fei.logic.exceptions.DataRetrievalException;
 public class ActivityInfoController{
     private Activity activity;
     private ArrayList<File> filesList;
+    private boolean isModifyingDelivery;
     private Course course;
     private User user;
     
@@ -78,6 +79,7 @@ public class ActivityInfoController{
     @FXML
     public void initialize() {
         filesList = new ArrayList();
+        isModifyingDelivery = false;
     }
     
     @FXML
@@ -132,7 +134,6 @@ public class ActivityInfoController{
     @FXML
     private void deliverActivity(ActionEvent event) {
         if(commentTextArea.getText() != null){
-            int fileResult;
             int successfulSaves = 0;
             ArrayList<String> failedSaves = new ArrayList<>();
             
@@ -144,18 +145,18 @@ public class ActivityInfoController{
                 }
             }
             
-            String newFilePath = activityDirectoryPath + "\\";
+            //String newFilePath = activityDirectoryPath + "\\";
             //int uniqueFilePathComponent;
-            File fileCopy;
-            boolean willSaveFile = true;
+            //File fileCopy;
+            //boolean willSaveFile = true;
             for (File file : filesList) {
-                newFilePath = newFilePath + file.getName();
-                fileCopy = new File(newFilePath);
+                //newFilePath = newFilePath + file.getName();
+                //fileCopy = new File(newFilePath);
                         
                 if (file != null) {
                     FileDAO fileDAO = new FileDAO();
                     try {
-                        fileResult = fileDAO.addActivityFile(file.getPath(), activity.getId());
+                        int fileResult = fileDAO.addActivityFile(file.getPath(), activity.getId());
                         
                         if (fileResult > 0) {
                             successfulSaves = successfulSaves + 1;

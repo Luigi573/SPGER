@@ -1,9 +1,11 @@
 package mx.uv.fei.logic.daos;
 
 import java.util.ArrayList;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import mx.uv.fei.dataaccess.DataBaseManager;
 import mx.uv.fei.logic.daosinterfaces.IActivityDAO;
 import mx.uv.fei.logic.domain.Activity;
@@ -169,7 +171,7 @@ public class ActivityDAO implements IActivityDAO{
     }
     
     public boolean isValidDate(Activity activity){
-        return activity.getStartDate().compareTo(activity.getDueDate()) <= 0;
+        return activity.getStartDate().compareTo(activity.getDueDate()) <= 0 && activity.getStartDate().compareTo(Date.valueOf(LocalDate.now())) > 0;
     }
     
     public boolean isValidTitle(Activity activity){
