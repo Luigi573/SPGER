@@ -144,7 +144,7 @@ public class KGALDAO implements IKGALDAO {
     }
     
     public boolean isValidDescription(KGAL kgal){
-        return kgal.getDescription().length() < 40;
+        return kgal.getDescription().length() < 100;
     }
     
     public boolean isBlank(KGAL kgal){

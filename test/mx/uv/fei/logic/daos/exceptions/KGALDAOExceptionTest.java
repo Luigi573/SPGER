@@ -169,7 +169,7 @@ public class KGALDAOExceptionTest {
      * Test of updateKGALDescription method, of class KGALDAO.
      */
     @Test
-    public void testUpdateKGALDescriptionException() throws DataRetrievalException {
+    public void testUpdateKGALDescriptionException() throws DataInsertionException {
         System.out.println("updateKGALDescription SQLException");
         
         dataRetrievalExceptionRule.expect(DataRetrievalException.class);

@@ -194,7 +194,7 @@ public class KGALDAOTest {
      * Test of updateKGALDescription method, of class KGALDAO.
      */
     @Test
-    public void testUpdateKGALDescriptionSuccess() throws DataRetrievalException {
+    public void testUpdateKGALDescriptionSuccess() throws DataInsertionException {
         System.out.println("updateKGALDescription");
         String description = "Esta LGAC ha sido modificada";
         KGALDAO instance = new KGALDAO();
@@ -203,8 +203,8 @@ public class KGALDAOTest {
         assertEquals(expResult, result);
     }
     
-    @Test (expected = DataRetrievalException.class)
-    public void testUpdateKGALDescriptionFail() throws DataRetrievalException {
+    @Test (expected = DataInsertionException.class)
+    public void testUpdateKGALDescriptionFail() throws DataInsertionException {
         System.out.println("updateKGALDescription Fail");
         String description = "Este LGAC no se modificará";
         KGALDAO instance = new KGALDAO();

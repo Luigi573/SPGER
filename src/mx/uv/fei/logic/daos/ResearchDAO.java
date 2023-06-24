@@ -110,7 +110,7 @@ public class ResearchDAO implements IResearchDAO{
                     if(!resultSet.wasNull()){
                         director.setName(resultSet.getString("up" + i + ".nombre"));
                         director.setFirstSurname(resultSet.getString("up" + i + ".apellidoPaterno"));
-                        director.setSecondSurname(resultSet.getString("up" + i + ".apellidoPaterno"));
+                        director.setSecondSurname(resultSet.getString("up" + i + ".apellidoMaterno"));
                         
                         research.addDirector(director);
                     }
@@ -628,6 +628,7 @@ public class ResearchDAO implements IResearchDAO{
         
         if(research.getDirectors().size() >= 2){
             for(int i = 1; i < research.getDirectors().size(); i++){
+                
                 result = research.getDirectors().get(i).equals(research.getDirectors().get(i - 1));
             }
         }

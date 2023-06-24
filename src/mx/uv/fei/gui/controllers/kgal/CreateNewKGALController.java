@@ -34,7 +34,7 @@ public class CreateNewKGALController {
         try {
             KGALDAO kgalDAO = new KGALDAO();
             
-            if(kgalDAO.isBlank(newKgal)){
+            if(!kgalDAO.isBlank(newKgal)){
                 if(kgalDAO.isValidDescription(newKgal)){
                     if(kgalDAO.addKGAL(newKgal) > 0) {
                         switchToKGALListScene(event);

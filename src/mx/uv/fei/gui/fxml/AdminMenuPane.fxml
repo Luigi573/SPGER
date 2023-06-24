@@ -30,7 +30,7 @@
       </Pane>
       <Pane fx:id="mainMenuSpecificPane" layoutX="470.0" layoutY="25.0" prefHeight="250.0" prefWidth="300.0" style="-fx-border-color: black;">
          <children>
-            <Label layoutX="8.0" layoutY="14.0" text="Administrar Usuarios">
+            <Label layoutX="31.0" layoutY="14.0" text="Administrar Usuarios">
                <font>
                   <Font name="System Bold" size="24.0" />
                </font>

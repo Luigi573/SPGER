@@ -9,4 +9,13 @@ public class Director extends Professor{
     public int getDirectorId(){
         return id;
     }
+    
+    @Override
+    public boolean equals(Object obj){
+        if(obj instanceof Director director){
+            return director.getStaffNumber() == this.staffNumber;
+        }
+        
+        return false;
+    }
 }

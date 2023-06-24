@@ -1,8 +1,9 @@
 package mx.uv.fei.gui.controllers;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.sql.Date;
 import java.util.ArrayList;
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -95,7 +96,7 @@ public class MainMenuController{
                         CourseHBoxPaneController controller = (CourseHBoxPaneController)loader.getController();
                         controller.setUser(user);
                         controller.setCourse(course);
-
+                        
                         courseHBox.getChildren().add(pane);
                     }catch(IOException exception){
                         new AlertPopUpGenerator().showMissingFilesMessage();
@@ -110,15 +111,15 @@ public class MainMenuController{
                 courseList = courseDAO.getCourses();
                 
                 for(Course course: courseList){
-                    if(Professor.class.isAssignableFrom(user.getClass()) && course.getProfessor().equals(user)){
+                    if(Professor.class.isAssignableFrom(user.getClass()) && course.getProfessor().equals(user) && course.getScholarPeriod().getEndDate().compareTo(Date.valueOf(LocalDate.now())) > 0){
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/CourseHBoxPane.fxml"));
-
+                        
                         try{
                             Pane pane = loader.load();
                             CourseHBoxPaneController controller = (CourseHBoxPaneController)loader.getController();
                             controller.setUser(user);
                             controller.setCourse(course);
-
+                            
                             courseHBox.getChildren().add(pane);
                         }catch(IOException exception){
                             new AlertPopUpGenerator().showMissingFilesMessage();
@@ -126,25 +127,7 @@ public class MainMenuController{
                     }
                 }
             }catch(DataRetrievalException exception){
-                  ;
                 new AlertPopUpGenerator().showConnectionErrorMessage();
-            }
-        }
-        
-        for(Course course: courseList){
-            if(Professor.class.isAssignableFrom(user.getClass()) && course.getProfessor().equals(user)){
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/CourseHBoxPane.fxml"));
-
-                try{
-                    Pane pane = loader.load();
-                    CourseHBoxPaneController controller = (CourseHBoxPaneController)loader.getController();
-                    controller.setUser(user);
-                    controller.setCourse(course);
-
-                    courseHBox.getChildren().add(pane);
-                }catch(IOException exception){
-                    new AlertPopUpGenerator().showMissingFilesMessage();
-                }
             }
         }
     }    

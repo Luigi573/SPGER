@@ -123,6 +123,21 @@ TextFlow {
     -fx-border-color:#585c61;
 }
 
+.tab-pane {
+	-fx-background-color: #282b30;
+}
+
+.tab-pane .tab {
+	-fx-background-color: #1e2124;
+}
+
+.tab-header-area .tab-header-background {
+    -fx-background-color: #282b30;
+}
+.tab-pane .tab:selected {
+   -fx-background-color: #282b30;
+}
+
 .text-area {
     -fx-background-color:#424549;
 }
