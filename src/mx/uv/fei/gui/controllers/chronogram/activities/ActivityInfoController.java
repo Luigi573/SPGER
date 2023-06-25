@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -33,6 +32,7 @@ import mx.uv.fei.logic.daos.FileDAO;
 import mx.uv.fei.logic.domain.Activity;
 import mx.uv.fei.logic.domain.Advance;
 import mx.uv.fei.logic.domain.Course;
+import mx.uv.fei.logic.domain.Director;
 import mx.uv.fei.logic.domain.Professor;
 import mx.uv.fei.logic.domain.User;
 import mx.uv.fei.logic.domain.statuses.ActivityStatus;
@@ -44,7 +44,8 @@ import org.apache.commons.io.FileUtils;
 public class ActivityInfoController{
     private Activity activity;
     private ArrayList<File> filesList;
-    private ArrayList<File> deletedFiles;
+    private ArrayList<File> deletedFilesList;
+    private ArrayList<File> existingFilesList;
     private Course course;
     private User user;
     
@@ -82,7 +83,8 @@ public class ActivityInfoController{
     @FXML
     public void initialize() {
         filesList = new ArrayList();
-        deletedFiles = new ArrayList();
+        deletedFilesList = new ArrayList();
+        existingFilesList = new ArrayList();
     }
     
     @FXML
@@ -119,17 +121,21 @@ public class ActivityInfoController{
         File file = fileChooser.showOpenDialog((Stage)((Node)event.getSource()).getScene().getWindow());
         
         if (file != null){
-            try{
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/activities/ActivityFileItem.fxml"));
-                Pane pane = loader.load();
-                ActivityFileItemController controller = (ActivityFileItemController)loader.getController();
-                controller.setFile(file);
-                controller.hideDownloadButton();
-                
-                fileVBox.getChildren().add(pane);
-                filesList.add(file);
-            }catch(IOException exception) {
-                new AlertPopUpGenerator().showMissingFilesMessage();
+            if(file.length() < 	20971520){
+                try{
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/activities/ActivityFileItem.fxml"));
+                    Pane pane = loader.load();
+                    ActivityFileItemController controller = (ActivityFileItemController)loader.getController();
+                    controller.setFile(file);
+                    controller.hideDownloadButton();
+ 
+                    fileVBox.getChildren().add(pane);
+                    filesList.add(file);
+                }catch(IOException exception) {
+                    new AlertPopUpGenerator().showMissingFilesMessage();
+                }
+            }else{
+                new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.WARNING, "Error al subir el archivo", "El archivo seleccionado es demasiado grande (Máximo: 20 Mb)");
             }
         }
     }
@@ -150,7 +156,7 @@ public class ActivityInfoController{
                 }
             }
             
-            for(File file : deletedFiles){
+            for(File file : deletedFilesList){
                 try{
                     FileDAO fileDAO = new FileDAO();
                     
@@ -162,18 +168,9 @@ public class ActivityInfoController{
             }
             
             for (File file : filesList) {
-                String newFilePath = activityDirectoryPath + "\\" + file.getName();
-                File fileCopy = new File(newFilePath);
-                boolean willSaveFile = true;
+                File fileCopy = new File(activityDirectoryPath + "\\" + file.getName());
                 
-                if (fileCopy.exists()) {
-                    ButtonType buttonPressed = new AlertPopUpGenerator().showConfirmationMessage(Alert.AlertType.CONFIRMATION, "El Archivo ya existe", "Previamente subió un archivo con el mismo nombre [" + file.getName() + "], ¿Desea sobreescribir dicho archivo?").get();
-                    if (buttonPressed != ButtonType.OK) {
-                        willSaveFile = false;
-                    }
-                }
-                           
-                if (willSaveFile) {
+                if (!fileCopy.exists()) {
                     try {
                         FileUtils.copyFile(file, fileCopy);
                         
@@ -184,7 +181,7 @@ public class ActivityInfoController{
                             if (fileResult > 0) {
                                 successfulSaves = successfulSaves + 1;
                             }
-                        } catch (DataInsertionException die) {
+                        } catch (DataInsertionException exception) {
                             failedSaves.add(file.getName());
                         }
                     } catch (IOException exception) {
@@ -204,7 +201,7 @@ public class ActivityInfoController{
             try{
                 ActivityDAO activityDAO = new ActivityDAO();
                 if(activityDAO.setComment(commentTextArea.getText().trim(), activity.getId()) > 0){
-                    new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.INFORMATION, "", "Actividad entregada exitosamente");
+                    new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.INFORMATION, "", "Entrega guardada exitosamente");
                     
                     goBack(event);
                 }
@@ -224,6 +221,12 @@ public class ActivityInfoController{
         editButton.setVisible(false);
         uploadFileButton.setVisible(true);
         removeFilesButton.setVisible(true);
+        
+        for(Node node : fileVBox.getChildren()){
+            Pane fileItemPane = (Pane)node;
+            Button downloadButton = (Button)fileItemPane.lookup("#downloadFileButton");
+            downloadButton.setVisible(false);
+        }
     }
     
     @FXML
@@ -279,8 +282,8 @@ public class ActivityInfoController{
     @FXML
     public void removeFiles(ActionEvent event) {
         if(activity.getStatus().equals(ActivityStatus.DELIVERED)){
-            for(File file: filesList){
-                deletedFiles.add(file);
+            for(File file: existingFilesList){
+                deletedFilesList.add(file);
             }
         }
         
@@ -397,8 +400,13 @@ public class ActivityInfoController{
             commentTextArea.setEditable(false);
             deliveryButton.setVisible(false);
             editButton.setVisible(false);
-            uploadFileButton.setVisible(false);
+            modifyDeliveryButton.setVisible(false);
             removeFilesButton.setVisible(false);
+            uploadFileButton.setVisible(false);
+            
+            if(Director.class.isAssignableFrom(user.getClass()) && !activity.getStatus().equals(ActivityStatus.ACTIVE)){
+                feedbackButton.setVisible(true);
+            }
         }else{
             feedbackButton.setText("Ver retroalimentación");
         }

@@ -1,6 +1,6 @@
 package mx.uv.fei.logic.domain;
 
-public class DegreeBoss extends Professor{
+public class DegreeBoss extends Director{
     private int idDegreeBoss;
 
     public int getIdDegreeBoss() {

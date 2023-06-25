@@ -128,7 +128,6 @@ public class GuiUsersController{
             new AlertPopUpGenerator().showConnectionErrorMessage();
         }
     }
-    //This method only should be used by the UserInformationController Class.
     public void openModifyUserPane(UserInformationController userInformationController){
         FXMLLoader modifyUserInformationControllerLoader = new FXMLLoader(
             getClass().getResource("/mx/uv/fei/gui/fxml/users/ModifyUserInformation.fxml")
@@ -156,7 +155,6 @@ public class GuiUsersController{
             new AlertPopUpGenerator().showMissingFilesMessage();
         }
     }
-    //This method only should be used by the UserController Class.
     public void openPaneWithUserInformation(UserController userController){
         try{
             if(userController.getType().equals(UserType.DIRECTOR.getValue())){
