@@ -18,7 +18,7 @@
                </font>
             </Label>
             <VBox fx:id="fileVBox" layoutX="34.0" layoutY="312.0" prefHeight="124.0" prefWidth="800.0" style="-fx-border-color: #adadad;" />
-            <Button fx:id="feedbackButton" layoutX="704.0" layoutY="449.0" mnemonicParsing="false" onAction="#openFeedbackPopUp" prefHeight="30.0" prefWidth="130.0" text="Retroalimentar">
+            <Button fx:id="feedbackButton" layoutX="651.0" layoutY="449.0" mnemonicParsing="false" onAction="#openFeedbackPopUp" prefHeight="35.0" prefWidth="183.0" text="Ver retroalimentación">
                <font>
                   <Font size="16.0" />
                </font>

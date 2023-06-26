@@ -47,6 +47,7 @@ public class ActivityInfoController{
     private ArrayList<File> deletedFilesList;
     private ArrayList<File> existingFilesList;
     private Course course;
+    private int deliverySize;
     private User user;
     
     @FXML
@@ -121,14 +122,16 @@ public class ActivityInfoController{
         File file = fileChooser.showOpenDialog((Stage)((Node)event.getSource()).getScene().getWindow());
         
         if (file != null){
-            if(file.length() < 	20971520){
+            if(deliverySize < 20971520){
                 try{
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/activities/ActivityFileItem.fxml"));
                     Pane pane = loader.load();
                     ActivityFileItemController controller = (ActivityFileItemController)loader.getController();
                     controller.setFile(file);
                     controller.hideDownloadButton();
- 
+                    
+                    deliverySize += file.length();
+                    System.out.println("Total de la entrega: " + deliverySize);
                     fileVBox.getChildren().add(pane);
                     filesList.add(file);
                 }catch(IOException exception) {
@@ -287,6 +290,7 @@ public class ActivityInfoController{
             }
         }
         
+        deliverySize = 0;
         fileVBox.getChildren().clear();
         filesList.clear();
     }

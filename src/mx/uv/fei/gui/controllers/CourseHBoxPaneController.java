@@ -39,7 +39,19 @@ public class CourseHBoxPaneController{
             Parent parent = loader.load();
             ChronogramController controller = (ChronogramController)loader.getController();
             controller.setCourse(course);
-            controller.setUser(user);
+            
+            if(Professor.class.isAssignableFrom(user.getClass())){
+                Professor professor = new Professor();
+                professor.setName(user.getName());
+                professor.setFirstSurname(user.getFirstSurname());
+                professor.setSecondSurname(user.getSecondSurname());
+                professor.setStaffNumber(((Professor)user).getStaffNumber());
+                
+                controller.setUser(professor);
+            }else{
+                controller.setUser(user);
+            }
+            
             controller.loadHeader();
 
             Scene scene = new Scene(parent);

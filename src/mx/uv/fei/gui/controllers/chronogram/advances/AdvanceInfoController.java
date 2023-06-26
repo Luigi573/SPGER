@@ -24,6 +24,7 @@ import mx.uv.fei.logic.daos.FileDAO;
 import mx.uv.fei.logic.domain.Activity;
 import mx.uv.fei.logic.domain.Advance;
 import mx.uv.fei.logic.domain.Course;
+import mx.uv.fei.logic.domain.Director;
 import mx.uv.fei.logic.domain.File;
 import mx.uv.fei.logic.domain.Professor;
 import mx.uv.fei.logic.domain.User;
@@ -36,7 +37,7 @@ public class AdvanceInfoController{
     private User user;
     
     @FXML
-    private Button editButton;
+    private Button modifyAdvanceButton;
     @FXML
     private Button feedbackButton;
     @FXML
@@ -183,6 +184,10 @@ public class AdvanceInfoController{
         dateLabel.setText(advance.getDate().toString());
         titleLabel.setText(advance.getTitle());
         statusLabel.setText(advance.getState());
+        
+        if(advance.getFeedback() != null){
+            feedbackButton.setVisible(false);
+        }
                 
         FileDAO fileDAO = new FileDAO();
         File file;
@@ -217,9 +222,13 @@ public class AdvanceInfoController{
         
         if(Professor.class.isAssignableFrom(user.getClass())){
             commentTextArea.setEditable(false);
-            editButton.setVisible(false);
+            modifyAdvanceButton.setVisible(false);
+            
+            if(Director.class.isAssignableFrom(user.getClass())){
+                feedbackButton.setText("Retroalimentar");
+            }
         }else{
-            feedbackButton.setVisible(false);
+            
         }
     }
 }

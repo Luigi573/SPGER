@@ -137,12 +137,12 @@ public class ChronogramController{
         this.course = course;
     }
     
-    public void setUser(User user){
+    public void setUser(User user){    
         if(Student.class.isAssignableFrom(user.getClass())){
             setStudentView((Student)user);
         }else if(Professor.class.isAssignableFrom(user.getClass())){
             if(course != null){
-                setProfessorView((Professor)user,course);
+                setProfessorView((Professor)user, course);
             }else{
                 setDirectorView((Director)user);
             }
