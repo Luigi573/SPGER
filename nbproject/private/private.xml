@@ -3,11 +3,23 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/src/mx/uv/fei/gui/fxml/chronogram/advances/AdvanceInfo.fxml</file>
-            <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/src/mx/uv/fei/gui/controllers/chronogram/advances/AdvanceInfoController.java</file>
-            <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/src/mx/uv/fei/gui/controllers/chronogram/advances/AdvanceVBoxPaneController.java</file>
+            <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/src/mx/uv/fei/logic/daos/ActivityDAO.java</file>
+            <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/src/mx/uv/fei/Main.java</file>
+            <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/src/mx/uv/fei/gui/controllers/kgal/KGALListController.java</file>
+            <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/src/mx/uv/fei/gui/controllers/users/GuiUsersController.java</file>
+            <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/src/mx/uv/fei/gui/controllers/chronogram/activities/ActivityFileItemController.java</file>
+            <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/src/mx/uv/fei/gui/controllers/research/ModifyResearchPaneController.java</file>
+            <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/src/mx/uv/fei/logic/domain/DegreeBoss.java</file>
+            <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/src/mx/uv/fei/gui/controllers/research/ResearchInfoPaneController.java</file>
             <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/src/mx/uv/fei/gui/controllers/chronogram/activities/ActivityInfoController.java</file>
-            <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/src/mx/uv/fei/gui/controllers/MainMenuController.java</file>
+            <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/test/mx/uv/fei/logic/daos/exceptions/KGALDAOExceptionTest.java</file>
+            <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/src/mx/uv/fei/gui/controllers/kgal/CreateNewKGALController.java</file>
+            <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/src/mx/uv/fei/gui/controllers/courses/GuiCoursesController.java</file>
+            <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/src/mx/uv/fei/logic/daos/KGALDAO.java</file>
+            <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/test/mx/uv/fei/logic/daos/KGALDAOTest.java</file>
+            <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/src/mx/uv/fei/gui/controllers/users/RegisterAdmin.java</file>
+            <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/src/mx/uv/fei/logic/daos/StudentDAO.java</file>
+            <file>file:/C:/Users/lisre/Documents/GitHub/SPGER/src/mx/uv/fei/gui/controllers/users/GuiRegisterUserController.java</file>
         </group>
     </open-files>
 </project-private>

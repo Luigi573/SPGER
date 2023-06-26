@@ -123,6 +123,7 @@ public class StudentDAO implements IStudentDAO{
                 student.setStatus(resultSet.getString("estado"));
                 student.setUserId(resultSet.getInt("IdUsuario"));
                 student.setMatricle(resultSet.getString("Matrícula"));
+                
                 students.add(student);
             }
             resultSet.close();
@@ -373,7 +374,36 @@ public class StudentDAO implements IStudentDAO{
 
         return students;
     }
-
+    
+    public ArrayList<Student> getStudentsWithoutResearch() throws DataRetrievalException{
+        ArrayList<Student> studentList = new ArrayList<>();
+        PreparedStatement statement;
+        String query = "SELECT e.Matrícula, u.* FROM Estudiantes e LEFT JOIN Anteproyectos a ON e.Matrícula = a.Matrícula "
+                + "LEFT JOIN Usuarios u ON e.IdUsuario = u.IdUsuario WHERE a.Matrícula IS NULL;";
+        
+        try{
+            statement = dataBaseManager.getConnection().prepareStatement(query);
+            ResultSet resultSet = statement.executeQuery();
+            
+            while(resultSet.next()){
+                Student student = new Student();
+                
+                student.setMatricle(resultSet.getString("e.Matrícula"));
+                student.setName(resultSet.getString("u.nombre"));
+                student.setFirstSurname(resultSet.getString("u.apellidoPaterno"));
+                student.setSecondSurname(resultSet.getString("u.apellidoMaterno"));
+                
+                studentList.add(student);
+            }
+        }catch(SQLException exception){
+            throw new DataRetrievalException("Error al recuperar estudiantes. Verifique su conexión e inténtelo de nuevo");
+        }finally{
+            dataBaseManager.closeConnection();
+        }
+        
+        return studentList;
+    }
+    
     private void deleteStudentFromUsersTable(Student student) throws DataInsertionException{
         String queryToInsertUserData = "DELETE FROM Usuarios WHERE IdUsuario = ?";
         try{
