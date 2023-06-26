@@ -139,6 +139,8 @@ public class AddResearchController{
                 }else{
                     new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "No se puede crear el anteproyecto", "Favor de introducir una fecha válida");
                 }
+            }else{
+                new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "No se puede crear el anteproyecto", "Favor de introducir un título válido");
             }
         }else{
             new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "No se puede crear el anteproyecto", "Favor de introducir una fecha válida");

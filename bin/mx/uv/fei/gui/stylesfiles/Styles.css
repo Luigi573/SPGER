@@ -123,6 +123,44 @@ TextFlow {
     -fx-border-color:#585c61;
 }
 
+.table-cell {
+    -fx-alignment: center;
+    -fx-background-color: #282b30;
+    -fx-border-color: #1e2124;
+    -fx-fill: #000000;
+}
+
+.table-row-cell{
+    -fx-fill: #000000;
+}
+
+.table-row-cell .text {
+    -fx-fill: #ffffff;
+}
+
+.table-row-cell:selected .text {
+    -fx-fill: red;
+}
+
+.table-cell:odd {
+    -fx-background-color: #36393e;
+    -fx-border-color: #1e2124;
+    -fx-fill: #000000;
+}
+
+.table-view {
+    -fx-background-color: #282b30;
+    -fx-border-color: #1e2124;
+}
+
+.table-view .column-header .label {
+    -fx-background-color: #424549;
+}
+
+.table-view .filler{
+    -fx-background-color: #424549;
+}
+
 .text-area {
     -fx-background-color:#424549;
 }

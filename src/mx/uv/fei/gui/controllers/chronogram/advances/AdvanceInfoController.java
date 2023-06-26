@@ -78,6 +78,32 @@ public class AdvanceInfoController{
         }
     }
     
+     @FXML
+    private void returnToAdvanceList(ActionEvent event) {
+        try{
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/advances/ModifyAdvance.fxml"));
+            Parent parent = loader.load();
+            ModifyAdvanceController controller = (ModifyAdvanceController)loader.getController();
+            controller.setActivity(activity);
+            controller.setAdvance(advance);
+            controller.setCourse(course);
+            controller.setUser(user);
+            controller.loadHeader();
+            
+            Scene scene = new Scene(parent);
+            String css = this.getClass().getResource("/mx/uv/fei/gui/stylesfiles/Styles.css").toExternalForm();
+            scene.getStylesheets().add(css);
+            
+            Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+            stage.setTitle("SPGER");
+            stage.setScene(scene);
+            stage.show();
+        }catch(IOException exception){
+            exception.printStackTrace();
+            new AlertPopUpGenerator().showMissingFilesMessage();
+        }
+    }
+    
     @FXML
     private void goBack(ActionEvent event) {
         try{

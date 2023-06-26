@@ -249,19 +249,19 @@ public class GuiRegisterUserController{
     private String specifiedInvalidDataMessageError(){
         String message = "";
 
-        Pattern namesPattern = Pattern.compile("([A-Za-zÁÉÍÓÚÜÑáéíóúüñ\\\\s]+(?: [A-Za-zÁÉÍÓÚÜÑáéíóúüñ\\\\s]+)*){1,30}$"),
-                firstSurnamePattern = Pattern.compile("([A-Za-zÁÉÍÓÚÜÑáéíóúüñ\\\\s]+(?: [A-Za-zÁÉÍÓÚÜÑáéíóúüñ\\\\s]+)*){1,30}$"),
-                secondSurnamePattern = Pattern.compile("([A-Za-zÁÉÍÓÚÜÑáéíóúüñ\\\\s]+(?: [A-Za-zÁÉÍÓÚÜÑáéíóúüñ\\\\s]+)*){1,30}$"),
-                alternateEmailPattern = Pattern.compile("^(?=.{1,50}$)[\\\\w.%+-]+@[\\\\w.-]+\\\\.[a-zA-Z]{2,}$"),
+        Pattern namesPattern = Pattern.compile("^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ\\s]+(?: [A-Za-zÁÉÍÓÚÜÑáéíóúüñ\\s]+)*$"),
+                firstSurnamePattern = Pattern.compile("^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ\\s]+(?: [A-Za-zÁÉÍÓÚÜÑáéíóúüñ\\s]+)*$"),
+                secondSurnamePattern = Pattern.compile("^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ\\s]+(?: [A-Za-zÁÉÍÓÚÜÑáéíóúüñ\\s]+)*$"),
+                alternateEmailPattern = Pattern.compile("^[\\w.%+-]+@[\\w.-]+\\.[a-zA-Z]{2,}$"),
                 telephoneNumberPattern = Pattern.compile("^[0-9]{10}$"),
                 matricleOrStaffNumberPattern, emailPattern;
     
         if(typeComboBox.getValue().equals(UserType.STUDENT.getValue())){
             matricleOrStaffNumberPattern = Pattern.compile("^[z][S][0-9]{8}$");
-            emailPattern = Pattern.compile("^(?=.{1,50}$)(.+)@estudiantes\\.uv\\.mx$");
+            emailPattern = Pattern.compile("^(.+)@estudiantes.uv.mx$");
         }else{
             matricleOrStaffNumberPattern = Pattern.compile("^[0-9]{1,9}$");
-            emailPattern = Pattern.compile("^(?=.{1,50}$)(.+)@uv\\.mx$");
+            emailPattern = Pattern.compile("^(.+)@uv.mx$");
         }
 
         Matcher namesMatcher = namesPattern.matcher(namesTextField.getText()),
