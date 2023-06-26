@@ -135,6 +135,7 @@ public class MainMenuController{
         if(DegreeBoss.class.isAssignableFrom(user.getClass())){
             FXMLLoader adminPaneLoader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/AdminMenuPane.fxml"));
             FXMLLoader kgalPaneLoader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/ManageKGALpane.fxml"));
+            FXMLLoader scholarPeriodPaneLoader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/ManageScholarPeriodsPane.fxml"));
             
             try{
                 Pane adminPane = adminPaneLoader.load();
@@ -142,12 +143,18 @@ public class MainMenuController{
                 controller.setUser(user);
                 
                 Pane kgalPane = kgalPaneLoader.load();
-                ManageKGALpaneController KgalController = (ManageKGALpaneController)kgalPaneLoader.getController();
-                KgalController.setUser(user);
+                ManageKGALpaneController kgalController = (ManageKGALpaneController)kgalPaneLoader.getController();
+                kgalController.setUser(user);
+
+                Pane scholarPeriodPane = scholarPeriodPaneLoader.load();
+                ManageScholarPeriodsPaneController scholarPeriodsController = (ManageScholarPeriodsPaneController)scholarPeriodPaneLoader.getController();
+                scholarPeriodsController.setUser(user);
 
                 courseVBox.getChildren().add(adminPane);
                 courseVBox.getChildren().add(kgalPane);
+                courseVBox.getChildren().add(scholarPeriodPane);
             }catch(IOException exception){
+                exception.printStackTrace();
                 new AlertPopUpGenerator().showMissingFilesMessage();
             }
         }

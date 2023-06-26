@@ -44,6 +44,8 @@ public class ModifyResearchPaneController{
     @FXML
     private ComboBox<Director> codirector2ComboBox;
     @FXML
+    private DialogPane dialogPane;
+    @FXML
     private ComboBox<KGAL> KGALComboBox;
     @FXML
     private ComboBox<Student> studentComboBox;

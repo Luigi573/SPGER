@@ -11,7 +11,7 @@
    <children>
       <Pane fx:id="mainMenuSpecificPane" layoutX="264.0" layoutY="25.0" prefHeight="250.0" prefWidth="300.0" style="-fx-border-color: black;">
          <children>
-            <Label layoutX="29.0" layoutY="14.0" text="Administrar Anteproyectos">
+            <Label layoutX="6.0" layoutY="14.0" text="Administrar Anteproyectos">
                <font>
                   <Font name="System Bold" size="19.0" />
                </font>
