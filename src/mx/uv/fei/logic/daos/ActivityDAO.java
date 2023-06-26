@@ -81,9 +81,13 @@ public class ActivityDAO implements IActivityDAO{
                 
                 if(activity.getComment() != null){
                     activity.setStatus(ActivityStatus.DELIVERED);
-                }else if(activity.getFeedback() != null){
-                    activity.setStatus(ActivityStatus.REVIEWED);
+                    
+                    if(activity.getFeedback() != null){
+                        activity.setStatus(ActivityStatus.REVIEWED);
+                    }
                 }
+                
+                
                 
                 activityList.add(activity);
             }

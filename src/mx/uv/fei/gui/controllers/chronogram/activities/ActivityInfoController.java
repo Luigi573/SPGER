@@ -2,8 +2,9 @@ package mx.uv.fei.gui.controllers.chronogram.activities;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,7 +13,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.Pane;
@@ -385,6 +385,10 @@ public class ActivityInfoController{
             feedbackButton.setVisible(false);
         }
         
+        if(activity.getDueDate().compareTo(Date.valueOf(LocalDate.now())) >= 0){
+            editButton.setVisible(false);
+        }
+        
         loadActivityFiles();
     }
     
@@ -406,6 +410,8 @@ public class ActivityInfoController{
             
             if(Director.class.isAssignableFrom(user.getClass()) && !activity.getStatus().equals(ActivityStatus.ACTIVE)){
                 feedbackButton.setVisible(true);
+            }else{
+                feedbackButton.setText("Ver retroalimentación");
             }
         }else{
             feedbackButton.setText("Ver retroalimentación");

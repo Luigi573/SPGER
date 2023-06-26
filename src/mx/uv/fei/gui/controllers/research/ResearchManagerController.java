@@ -73,9 +73,11 @@ public class ResearchManagerController {
             GuiResearchReportController guiResearchReportController = loader.getController();
             guiResearchReportController.setUser(user);
             guiResearchReportController.loadHeader();
+            
             Scene scene = new Scene(parent);
             String css = this.getClass().getResource("/mx/uv/fei/gui/stylesfiles/Styles.css").toExternalForm();
             scene.getStylesheets().add(css);
+            
             Stage stage  = (Stage)((Node)event.getSource()).getScene().getWindow();
             stage.setTitle("Administrar Usuarios del Curso");
             stage.setScene(scene);
@@ -147,10 +149,6 @@ public class ResearchManagerController {
                     researchList = researchDAO.getSpecifiedValidatedAndNotValidatedResearchProjectList(reSearchTextField.getText());
                     break;
                 }
-
-                default:
-                    break;
-
             }
             
             for(ResearchProject research : researchList){
