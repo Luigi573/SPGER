@@ -11,3 +11,4 @@ nbproject/project.properties
 nbproject/private/private.xml
 src/dependencies/resources/DatabaseAccess.properties
 *.properties
+*.properties
