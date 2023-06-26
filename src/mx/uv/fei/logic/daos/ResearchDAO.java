@@ -47,16 +47,12 @@ public class ResearchDAO implements IResearchDAO{
             statement.setString(7, research.getSuggestedBibliography());
             statement.setString(8, research.getTitle());
             
-            if(research.getStudents().get(0).getMatricle() != null){
-                statement.setString(9, research.getStudents().get(0).getMatricle());
-            }else{
-                statement.setNull(9, java.sql.Types.VARCHAR);
-            }
-            
-            if(research.getStudents().get(0).getMatricle() != null){
-                statement.setString(10, research.getStudents().get(1).getMatricle());
-            }else{
-                statement.setNull(10, java.sql.Types.VARCHAR);
+            for(int i = 0; i < 2; i++){
+                if(i < research.getStudents().size()){
+                    statement.setString(i + 9, research.getStudents().get(i).getMatricle());
+                }else{
+                    statement.setNull(i + 9, java.sql.Types.INTEGER);
+                }
             }
             
             statement.setString(11, research.getValidationStatus());
@@ -666,16 +662,12 @@ public class ResearchDAO implements IResearchDAO{
             statement.setString(7, research.getSuggestedBibliography());
             statement.setString(8, research.getTitle());
             
-            if(research.getStudents().get(0).getMatricle() != null){
-                statement.setString(9, research.getStudents().get(0).getMatricle());
-            }else{
-                statement.setNull(9, java.sql.Types.VARCHAR);
-            }
-            
-            if(research.getStudents().get(0).getMatricle() != null){
-                statement.setString(10, research.getStudents().get(1).getMatricle());
-            }else{
-                statement.setNull(10, java.sql.Types.VARCHAR);
+            for(int i = 0; i < 2; i++){
+                if(i < research.getStudents().size()){
+                    statement.setString(i + 9, research.getStudents().get(i).getMatricle());
+                }else{
+                    statement.setNull(i + 9, java.sql.Types.INTEGER);
+                }
             }
             
             for(int i = 0; i < 3; i++){
@@ -746,7 +738,7 @@ public class ResearchDAO implements IResearchDAO{
         boolean result = true;
         
         if(research.getStudents().size() >= 2){
-            for(int i = 1; i < research.getDirectors().size(); i++){
+            for(int i = 1; i < research.getStudents().size(); i++){
                 result = !research.getStudents().get(i).equals(research.getStudents().get(i - 1));
             }
         }
