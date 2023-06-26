@@ -440,6 +440,7 @@ public class ActivityInfoController{
                     
                     fileVBox.getChildren().add(pane);
                     filesList.add(file);
+                    existingFilesList.add(file);
                 } catch (IOException exception) {
                     new AlertPopUpGenerator().showMissingFilesMessage();
                 }

@@ -12,9 +12,9 @@
       <Pane fx:id="headerPane" prefHeight="80.0" prefWidth="1024.0" />
       <ScrollPane layoutX="121.0" layoutY="144.0" prefHeight="445.0" prefWidth="830.0">
          <content>
-            <VBox fx:id="courseVBox" prefHeight="440.0" prefWidth="825.0">
+            <VBox fx:id="courseVBox" alignment="TOP_CENTER" prefHeight="440.0" prefWidth="825.0">
                <children>
-                  <HBox fx:id="courseHBox" prefHeight="69.0" prefWidth="825.0" />
+                  <HBox fx:id="courseHBox" alignment="TOP_CENTER" prefHeight="69.0" prefWidth="825.0" />
                </children>
             </VBox>
          </content>

@@ -1,7 +1,0 @@
-(defun countingSort(list) 
-  (let x 
-
-  )
-  
-  list
-)
