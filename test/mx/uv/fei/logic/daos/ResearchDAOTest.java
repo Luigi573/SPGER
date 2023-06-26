@@ -114,7 +114,6 @@ public class ResearchDAOTest {
         preloadedResearch.setRequirements("DB connection");
         
         ResearchDAO instance = new ResearchDAO();
-        preloadedResearch.printData();
         int result = instance.modifyResearch(preloadedResearch);
         assertTrue(result > 0);
     }

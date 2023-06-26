@@ -26,8 +26,8 @@ public class ResearchDAO implements IResearchDAO{
         int generatedId = 0;
         PreparedStatement statement;
         String query = "INSERT INTO Anteproyectos(fechaFin, fechaInicio, IdLGAC, descripción, "
-                + "resultadosEsperados, requisitos, bibliografíaRecomendada, título, Matrícula, V°B°, "
-                + "IdDirector1, IdDirector2, IdDirector3) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?);";
+                + "resultadosEsperados, requisitos, bibliografíaRecomendada, título, Matrícula1, Matrícula2, V°B°, "
+                + "IdDirector1, IdDirector2, IdDirector3) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
         
         try{
             statement = dataBaseManager.getConnection().prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
@@ -47,19 +47,25 @@ public class ResearchDAO implements IResearchDAO{
             statement.setString(7, research.getSuggestedBibliography());
             statement.setString(8, research.getTitle());
             
-            if(research.getStudent().getMatricle() != null){
-                statement.setString(9, research.getStudent().getMatricle());
+            if(research.getStudents().get(0).getMatricle() != null){
+                statement.setString(9, research.getStudents().get(0).getMatricle());
             }else{
                 statement.setNull(9, java.sql.Types.VARCHAR);
             }
             
-            statement.setString(10, research.getValidationStatus());
+            if(research.getStudents().get(0).getMatricle() != null){
+                statement.setString(10, research.getStudents().get(1).getMatricle());
+            }else{
+                statement.setNull(10, java.sql.Types.VARCHAR);
+            }
+            
+            statement.setString(11, research.getValidationStatus());
             
             for(int i = 0; i < 3; i++){
                 if(i < research.getDirectors().size()){
-                    statement.setInt(i + 11, research.getDirectors().get(i).getDirectorId());
+                    statement.setInt(i + 12, research.getDirectors().get(i).getDirectorId());
                 }else{
-                    statement.setNull(i + 11, java.sql.Types.INTEGER);
+                    statement.setNull(i + 12, java.sql.Types.INTEGER);
                 }
             }
             
@@ -83,13 +89,16 @@ public class ResearchDAO implements IResearchDAO{
         ArrayList<ResearchProject> researchProjectList = new ArrayList<>();
         PreparedStatement statement;
         String query = "SELECT DISTINCT a.IdAnteproyecto, a.fechaFin, a.fechaInicio, l.IdLGAC, l.descripción AS LGAC, a.título, a.V°B°, "
-                + "a.IdDirector1, up1.nombre, up1.apellidoPaterno, up1.apellidoMaterno, a.IdDirector2, up2.nombre, up2.apellidoPaterno, up2.apellidoMaterno, a.IdDirector3, "
-                + "up3.nombre, up3.apellidoPaterno, up3.apellidoMaterno, a.descripción, a.resultadosEsperados, a.requisitos, a.bibliografíaRecomendada, "
-                + "a.Matrícula, ue.nombre, ue.apellidoPaterno, ue.apellidoMaterno FROM Anteproyectos a "
-                + "LEFT JOIN Directores d1 ON a.IdDirector1 = d1.IdDirector LEFT JOIN Profesores p1 ON d1.NumPersonal = p1.NumPersonal LEFT JOIN Usuarios up1 ON p1.IdUsuario = up1.IdUsuario "
-                + "LEFT JOIN Directores d2 ON a.IdDirector2 = d2.IdDirector LEFT JOIN Profesores p2 ON d2.NumPersonal = p2.NumPersonal LEFT JOIN Usuarios up2 ON p2.IdUsuario = up2.IdUsuario "
-                + "LEFT JOIN Directores d3 ON a.IdDirector3 = d3.IdDirector LEFT JOIN Profesores p3 ON d3.NumPersonal = p3.NumPersonal LEFT JOIN Usuarios up3 ON p3.IdUsuario = up3.IdUsuario "
-                + "LEFT JOIN Estudiantes e ON a.Matrícula = e.Matrícula LEFT JOIN Usuarios ue ON e.IdUsuario = ue.IdUsuario LEFT JOIN LGAC l ON l.IdLGAC = a.IdLGAC ORDER BY fechaFin, fechaInicio, título ASC";
+                + " a.IdDirector1, up1.nombre, up1.apellidoPaterno, up1.apellidoMaterno, a.IdDirector2, up2.nombre, up2.apellidoPaterno, up2.apellidoMaterno, a.IdDirector3, "
+                + " up3.nombre, up3.apellidoPaterno, up3.apellidoMaterno, a.descripción, a.resultadosEsperados, a.requisitos, a.bibliografíaRecomendada, "
+                + " a.Matrícula1, ue1.nombre, ue1.apellidoPaterno, ue1.apellidoMaterno, "
+                + " a.Matrícula2, ue2.nombre, ue2.apellidoPaterno, ue2.apellidoMaterno FROM Anteproyectos a "
+                + " LEFT JOIN Directores d1 ON a.IdDirector1 = d1.IdDirector LEFT JOIN Profesores p1 ON d1.NumPersonal = p1.NumPersonal LEFT JOIN Usuarios up1 ON p1.IdUsuario = up1.IdUsuario "
+                + " LEFT JOIN Directores d2 ON a.IdDirector2 = d2.IdDirector LEFT JOIN Profesores p2 ON d2.NumPersonal = p2.NumPersonal LEFT JOIN Usuarios up2 ON p2.IdUsuario = up2.IdUsuario "
+                + " LEFT JOIN Directores d3 ON a.IdDirector3 = d3.IdDirector LEFT JOIN Profesores p3 ON d3.NumPersonal = p3.NumPersonal LEFT JOIN Usuarios up3 ON p3.IdUsuario = up3.IdUsuario "
+                + " LEFT JOIN Estudiantes e1 ON a.Matrícula1 = e1.Matrícula LEFT JOIN Usuarios ue1 ON e1.IdUsuario = ue1.IdUsuario "
+                + " LEFT JOIN Estudiantes e2 ON a.Matrícula2 = e2.Matrícula LEFT JOIN Usuarios ue2 ON e2.IdUsuario = ue2.IdUsuario "
+                + " LEFT JOIN LGAC l ON l.IdLGAC = a.IdLGAC ORDER BY fechaFin, fechaInicio, título ASC";
         
         try{
             statement = dataBaseManager.getConnection().prepareStatement(query);
@@ -128,12 +137,26 @@ public class ResearchDAO implements IResearchDAO{
                 research.setSuggestedBibliography(resultSet.getString("a.bibliografíaRecomendada"));
                 research.setTitle(resultSet.getString("a.título"));
                 research.setValidationStatus(resultSet.getString("a.V°B°"));
-                research.getStudent().setMatricle(resultSet.getString("a.Matrícula"));
+                
+                Student student = new Student();
+                student.setMatricle(resultSet.getString("a.Matrícula1"));
                 
                 if(!resultSet.wasNull()){
-                    research.getStudent().setName(resultSet.getString("ue.nombre"));
-                    research.getStudent().setFirstSurname(resultSet.getString("ue.apellidoPaterno"));
-                    research.getStudent().setSecondSurname(resultSet.getString("ue.apellidoMaterno"));
+                    student.setName(resultSet.getString("ue1.nombre"));
+                    student.setFirstSurname(resultSet.getString("ue1.apellidoPaterno"));
+                    student.setSecondSurname(resultSet.getString("ue1.apellidoMaterno"));
+                    
+                    research.addStudent(student);
+                }
+                
+                Student student2 = new Student();
+                student2.setMatricle(resultSet.getString("a.Matrícula2"));
+                if(!resultSet.wasNull()){
+                    student2.setName(resultSet.getString("ue2.nombre"));
+                    student2.setFirstSurname(resultSet.getString("ue2.apellidoPaterno"));
+                    student2.setSecondSurname(resultSet.getString("ue2.apellidoMaterno"));
+                    
+                    research.addStudent(student2);
                 }
                 
                 researchProjectList.add(research);
@@ -150,12 +173,14 @@ public class ResearchDAO implements IResearchDAO{
     public ArrayList<ResearchProject> getDirectorsResearch(int staffNumber) throws DataRetrievalException{
         ArrayList<ResearchProject> researchList = new ArrayList<>();
         PreparedStatement statement;
-        String query = "SELECT DISTINCT a.IdAnteproyecto, a.título, a.Matrícula, u.nombre, u.apellidoPaterno, u.apellidoMaterno FROM Anteproyectos a " +
+        String query = "SELECT DISTINCT a.IdAnteproyecto, a.título, a.Matrícula1, u1.nombre, u1.apellidoPaterno, u1.apellidoMaterno, " +
+            " a.Matrícula2, u2.nombre, u2.apellidoPaterno, u2.apellidoMaterno FROM Anteproyectos a " +
             " LEFT JOIN Directores d1 ON a.IdDirector1 = d1.IdDirector LEFT JOIN Profesores p1 ON d1.NumPersonal = p1.NumPersonal " +
             " LEFT JOIN Directores d2 ON a.IdDirector2 = d2.IdDirector  LEFT JOIN Profesores p2 ON d2.NumPersonal = p2.NumPersonal " +
             " LEFT JOIN Directores d3 ON a.IdDirector3 = d3.IdDirector LEFT JOIN Profesores p3 ON d3.NumPersonal = p3.NumPersonal " +
-            " LEFT JOIN Estudiantes e ON a.Matrícula = e.Matrícula LEFT JOIN Usuarios u ON e.IdUsuario = u.IdUsuario " +
-            " WHERE (p1.NumPersonal = ? OR p2.NumPersonal = ? OR p3.NumPersonal = ?) AND a.Matrícula IS NOT NULL";
+            " LEFT JOIN Estudiantes e1 ON a.Matrícula1 = e1.Matrícula LEFT JOIN Usuarios u1 ON e1.IdUsuario = u1.IdUsuario " + 
+            " LEFT JOIN Estudiantes e2 ON a.Matrícula2 = e2.Matrícula LEFT JOIN Usuarios u2 ON e2.IdUsuario = u2.IdUsuario " +
+            " WHERE (p1.NumPersonal = ? OR p2.NumPersonal = ? OR p3.NumPersonal = ?)";
         
         try{
             statement = dataBaseManager.getConnection().prepareStatement(query);
@@ -170,12 +195,19 @@ public class ResearchDAO implements IResearchDAO{
                 research.setId(resultSet.getInt("a.IdAnteproyecto"));
                 research.setTitle(resultSet.getString("a.título"));
                 
-                Student student = new Student();
-                research.setStudent(student);
-                research.getStudent().setMatricle(resultSet.getString("a.Matrícula"));
-                research.getStudent().setName(resultSet.getString("u.nombre"));
-                research.getStudent().setFirstSurname(resultSet.getString("u.apellidoPaterno"));
-                research.getStudent().setSecondSurname(resultSet.getString("u.apellidoMaterno"));
+                Student student1 = new Student();
+                student1.setMatricle(resultSet.getString("a.Matrícula1"));
+                student1.setName(resultSet.getString("u1.nombre"));
+                student1.setFirstSurname(resultSet.getString("u1.apellidoPaterno"));
+                student1.setSecondSurname(resultSet.getString("u1.apellidoMaterno"));
+                research.addStudent(student1);
+                
+                Student student2 = new Student();
+                student2.setMatricle(resultSet.getString("a.Matrícula2"));
+                student2.setName(resultSet.getString("u2.nombre"));
+                student2.setFirstSurname(resultSet.getString("u2.apellidoPaterno"));
+                student2.setSecondSurname(resultSet.getString("u2.apellidoMaterno"));
+                research.addStudent(student2);
                 
                 researchList.add(research);
             }            
@@ -191,11 +223,12 @@ public class ResearchDAO implements IResearchDAO{
     public ResearchProject getStudentsResearch(String matricle) throws DataRetrievalException{
         ResearchProject research = new ResearchProject();
         PreparedStatement statement;
-        String query = "SELECT IdAnteproyecto, título FROM Anteproyectos WHERE Matrícula = ?";
+        String query = "SELECT IdAnteproyecto, título FROM Anteproyectos WHERE Matrícula1 IN(?) OR Matrícula2 IN(?)";
         
         try{
             statement = dataBaseManager.getConnection().prepareStatement(query);
             statement.setString(1, matricle);
+            statement.setString(2, matricle);
             
             ResultSet resultSet = statement.executeQuery();
             if(resultSet.next()){
@@ -217,8 +250,10 @@ public class ResearchDAO implements IResearchDAO{
     public ArrayList<ResearchProject> getCourseResearch(int NRC) throws DataRetrievalException{
         ArrayList<ResearchProject> researchList = new ArrayList<>();
         PreparedStatement statement;
-        String query = "SELECT DISTINCT a.IdAnteproyecto, a.título, a.Matrícula, u.nombre, u.apellidoPaterno, u.apellidoMaterno FROM Anteproyectos a " +
-                        " INNER JOIN Estudiantes e ON a.Matrícula = e.Matrícula INNER JOIN EstudiantesCurso ec ON e.Matrícula = ec.Matrícula " +
+        String query = "SELECT DISTINCT a.IdAnteproyecto, a.título, a.Matrícula1, u1.nombre, u1.apellidoPaterno, u1.apellidoMaterno " + 
+                        " a.Matrícula2, u2.nombre, u2.apellidoPaterno, u2.apellidoMaterno FROM Anteproyectos a " +
+                        " LEFT JOIN Estudiantes e1 ON a.Matrícula1 = e.Matrícula INNER JOIN EstudiantesCurso ec1 ON e1.Matrícula = ec1.Matrícula1 " + 
+                        " LEFT JOIN Estudiantes e2 ON a.Matrícula2 = e.Matrícula INNER JOIN EstudiantesCurso ec2 ON e2.Matrícula = ec1.Matrícula2 " +
                         " INNER JOIN Cursos c ON ec.NRC = c.NRC INNER JOIN Usuarios u ON e.IdUsuario = u.IdUsuario " +
                         " WHERE c.NRC IN(?)";
         
@@ -234,17 +269,25 @@ public class ResearchDAO implements IResearchDAO{
                 research.setTitle(resultSet.getString("a.título"));
                 
                 Student student = new Student();
-                student.setMatricle(resultSet.getString("a.Matrícula"));
+                student.setMatricle(resultSet.getString("a.Matrícula1"));
                 
                 if(!resultSet.wasNull()){
-                    student.setMatricle(resultSet.getString("a.Matrícula"));
-                    student.setName(resultSet.getString("u.nombre"));
-                    student.setFirstSurname(resultSet.getString("u.apellidoPaterno"));
-                    student.setSecondSurname(resultSet.getString("u.apellidoMaterno"));
+                    student.setName(resultSet.getString("ue1.nombre"));
+                    student.setFirstSurname(resultSet.getString("ue1.apellidoPaterno"));
+                    student.setSecondSurname(resultSet.getString("ue1.apellidoMaterno"));
                     
-                    research.setStudent(student);
+                    research.addStudent(student);
                 }
                 
+                Student student2 = new Student();
+                student2.setMatricle(resultSet.getString("a.Matrícula2"));
+                if(!resultSet.wasNull()){
+                    student2.setName(resultSet.getString("ue2.nombre"));
+                    student2.setFirstSurname(resultSet.getString("ue2.apellidoPaterno"));
+                    student2.setSecondSurname(resultSet.getString("ue2.apellidoMaterno"));
+                    
+                    research.addStudent(student2);
+                }
                 
                 researchList.add(research);
             }
@@ -264,12 +307,13 @@ public class ResearchDAO implements IResearchDAO{
         String query = "SELECT DISTINCT a.IdAnteproyecto, a.fechaFin, a.fechaInicio, l.IdLGAC, l.descripción AS LGAC, a.título, a.V°B°, "
                 + " a.IdDirector1, up1.nombre, up1.apellidoPaterno, up1.apellidoMaterno, a.IdDirector2, up2.nombre, up2.apellidoPaterno, up2.apellidoMaterno, a.IdDirector3, "
                 + " up3.nombre, up3.apellidoPaterno, up3.apellidoMaterno, a.descripción, a.resultadosEsperados, a.requisitos, a.bibliografíaRecomendada, "
-                + " a.Matrícula, ue.nombre, ue.apellidoPaterno, ue.apellidoMaterno FROM Anteproyectos a "
+                + " a.Matrícula1, ue1.nombre, ue1.apellidoPaterno, ue1.apellidoMaterno, a.Matrícula2, ue2.nombre, ue2.apellidoPaterno, ue2.apellidoMaterno FROM Anteproyectos a "
                 + " LEFT JOIN Directores d1 ON a.IdDirector1 = d1.IdDirector LEFT JOIN Profesores p1 ON d1.NumPersonal = p1.NumPersonal LEFT JOIN Usuarios up1 ON p1.IdUsuario = up1.IdUsuario "
                 + " LEFT JOIN Directores d2 ON a.IdDirector2 = d2.IdDirector LEFT JOIN Profesores p2 ON d2.NumPersonal = p2.NumPersonal LEFT JOIN Usuarios up2 ON p2.IdUsuario = up2.IdUsuario "
                 + " LEFT JOIN Directores d3 ON a.IdDirector3 = d3.IdDirector LEFT JOIN Profesores p3 ON d3.NumPersonal = p3.NumPersonal LEFT JOIN Usuarios up3 ON p3.IdUsuario = up3.IdUsuario "
-                + " LEFT JOIN Estudiantes e ON a.Matrícula = e.Matrícula LEFT JOIN Usuarios ue ON e.IdUsuario = ue.IdUsuario LEFT JOIN LGAC l ON l.IdLGAC = a.IdLGAC "
-                + " WHERE a.título LIKE ? ORDER BY fechaFin, fechaInicio, título ASC";
+                + " LEFT JOIN Estudiantes e1 ON a.Matrícula1 = e1.Matrícula LEFT JOIN Usuarios ue1 ON e1.IdUsuario = ue1.IdUsuario "
+                + " LEFT JOIN Estudiantes e2 ON a.Matrícula2 = e2.Matrícula LEFT JOIN Usuarios ue2 ON e2.IdUsuario = ue2.IdUsuario "
+                + " LEFT JOIN LGAC l ON l.IdLGAC = a.IdLGAC WHERE a.título LIKE ? ORDER BY fechaFin, fechaInicio, título ASC";
         
         try{
             statement = dataBaseManager.getConnection().prepareStatement(query);
@@ -309,10 +353,26 @@ public class ResearchDAO implements IResearchDAO{
                 research.setSuggestedBibliography(resultSet.getString("a.bibliografíaRecomendada"));
                 research.setTitle(resultSet.getString("a.título"));
                 research.setValidationStatus(resultSet.getString("a.V°B°"));
-                research.getStudent().setMatricle(resultSet.getString("a.Matrícula"));
+                
+                Student student = new Student();
+                student.setMatricle(resultSet.getString("a.Matrícula1"));
                 
                 if(!resultSet.wasNull()){
-                    research.getStudent().setName(resultSet.getString("ue.nombre"));
+                    student.setName(resultSet.getString("ue1.nombre"));
+                    student.setFirstSurname(resultSet.getString("ue1.apellidoPaterno"));
+                    student.setSecondSurname(resultSet.getString("ue1.apellidoMaterno"));
+                    
+                    research.addStudent(student);
+                }
+                
+                Student student2 = new Student();
+                student2.setMatricle(resultSet.getString("a.Matrícula2"));
+                if(!resultSet.wasNull()){
+                    student2.setName(resultSet.getString("ue2.nombre"));
+                    student2.setFirstSurname(resultSet.getString("ue2.apellidoPaterno"));
+                    student2.setSecondSurname(resultSet.getString("ue2.apellidoMaterno"));
+                    
+                    research.addStudent(student2);
                 }
                 
                 researchProjectList.add(research);
@@ -333,12 +393,13 @@ public class ResearchDAO implements IResearchDAO{
         String query = "SELECT DISTINCT a.IdAnteproyecto, a.fechaFin, a.fechaInicio, l.IdLGAC, l.descripción AS LGAC, a.título, a.V°B°, "
                 + " a.IdDirector1, up1.nombre, up1.apellidoPaterno, up1.apellidoMaterno, a.IdDirector2, up2.nombre, up2.apellidoPaterno, up2.apellidoMaterno, a.IdDirector3, "
                 + " up3.nombre, up3.apellidoPaterno, up3.apellidoMaterno, a.descripción, a.resultadosEsperados, a.requisitos, a.bibliografíaRecomendada, "
-                + " a.Matrícula, ue.nombre, ue.apellidoPaterno, ue.apellidoMaterno FROM Anteproyectos a "
+                + " a.Matrícula1, ue1.nombre, ue1.apellidoPaterno, ue1.apellidoMaterno, a.Matrícula2, ue2.nombre, ue2.apellidoPaterno, ue2.apellidoMaterno FROM Anteproyectos a "
                 + " LEFT JOIN Directores d1 ON a.IdDirector1 = d1.IdDirector LEFT JOIN Profesores p1 ON d1.NumPersonal = p1.NumPersonal LEFT JOIN Usuarios up1 ON p1.IdUsuario = up1.IdUsuario "
                 + " LEFT JOIN Directores d2 ON a.IdDirector2 = d2.IdDirector LEFT JOIN Profesores p2 ON d2.NumPersonal = p2.NumPersonal LEFT JOIN Usuarios up2 ON p2.IdUsuario = up2.IdUsuario "
                 + " LEFT JOIN Directores d3 ON a.IdDirector3 = d3.IdDirector LEFT JOIN Profesores p3 ON d3.NumPersonal = p3.NumPersonal LEFT JOIN Usuarios up3 ON p3.IdUsuario = up3.IdUsuario "
-                + " LEFT JOIN Estudiantes e ON a.Matrícula = e.Matrícula LEFT JOIN Usuarios ue ON e.IdUsuario = ue.IdUsuario LEFT JOIN LGAC l ON l.IdLGAC = a.IdLGAC  "
-                + "WHERE a.título LIKE ? && a.V°B° = 'Validado' ORDER BY fechaFin, fechaInicio, título ASC";
+                + " LEFT JOIN Estudiantes e1 ON a.Matrícula1 = e1.Matrícula LEFT JOIN Usuarios ue1 ON e1.IdUsuario = ue1.IdUsuario "
+                + " LEFT JOIN Estudiantes e2 ON a.Matrícula2 = e2.Matrícula LEFT JOIN Usuarios ue2 ON e2.IdUsuario = ue2.IdUsuario "
+                + " LEFT JOIN LGAC l ON l.IdLGAC = a.IdLGAC WHERE a.título LIKE ? && a.V°B° = 'Validado' ORDER BY fechaFin, fechaInicio, título ASC";
         
         try{
             statement = dataBaseManager.getConnection().prepareStatement(query);
@@ -378,10 +439,24 @@ public class ResearchDAO implements IResearchDAO{
                 research.setSuggestedBibliography(resultSet.getString("a.bibliografíaRecomendada"));
                 research.setTitle(resultSet.getString("a.título"));
                 research.setValidationStatus(resultSet.getString("a.V°B°"));
-                research.getStudent().setMatricle(resultSet.getString("a.Matrícula"));
+                
+                Student student = new Student();
+                student.setMatricle(resultSet.getString("a.Matrícula1"));
                 
                 if(!resultSet.wasNull()){
-                    research.getStudent().setName(resultSet.getString("ue.nombre"));
+                    student.setName(resultSet.getString("ue1.nombre"));
+                    student.setFirstSurname(resultSet.getString("ue1.apellidoPaterno"));
+                    student.setSecondSurname(resultSet.getString("ue1.apellidoMaterno"));
+                }
+                
+                Student student2 = new Student();
+                student2.setMatricle(resultSet.getString("a.Matrícula2"));
+                if(!resultSet.wasNull()){
+                    student2.setName(resultSet.getString("ue2.nombre"));
+                    student2.setFirstSurname(resultSet.getString("ue2.apellidoPaterno"));
+                    student2.setSecondSurname(resultSet.getString("ue2.apellidoMaterno"));
+                    
+                    research.getStudents().add(student2);
                 }
                 
                 researchProjectList.add(research);
@@ -402,12 +477,13 @@ public class ResearchDAO implements IResearchDAO{
         String query = "SELECT DISTINCT a.IdAnteproyecto, a.fechaFin, a.fechaInicio, l.IdLGAC, l.descripción AS LGAC, a.título, a.V°B°, "
                 + " a.IdDirector1, up1.nombre, up1.apellidoPaterno, up1.apellidoMaterno, a.IdDirector2, up2.nombre, up2.apellidoPaterno, up2.apellidoMaterno, a.IdDirector3, "
                 + " up3.nombre, up3.apellidoPaterno, up3.apellidoMaterno, a.descripción, a.resultadosEsperados, a.requisitos, a.bibliografíaRecomendada, "
-                + " a.Matrícula, ue.nombre, ue.apellidoPaterno, ue.apellidoMaterno FROM Anteproyectos a "
+                + " a.Matrícula1, ue1.nombre, ue1.apellidoPaterno, ue1.apellidoMaterno, a.Matrícula2, ue2.nombre, ue2.apellidoPaterno, ue2.apellidoMaterno FROM Anteproyectos a "
                 + " LEFT JOIN Directores d1 ON a.IdDirector1 = d1.IdDirector LEFT JOIN Profesores p1 ON d1.NumPersonal = p1.NumPersonal LEFT JOIN Usuarios up1 ON p1.IdUsuario = up1.IdUsuario "
                 + " LEFT JOIN Directores d2 ON a.IdDirector2 = d2.IdDirector LEFT JOIN Profesores p2 ON d2.NumPersonal = p2.NumPersonal LEFT JOIN Usuarios up2 ON p2.IdUsuario = up2.IdUsuario "
                 + " LEFT JOIN Directores d3 ON a.IdDirector3 = d3.IdDirector LEFT JOIN Profesores p3 ON d3.NumPersonal = p3.NumPersonal LEFT JOIN Usuarios up3 ON p3.IdUsuario = up3.IdUsuario "
-                + " LEFT JOIN Estudiantes e ON a.Matrícula = e.Matrícula LEFT JOIN Usuarios ue ON e.IdUsuario = ue.IdUsuario LEFT JOIN LGAC l ON l.IdLGAC = a.IdLGAC  "
-                + "WHERE a.título LIKE ? && a.V°B° = 'Propuesto' ORDER BY fechaFin, fechaInicio, título ASC";
+                + " LEFT JOIN Estudiantes e1 ON a.Matrícula1 = e1.Matrícula LEFT JOIN Usuarios ue1 ON e1.IdUsuario = ue1.IdUsuario "
+                + " LEFT JOIN Estudiantes e2 ON a.Matrícula2 = e2.Matrícula LEFT JOIN Usuarios ue2 ON e2.IdUsuario = ue2.IdUsuario "
+                + " LEFT JOIN LGAC l ON l.IdLGAC = a.IdLGAC WHERE a.título LIKE ? && a.V°B° = 'Propuesto' ORDER BY fechaFin, fechaInicio, título ASC";
         
         try{
             statement = dataBaseManager.getConnection().prepareStatement(query);
@@ -447,10 +523,24 @@ public class ResearchDAO implements IResearchDAO{
                 research.setSuggestedBibliography(resultSet.getString("a.bibliografíaRecomendada"));
                 research.setTitle(resultSet.getString("a.título"));
                 research.setValidationStatus(resultSet.getString("a.V°B°"));
-                research.getStudent().setMatricle(resultSet.getString("a.Matrícula"));
+                
+                Student student = new Student();
+                student.setMatricle(resultSet.getString("a.Matrícula1"));
                 
                 if(!resultSet.wasNull()){
-                    research.getStudent().setName(resultSet.getString("ue.nombre"));
+                    student.setName(resultSet.getString("ue1.nombre"));
+                    student.setFirstSurname(resultSet.getString("ue1.apellidoPaterno"));
+                    student.setSecondSurname(resultSet.getString("ue1.apellidoMaterno"));
+                }
+                
+                Student student2 = new Student();
+                student2.setMatricle(resultSet.getString("a.Matrícula2"));
+                if(!resultSet.wasNull()){
+                    student2.setName(resultSet.getString("ue2.nombre"));
+                    student2.setFirstSurname(resultSet.getString("ue2.apellidoPaterno"));
+                    student2.setSecondSurname(resultSet.getString("ue2.apellidoMaterno"));
+                    
+                    research.getStudents().add(student2);
                 }
                 
                 researchProjectList.add(research);
@@ -468,15 +558,16 @@ public class ResearchDAO implements IResearchDAO{
         ArrayList<ResearchProject> researchProjectList = new ArrayList<>();
         PreparedStatement statement;
         
-        String query = "SELECT a.IdAnteproyecto, a.fechaFin, a.fechaInicio, l.IdLGAC, l.descripción AS LGAC, a.título, a.V°B°, "
+        String query = "SELECT DISTINCT a.IdAnteproyecto, a.fechaFin, a.fechaInicio, l.IdLGAC, l.descripción AS LGAC, a.título, a.V°B°, "
                 + " a.IdDirector1, up1.nombre, up1.apellidoPaterno, up1.apellidoMaterno, a.IdDirector2, up2.nombre, up2.apellidoPaterno, up2.apellidoMaterno, a.IdDirector3, "
                 + " up3.nombre, up3.apellidoPaterno, up3.apellidoMaterno, a.descripción, a.resultadosEsperados, a.requisitos, a.bibliografíaRecomendada, "
-                + " a.Matrícula, ue.nombre, ue.apellidoPaterno, ue.apellidoMaterno FROM Anteproyectos a "
+                + " a.Matrícula1, ue1.nombre, ue1.apellidoPaterno, ue1.apellidoMaterno, a.Matrícula2, ue2.nombre, ue2.apellidoPaterno, ue2.apellidoMaterno FROM Anteproyectos a "
                 + " LEFT JOIN Directores d1 ON a.IdDirector1 = d1.IdDirector LEFT JOIN Profesores p1 ON d1.NumPersonal = p1.NumPersonal LEFT JOIN Usuarios up1 ON p1.IdUsuario = up1.IdUsuario "
                 + " LEFT JOIN Directores d2 ON a.IdDirector2 = d2.IdDirector LEFT JOIN Profesores p2 ON d2.NumPersonal = p2.NumPersonal LEFT JOIN Usuarios up2 ON p2.IdUsuario = up2.IdUsuario "
                 + " LEFT JOIN Directores d3 ON a.IdDirector3 = d3.IdDirector LEFT JOIN Profesores p3 ON d3.NumPersonal = p3.NumPersonal LEFT JOIN Usuarios up3 ON p3.IdUsuario = up3.IdUsuario "
-                + " LEFT JOIN Estudiantes e ON a.Matrícula = e.Matrícula LEFT JOIN Usuarios ue ON e.IdUsuario = ue.IdUsuario LEFT JOIN LGAC l ON l.IdLGAC = a.IdLGAC "
-                + "WHERE a.título LIKE ? && (a.V°B° = 'Validado' || a.V°B° = 'Propuesto') ORDER BY fechaFin, fechaInicio, título ASC";
+                + " LEFT JOIN Estudiantes e1 ON a.Matrícula1 = e1.Matrícula LEFT JOIN Usuarios ue1 ON e1.IdUsuario = ue1.IdUsuario "
+                + " LEFT JOIN Estudiantes e2 ON a.Matrícula2 = e2.Matrícula LEFT JOIN Usuarios ue2 ON e2.IdUsuario = ue2.IdUsuario "
+                + " LEFT JOIN LGAC l ON l.IdLGAC = a.IdLGAC WHERE a.título LIKE ? && (a.V°B° = 'Validado' || a.V°B° = 'Propuesto') ORDER BY fechaFin, fechaInicio, título ASC";
         
         try{
             statement = dataBaseManager.getConnection().prepareStatement(query);
@@ -516,10 +607,26 @@ public class ResearchDAO implements IResearchDAO{
                 research.setSuggestedBibliography(resultSet.getString("a.bibliografíaRecomendada"));
                 research.setTitle(resultSet.getString("a.título"));
                 research.setValidationStatus(resultSet.getString("a.V°B°"));
-                research.getStudent().setMatricle(resultSet.getString("a.Matrícula"));
+                
+                Student student = new Student();
+                student.setMatricle(resultSet.getString("a.Matrícula1"));
                 
                 if(!resultSet.wasNull()){
-                    research.getStudent().setName(resultSet.getString("ue.nombre"));
+                    student.setName(resultSet.getString("ue1.nombre"));
+                    student.setFirstSurname(resultSet.getString("ue1.apellidoPaterno"));
+                    student.setSecondSurname(resultSet.getString("ue1.apellidoMaterno"));
+                    
+                    research.addStudent(student);
+                }
+                
+                Student student2 = new Student();
+                student2.setMatricle(resultSet.getString("a.Matrícula2"));
+                if(!resultSet.wasNull()){
+                    student2.setName(resultSet.getString("ue2.nombre"));
+                    student2.setFirstSurname(resultSet.getString("ue2.apellidoPaterno"));
+                    student2.setSecondSurname(resultSet.getString("ue2.apellidoMaterno"));
+                    
+                    research.addStudent(student2);
                 }
                 
                 researchProjectList.add(research);
@@ -538,7 +645,7 @@ public class ResearchDAO implements IResearchDAO{
         int result = 0;
         PreparedStatement statement;
         String query = "UPDATE Anteproyectos SET fechaFin = ?, fechaInicio = ?, IdLGAC = ?, descripción = ?, resultadosEsperados = ?, "
-                + " requisitos = ?, bibliografíaRecomendada = ?, título = ?, Matrícula = ?, IdDirector1 = ?, IdDirector2 = ?, IdDirector3 = ? "
+                + " requisitos = ?, bibliografíaRecomendada = ?, título = ?, Matrícula1 = ?, Matrícula2 = ?, IdDirector1 = ?, IdDirector2 = ?, IdDirector3 = ? "
                 + " WHERE IdAnteproyecto = ?";
         
         try{
@@ -559,27 +666,30 @@ public class ResearchDAO implements IResearchDAO{
             statement.setString(7, research.getSuggestedBibliography());
             statement.setString(8, research.getTitle());
             
-            if(research.getStudent().getMatricle() != null){
-                statement.setString(9, research.getStudent().getMatricle());
+            if(research.getStudents().get(0).getMatricle() != null){
+                statement.setString(9, research.getStudents().get(0).getMatricle());
             }else{
                 statement.setNull(9, java.sql.Types.VARCHAR);
             }
             
-            
+            if(research.getStudents().get(0).getMatricle() != null){
+                statement.setString(10, research.getStudents().get(1).getMatricle());
+            }else{
+                statement.setNull(10, java.sql.Types.VARCHAR);
+            }
             
             for(int i = 0; i < 3; i++){
                 if(i < research.getDirectors().size()){
-                    statement.setInt(i + 10, research.getDirectors().get(i).getDirectorId());
+                    statement.setInt(i + 11, research.getDirectors().get(i).getDirectorId());
                 }else{
-                    statement.setNull(i + 10, java.sql.Types.INTEGER);
+                    statement.setNull(i + 11, java.sql.Types.INTEGER);
                 }
             }
             
-            statement.setInt(13, research.getId());
+            statement.setInt(14, research.getId());
             
             result = statement.executeUpdate();
         }catch(SQLException exception){
-              ;
             throw new DataInsertionException("Error de conexión. Inténtelo de nuevo más tarde");
         }finally{
             dataBaseManager.closeConnection();
@@ -626,6 +736,18 @@ public class ResearchDAO implements IResearchDAO{
             for(int i = 1; i < research.getDirectors().size(); i++){
                 
                 result = research.getDirectors().get(i).equals(research.getDirectors().get(i - 1));
+            }
+        }
+        
+        return result;
+    }
+    
+    public boolean areStudentsDifferent(ResearchProject research){
+        boolean result = true;
+        
+        if(research.getStudents().size() >= 2){
+            for(int i = 1; i < research.getDirectors().size(); i++){
+                result = !research.getStudents().get(i).equals(research.getStudents().get(i - 1));
             }
         }
         

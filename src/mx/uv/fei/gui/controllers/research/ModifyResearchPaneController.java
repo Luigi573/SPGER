@@ -34,6 +34,7 @@ import mx.uv.fei.logic.exceptions.DataInsertionException;
 
 public class ModifyResearchPaneController{
     private ArrayList<ComboBox<Director>> directorComboBoxes;
+    private ArrayList<ComboBox<Student>> studentComboBoxes;
     private int researchId;
     private User user;
     
@@ -49,6 +50,8 @@ public class ModifyResearchPaneController{
     private ComboBox<KGAL> KGALComboBox;
     @FXML
     private ComboBox<Student> studentComboBox;
+    @FXML
+    private ComboBox<Student> student2ComboBox;
     @FXML
     private DatePicker dueDatePicker;
     @FXML
@@ -75,10 +78,14 @@ public class ModifyResearchPaneController{
             ArrayList<KGAL> KGALList = kgalDAO.getKGALList();
             ArrayList<Student> studentList = studentDAO.getStudentsWithoutResearch();
             
-            directorComboBoxes = new ArrayList<>();
+            directorComboBoxes = new ArrayList();
             directorComboBoxes.add(directorComboBox);
             directorComboBoxes.add(codirector1ComboBox);
             directorComboBoxes.add(codirector2ComboBox);
+            
+            studentComboBoxes = new ArrayList();
+            studentComboBoxes.add(studentComboBox);
+            studentComboBoxes.add(student2ComboBox);
             
             for(ComboBox<Director> directorComboBox : directorComboBoxes){
                 directorComboBox.setItems(FXCollections.observableArrayList(directorList));
@@ -86,6 +93,7 @@ public class ModifyResearchPaneController{
             
             KGALComboBox.setItems(FXCollections.observableArrayList(KGALList));
             studentComboBox.setItems(FXCollections.observableArrayList(studentList));
+            student2ComboBox.setItems(FXCollections.observableArrayList(studentList));
         }catch(DataRetrievalException exception){
             new AlertPopUpGenerator().showConnectionErrorMessage();
         }
@@ -137,8 +145,11 @@ public class ModifyResearchPaneController{
             if(KGALComboBox.getValue() != null){
                 research.setKgal(KGALComboBox.getValue());
             }
-            if(studentComboBox.getValue() != null){
-                research.setStudent(studentComboBox.getValue());
+            
+            for(ComboBox<Student> studentComboBox : studentComboBoxes){
+                if(studentComboBox.getValue() != null){
+                    research.addStudent(studentComboBox.getValue());
+                }
             }
             
             research.setExpectedResult(expectedResultTextArea.getText());
@@ -148,14 +159,18 @@ public class ModifyResearchPaneController{
             if(researchDAO.isValidDate(research)){
                 if(!researchDAO.isBlank(research)){
                     if(researchDAO.areDirectorsDifferent(research)){
-                        try{
-                            if(researchDAO.modifyResearch(research) > 0){
-                                new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.INFORMATION, "", "Cambios guardados exitosamente");
+                        if(researchDAO.areStudentsDifferent(research)){
+                            try{
+                                if(researchDAO.modifyResearch(research) > 0){
+                                    new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.INFORMATION, "", "Cambios guardados exitosamente");
 
-                                returnToResearchManager(event);
+                                    returnToResearchManager(event);
+                                }
+                            }catch(DataInsertionException exception){
+                                new AlertPopUpGenerator().showConnectionErrorMessage();
                             }
-                        }catch(DataInsertionException exception){
-                            new AlertPopUpGenerator().showConnectionErrorMessage();
+                        }else{
+                            new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.WARNING, "No se puede modificar el anteproyecto", "Los estudiantes tienen que ser diferentes");
                         }
                     }else{
                         new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.WARNING, "No se puede modificar el anteproyecto", "Los directores tienen que ser diferentes");
@@ -184,8 +199,10 @@ public class ModifyResearchPaneController{
             directorComboBoxesIndex++;
         }
         
-        if(research.getStudent().getName() != null){
-            studentComboBox.getSelectionModel().select(research.getStudent());
+        int studentComboBoxesIndex = 0;
+        for(Student student : research.getStudents()){
+            studentComboBoxes.get(studentComboBoxesIndex).getSelectionModel().select(student);
+            studentComboBoxesIndex++;
         }
         
         startDatePicker.setValue(research.getStartDate().toLocalDate());

@@ -7,6 +7,7 @@ public class ResearchProject {
     private Date dueDate;
     private Date startDate;
     private ArrayList<Director> directors;
+    private ArrayList<Student> students;
     private int id;
     private KGAL kgal;
     private String validationStatus;
@@ -15,12 +16,11 @@ public class ResearchProject {
     private String requirements;
     private String suggestedBibliography;
     private String title;
-    private Student student;
     
     public ResearchProject(){
         directors = new ArrayList<>();
+        students = new ArrayList();
         kgal = new KGAL();
-        student = new Student();
     }
     
     public void setDueDate(Date dueDate) {
@@ -47,6 +47,16 @@ public class ResearchProject {
     
     public ArrayList<Director> getDirectors(){
         return directors;
+    }
+    
+    public void addStudent(Student student) {
+        if(students.size() <= 2){
+            students.add(student);
+        }
+    }
+
+    public ArrayList<Student> getStudents() {
+        return students;
     }
     
     public void setId(int id) {
@@ -111,33 +121,6 @@ public class ResearchProject {
     
     public String getTitle() {
         return title;
-    }
-    
-    public void setStudent(Student student) {
-        this.student = student;
-    }
-
-    public Student getStudent() {
-        return student;
-    }
-    
-    public void printData() {
-        System.out.println("ID: " + id);
-        System.out.println("Title: " + title);
-        System.out.println("Description: " + description);
-        System.out.println("Requirements: " + requirements);
-        System.out.println("Suggested Bibliography: " + suggestedBibliography);
-        System.out.println("Start Date: " + startDate.toString());
-        System.out.println("Due Date: " + dueDate.toString());
-        System.out.println("Expected Result: " + expectedResult);
-        System.out.println("Directors: ");
-        
-        for (Director director : directors) {
-            System.out.println("\t" + director.getName());
-        }
-        
-        System.out.println("KGAL: " + kgal.getDescription());
-        System.out.println("Student: " + student.getName());
     }
     
     @Override

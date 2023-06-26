@@ -137,6 +137,7 @@ public class UserDAO implements IUserDAO{
             resultSet.close();
             dataBaseManager.getConnection().close();
         }catch(SQLException e){
+            e.printStackTrace();
             throw new DataRetrievalException("Error al recuperar la información. Verifique su conexión e intentelo de nuevo");
         }finally{
             dataBaseManager.closeConnection();

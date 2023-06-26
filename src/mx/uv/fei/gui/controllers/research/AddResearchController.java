@@ -45,6 +45,8 @@ public class AddResearchController{
     @FXML
     private ComboBox<Student> studentComboBox;
     @FXML
+    private ComboBox<Student> student2ComboBox;
+    @FXML
     private DatePicker startDatePicker;
     @FXML
     private DatePicker dueDatePicker;
@@ -79,6 +81,7 @@ public class AddResearchController{
             
             KGALComboBox.setItems(FXCollections.observableArrayList(KGALList));
             studentComboBox.setItems(FXCollections.observableArrayList(studentList));
+            student2ComboBox.setItems(FXCollections.observableArrayList(studentList));
         } catch(DataRetrievalException exception){
             new AlertPopUpGenerator().showConnectionErrorMessage();
         }
@@ -99,7 +102,11 @@ public class AddResearchController{
             }
             
             if(studentComboBox.getValue() != null){
-                research.setStudent(studentComboBox.getValue());
+                research.addStudent(studentComboBox.getValue());
+            }
+            
+            if(student2ComboBox.getValue() != null){
+                research.addStudent(student2ComboBox.getValue());
             }
             
             if(KGALComboBox.getValue() != null){
@@ -119,16 +126,20 @@ public class AddResearchController{
                 if(researchDAO.isValidDate(research)){
                     if(!researchDAO.isBlank(research)){
                         if(researchDAO.areDirectorsDifferent(research)){
-                            try{
-                                if(researchDAO.addResearch(research) > 0){
-                                    new AlertPopUpGenerator().showCustomMessage(AlertType.INFORMATION, "Éxito", "Anteproyecto creado exitosamente");
+                            if(researchDAO.areStudentsDifferent(research)){
+                                try{
+                                    if(researchDAO.addResearch(research) > 0){
+                                        new AlertPopUpGenerator().showCustomMessage(AlertType.INFORMATION, "Éxito", "Anteproyecto creado exitosamente");
 
-                                    researchManagerController.loadResearches(0);
-                                    Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-                                    stage.close();
+                                        researchManagerController.loadResearches(0);
+                                        Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+                                        stage.close();
+                                    }
+                                }catch(DataInsertionException exception){
+                                    new AlertPopUpGenerator().showConnectionErrorMessage();
                                 }
-                            }catch(DataInsertionException exception){
-                                new AlertPopUpGenerator().showConnectionErrorMessage();
+                            } else {
+                                new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "No se puede crear el anteproyecto", "Los estudiantes deben ser diferentes");
                             }
                         }else{
                             new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "No se puede crear el anteproyecto", "Los directores deben ser diferentes");

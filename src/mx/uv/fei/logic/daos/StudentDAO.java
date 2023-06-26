@@ -378,8 +378,9 @@ public class StudentDAO implements IStudentDAO{
     public ArrayList<Student> getStudentsWithoutResearch() throws DataRetrievalException{
         ArrayList<Student> studentList = new ArrayList<>();
         PreparedStatement statement;
-        String query = "SELECT e.Matrícula, u.* FROM Estudiantes e LEFT JOIN Anteproyectos a ON e.Matrícula = a.Matrícula "
-                + "LEFT JOIN Usuarios u ON e.IdUsuario = u.IdUsuario WHERE a.Matrícula IS NULL;";
+        String query = "SELECT e.Matrícula, u.* FROM Estudiantes e "
+                + "LEFT JOIN Anteproyectos a ON e.Matrícula = a.Matrícula1 OR e.Matrícula = a.Matrícula2 "
+                + "LEFT JOIN Usuarios u ON e.IdUsuario = u.IdUsuario WHERE a.Matrícula1 IS NULL AND a.Matrícula2 IS NULL";
         
         try{
             statement = dataBaseManager.getConnection().prepareStatement(query);

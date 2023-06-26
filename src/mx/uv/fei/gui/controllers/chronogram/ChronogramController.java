@@ -78,8 +78,13 @@ public class ChronogramController{
     @FXML
     private void switchChronogram(ActionEvent event){
        if(studentChronogramComboBox.getValue() != null){
-            if(studentChronogramComboBox.getValue().getStudent().getName() != null){
-                chronogramTitleLabel.setText("Cronograma de " + studentChronogramComboBox.getValue().getStudent().getName());
+            if(studentChronogramComboBox.getValue().getStudents().get(0).getName() != null){
+                if(studentChronogramComboBox.getValue().getStudents().get(1).getName() != null ){
+                    chronogramTitleLabel.setText("Cronograma de " + studentChronogramComboBox.getValue().getStudents().get(0).getName() + " & "
+                            + studentChronogramComboBox.getValue().getStudents().get(1).getName());
+                }else{
+                    chronogramTitleLabel.setText("Cronograma de " + studentChronogramComboBox.getValue().getStudents().get(0).getName());
+                }
             }else{
                 chronogramTitleLabel.setText("Cronograma sin asignar");
             }

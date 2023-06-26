@@ -26,10 +26,10 @@
       <ComboBox fx:id="codirector2ComboBox" layoutX="91.0" layoutY="154.0" prefHeight="25.0" prefWidth="348.0" promptText="--Seleccionar codirector--" />
       <Label layoutX="8.0" layoutY="191.0" prefHeight="17.0" prefWidth="78.0" text="Asignado a:" />
       <ComboBox fx:id="studentComboBox" layoutX="91.0" layoutY="187.0" prefHeight="25.0" prefWidth="348.0" promptText="--Seleccionar estudiante--" />
-      <Label layoutX="8.0" layoutY="230.0" prefHeight="17.0" prefWidth="109.0" text="Fecha de inicio: " />
-      <DatePicker fx:id="startDatePicker" editable="false" layoutX="113.0" layoutY="226.0" prefHeight="24.0" prefWidth="326.0" />
-      <Label layoutX="8.0" layoutY="266.0" prefHeight="17.0" prefWidth="87.0" text="Fecha fin:" />
-      <DatePicker fx:id="dueDatePicker" editable="false" layoutX="75.0" layoutY="262.0" prefHeight="24.0" prefWidth="364.0" />
+      <Label layoutX="7.0" layoutY="258.0" prefHeight="17.0" prefWidth="109.0" text="Fecha de inicio: " />
+      <DatePicker fx:id="startDatePicker" editable="false" layoutX="114.0" layoutY="254.0" prefHeight="24.0" prefWidth="326.0" />
+      <Label layoutX="7.0" layoutY="288.0" prefHeight="17.0" prefWidth="87.0" text="Fecha fin:" />
+      <DatePicker fx:id="dueDatePicker" editable="false" layoutX="115.0" layoutY="284.0" prefHeight="25.0" prefWidth="326.0" />
       <Label alignment="CENTER" layoutX="160.0" layoutY="310.0" prefHeight="17.0" prefWidth="125.0" text="Descripción">
          <font>
             <Font name="System Bold" size="18.0" />
@@ -73,5 +73,6 @@
       <Button fx:id="cancelButton" layoutX="99.0" layoutY="1079.0" mnemonicParsing="false" onAction="#cancelChanges" text="Cancelar" />
       <Label layoutX="194.0" layoutY="1083.0" text="*Obligatorio" />
       <Button fx:id="saveButton" layoutX="277.0" layoutY="1079.0" mnemonicParsing="false" onAction="#saveChanges" text="Guardar" />
+      <ComboBox fx:id="student2ComboBox" layoutX="91.0" layoutY="220.0" prefHeight="25.0" prefWidth="348.0" promptText="--Seleccionar estudiante--" />
    </children>
 </Pane>

@@ -20,6 +20,7 @@ import mx.uv.fei.logic.exceptions.DataInsertionException;
 public class ResearchInfoPaneController{
     private ResearchManagerController researchManagerController;
     private ArrayList<Label> directorLabels;
+    private ArrayList<Label> studentLabels;
     private ResearchProject research;
     private ScrollPane container;
     private User user;
@@ -47,6 +48,8 @@ public class ResearchInfoPaneController{
     @FXML
     private Label studentLabel;
     @FXML
+    private Label student2Label;
+    @FXML
     private Text suggestedBibliographyText;
     @FXML
     private Label titleLabel;
@@ -59,6 +62,10 @@ public class ResearchInfoPaneController{
         directorLabels.add(director1Label);
         directorLabels.add(director2Label);
         directorLabels.add(director3Label);
+        
+        studentLabels = new ArrayList<>();
+        studentLabels.add(studentLabel);
+        studentLabels.add(student2Label);
     }
     @FXML
     private void modifyResearch(ActionEvent event){
@@ -114,8 +121,10 @@ public class ResearchInfoPaneController{
             }
         }
         
-        if(research.getStudent().getName() != null){
-            studentLabel.setText(research.getStudent().getName());
+        for(int i = 0; i < research.getStudents().size(); i++){
+            if(research.getStudents().get(i).getName() != null){
+                studentLabels.get(i).setText(research.getStudents().get(i).toString());
+            }
         }
         
         startDateLabel.setText(research.getStartDate().toString());
