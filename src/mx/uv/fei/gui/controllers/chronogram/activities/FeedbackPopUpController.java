@@ -49,10 +49,8 @@ public class FeedbackPopUpController{
             feedbackTextArea.setText(activity.getFeedback());
         }
     }
-    public void setUser(User user){
-        if(!Director.class.isAssignableFrom(user.getClass())){
-            feedbackTextArea.setEditable(false);
-            submitButton.setVisible(false);
-        }
+    public void disableWriting(){
+        feedbackTextArea.setEditable(false);
+        submitButton.setVisible(false);
     }
 }

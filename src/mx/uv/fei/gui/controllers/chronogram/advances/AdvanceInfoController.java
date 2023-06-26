@@ -139,14 +139,16 @@ public class AdvanceInfoController{
             Parent parent = loader.load();
             FeedbackPopUpController controller = loader.getController();
             controller.setAdvance(advance);
-            controller.setUser(user);
+            
+            if(!Director.class.isAssignableFrom(user.getClass())){
+                controller.disableWriting();
+            }
             
             Scene scene = new Scene(parent);
             String css = this.getClass().getResource("/mx/uv/fei/gui/stylesfiles/Styles.css").toExternalForm();
             scene.getStylesheets().add(css);
             
             Stage stage = new Stage();
-            stage.setTitle("Retroalimentar avance");
             stage.initModality(Modality.WINDOW_MODAL);
             stage.initOwner((Stage)((Node)event.getSource()).getScene().getWindow());
             stage.setScene(scene);
@@ -227,8 +229,6 @@ public class AdvanceInfoController{
             if(Director.class.isAssignableFrom(user.getClass())){
                 feedbackButton.setText("Retroalimentar");
             }
-        }else{
-            
         }
     }
 }

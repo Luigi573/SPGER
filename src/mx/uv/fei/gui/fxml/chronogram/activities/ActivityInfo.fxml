@@ -98,7 +98,7 @@
                               <VBox fx:id="fileVBox" prefHeight="106.0" prefWidth="790.0" />
                            </content>
                         </ScrollPane>
-                        <Button fx:id="feedbackButton" layoutX="480.0" layoutY="440.0" mnemonicParsing="false" onAction="#openFeedbackPopUp" prefHeight="35.0" prefWidth="190.0" text="Retroalimentar">
+                        <Button fx:id="feedbackButton" layoutX="480.0" layoutY="440.0" mnemonicParsing="false" onAction="#openFeedbackPopUp" prefHeight="35.0" prefWidth="190.0" text="Ver retroalimentación">
                            <font>
                               <Font size="16.0" />
                            </font></Button>

@@ -217,18 +217,14 @@ public class ResearchDAO implements IResearchDAO{
     public ArrayList<ResearchProject> getCourseResearch(int NRC) throws DataRetrievalException{
         ArrayList<ResearchProject> researchList = new ArrayList<>();
         PreparedStatement statement;
-        String query = "SELECT DISTINCT a.IdAnteproyecto, a.título, a.Matrícula, u.nombre, u.apellidoPaterno, u.apellidoMaterno FROM Anteproyectos a "
-                + " LEFT JOIN Directores d1 ON a.IdDirector1 = d1.IdDirector LEFT JOIN Profesores p1 ON d1.NumPersonal = p1.NumPersonal LEFT JOIN Cursos c1 ON p1.NumPersonal = c1.NumPersonal "
-                + " LEFT JOIN Directores d2 ON a.IdDirector2 = d2.IdDirector LEFT JOIN Profesores p2 ON d2.NumPersonal = p2.NumPersonal LEFT JOIN Cursos c2 ON p2.NumPersonal = c2.NumPersonal "
-                + " LEFT JOIN Directores d3 ON a.IdDirector3 = d3.IdDirector LEFT JOIN Profesores p3 ON d3.NumPersonal = p3.NumPersonal LEFT JOIN Cursos c3 ON p3.NumPersonal = c3.NumPersonal "
-                + " LEFT JOIN Estudiantes e ON a.Matrícula = e.Matrícula LEFT JOIN Usuarios u ON e.IdUsuario = u.IdUsuario"
-                + " WHERE (c1.NRC = ? OR c2.NRC = ? OR c3.NRC = ?)";
+        String query = "SELECT DISTINCT a.IdAnteproyecto, a.título, a.Matrícula, u.nombre, u.apellidoPaterno, u.apellidoMaterno FROM Anteproyectos a " +
+                        " INNER JOIN Estudiantes e ON a.Matrícula = e.Matrícula INNER JOIN EstudiantesCurso ec ON e.Matrícula = ec.Matrícula " +
+                        " INNER JOIN Cursos c ON ec.NRC = c.NRC INNER JOIN Usuarios u ON e.IdUsuario = u.IdUsuario " +
+                        " WHERE c.NRC IN(?)";
         
         try{
             statement = dataBaseManager.getConnection().prepareStatement(query);
             statement.setInt(1, NRC);
-            statement.setInt(2, NRC);
-            statement.setInt(3, NRC);
             
             ResultSet resultSet = statement.executeQuery();
             while(resultSet.next()){

@@ -122,7 +122,7 @@ public class ActivityInfoController{
         File file = fileChooser.showOpenDialog((Stage)((Node)event.getSource()).getScene().getWindow());
         
         if (file != null){
-            if(deliverySize < 20971520){
+            if((deliverySize + file.length()) < 20971520){
                 try{
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/activities/ActivityFileItem.fxml"));
                     Pane pane = loader.load();
@@ -131,14 +131,13 @@ public class ActivityInfoController{
                     controller.hideDownloadButton();
                     
                     deliverySize += file.length();
-                    System.out.println("Total de la entrega: " + deliverySize);
                     fileVBox.getChildren().add(pane);
                     filesList.add(file);
                 }catch(IOException exception) {
                     new AlertPopUpGenerator().showMissingFilesMessage();
                 }
             }else{
-                new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.WARNING, "Error al subir el archivo", "El archivo seleccionado es demasiado grande (Máximo: 20 Mb)");
+                new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.WARNING, "Error al subir el archivo", "El tamaño máximo permitido para una entrega es de 20Mb");
             }
         }
     }
@@ -240,7 +239,10 @@ public class ActivityInfoController{
             Parent parent = loader.load();
             FeedbackPopUpController controller = (FeedbackPopUpController)loader.getController();
             controller.setActivity(activity);
-            controller.setUser(user);
+            
+            if(course != null){
+                controller.disableWriting();
+            }
             
             Scene scene = new Scene(parent);
             String css = this.getClass().getResource("/mx/uv/fei/gui/stylesfiles/Styles.css").toExternalForm();
@@ -398,6 +400,11 @@ public class ActivityInfoController{
     
     public void setCourse(Course course){
         this.course = course;
+        
+        if(course == null){
+            feedbackButton.setVisible(true);
+            feedbackButton.setText("Retroalimentar");
+        }
     }
     
     public void setUser(User user){
@@ -411,14 +418,6 @@ public class ActivityInfoController{
             modifyDeliveryButton.setVisible(false);
             removeFilesButton.setVisible(false);
             uploadFileButton.setVisible(false);
-            
-            if(Director.class.isAssignableFrom(user.getClass()) && !activity.getStatus().equals(ActivityStatus.ACTIVE)){
-                feedbackButton.setVisible(true);
-            }else{
-                feedbackButton.setText("Ver retroalimentación");
-            }
-        }else{
-            feedbackButton.setText("Ver retroalimentación");
         }
     }
     
