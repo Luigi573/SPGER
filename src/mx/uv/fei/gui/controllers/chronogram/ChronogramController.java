@@ -151,6 +151,7 @@ public class ChronogramController{
     
     private void setDirectorView(Director director){
         chronogramTitleLabel.setText("Cronograma");
+        createActivityButton.setVisible(true);
         this.user = director;
         
         try{

@@ -41,13 +41,7 @@ public class CourseHBoxPaneController{
             controller.setCourse(course);
             
             if(Professor.class.isAssignableFrom(user.getClass())){
-                Professor professor = new Professor();
-                professor.setName(user.getName());
-                professor.setFirstSurname(user.getFirstSurname());
-                professor.setSecondSurname(user.getSecondSurname());
-                professor.setStaffNumber(((Professor)user).getStaffNumber());
-                
-                controller.setUser(professor);
+                controller.setUser(user);
             }else{
                 controller.setUser(user);
             }
