@@ -417,4 +417,24 @@ public class StudentDAO implements IStudentDAO{
             dataBaseManager.closeConnection();
         }
     }
+
+    @Override
+    public int updateStudentStatus(Student student, String studentStatus) throws DataInsertionException{
+        int result = 0;
+        try {
+            String queryForUpdateUserData = "UPDATE Usuarios SET estado = ? WHERE IdUsuario = ?";
+            PreparedStatement preparedStatementForUpdateUserData = 
+                dataBaseManager.getConnection().prepareStatement(queryForUpdateUserData);
+            preparedStatementForUpdateUserData.setString(1, studentStatus);
+            preparedStatementForUpdateUserData.setInt(2, student.getUserId());
+            result = preparedStatementForUpdateUserData.executeUpdate();
+
+        }catch(SQLException e){
+            throw new DataInsertionException("Error al modificar estudiante. Inténtelo de nuevo más tarde");
+        }finally{
+            dataBaseManager.closeConnection();
+        }
+
+        return result;
+    }
 }

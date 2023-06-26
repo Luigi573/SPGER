@@ -18,4 +18,5 @@ public interface IStudentDAO {
     public ArrayList<Student> getSpecifiedActiveStudents(String studentName) throws DataRetrievalException;
     public ArrayList<Student> getSpecifiedStudents(String studentName) throws DataRetrievalException;
     public Student getStudent(String matricle) throws DataRetrievalException;
+    public int updateStudentStatus(Student student, String studentStatus) throws DataInsertionException;
 }

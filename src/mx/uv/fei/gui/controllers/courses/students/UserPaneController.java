@@ -6,8 +6,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import mx.uv.fei.gui.AlertPopUpGenerator;
+import mx.uv.fei.logic.daos.StudentDAO;
 import mx.uv.fei.logic.daos.StudentsCoursesDAO;
+import mx.uv.fei.logic.domain.Student;
+import mx.uv.fei.logic.domain.statuses.StudentStatus;
 import mx.uv.fei.logic.exceptions.DataInsertionException;
+import mx.uv.fei.logic.exceptions.DataRetrievalException;
 
 public class UserPaneController{
     private GuiUsersCourseController guiUsersCourseController;
@@ -24,12 +28,17 @@ public class UserPaneController{
     @FXML
     private void deleteButtonController(ActionEvent event){
         StudentsCoursesDAO studentsCoursesDAO = new StudentsCoursesDAO();
+        StudentDAO studentDAO = new StudentDAO();
         try{
+            Student student = studentDAO.getStudent(matricleOrStaffNumberLabel.getText());
             studentsCoursesDAO.removeStudentCourse(
                 matricleOrStaffNumberLabel.getText(),
                 guiUsersCourseController.getCourseInformationController().getNrc()
             );
+            studentDAO.updateStudentStatus(student, StudentStatus.AVAILABLE.getValue());
         }catch(DataInsertionException e){
+            new AlertPopUpGenerator().showConnectionErrorMessage();
+        }catch(DataRetrievalException e){
             new AlertPopUpGenerator().showConnectionErrorMessage();
         }
         guiUsersCourseController.refreshStudents();

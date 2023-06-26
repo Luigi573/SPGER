@@ -19,11 +19,13 @@ import mx.uv.fei.gui.AlertPopUpGenerator;
 import mx.uv.fei.logic.daos.StudentDAO;
 import mx.uv.fei.logic.daos.StudentsCoursesDAO;
 import mx.uv.fei.logic.domain.Student;
+import mx.uv.fei.logic.domain.statuses.StudentStatus;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
 import mx.uv.fei.logic.exceptions.DataInsertionException;
 
 public class GuiStudentAdderController{
     private GuiUsersCourseController guiUsersCourseController;
+    private ArrayList<Student> studentsOnStudentsVBox;
 
     @FXML
     private Button addStudentsButton;
@@ -38,6 +40,9 @@ public class GuiStudentAdderController{
 
     @FXML
     private void initialize(){
+        studentsOnStudentsVBox = new ArrayList<>();
+        studentsOnStudentsVBox.clear();
+
         try{
             StudentsCoursesDAO studentsCoursesDAO = new StudentsCoursesDAO();
             ArrayList<String> studentMatricles = studentsCoursesDAO.getStudentsMatriclesByCourseNRC(
@@ -63,6 +68,7 @@ public class GuiStudentAdderController{
                         );
                         studentPaneController.setMatricle(activeStudent.getMatricle());
                         studentsVBox.getChildren().add(studentPaneToAdd);
+                        studentsOnStudentsVBox.add(activeStudent);
                         
                     }
                 }catch(IOException e){
@@ -94,6 +100,7 @@ public class GuiStudentAdderController{
                         );
                         studentPaneController.setMatricle(activeStudent.getMatricle());
                         studentsVBox.getChildren().add(studentPaneToAdd);
+                        studentsOnStudentsVBox.add(activeStudent);
                     }
                 }
             }catch(IOException e){
@@ -107,6 +114,7 @@ public class GuiStudentAdderController{
     @FXML
     private void addStudentsButtonController(ActionEvent event){
         StudentsCoursesDAO studentCoursesDAO = new StudentsCoursesDAO();
+        StudentDAO studentDAO = new StudentDAO();
 
         for(Node studentPane : studentsVBox.getChildren()){
             if( ((RadioButton)((Pane)studentPane).getChildren().get(4)).isSelected() ){
@@ -115,6 +123,12 @@ public class GuiStudentAdderController{
                         ((Label)((Pane)studentPane).getChildren().get(3)).getText(), 
                         guiUsersCourseController.getCourseInformationController().getNrc()
                     );
+                    for(Student selectedStudent : studentsOnStudentsVBox){
+                        if(((Label)((Pane)studentPane).getChildren().get(3)).getText().equals(selectedStudent.getMatricle())){
+                            studentDAO.updateStudentStatus(selectedStudent, StudentStatus.ACTIVE.getValue());
+                            break;
+                        }
+                    }
                 }catch(DataInsertionException e){
                     new AlertPopUpGenerator().showConnectionErrorMessage();
                 }
@@ -133,6 +147,7 @@ public class GuiStudentAdderController{
     private void showByMatricleButtonController(ActionEvent event){
         try{
             studentsVBox.getChildren().clear();
+            studentsOnStudentsVBox.clear();
             StudentsCoursesDAO studentsCoursesDAO = new StudentsCoursesDAO();
             ArrayList<String> studentMatricles = studentsCoursesDAO.getStudentsMatriclesByCourseNRC(
                 guiUsersCourseController.getCourseInformationController().getNrc()
@@ -156,6 +171,7 @@ public class GuiStudentAdderController{
                         );
                         studentPaneController.setMatricle(activeStudent.getMatricle());
                         studentsVBox.getChildren().add(studentPaneToAdd);
+                        studentsOnStudentsVBox.add(activeStudent);
                         
                     }
                 }catch(IOException e){
@@ -187,6 +203,7 @@ public class GuiStudentAdderController{
                         );
                         studentPaneController.setMatricle(activeStudent.getMatricle());
                         studentsVBox.getChildren().add(studentPaneToAdd);
+                        studentsOnStudentsVBox.add(activeStudent);
                     }
                 }
             }catch(IOException e){

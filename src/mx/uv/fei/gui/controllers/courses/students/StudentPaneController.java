@@ -6,6 +6,7 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.layout.Pane;
 
 public class StudentPaneController{
+
     @FXML
     private Label matricleLabel;
     @FXML
