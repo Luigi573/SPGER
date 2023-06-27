@@ -246,16 +246,18 @@ public class ResearchDAO implements IResearchDAO{
     public ArrayList<ResearchProject> getCourseResearch(int NRC) throws DataRetrievalException{
         ArrayList<ResearchProject> researchList = new ArrayList<>();
         PreparedStatement statement;
-        String query = "SELECT DISTINCT a.IdAnteproyecto, a.título, a.Matrícula1, u1.nombre, u1.apellidoPaterno, u1.apellidoMaterno " + 
-                        " a.Matrícula2, u2.nombre, u2.apellidoPaterno, u2.apellidoMaterno FROM Anteproyectos a " +
-                        " LEFT JOIN Estudiantes e1 ON a.Matrícula1 = e.Matrícula INNER JOIN EstudiantesCurso ec1 ON e1.Matrícula = ec1.Matrícula1 " + 
-                        " LEFT JOIN Estudiantes e2 ON a.Matrícula2 = e.Matrícula INNER JOIN EstudiantesCurso ec2 ON e2.Matrícula = ec1.Matrícula2 " +
-                        " INNER JOIN Cursos c ON ec.NRC = c.NRC INNER JOIN Usuarios u ON e.IdUsuario = u.IdUsuario " +
-                        " WHERE c.NRC IN(?)";
+        String query = "SELECT DISTINCT a.IdAnteproyecto, a.título, a.Matrícula1, u1.nombre, u1.apellidoPaterno, u1.apellidoMaterno, "
+                + "a.Matrícula2, u2.nombre, u2.apellidoPaterno, u2.apellidoMaterno FROM Anteproyectos a "
+                + "LEFT JOIN Estudiantes e1 ON a.Matrícula1 = e1.Matrícula INNER JOIN EstudiantesCurso ec1 ON e1.Matrícula = ec1.Matrícula "
+                + "LEFT JOIN Estudiantes e2 ON a.Matrícula2 = e2.Matrícula INNER JOIN EstudiantesCurso ec2 ON e2.Matrícula = ec2.Matrícula "
+                + "LEFT JOIN Cursos c1 ON ec1.NRC = c1.NRC INNER JOIN Usuarios u1 ON e1.IdUsuario = u1.IdUsuario "
+                + "LEFT JOIN Cursos c2 ON ec1.NRC = c2.NRC INNER JOIN Usuarios u2 ON e2.IdUsuario = u2.IdUsuario "
+                + "WHERE c1.NRC IN(?) OR c2.NRC IN(?);";
         
         try{
             statement = dataBaseManager.getConnection().prepareStatement(query);
             statement.setInt(1, NRC);
+            statement.setInt(2, NRC);
             
             ResultSet resultSet = statement.executeQuery();
             while(resultSet.next()){
@@ -268,9 +270,9 @@ public class ResearchDAO implements IResearchDAO{
                 student.setMatricle(resultSet.getString("a.Matrícula1"));
                 
                 if(!resultSet.wasNull()){
-                    student.setName(resultSet.getString("ue1.nombre"));
-                    student.setFirstSurname(resultSet.getString("ue1.apellidoPaterno"));
-                    student.setSecondSurname(resultSet.getString("ue1.apellidoMaterno"));
+                    student.setName(resultSet.getString("u1.nombre"));
+                    student.setFirstSurname(resultSet.getString("u1.apellidoPaterno"));
+                    student.setSecondSurname(resultSet.getString("u1.apellidoMaterno"));
                     
                     research.addStudent(student);
                 }
@@ -278,9 +280,9 @@ public class ResearchDAO implements IResearchDAO{
                 Student student2 = new Student();
                 student2.setMatricle(resultSet.getString("a.Matrícula2"));
                 if(!resultSet.wasNull()){
-                    student2.setName(resultSet.getString("ue2.nombre"));
-                    student2.setFirstSurname(resultSet.getString("ue2.apellidoPaterno"));
-                    student2.setSecondSurname(resultSet.getString("ue2.apellidoMaterno"));
+                    student2.setName(resultSet.getString("u2.nombre"));
+                    student2.setFirstSurname(resultSet.getString("u2.apellidoPaterno"));
+                    student2.setSecondSurname(resultSet.getString("u2.apellidoMaterno"));
                     
                     research.addStudent(student2);
                 }
@@ -289,6 +291,7 @@ public class ResearchDAO implements IResearchDAO{
             }
             
         }catch(SQLException exception){
+            exception.printStackTrace();
             throw new DataRetrievalException("No se pudo establecer conexión con la base de datos, inténtelo de nuevo");
         }finally{
             dataBaseManager.closeConnection();
@@ -726,8 +729,7 @@ public class ResearchDAO implements IResearchDAO{
         
         if(research.getDirectors().size() >= 2){
             for(int i = 1; i < research.getDirectors().size(); i++){
-                
-                result = research.getDirectors().get(i).equals(research.getDirectors().get(i - 1));
+                result = !research.getDirectors().get(i).equals(research.getDirectors().get(i - 1));
             }
         }
         

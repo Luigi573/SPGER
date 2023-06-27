@@ -23,13 +23,14 @@ public class StudentsCoursesDAO implements IStudentsCoursesDAO{
     @Override
     public int addStudentCourse (String studentMatricle, String courseNRC) throws DataInsertionException{
         int result = 0;
-
+        
         try{
             String query = "INSERT INTO EstudiantesCurso (Matrícula, NRC) VALUES (?, ?)";
-            PreparedStatement preparedStatement = 
-            dataBaseManager.getConnection().prepareStatement(query);
+            PreparedStatement preparedStatement = dataBaseManager.getConnection().prepareStatement(query);
+            
             preparedStatement.setString(1, studentMatricle);
             preparedStatement.setInt(2, Integer.parseInt(courseNRC));
+            
             result = preparedStatement.executeUpdate();
         }catch(SQLException e){
             throw new DataInsertionException("Fallo al registrar estudiantes al curso. Inténtelo de nuevo más tarde");
