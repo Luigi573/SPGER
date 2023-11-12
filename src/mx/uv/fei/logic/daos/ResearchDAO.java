@@ -291,7 +291,6 @@ public class ResearchDAO implements IResearchDAO{
             }
             
         }catch(SQLException exception){
-            exception.printStackTrace();
             throw new DataRetrievalException("No se pudo establecer conexión con la base de datos, inténtelo de nuevo");
         }finally{
             dataBaseManager.closeConnection();

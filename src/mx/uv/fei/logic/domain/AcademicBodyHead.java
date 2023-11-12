@@ -1,6 +1,6 @@
 package mx.uv.fei.logic.domain;
 
-public class AcademicBodyHead extends Professor{
+public class AcademicBodyHead extends Director{
     private int academicBodyHeadid;
    
     public void setAcademicBodyHeadId(int academicBodyHeadid){

@@ -163,7 +163,6 @@ public class ChronogramController{
             ResearchDAO researchDAO = new ResearchDAO();
             loadComboBoxResearch(researchDAO.getDirectorsResearch(director.getStaffNumber()));
         }catch(DataRetrievalException exception){
-            exception.printStackTrace();
             new AlertPopUpGenerator().showConnectionErrorMessage();
         }
     }
