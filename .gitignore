@@ -1,14 +1,29 @@
+# IDEs and editors
+.vscode/
+.idea/
+*.iml
+
+# NetBeans project files
+nbproject/
+
+# Build output
+bin/
+build/
+out/
+target/
+
+# Build scripts
 build.xml
-/build/
-/dist/
-*.properties
-nbproject/private/private.xml
-nbproject/private/private.properties
-nbproject/project.properties
-nbproject/project.properties
-nbproject/private/private.xml
-nbproject/project.properties
-nbproject/private/private.xml
-src/dependencies/resources/DatabaseAccess.properties
-*.properties
-*.properties
+*.class
+
+# Logs
+*.log
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# Eclipse
+.settings/
+.project
+.classpath

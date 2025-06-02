@@ -12,17 +12,17 @@ import mx.uv.fei.gui.AlertPopUpGenerator;
 import mx.uv.fei.logic.daos.UserDAO;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
 
-public class Main extends Application{
+public class Main extends Application {
     @Override
-    public void start(Stage arg0){
-        try{
+    public void start(Stage arg0) {
+        try {
             FXMLLoader loader;
             Parent guiUsuarios;
             UserDAO userDAO = new UserDAO();
-            if(userDAO.hasUsersInTheDatabase()){
+            if (userDAO.hasUsersInTheDatabase()) {
                 loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/Login.fxml"));
                 guiUsuarios = loader.load();
-            }else{
+            } else {
                 loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/users/RegisterAdmin.fxml"));
                 guiUsuarios = loader.load();
             }
@@ -39,13 +39,13 @@ public class Main extends Application{
             stage.getIcons().add(icon);
 
             stage.show();
-        }catch(DataRetrievalException exception){
+        } catch (DataRetrievalException exception) {
             new AlertPopUpGenerator().showConnectionErrorMessage();
-        }catch(IOException exception){
+        } catch (IOException exception) {
             new AlertPopUpGenerator().showMissingFilesMessage();
         }
     }
-    
+
     public static void main(String[] args) {
         launch(args);
     }

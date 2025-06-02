@@ -24,10 +24,10 @@
       <Label fx:id="director3Label" layoutX="95.0" layoutY="139.0" prefHeight="17.0" prefWidth="341.0" text="(Sin asignar)" />
       <Label layoutX="7.0" layoutY="164.0" prefHeight="17.0" prefWidth="82.0" text="Asignado a: " />
       <Label fx:id="studentLabel" layoutX="95.0" layoutY="164.0" prefHeight="17.0" prefWidth="341.0" text="(Sin asignar)" />
-      <Label layoutX="10.0" layoutY="191.0" prefHeight="17.0" prefWidth="112.0" text="Fecha de inicio: " />
-      <Label fx:id="startDateLabel" layoutX="120.0" layoutY="191.0" prefHeight="17.0" prefWidth="169.0" text="YYYY-MM-DD" />
-      <Label layoutX="10.0" layoutY="216.0" prefHeight="17.0" prefWidth="88.0" text="Fecha fin:" />
-      <Label fx:id="dueDateLabel" layoutX="120.0" layoutY="216.0" prefHeight="17.0" prefWidth="169.0" text="YYYY-MM-DD" />
+      <Label layoutX="10.0" layoutY="217.0" prefHeight="17.0" prefWidth="112.0" text="Fecha de inicio: " />
+      <Label fx:id="startDateLabel" layoutX="120.0" layoutY="217.0" prefHeight="17.0" prefWidth="169.0" text="YYYY-MM-DD" />
+      <Label layoutX="14.0" layoutY="234.0" prefHeight="17.0" prefWidth="88.0" text="Fecha fin:" />
+      <Label fx:id="dueDateLabel" layoutX="120.0" layoutY="234.0" prefHeight="17.0" prefWidth="169.0" text="YYYY-MM-DD" />
       <Label alignment="CENTER" layoutX="164.0" layoutY="254.0" prefHeight="27.0" prefWidth="123.0" text="Descripción">
          <font>
             <Font name="System Bold" size="18.0" />
@@ -86,5 +86,6 @@
       </ScrollPane>
       <Button fx:id="validateButton" layoutX="47.0" layoutY="1043.0" mnemonicParsing="false" onAction="#validateResearch" prefHeight="25.0" prefWidth="94.0" text="Validar" visible="false" />
       <Button fx:id="modifyButton" layoutX="294.0" layoutY="1043.0" mnemonicParsing="false" onAction="#modifyResearch" prefHeight="25.0" prefWidth="94.0" text="Modificar" />
+      <Label fx:id="student2Label" layoutX="95.0" layoutY="188.0" prefHeight="17.0" prefWidth="341.0" text="(Sin asignar)" />
    </children>
 </Pane>
