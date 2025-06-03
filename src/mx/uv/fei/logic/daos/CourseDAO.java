@@ -28,7 +28,7 @@ public class CourseDAO implements ICourseDAO{
     public int addCourse(Course course) throws DataInsertionException, DuplicatedPrimaryKeyException{
         int generatedId = 0;
         String query = 
-        "INSERT INTO Cursos (NRC, IdPeriodoEscolar, NumPersonal, nombre, sección, bloque, estado)" +
+        "INSERT INTO Cursos (NRC, IdPeriodoEscolar, staffNumber, nombre, sección, bloque, estado)" +
         " VALUES (?, ?, ?, ?, ?, ?, ?)";
         try{
             PreparedStatement preparedStatement = 
@@ -71,7 +71,7 @@ public class CourseDAO implements ICourseDAO{
     public int modifyCourseData(Course course, int oldNrc) throws DataInsertionException, DuplicatedPrimaryKeyException{
         int result = 0;
         try{
-            String query = "UPDATE Cursos SET NRC = ?, IdPeriodoEscolar = ?, NumPersonal = ?, nombre = ?, " + 
+            String query = "UPDATE Cursos SET NRC = ?, IdPeriodoEscolar = ?, staffNumber = ?, nombre = ?, " + 
                            "sección = ?, bloque = ?, estado = ? WHERE NRC = ?";
             PreparedStatement preparedStatement = dataBaseManager.getConnection().prepareStatement(query);
             preparedStatement.setInt(1, course.getNrc());
@@ -112,10 +112,10 @@ public class CourseDAO implements ICourseDAO{
 
         try{
             Statement statement = dataBaseManager.getConnection().createStatement();
-            String query = "SELECT c.NRC, c.NumPersonal, c.nombre, c.sección, c.bloque, c.estado, up.nombre, up.apellidoPaterno, up.apellidoMaterno, "
+            String query = "SELECT c.NRC, c.staffNumber, c.nombre, c.sección, c.bloque, c.estado, up.nombre, up.firstSurname, up.secondSurname, "
                     + "pe.IdPeriodoEscolar, pe.fechaInicio, pe.fechaFin FROM Cursos c  LEFT JOIN PeriodosEscolares pe "
-                    + "ON c.IdPeriodoEscolar = pe.IdPeriodoEscolar LEFT JOIN Profesores p ON c.NumPersonal = p.NumPersonal "
-                    + "LEFT JOIN Usuarios up ON p.IdUsuario = up.IdUsuario";
+                    + "ON c.IdPeriodoEscolar = pe.IdPeriodoEscolar LEFT JOIN Professors p ON c.staffNumber = p.staffNumber "
+                    + "LEFT JOIN Users up ON p.userId = up.userId";
             
             ResultSet resultSet = statement.executeQuery(query);
             while(resultSet.next()){
@@ -126,14 +126,14 @@ public class CourseDAO implements ICourseDAO{
                 course.setNrc(resultSet.getInt("c.NRC"));
                 course.setStatus(resultSet.getString("c.estado"));
                 
-                if(resultSet.getString("c.NumPersonal") != null){
+                if(resultSet.getString("c.staffNumber") != null){
                     Professor professor = new Professor();
                     course.setProfessor(professor);
                     
-                    course.getProfessor().setStaffNumber(resultSet.getInt("c.NumPersonal"));
+                    course.getProfessor().setStaffNumber(resultSet.getInt("c.staffNumber"));
                     course.getProfessor().setName(resultSet.getString("up.nombre"));
-                    course.getProfessor().setFirstSurname(resultSet.getString("up.apellidoPaterno"));
-                    course.getProfessor().setSecondSurname(resultSet.getString("up.apellidoMaterno"));
+                    course.getProfessor().setFirstSurname(resultSet.getString("up.firstSurname"));
+                    course.getProfessor().setSecondSurname(resultSet.getString("up.secondSurname"));
                 }else{
                     course.setProfessor(null);
                 }
@@ -185,9 +185,9 @@ public class CourseDAO implements ICourseDAO{
                     course.setScholarPeriod(null);
                 }
 
-                if(resultSet.getString("NumPersonal") != null){
+                if(resultSet.getString("staffNumber") != null){
                     Professor professor = new Professor();
-                    professor.setStaffNumber(resultSet.getInt("NumPersonal"));
+                    professor.setStaffNumber(resultSet.getInt("staffNumber"));
                     course.setProfessor(professor);
                 }else{
                     course.setProfessor(null);
@@ -231,9 +231,9 @@ public class CourseDAO implements ICourseDAO{
                     course.setScholarPeriod(null);
                 }
 
-                if(resultSet.getString("NumPersonal") != null){
+                if(resultSet.getString("staffNumber") != null){
                     Professor professor = new Professor();
-                    professor.setStaffNumber(resultSet.getInt("NumPersonal"));
+                    professor.setStaffNumber(resultSet.getInt("staffNumber"));
                     course.setProfessor(professor);
                 }else{
                     course.setProfessor(null);

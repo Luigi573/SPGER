@@ -37,7 +37,7 @@ public class StudentsCoursesDAOTest {
             preloadedStudent.setEmailAddress("zS28765676@estudiantes.uv.mx");
             preloadedStudent.setMatricle("zS28765676");
            
-            String userQuery = "INSERT INTO Usuarios(nombre, apellidoPaterno, apellidoMaterno, correo) VALUES (?, ?, ?, ?)";
+            String userQuery = "INSERT INTO Users(nombre, firstSurname, secondSurname, emailAddress) VALUES (?, ?, ?, ?)";
             PreparedStatement userStatement = dataBaseManager.getConnection().prepareStatement(userQuery, Statement.RETURN_GENERATED_KEYS);
             userStatement.setString(1, preloadedStudent.getName());
             userStatement.setString(2, preloadedStudent.getFirstSurname());
@@ -52,7 +52,7 @@ public class StudentsCoursesDAOTest {
             generatedUserKeys.close();
             userStatement.close();
             
-            String studentQuery = "INSERT INTO Estudiantes(Matrícula, IdUsuario) VALUES (?,?)";
+            String studentQuery = "INSERT INTO Estudiantes(Matrícula, userId) VALUES (?,?)";
             PreparedStatement studentStatement = dataBaseManager.getConnection().prepareStatement(studentQuery);
             studentStatement.setString(1, preloadedStudent.getMatricle());
             studentStatement.setInt(2, preloadedStudent.getUserId());
@@ -91,7 +91,7 @@ public class StudentsCoursesDAOTest {
     @AfterClass
     public static void tearDownClass(){
         PreparedStatement statement;
-        String queryToDeleteUser = "DELETE FROM Usuarios WHERE IdUsuario = ?";
+        String queryToDeleteUser = "DELETE FROM Users WHERE userId = ?";
         String queryToDeleteStudent = "DELETE FROM Estudiantes WHERE Matrícula = ?";
         String queryToDeleteCourse = "DELETE FROM Cursos WHERE NRC = ?";
         String queryToDeleteStudentCourse = "DELETE FROM EstudiantesCurso WHERE Matrícula = ? && NRC = ?";

@@ -58,8 +58,8 @@ public class UserInformationController{
         String userPassword = new PasswordAndEmailMaker().securePasswordMaker();
         try{
             Alert confirmationMessage = new Alert(Alert.AlertType.CONFIRMATION);        
-            confirmationMessage.setHeaderText("Mandar Correo");
-            confirmationMessage.setContentText("¿Está seguro de que quiere generar una contraseña para el usuario seleccionado y mandarsela por correo?");
+            confirmationMessage.setHeaderText("Mandar emailAddress");
+            confirmationMessage.setContentText("¿Está seguro de que quiere generar una contraseña para el usuario seleccionado y mandarsela por emailAddress?");
 
             dialogPane = confirmationMessage.getDialogPane();
             String css = getClass().getResource("/mx/uv/fei/gui/stylesfiles/Styles.css").toExternalForm();
@@ -71,7 +71,7 @@ public class UserInformationController{
                 new UserDAO().updatePassword(userPassword, user.getUserId());
                 new PasswordAndEmailMaker().sendPassword(getEmail(), userPassword);
                 new PasswordAndEmailMaker().sendPassword(getAlternateEmail(), userPassword);
-                new AlertPopUpGenerator().showCustomMessage(AlertType.INFORMATION, "Éxito", "Correo enviado exitosamente");
+                new AlertPopUpGenerator().showCustomMessage(AlertType.INFORMATION, "Éxito", "emailAddress enviado exitosamente");
             }
         }catch(DataInsertionException e){
             new AlertPopUpGenerator().showConnectionErrorMessage();

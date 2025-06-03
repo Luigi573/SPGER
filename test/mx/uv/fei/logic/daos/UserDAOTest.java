@@ -32,7 +32,7 @@ public class UserDAOTest {
             preloadedUser.setEmailAddress("abrvaqu862@uv.mx");
             preloadedUser.setAlternateEmail("abrvaqu999@gmail.com");
 
-            String userQuery = "INSERT INTO Usuarios(correo, correoAlterno) VALUES (?, ?)";
+            String userQuery = "INSERT INTO Users(emailAddress, alternateEmail) VALUES (?, ?)";
             PreparedStatement userStatement = dataBaseManager.getConnection().prepareStatement(userQuery, Statement.RETURN_GENERATED_KEYS);
             userStatement.setString(1, preloadedUser.getEmailAddress());
             userStatement.setString(2, preloadedUser.getAlternateEmail());
@@ -60,7 +60,7 @@ public class UserDAOTest {
     @AfterClass
     public static void tearDownClass(){
         PreparedStatement statement;
-        String queryToDeleteUser = "DELETE FROM Usuarios WHERE IdUsuario = ?";
+        String queryToDeleteUser = "DELETE FROM Users WHERE userId = ?";
         
         try{
             statement = dataBaseManager.getConnection().prepareStatement(queryToDeleteUser);

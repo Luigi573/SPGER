@@ -42,7 +42,7 @@ public class ProfessorDAOTest {
             preloadedProfessor.setStatus(ProfessorStatus.ACTIVE.getValue());
             preloadedProfessor.setStaffNumber(879823947);
 
-            String userQuery = "INSERT INTO Usuarios(nombre, apellidoPaterno, apellidoMaterno, correo, correoAlterno, numeroTelefono, estado) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            String userQuery = "INSERT INTO Users(nombre, firstSurname, secondSurname, emailAddress, alternateEmail, numeroTelefono, estado) VALUES (?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement userStatement = dataBaseManager.getConnection().prepareStatement(userQuery, Statement.RETURN_GENERATED_KEYS);
             userStatement.setString(1, preloadedProfessor.getName());
             userStatement.setString(2, preloadedProfessor.getFirstSurname());
@@ -60,7 +60,7 @@ public class ProfessorDAOTest {
             generatedUserKeys.close();
             userStatement.close();
             
-            String professorQuery = "INSERT INTO Profesores(NumPersonal, IdUsuario) VALUES (?,?)";
+            String professorQuery = "INSERT INTO Professors(staffNumber, userId) VALUES (?,?)";
             PreparedStatement professorStatement = dataBaseManager.getConnection().prepareStatement(professorQuery);
             professorStatement.setInt(1, preloadedProfessor.getStaffNumber());
             professorStatement.setInt(2, preloadedProfessor.getUserId());
@@ -96,8 +96,8 @@ public class ProfessorDAOTest {
     @AfterClass
     public static void tearDownClass(){
         PreparedStatement statement;
-        String queryToDeleteUser = "DELETE FROM Usuarios WHERE IdUsuario = ? || IdUsuario = ?";
-        String queryToDeleteProfessor = "DELETE FROM Profesores WHERE NumPersonal = ? || NumPersonal = ?";
+        String queryToDeleteUser = "DELETE FROM Users WHERE userId = ? || userId = ?";
+        String queryToDeleteProfessor = "DELETE FROM Professors WHERE staffNumber = ? || staffNumber = ?";
         
         try{
             statement = dataBaseManager.getConnection().prepareStatement(queryToDeleteUser);

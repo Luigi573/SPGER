@@ -1,7 +1,7 @@
 # SPGER
 Proyecto Final de la Materia "Principios de Construcción de Software".
 SPGER es un sistema pensado para que los involucrados en las Experiencias Educativas "Proyecto Guiado" y "Experiencia Recepcional" de la Licenciatura en Ingeniería de Software de la Universidad Veracruzana puedan realizar sus actividades afines a dichas Experiencias Educativas de una manera más eficiente.
-En SPGER existen 5 tipos de usuarios, y cada tipo de usuario tiene disponible algunas funcionalidades en específico, las cuales se mencionan a continuación:
+En SPGER existen 5 tipos de Users, y cada tipo de usuario tiene disponible algunas funcionalidades en específico, las cuales se mencionan a continuación:
 
 Estudiante
 * E
@@ -41,4 +41,4 @@ Para el desarrollo de Renovación LIS se ocuparon las siguientes tecnologías:
 Si los pasos han sido ejecutados correctamente, las siguientes veces que requiera ejecutar SPGER, solamente deberá seguir los pasos 5 y 6.
 
 ## Notas extra
-Si en la base de datos no hay usuarios almacenados, SPGER abrirá una ventana para poder registrar un usuario con el rol de "Jefe de Carrera". Este tipo de usuario es necesario para poder registrar los demás tipos de usuario.
+Si en la base de datos no hay Users almacenados, SPGER abrirá una ventana para poder registrar un usuario con el rol de "Jefe de Carrera". Este tipo de usuario es necesario para poder registrar los demás tipos de usuario.

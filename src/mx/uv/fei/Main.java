@@ -17,17 +17,17 @@ public class Main extends Application {
     public void start(Stage arg0) {
         try {
             FXMLLoader loader;
-            Parent guiUsuarios;
+            Parent guiUsers;
             UserDAO userDAO = new UserDAO();
             if (userDAO.hasUsersInTheDatabase()) {
                 loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/Login.fxml"));
-                guiUsuarios = loader.load();
+                guiUsers = loader.load();
             } else {
                 loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/users/RegisterAdmin.fxml"));
-                guiUsuarios = loader.load();
+                guiUsers = loader.load();
             }
 
-            Scene scene = new Scene(guiUsuarios);
+            Scene scene = new Scene(guiUsers);
             String css = getClass().getResource("/mx/uv/fei/gui/stylesfiles/Styles.css").toExternalForm();
             scene.getStylesheets().add(css);
             Stage stage = new Stage();

@@ -70,7 +70,7 @@ public class LoginDAOTest {
         
         try{
             //Adding an admin
-            String userQuery = "INSERT INTO Usuarios(nombre, apellidoPaterno, apellidoMaterno, correo, contraseña) VALUES(?, ?, ?, ?, SHA2(?, 256))";
+            String userQuery = "INSERT INTO Users(nombre, firstSurname, secondSurname, emailAddress, password) VALUES(?, ?, ?, ?, SHA2(?, 256))";
             PreparedStatement userStatement = dataBaseManager.getConnection().prepareStatement(userQuery, Statement.RETURN_GENERATED_KEYS);
             userStatement.setString(1, preloadedAdmin.getName());
             userStatement.setString(2, preloadedAdmin.getFirstSurname());
@@ -85,13 +85,13 @@ public class LoginDAOTest {
             }
             generatedAdminKeys.close();
             
-            String professorQuery = "INSERT INTO Profesores(NumPersonal, IdUsuario) VALUES(?,?)";
+            String professorQuery = "INSERT INTO Professors(staffNumber, userId) VALUES(?,?)";
             PreparedStatement professorStatement = dataBaseManager.getConnection().prepareStatement(professorQuery);
             professorStatement.setInt(1, preloadedAdmin.getStaffNumber());
             professorStatement.setInt(2, preloadedAdmin.getUserId());
             professorStatement.executeUpdate();
             
-            String adminQuery = "INSERT INTO JefesCarrera(NumPersonal) VALUES(?)";
+            String adminQuery = "INSERT INTO JefesCarrera(staffNumber) VALUES(?)";
             PreparedStatement adminStatement = dataBaseManager.getConnection().prepareStatement(adminQuery);
             adminStatement.setInt(1, preloadedAdmin.getStaffNumber());
             adminStatement.executeUpdate();
@@ -129,7 +129,7 @@ public class LoginDAOTest {
             }
             generatedStudentKeys.close();
             
-            String studentQuery = "INSERT INTO Estudiantes(Matrícula, IdUsuario) VALUES(?,?)";
+            String studentQuery = "INSERT INTO Estudiantes(Matrícula, userId) VALUES(?,?)";
             PreparedStatement studentStatement = dataBaseManager.getConnection().prepareStatement(studentQuery);
             studentStatement.setString(1, preloadedStudent.getMatricle());
             studentStatement.setInt(2, preloadedStudent.getUserId());
@@ -154,7 +154,7 @@ public class LoginDAOTest {
             professorStatement.setInt(2, preloadedAcademicBodyHead.getUserId());
             professorStatement.executeUpdate();
             
-            String academicBodyHeadQuery = "INSERT INTO ResponsablesCA(NumPersonal) VALUES(?)";
+            String academicBodyHeadQuery = "INSERT INTO AcademicBodyHeads(staffNumber) VALUES(?)";
             PreparedStatement academicBodyHeadStatement = dataBaseManager.getConnection().prepareStatement(academicBodyHeadQuery);
             academicBodyHeadStatement.setInt(1, preloadedAcademicBodyHead.getStaffNumber());
             academicBodyHeadStatement.executeUpdate();
@@ -177,7 +177,7 @@ public class LoginDAOTest {
             professorStatement.setInt(2, preloadedDirector.getUserId());
             professorStatement.executeUpdate();
             
-            String directorQuery = "INSERT INTO Directores(NumPersonal) VALUES(?)";
+            String directorQuery = "INSERT INTO Directores(staffNumber) VALUES(?)";
             PreparedStatement directorStatement = dataBaseManager.getConnection().prepareStatement(directorQuery, PreparedStatement.RETURN_GENERATED_KEYS);
             
             directorStatement.setInt(1, preloadedDirector.getStaffNumber());
@@ -194,7 +194,7 @@ public class LoginDAOTest {
     
     @AfterClass
     public static void tearDownClass(){
-        String query = "DELETE FROM Usuarios WHERE IdUsuario IN(?, ?, ?, ?, ?)";
+        String query = "DELETE FROM Users WHERE userId IN(?, ?, ?, ?, ?)";
         
         try{
             PreparedStatement statement = dataBaseManager.getConnection().prepareStatement(query);
@@ -242,7 +242,7 @@ public class LoginDAOTest {
     @Test
     public void testLogInProfessorFail() throws LoginException{
         LoginDAO instance = new LoginDAO();
-        Professor result = instance.logInProfessor("luicuellar", "contraseña");
+        Professor result = instance.logInProfessor("luicuellar", "password");
         
         System.out.println("Testing LogInProfessor with wrong password");
         

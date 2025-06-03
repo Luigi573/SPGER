@@ -19,7 +19,7 @@ public class DataBaseManager {
             dataBaseUserPropertiesFile = new Properties();
             dataBaseUserPropertiesFile.load(fis);
         } catch (IOException e) {
-            Logger.getLogger(DataBaseManager.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(DataBaseManager.class.getName()).log(Level.SEVERE, "Error reading the file which contains the database data", e);
         }
     }
 
@@ -34,8 +34,8 @@ public class DataBaseManager {
                 if (!connection.isClosed()) {
                     connection.close();
                 }
-            } catch (SQLException exception) {
-                Logger.getLogger(DataBaseManager.class.getName()).log(Level.SEVERE, null, exception);
+            } catch (SQLException e) {
+                Logger.getLogger(DataBaseManager.class.getName()).log(Level.SEVERE, "Error connecting to the database", e);
             }
         }
     }

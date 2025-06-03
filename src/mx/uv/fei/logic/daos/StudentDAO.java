@@ -25,8 +25,8 @@ public class StudentDAO implements IStudentDAO{
     public int addStudent(Student student) throws DataInsertionException, DuplicatedPrimaryKeyException{
         int generatedId = 0;
         try{
-            String queryToInsertStudentDataToUserColumns = "INSERT INTO Usuarios (nombre, apellidoPaterno, apellidoMaterno, correo, " +
-                "correoAlterno, numeroTelefono, estado, contraseña) VALUES (?, ?, ?, ?, ?, ?, ?, SHA2(?, 256))";
+            String queryToInsertStudentDataToUserColumns = "INSERT INTO Users (nombre, firstSurname, secondSurname, emailAddress, " +
+                "alternateEmail, numeroTelefono, estado, password) VALUES (?, ?, ?, ?, ?, ?, ?, SHA2(?, 256))";
             PreparedStatement preparedStatementToInsertStudentDataToUsersColumns = 
                 dataBaseManager.getConnection().prepareStatement(queryToInsertStudentDataToUserColumns, PreparedStatement.RETURN_GENERATED_KEYS);
             preparedStatementToInsertStudentDataToUsersColumns.setString(1, student.getName());
@@ -45,7 +45,7 @@ public class StudentDAO implements IStudentDAO{
             }
 
             String queryToInsertStudentDataToStudentColumns = 
-                "INSERT INTO Estudiantes (Matrícula, IdUsuario) VALUES (?, ?)";
+                "INSERT INTO Estudiantes (Matrícula, userId) VALUES (?, ?)";
             PreparedStatement preparedStatementToInsertStudentDataToStudentColumns = 
                 dataBaseManager.getConnection().prepareStatement(queryToInsertStudentDataToStudentColumns);
             preparedStatementToInsertStudentDataToStudentColumns.setString(1, student.getMatricle());
@@ -70,10 +70,10 @@ public class StudentDAO implements IStudentDAO{
     public int modifyStudentData(Student student) throws DataInsertionException, DuplicatedPrimaryKeyException{
         int result = 0;
         try {
-            String queryForUpdateUserData = "UPDATE Usuarios SET nombre = ?, " + 
-                           "apellidoPaterno = ?, apellidoMaterno = ?, correo = ?, " + 
-                           "correoAlterno = ?, numeroTelefono = ?, estado = ?" +
-                           "WHERE IdUsuario = ?";
+            String queryForUpdateUserData = "UPDATE Users SET nombre = ?, " + 
+                           "firstSurname = ?, secondSurname = ?, emailAddress = ?, " + 
+                           "alternateEmail = ?, numeroTelefono = ?, estado = ?" +
+                           "WHERE userId = ?";
             PreparedStatement preparedStatementForUpdateUserData = 
                 dataBaseManager.getConnection().prepareStatement(queryForUpdateUserData);
             preparedStatementForUpdateUserData.setString(1, student.getName());
@@ -86,7 +86,7 @@ public class StudentDAO implements IStudentDAO{
             preparedStatementForUpdateUserData.setInt(8, student.getUserId());
             result = preparedStatementForUpdateUserData.executeUpdate();
 
-            String queryForUpdateStudentData = "UPDATE Estudiantes SET Matrícula = ? WHERE IdUsuario = ?";
+            String queryForUpdateStudentData = "UPDATE Estudiantes SET Matrícula = ? WHERE userId = ?";
             
             PreparedStatement preparedStatementForUpdateStudentData = 
                 dataBaseManager.getConnection().prepareStatement(queryForUpdateStudentData);
@@ -109,19 +109,19 @@ public class StudentDAO implements IStudentDAO{
         
         try {
             Statement statement = dataBaseManager.getConnection().createStatement();
-            String query = "SELECT * FROM Usuarios U INNER JOIN Estudiantes E ON U.IdUsuario = E.IdUsuario";
+            String query = "SELECT * FROM Users U INNER JOIN Estudiantes E ON U.userId = E.userId";
             ResultSet resultSet = statement.executeQuery(query);
             while(resultSet.next()) {
                 Student student = new Student();
                 student.setName(resultSet.getString("nombre"));
-                student.setFirstSurname(resultSet.getString("apellidoPaterno"));
-                student.setSecondSurname(resultSet.getString("apellidoMaterno"));
-                student.setEmailAddress(resultSet.getString("correo"));
-                student.setPassword(resultSet.getString("contraseña"));
-                student.setAlternateEmail(resultSet.getString("correoAlterno"));
+                student.setFirstSurname(resultSet.getString("firstSurname"));
+                student.setSecondSurname(resultSet.getString("secondSurname"));
+                student.setEmailAddress(resultSet.getString("emailAddress"));
+                student.setPassword(resultSet.getString("password"));
+                student.setAlternateEmail(resultSet.getString("alternateEmail"));
                 student.setPhoneNumber(resultSet.getString("numeroTelefono"));
                 student.setStatus(resultSet.getString("estado"));
-                student.setUserId(resultSet.getInt("IdUsuario"));
+                student.setUserId(resultSet.getInt("userId"));
                 student.setMatricle(resultSet.getString("Matrícula"));
                 
                 students.add(student);
@@ -140,7 +140,7 @@ public class StudentDAO implements IStudentDAO{
     public ArrayList<Student> getStudentList() throws DataRetrievalException {
         ArrayList<Student> studentList = new ArrayList<>();
         PreparedStatement statement;
-        String query = "SELECT e.Matrícula, u.nombre, u.apellidoPaterno, u.apellidoMaterno FROM Estudiantes e INNER JOIN Usuarios u ON e.IdUsuario = u.IdUsuario";
+        String query = "SELECT e.Matrícula, u.nombre, u.firstSurname, u.secondSurname FROM Estudiantes e INNER JOIN Users u ON e.userId = u.userId";
         
         try{
             statement = dataBaseManager.getConnection().prepareStatement(query);
@@ -151,8 +151,8 @@ public class StudentDAO implements IStudentDAO{
                 
                 student.setMatricle(resultSet.getString("e.Matrícula"));
                 student.setName(resultSet.getString("u.nombre"));
-                student.setFirstSurname(resultSet.getString("u.apellidoPaterno"));
-                student.setSecondSurname(resultSet.getString("u.apellidoMaterno"));
+                student.setFirstSurname(resultSet.getString("u.firstSurname"));
+                student.setSecondSurname(resultSet.getString("u.secondSurname"));
                 
                 studentList.add(student);
             }
@@ -168,8 +168,8 @@ public class StudentDAO implements IStudentDAO{
     public ArrayList<Student> getSpecifiedStudents(String studentName) throws DataRetrievalException{
         ArrayList<Student> students = new ArrayList<>();
         PreparedStatement statement;
-        String query = "SELECT * FROM Usuarios U INNER JOIN Estudiantes E " + 
-                           "ON U.IdUsuario = E.IdUsuario WHERE U.nombre LIKE ?";
+        String query = "SELECT * FROM Users U INNER JOIN Estudiantes E " + 
+                           "ON U.userId = E.userId WHERE U.nombre LIKE ?";
         
         try {
             statement = dataBaseManager.getConnection().prepareStatement(query);
@@ -180,14 +180,14 @@ public class StudentDAO implements IStudentDAO{
             while(resultSet.next()) {
                 Student student = new Student();
                 student.setName(resultSet.getString("nombre"));
-                student.setFirstSurname(resultSet.getString("apellidoPaterno"));
-                student.setSecondSurname(resultSet.getString("apellidoMaterno"));
-                student.setEmailAddress(resultSet.getString("correo"));
-                student.setPassword(resultSet.getString("contraseña"));
-                student.setAlternateEmail(resultSet.getString("correoAlterno"));
+                student.setFirstSurname(resultSet.getString("firstSurname"));
+                student.setSecondSurname(resultSet.getString("secondSurname"));
+                student.setEmailAddress(resultSet.getString("emailAddress"));
+                student.setPassword(resultSet.getString("password"));
+                student.setAlternateEmail(resultSet.getString("alternateEmail"));
                 student.setPhoneNumber(resultSet.getString("numeroTelefono"));
                 student.setStatus(resultSet.getString("estado"));
-                student.setUserId(resultSet.getInt("IdUsuario"));
+                student.setUserId(resultSet.getInt("userId"));
                 student.setMatricle(resultSet.getString("Matrícula"));
                 students.add(student);
             }
@@ -204,8 +204,8 @@ public class StudentDAO implements IStudentDAO{
     @Override
     public Student getStudent(String matricle) throws DataRetrievalException{
         Student student = new Student();
-        String query = "SELECT * FROM Usuarios U INNER JOIN Estudiantes E " + 
-                           "ON U.IdUsuario = E.IdUsuario WHERE E.Matrícula = ?";
+        String query = "SELECT * FROM Users U INNER JOIN Estudiantes E " + 
+                           "ON U.userId = E.userId WHERE E.Matrícula = ?";
 
         try {
             
@@ -215,14 +215,14 @@ public class StudentDAO implements IStudentDAO{
             ResultSet resultSet = preparedStatement.executeQuery();
             if(resultSet.next()) {
                 student.setName(resultSet.getString("nombre"));
-                student.setFirstSurname(resultSet.getString("apellidoPaterno"));
-                student.setSecondSurname(resultSet.getString("apellidoMaterno"));
-                student.setEmailAddress(resultSet.getString("correo"));
-                student.setPassword(resultSet.getString("contraseña"));
-                student.setAlternateEmail(resultSet.getString("correoAlterno"));
+                student.setFirstSurname(resultSet.getString("firstSurname"));
+                student.setSecondSurname(resultSet.getString("secondSurname"));
+                student.setEmailAddress(resultSet.getString("emailAddress"));
+                student.setPassword(resultSet.getString("password"));
+                student.setAlternateEmail(resultSet.getString("alternateEmail"));
                 student.setPhoneNumber(resultSet.getString("numeroTelefono"));
                 student.setStatus(resultSet.getString("estado"));
-                student.setUserId(resultSet.getInt("IdUsuario"));
+                student.setUserId(resultSet.getInt("userId"));
                 student.setMatricle(resultSet.getString("Matrícula"));
             }
             
@@ -243,20 +243,20 @@ public class StudentDAO implements IStudentDAO{
         try{
             DataBaseManager dataBaseManager = new DataBaseManager();
             Statement statement = dataBaseManager.getConnection().createStatement();
-            String query = "SELECT * FROM Usuarios U INNER JOIN Estudiantes E " + 
-                           "ON U.IdUsuario = E.IdUsuario WHERE U.estado = 'Disponible'";
+            String query = "SELECT * FROM Users U INNER JOIN Estudiantes E " + 
+                           "ON U.userId = E.userId WHERE U.estado = 'Disponible'";
             ResultSet resultSet = statement.executeQuery(query);
             while(resultSet.next()) {
                 Student student = new Student();
                 student.setName(resultSet.getString("nombre"));
-                student.setFirstSurname(resultSet.getString("apellidoPaterno"));
-                student.setSecondSurname(resultSet.getString("apellidoMaterno"));
-                student.setEmailAddress(resultSet.getString("correo"));
-                student.setPassword(resultSet.getString("contraseña"));
-                student.setAlternateEmail(resultSet.getString("correoAlterno"));
+                student.setFirstSurname(resultSet.getString("firstSurname"));
+                student.setSecondSurname(resultSet.getString("secondSurname"));
+                student.setEmailAddress(resultSet.getString("emailAddress"));
+                student.setPassword(resultSet.getString("password"));
+                student.setAlternateEmail(resultSet.getString("alternateEmail"));
                 student.setPhoneNumber(resultSet.getString("numeroTelefono"));
                 student.setStatus(resultSet.getString("estado"));
-                student.setUserId(resultSet.getInt("IdUsuario"));
+                student.setUserId(resultSet.getInt("userId"));
                 student.setMatricle(resultSet.getString("Matrícula"));
                 students.add(student);
             }
@@ -276,22 +276,22 @@ public class StudentDAO implements IStudentDAO{
         
         try{
             DataBaseManager dataBaseManager = new DataBaseManager();
-            String query = "SELECT * FROM Usuarios U INNER JOIN Estudiantes E " + 
-                           "ON U.IdUsuario = E.IdUsuario WHERE U.Nombre LIKE ? && U.estado = 'Disponible'";
+            String query = "SELECT * FROM Users U INNER JOIN Estudiantes E " + 
+                           "ON U.userId = E.userId WHERE U.Nombre LIKE ? && U.estado = 'Disponible'";
             PreparedStatement preparedStatement = dataBaseManager.getConnection().prepareStatement(query);
             preparedStatement.setString(1, studentName + '%');
             ResultSet resultSet = preparedStatement.executeQuery();
             while(resultSet.next()) {
                 Student student = new Student();
                 student.setName(resultSet.getString("nombre"));
-                student.setFirstSurname(resultSet.getString("apellidoPaterno"));
-                student.setSecondSurname(resultSet.getString("apellidoMaterno"));
-                student.setEmailAddress(resultSet.getString("correo"));
-                student.setPassword(resultSet.getString("contraseña"));
-                student.setAlternateEmail(resultSet.getString("correoAlterno"));
+                student.setFirstSurname(resultSet.getString("firstSurname"));
+                student.setSecondSurname(resultSet.getString("secondSurname"));
+                student.setEmailAddress(resultSet.getString("emailAddress"));
+                student.setPassword(resultSet.getString("password"));
+                student.setAlternateEmail(resultSet.getString("alternateEmail"));
                 student.setPhoneNumber(resultSet.getString("numeroTelefono"));
                 student.setStatus(resultSet.getString("estado"));
-                student.setUserId(resultSet.getInt("IdUsuario"));
+                student.setUserId(resultSet.getInt("userId"));
                 student.setMatricle(resultSet.getString("Matrícula"));
                 students.add(student);
             }
@@ -312,20 +312,20 @@ public class StudentDAO implements IStudentDAO{
         try{
             DataBaseManager dataBaseManager = new DataBaseManager();
             Statement statement = dataBaseManager.getConnection().createStatement();
-            String query = "SELECT * FROM Usuarios U INNER JOIN Estudiantes E " + 
-                           "ON U.IdUsuario = E.IdUsuario WHERE U.estado = 'Activo'";
+            String query = "SELECT * FROM Users U INNER JOIN Estudiantes E " + 
+                           "ON U.userId = E.userId WHERE U.estado = 'Activo'";
             ResultSet resultSet = statement.executeQuery(query);
             while(resultSet.next()) {
                 Student student = new Student();
                 student.setName(resultSet.getString("nombre"));
-                student.setFirstSurname(resultSet.getString("apellidoPaterno"));
-                student.setSecondSurname(resultSet.getString("apellidoMaterno"));
-                student.setEmailAddress(resultSet.getString("correo"));
-                student.setPassword(resultSet.getString("contraseña"));
-                student.setAlternateEmail(resultSet.getString("correoAlterno"));
+                student.setFirstSurname(resultSet.getString("firstSurname"));
+                student.setSecondSurname(resultSet.getString("secondSurname"));
+                student.setEmailAddress(resultSet.getString("emailAddress"));
+                student.setPassword(resultSet.getString("password"));
+                student.setAlternateEmail(resultSet.getString("alternateEmail"));
                 student.setPhoneNumber(resultSet.getString("numeroTelefono"));
                 student.setStatus(resultSet.getString("estado"));
-                student.setUserId(resultSet.getInt("IdUsuario"));
+                student.setUserId(resultSet.getInt("userId"));
                 student.setMatricle(resultSet.getString("Matrícula"));
                 students.add(student);
             }
@@ -345,22 +345,22 @@ public class StudentDAO implements IStudentDAO{
         
         try{
             DataBaseManager dataBaseManager = new DataBaseManager();
-            String query = "SELECT * FROM Usuarios U INNER JOIN Estudiantes E " + 
-                           "ON U.IdUsuario = E.IdUsuario WHERE U.Nombre LIKE ? && U.estado = 'Activo'";
+            String query = "SELECT * FROM Users U INNER JOIN Estudiantes E " + 
+                           "ON U.userId = E.userId WHERE U.Nombre LIKE ? && U.estado = 'Activo'";
             PreparedStatement preparedStatement = dataBaseManager.getConnection().prepareStatement(query);
             preparedStatement.setString(1, studentName + '%');
             ResultSet resultSet = preparedStatement.executeQuery();
             while(resultSet.next()) {
                 Student student = new Student();
                 student.setName(resultSet.getString("nombre"));
-                student.setFirstSurname(resultSet.getString("apellidoPaterno"));
-                student.setSecondSurname(resultSet.getString("apellidoMaterno"));
-                student.setEmailAddress(resultSet.getString("correo"));
-                student.setPassword(resultSet.getString("contraseña"));
-                student.setAlternateEmail(resultSet.getString("correoAlterno"));
+                student.setFirstSurname(resultSet.getString("firstSurname"));
+                student.setSecondSurname(resultSet.getString("secondSurname"));
+                student.setEmailAddress(resultSet.getString("emailAddress"));
+                student.setPassword(resultSet.getString("password"));
+                student.setAlternateEmail(resultSet.getString("alternateEmail"));
                 student.setPhoneNumber(resultSet.getString("numeroTelefono"));
                 student.setStatus(resultSet.getString("estado"));
-                student.setUserId(resultSet.getInt("IdUsuario"));
+                student.setUserId(resultSet.getInt("userId"));
                 student.setMatricle(resultSet.getString("Matrícula"));
                 students.add(student);
             }
@@ -380,7 +380,7 @@ public class StudentDAO implements IStudentDAO{
         PreparedStatement statement;
         String query = "SELECT e.Matrícula, u.* FROM Estudiantes e "
                 + "LEFT JOIN Anteproyectos a ON e.Matrícula = a.Matrícula1 OR e.Matrícula = a.Matrícula2 "
-                + "LEFT JOIN Usuarios u ON e.IdUsuario = u.IdUsuario WHERE a.Matrícula1 IS NULL AND a.Matrícula2 IS NULL";
+                + "LEFT JOIN Users u ON e.userId = u.userId WHERE a.Matrícula1 IS NULL AND a.Matrícula2 IS NULL";
         
         try{
             statement = dataBaseManager.getConnection().prepareStatement(query);
@@ -391,8 +391,8 @@ public class StudentDAO implements IStudentDAO{
                 
                 student.setMatricle(resultSet.getString("e.Matrícula"));
                 student.setName(resultSet.getString("u.nombre"));
-                student.setFirstSurname(resultSet.getString("u.apellidoPaterno"));
-                student.setSecondSurname(resultSet.getString("u.apellidoMaterno"));
+                student.setFirstSurname(resultSet.getString("u.firstSurname"));
+                student.setSecondSurname(resultSet.getString("u.secondSurname"));
                 
                 studentList.add(student);
             }
@@ -406,14 +406,14 @@ public class StudentDAO implements IStudentDAO{
     }
     
     private void deleteStudentFromUsersTable(Student student) throws DataInsertionException{
-        String queryToInsertUserData = "DELETE FROM Usuarios WHERE IdUsuario = ?";
+        String queryToInsertUserData = "DELETE FROM Users WHERE userId = ?";
         try{
             PreparedStatement preparedStatementToInsertUserData = 
             dataBaseManager.getConnection().prepareStatement(queryToInsertUserData);
             preparedStatementToInsertUserData.setInt(1, student.getUserId());
             preparedStatementToInsertUserData.executeUpdate();
         }catch(SQLException e){
-            throw new DataInsertionException("Error al eliminar estudiante de la tabla usuarios");
+            throw new DataInsertionException("Error al eliminar estudiante de la tabla Users");
         }finally{
             dataBaseManager.closeConnection();
         }
@@ -423,7 +423,7 @@ public class StudentDAO implements IStudentDAO{
     public int updateStudentStatus(Student student, String studentStatus) throws DataInsertionException{
         int result = 0;
         try {
-            String queryForUpdateUserData = "UPDATE Usuarios SET estado = ? WHERE IdUsuario = ?";
+            String queryForUpdateUserData = "UPDATE Users SET estado = ? WHERE userId = ?";
             PreparedStatement preparedStatementForUpdateUserData = 
                 dataBaseManager.getConnection().prepareStatement(queryForUpdateUserData);
             preparedStatementForUpdateUserData.setString(1, studentStatus);

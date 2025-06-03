@@ -22,9 +22,9 @@ public class LoginDAO implements ILoginDAO{
     @Override
     public DegreeBoss logInAdmin(String emailAddress, String password) throws LoginException {
         PreparedStatement statement;
-        String query = "SELECT u.IdUsuario, u.nombre, u.apellidoPaterno, u.apellidoMaterno, u.correo, p.NumPersonal FROM Usuarios u "
-                + " INNER JOIN Profesores p ON u.IdUsuario = p.IdUsuario INNER JOIN JefesCarrera jc ON p.NumPersonal = jc.NumPersonal "
-                + " WHERE u.correo = ? AND u.contraseña = SHA2(?, 256)";
+        String query = "SELECT u.userId, u.nombre, u.firstSurname, u.secondSurname, u.emailAddress, p.staffNumber FROM Users u "
+                + " INNER JOIN Professors p ON u.userId = p.userId INNER JOIN JefesCarrera jc ON p.staffNumber = jc.staffNumber "
+                + " WHERE u.emailAddress = ? AND u.password = SHA2(?, 256)";
         DegreeBoss degreeBoss = new DegreeBoss();
         
         try{
@@ -37,11 +37,11 @@ public class LoginDAO implements ILoginDAO{
             
             if(resultSet.next()){
                 degreeBoss.setName(resultSet.getString("u.nombre"));
-                degreeBoss.setFirstSurname(resultSet.getString("u.apellidoPaterno"));
-                degreeBoss.setSecondSurname(resultSet.getString("u.apellidoMaterno"));
-                degreeBoss.setEmailAddress(resultSet.getString("u.correo"));
-                degreeBoss.setUserId(resultSet.getInt("u.IdUsuario"));
-                degreeBoss.setStaffNumber(resultSet.getInt("p.NumPersonal"));
+                degreeBoss.setFirstSurname(resultSet.getString("u.firstSurname"));
+                degreeBoss.setSecondSurname(resultSet.getString("u.secondSurname"));
+                degreeBoss.setEmailAddress(resultSet.getString("u.emailAddress"));
+                degreeBoss.setUserId(resultSet.getInt("u.userId"));
+                degreeBoss.setStaffNumber(resultSet.getInt("p.staffNumber"));
             }
         }catch(SQLException exception){
             throw new LoginException("Error de conexion. Favor de verificar su conexion e intentelo de nuevo");
@@ -55,9 +55,9 @@ public class LoginDAO implements ILoginDAO{
     @Override
     public AcademicBodyHead logInAcademicBodyHead(String emailAddress, String password) throws LoginException {
         PreparedStatement statement;
-        String query = "SELECT u.IdUsuario, u.nombre, u.apellidoPaterno, u.apellidoMaterno, u.correo, p.NumPersonal FROM Usuarios u "
-                + " INNER JOIN Profesores p ON u.IdUsuario = p.IdUsuario INNER JOIN ResponsablesCA rca ON p.NumPersonal = rca.NumPersonal "
-                + " WHERE u.correo = ? AND u.contraseña = SHA2(?, 256)";
+        String query = "SELECT u.userId, u.nombre, u.firstSurname, u.secondSurname, u.emailAddress, p.staffNumber FROM Users u "
+                + " INNER JOIN Professors p ON u.userId = p.userId INNER JOIN AcademicBodyHeads rca ON p.staffNumber = rca.staffNumber "
+                + " WHERE u.emailAddress = ? AND u.password = SHA2(?, 256)";
         AcademicBodyHead academicBodyHead = new AcademicBodyHead();
         
         try{
@@ -67,12 +67,12 @@ public class LoginDAO implements ILoginDAO{
             
             ResultSet resultSet = statement.executeQuery();
             if(resultSet.next()){
-                academicBodyHead.setUserId(resultSet.getInt("u.IdUsuario"));
+                academicBodyHead.setUserId(resultSet.getInt("u.userId"));
                 academicBodyHead.setName(resultSet.getString("u.nombre"));
-                academicBodyHead.setFirstSurname(resultSet.getString("u.apellidoPaterno"));
-                academicBodyHead.setSecondSurname(resultSet.getString("u.apellidoMaterno"));
-                academicBodyHead.setEmailAddress(resultSet.getString("u.correo"));
-                academicBodyHead.setStaffNumber(resultSet.getInt("p.NumPersonal"));
+                academicBodyHead.setFirstSurname(resultSet.getString("u.firstSurname"));
+                academicBodyHead.setSecondSurname(resultSet.getString("u.secondSurname"));
+                academicBodyHead.setEmailAddress(resultSet.getString("u.emailAddress"));
+                academicBodyHead.setStaffNumber(resultSet.getInt("p.staffNumber"));
             }
         }catch(SQLException exception){
             throw new LoginException("Error de conexion. Verifique su conectividad a  la base de datos e inténtelo de nuevo");
@@ -87,9 +87,9 @@ public class LoginDAO implements ILoginDAO{
     public Director logInDirector(String emailAddress, String password) throws LoginException {
         Director director = new Director();
         PreparedStatement statement;
-        String query = "SELECT u.IdUsuario, u.nombre, u.apellidoPaterno, u.apellidoMaterno, u.correo, p.NumPersonal FROM Usuarios u "
-                + " INNER JOIN Profesores p ON u.IdUsuario = p.IdUsuario INNER JOIN Directores d ON p.NumPersonal = d.NumPersonal "
-                + " WHERE u.correo = ? AND u.contraseña = SHA2(?, 256)";
+        String query = "SELECT u.userId, u.nombre, u.firstSurname, u.secondSurname, u.emailAddress, p.staffNumber FROM Users u "
+                + " INNER JOIN Professors p ON u.userId = p.userId INNER JOIN Directores d ON p.staffNumber = d.staffNumber "
+                + " WHERE u.emailAddress = ? AND u.password = SHA2(?, 256)";
         
         try{
             statement = dataBaseManager.getConnection().prepareStatement(query);
@@ -101,11 +101,11 @@ public class LoginDAO implements ILoginDAO{
             
             if(resultSet.next()){
                 director.setName(resultSet.getString("u.nombre"));
-                director.setFirstSurname(resultSet.getString("u.apellidoPaterno"));
-                director.setSecondSurname(resultSet.getString("u.apellidoMaterno"));
-                director.setEmailAddress(resultSet.getString("u.correo"));
-                director.setUserId(resultSet.getInt("u.IdUsuario"));
-                director.setStaffNumber(resultSet.getInt("p.NumPersonal"));
+                director.setFirstSurname(resultSet.getString("u.firstSurname"));
+                director.setSecondSurname(resultSet.getString("u.secondSurname"));
+                director.setEmailAddress(resultSet.getString("u.emailAddress"));
+                director.setUserId(resultSet.getInt("u.userId"));
+                director.setStaffNumber(resultSet.getInt("p.staffNumber"));
             }
         }catch(SQLException exception){
             throw new LoginException("Error de conexion. Favor de verificar su conexion e intentelo de nuevo");
@@ -120,8 +120,8 @@ public class LoginDAO implements ILoginDAO{
     public Professor logInProfessor(String emailAddress, String password) throws LoginException{
         PreparedStatement statement;
         Professor professor = new Professor();
-        String query = "SELECT u.IdUsuario, u.nombre, u.apellidoPaterno, u.apellidoMaterno, u.correo, p.NumPersonal FROM Usuarios u"
-                + " INNER JOIN Profesores p ON u.IdUsuario = p.IdUsuario WHERE u.correo = ? AND u.contraseña = SHA2(?, 256)";
+        String query = "SELECT u.userId, u.nombre, u.firstSurname, u.secondSurname, u.emailAddress, p.staffNumber FROM Users u"
+                + " INNER JOIN Professors p ON u.userId = p.userId WHERE u.emailAddress = ? AND u.password = SHA2(?, 256)";
         
         try{
             statement = dataBaseManager.getConnection().prepareStatement(query);
@@ -132,11 +132,11 @@ public class LoginDAO implements ILoginDAO{
             
             if(resultSet.next()){
                 professor.setName(resultSet.getString("u.nombre"));
-                professor.setFirstSurname(resultSet.getString("u.apellidoPaterno"));
-                professor.setSecondSurname(resultSet.getString("u.apellidoMaterno"));
-                professor.setEmailAddress(resultSet.getString("u.correo"));
-                professor.setUserId(resultSet.getInt("u.IdUsuario"));
-                professor.setStaffNumber(resultSet.getInt("p.NumPersonal"));
+                professor.setFirstSurname(resultSet.getString("u.firstSurname"));
+                professor.setSecondSurname(resultSet.getString("u.secondSurname"));
+                professor.setEmailAddress(resultSet.getString("u.emailAddress"));
+                professor.setUserId(resultSet.getInt("u.userId"));
+                professor.setStaffNumber(resultSet.getInt("p.staffNumber"));
             }
         }catch(SQLException exception){
             throw new LoginException("Error de conexión. Favor de verificar su conexión e inténtelo de nuevo");
@@ -151,8 +151,8 @@ public class LoginDAO implements ILoginDAO{
     @Override
     public Student logInStudent(String matricle, String password) throws LoginException{
         PreparedStatement statement;
-        String query = "SELECT u.IdUsuario, u.nombre, u.apellidoPaterno, u.apellidoMaterno, u.correo, e.Matrícula FROM Usuarios u"
-                + " INNER JOIN Estudiantes e ON u.IdUsuario = e.IdUsuario WHERE e.Matrícula = ? AND contraseña = SHA2(?, 256)";
+        String query = "SELECT u.userId, u.nombre, u.firstSurname, u.secondSurname, u.emailAddress, e.Matrícula FROM Users u"
+                + " INNER JOIN Estudiantes e ON u.userId = e.userId WHERE e.Matrícula = ? AND password = SHA2(?, 256)";
         Student student = new Student();
         
         try{
@@ -162,11 +162,11 @@ public class LoginDAO implements ILoginDAO{
             
             ResultSet resultSet = statement.executeQuery();
             if(resultSet.next()){
-                student.setUserId(resultSet.getInt("u.IdUsuario"));
+                student.setUserId(resultSet.getInt("u.userId"));
                 student.setName(resultSet.getString("u.nombre"));
-                student.setFirstSurname(resultSet.getString("u.apellidoPaterno"));
-                student.setSecondSurname(resultSet.getString("u.apellidoMaterno"));
-                student.setEmailAddress(resultSet.getString("u.correo"));
+                student.setFirstSurname(resultSet.getString("u.firstSurname"));
+                student.setSecondSurname(resultSet.getString("u.secondSurname"));
+                student.setEmailAddress(resultSet.getString("u.emailAddress"));
                 student.setMatricle(resultSet.getString("e.Matrícula"));
             }
             

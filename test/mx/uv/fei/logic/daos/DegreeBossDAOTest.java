@@ -42,7 +42,7 @@ public class DegreeBossDAOTest {
             preloadedDegreeBoss.setStatus(ProfessorStatus.ACTIVE.getValue());
             preloadedDegreeBoss.setStaffNumber(489247839);
 
-            String userQuery = "INSERT INTO Usuarios(nombre, apellidoPaterno, apellidoMaterno, correo, correoAlterno, numeroTelefono, estado) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            String userQuery = "INSERT INTO Users(nombre, firstSurname, secondSurname, emailAddress, alternateEmail, numeroTelefono, estado) VALUES (?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement userStatement = dataBaseManager.getConnection().prepareStatement(userQuery, Statement.RETURN_GENERATED_KEYS);
             userStatement.setString(1, preloadedDegreeBoss.getName());
             userStatement.setString(2, preloadedDegreeBoss.getFirstSurname());
@@ -60,14 +60,14 @@ public class DegreeBossDAOTest {
             generatedUserKeys.close();
             userStatement.close();
             
-            String professorQuery = "INSERT INTO Profesores(NumPersonal, IdUsuario) VALUES (?,?)";
+            String professorQuery = "INSERT INTO Professors(staffNumber, userId) VALUES (?,?)";
             PreparedStatement professorStatement = dataBaseManager.getConnection().prepareStatement(professorQuery);
             professorStatement.setInt(1, preloadedDegreeBoss.getStaffNumber());
             professorStatement.setInt(2, preloadedDegreeBoss.getUserId());
             professorStatement.executeUpdate();
             professorStatement.close();
 
-            String degreeBossQuery = "INSERT INTO JefesCarrera(NumPersonal) VALUES (?)";
+            String degreeBossQuery = "INSERT INTO JefesCarrera(staffNumber) VALUES (?)";
             PreparedStatement degreeBoss = dataBaseManager.getConnection().prepareStatement(degreeBossQuery);
             degreeBoss.setInt(1, preloadedDegreeBoss.getStaffNumber());
             degreeBoss.executeUpdate();
@@ -101,9 +101,9 @@ public class DegreeBossDAOTest {
     @AfterClass
     public static void tearDownClass() {
         PreparedStatement statement;
-        String queryToDeleteUser = "DELETE FROM Usuarios WHERE IdUsuario = ? || IdUsuario = ?";
-        String queryToDeleteProfessor = "DELETE FROM Profesores WHERE NumPersonal = ? || NumPersonal = ?";
-        String queryToDeletedegreeBoss = "DELETE FROM JefesCarrera WHERE NumPersonal = ? || NumPersonal = ?";
+        String queryToDeleteUser = "DELETE FROM Users WHERE userId = ? || userId = ?";
+        String queryToDeleteProfessor = "DELETE FROM Professors WHERE staffNumber = ? || staffNumber = ?";
+        String queryToDeletedegreeBoss = "DELETE FROM JefesCarrera WHERE staffNumber = ? || staffNumber = ?";
         
         try{
             statement = dataBaseManager.getConnection().prepareStatement(queryToDeleteUser);

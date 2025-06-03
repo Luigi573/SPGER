@@ -9,8 +9,12 @@ import mx.uv.fei.logic.exceptions.LoginException;
 
 public interface ILoginDAO {
     public AcademicBodyHead logInAcademicBodyHead(String emailAddress, String password) throws LoginException;
-    public DegreeBoss logInAdmin(String emailAddress, String password) throws LoginException;    
+
+    public DegreeBoss logInAdmin(String emailAddress, String password) throws LoginException;
+
     public Director logInDirector(String emailAddress, String password) throws LoginException;
+
     public Professor logInProfessor(String emailAddress, String password) throws LoginException;
+
     public Student logInStudent(String matricle, String password) throws LoginException;
 }

@@ -1,6 +1,7 @@
 package mx.uv.fei.gui;
 
 import java.util.Optional;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -46,7 +47,7 @@ public class AlertPopUpGenerator {
         dialogPane.getStyleClass().add("dialog");
         customMessage.showAndWait();
     }
-    
+
     public Optional<ButtonType> showConfirmationMessage(Alert.AlertType AlertType, String header, String content) {
         Alert customMessage = new Alert(AlertType);
         customMessage.setHeaderText(header);

@@ -25,8 +25,8 @@ public class ProfessorDAO implements IProfessorDAO{
     public int addProfessor(Professor professor) throws DataInsertionException, DuplicatedPrimaryKeyException{
         int generatedId = 0;
         try{
-            String queryToInsertProfessorDataToUsersColumns = "INSERT INTO Usuarios (nombre, apellidoPaterno, apellidoMaterno, correo, correoAlterno, " +
-                            "numeroTelefono, estado, contraseña) VALUES (?, ?, ?, ?, ?, ?, ?, SHA2(?, 256))";
+            String queryToInsertProfessorDataToUsersColumns = "INSERT INTO Users (nombre, firstSurname, secondSurname, emailAddress, alternateEmail, " +
+                            "numeroTelefono, estado, password) VALUES (?, ?, ?, ?, ?, ?, ?, SHA2(?, 256))";
             
             PreparedStatement preparedStatementToInsertProfessorDataToUsersColumns = 
                 dataBaseManager.getConnection().prepareStatement(queryToInsertProfessorDataToUsersColumns, PreparedStatement.RETURN_GENERATED_KEYS);
@@ -47,7 +47,7 @@ public class ProfessorDAO implements IProfessorDAO{
             }
 
             String queryToInsertProfessorDataToProfessorColumns = 
-                "INSERT INTO Profesores (NumPersonal, IdUsuario) VALUES (?, ?)";
+                "INSERT INTO Professors (staffNumber, userId) VALUES (?, ?)";
             PreparedStatement preparedStatementToInsertProfessorDataToProfessorColumns = 
                 dataBaseManager.getConnection().prepareStatement(queryToInsertProfessorDataToProfessorColumns);
             preparedStatementToInsertProfessorDataToProfessorColumns.setInt(1, professor.getStaffNumber());
@@ -72,10 +72,10 @@ public class ProfessorDAO implements IProfessorDAO{
     public int modifyProfessorData(Professor professor) throws DataInsertionException, DuplicatedPrimaryKeyException{
         int result = 0;
         try{
-            String queryForUpdateUserData = "UPDATE Usuarios SET nombre = ?, " + 
-                           "apellidoPaterno = ?, apellidoMaterno = ?, correo = ?, " + 
-                           "correoAlterno = ?, numeroTelefono = ?, estado = ? " +
-                           "WHERE IdUsuario = ?";
+            String queryForUpdateUserData = "UPDATE Users SET nombre = ?, " + 
+                           "firstSurname = ?, secondSurname = ?, emailAddress = ?, " + 
+                           "alternateEmail = ?, numeroTelefono = ?, estado = ? " +
+                           "WHERE userId = ?";
             PreparedStatement preparedStatement = 
                 dataBaseManager.getConnection().prepareStatement(queryForUpdateUserData);
             preparedStatement.setString(1, professor.getName());
@@ -88,8 +88,8 @@ public class ProfessorDAO implements IProfessorDAO{
             preparedStatement.setInt(8, professor.getUserId());
             result = preparedStatement.executeUpdate();
 
-            String queryForUpdateProfessorData = "UPDATE Profesores SET NumPersonal = ? " + 
-                           "WHERE IdUsuario = ?";
+            String queryForUpdateProfessorData = "UPDATE Professors SET staffNumber = ? " + 
+                           "WHERE userId = ?";
             
             PreparedStatement preparedStatementForUpdateProfessorData = 
                 dataBaseManager.getConnection().prepareStatement(queryForUpdateProfessorData);
@@ -113,20 +113,20 @@ public class ProfessorDAO implements IProfessorDAO{
         
         try{
             Statement statement = dataBaseManager.getConnection().createStatement();
-            String query = "SELECT * FROM Usuarios U INNER JOIN Profesores P ON U.IdUsuario = P.IdUsuario";
+            String query = "SELECT * FROM Users U INNER JOIN Professors P ON U.userId = P.userId";
             ResultSet resultSet = statement.executeQuery(query);
             while(resultSet.next()) {
                 Professor professor = new Professor();
-                professor.setUserId(resultSet.getInt("IdUsuario"));
+                professor.setUserId(resultSet.getInt("userId"));
                 professor.setName(resultSet.getString("nombre"));
-                professor.setFirstSurname(resultSet.getString("apellidoPaterno"));
-                professor.setSecondSurname(resultSet.getString("apellidoMaterno"));
-                professor.setEmailAddress(resultSet.getString("correo"));
-                professor.setPassword(resultSet.getString("contraseña"));
-                professor.setAlternateEmail(resultSet.getString("correoAlterno"));
+                professor.setFirstSurname(resultSet.getString("firstSurname"));
+                professor.setSecondSurname(resultSet.getString("secondSurname"));
+                professor.setEmailAddress(resultSet.getString("emailAddress"));
+                professor.setPassword(resultSet.getString("password"));
+                professor.setAlternateEmail(resultSet.getString("alternateEmail"));
                 professor.setPhoneNumber(resultSet.getString("numeroTelefono"));
                 professor.setStatus(resultSet.getString("estado"));
-                professor.setStaffNumber(resultSet.getInt("NumPersonal"));
+                professor.setStaffNumber(resultSet.getInt("staffNumber"));
                 professors.add(professor);
             }
             resultSet.close();
@@ -145,23 +145,23 @@ public class ProfessorDAO implements IProfessorDAO{
         ArrayList<Professor> professors = new ArrayList<>();
         
         try{
-            String query = "SELECT * FROM Usuarios U INNER JOIN Profesores P ON U.IdUsuario = P.IdUsuario WHERE U.Nombre LIKE ?";
+            String query = "SELECT * FROM Users U INNER JOIN Professors P ON U.userId = P.userId WHERE U.Nombre LIKE ?";
             PreparedStatement preparedStatement = dataBaseManager.getConnection().prepareStatement(query);
             preparedStatement.setString(1, professorName + '%');
 
             ResultSet resultSet = preparedStatement.executeQuery();
             while(resultSet.next()) {
                 Professor professor = new Professor();
-                professor.setUserId(resultSet.getInt("IdUsuario"));
+                professor.setUserId(resultSet.getInt("userId"));
                 professor.setName(resultSet.getString("nombre"));
-                professor.setFirstSurname(resultSet.getString("apellidoPaterno"));
-                professor.setSecondSurname(resultSet.getString("apellidoMaterno"));
-                professor.setEmailAddress(resultSet.getString("correo"));
-                professor.setPassword(resultSet.getString("contraseña"));
-                professor.setAlternateEmail(resultSet.getString("correoAlterno"));
+                professor.setFirstSurname(resultSet.getString("firstSurname"));
+                professor.setSecondSurname(resultSet.getString("secondSurname"));
+                professor.setEmailAddress(resultSet.getString("emailAddress"));
+                professor.setPassword(resultSet.getString("password"));
+                professor.setAlternateEmail(resultSet.getString("alternateEmail"));
                 professor.setPhoneNumber(resultSet.getString("numeroTelefono"));
                 professor.setStatus(resultSet.getString("estado"));
-                professor.setStaffNumber(resultSet.getInt("NumPersonal"));
+                professor.setStaffNumber(resultSet.getInt("staffNumber"));
                 professors.add(professor);
             }
             resultSet.close();
@@ -180,22 +180,22 @@ public class ProfessorDAO implements IProfessorDAO{
         Professor professor = new Professor();
 
         try{
-            String query = "SELECT * FROM Usuarios U INNER JOIN Profesores P ON U.IdUsuario = P.IdUsuario WHERE P.NumPersonal = ?";
+            String query = "SELECT * FROM Users U INNER JOIN Professors P ON U.userId = P.userId WHERE P.staffNumber = ?";
             PreparedStatement preparedStatement = dataBaseManager.getConnection().prepareStatement(query);
             preparedStatement.setInt(1, staffNumber);
             
             ResultSet resultSet = preparedStatement.executeQuery();
             if(resultSet.next()){
-                professor.setUserId(resultSet.getInt("IdUsuario"));
+                professor.setUserId(resultSet.getInt("userId"));
                 professor.setName(resultSet.getString("nombre"));
-                professor.setFirstSurname(resultSet.getString("apellidoPaterno"));
-                professor.setSecondSurname(resultSet.getString("apellidoMaterno"));
-                professor.setEmailAddress(resultSet.getString("correo"));
-                professor.setPassword(resultSet.getString("contraseña"));
-                professor.setAlternateEmail(resultSet.getString("correoAlterno"));
+                professor.setFirstSurname(resultSet.getString("firstSurname"));
+                professor.setSecondSurname(resultSet.getString("secondSurname"));
+                professor.setEmailAddress(resultSet.getString("emailAddress"));
+                professor.setPassword(resultSet.getString("password"));
+                professor.setAlternateEmail(resultSet.getString("alternateEmail"));
                 professor.setPhoneNumber(resultSet.getString("numeroTelefono"));
                 professor.setStatus(resultSet.getString("estado"));
-                professor.setStaffNumber(resultSet.getInt("NumPersonal"));
+                professor.setStaffNumber(resultSet.getInt("staffNumber"));
             }
 
             resultSet.close();
@@ -210,14 +210,14 @@ public class ProfessorDAO implements IProfessorDAO{
     }
     
     private void deleteProfessorFromUsersTable(Professor professor) throws DataInsertionException{
-        String queryToInsertUserData = "DELETE FROM Usuarios WHERE IdUsuario = ?";
+        String queryToInsertUserData = "DELETE FROM Users WHERE userId = ?";
         try{
             PreparedStatement preparedStatementToInsertUserData = 
             dataBaseManager.getConnection().prepareStatement(queryToInsertUserData);
             preparedStatementToInsertUserData.setInt(1, professor.getUserId());
             preparedStatementToInsertUserData.executeUpdate();
         }catch(SQLException e){
-            throw new DataInsertionException("Error al eliminar profesor de la tabla usuarios");
+            throw new DataInsertionException("Error al eliminar profesor de la tabla Users");
         }
     }
 }

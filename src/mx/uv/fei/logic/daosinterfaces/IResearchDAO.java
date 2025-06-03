@@ -8,8 +8,12 @@ import mx.uv.fei.logic.exceptions.DataRetrievalException;
 
 public interface IResearchDAO {
     public int addResearch(ResearchProject research) throws DataInsertionException;
+
     public ArrayList<ResearchProject> getResearchProjectList() throws DataRetrievalException;
+
     public int modifyResearch(ResearchProject research) throws DataInsertionException;
+
     public boolean assertResearch(ResearchProject research);
+
     public void validateResearch(ResearchProject researchProject) throws DataInsertionException;
 }

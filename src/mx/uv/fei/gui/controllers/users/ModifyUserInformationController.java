@@ -102,7 +102,7 @@ public class ModifyUserInformationController{
                         new AlertPopUpGenerator().showCustomMessage(AlertType.INFORMATION, "Error", specifiedDuplicatedEmailsMessageError(emailTextField.getText(), alternateEmailTextField.getText(), userToModify.getUserId()));
                     }
                 }else{
-                    new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "Error", "El correo electrónico no puede ser el mismo que el correo alterno");
+                    new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "Error", "El emailAddress electrónico no puede ser el mismo que el emailAddress alterno");
                 }
             }else{
                 new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "Error", specifiedInvalidDataMessageError());
@@ -377,17 +377,17 @@ public class ModifyUserInformationController{
 
         if(!emailMatcher.find()){
             if(message.equals("")){
-                message = "correo electrónico";
+                message = "emailAddress electrónico";
             }else{
-                message = message + ", correo electrónico";
+                message = message + ", emailAddress electrónico";
             }
         }
 
         if(!alternateEmailMatcher.find()){
             if(message.equals("")){
-                message = "correo alterno";
+                message = "emailAddress alterno";
             }else{
-                message = message + ", correo alterno";
+                message = message + ", emailAddress alterno";
             }
         }
 
@@ -419,17 +419,17 @@ public class ModifyUserInformationController{
         try{
             if(!userDAO.theEmailIsAvailableToUseToModify(email, userId)){
                 if(message.equals("")){
-                    message = "correo electrónico";
+                    message = "emailAddress electrónico";
                 }else{
-                    message = message + " y el correo electrónico";
+                    message = message + " y el emailAddress electrónico";
                 }
             }
 
             if(!userDAO.theAlternateEmailIsAvailableToModify(alternateEmail, userId)){
                 if(message.equals("")){
-                    message = "correo alterno";
+                    message = "emailAddress alterno";
                 }else{
-                    message = message + " y el correo alterno";
+                    message = message + " y el emailAddress alterno";
                 }
             }
         }catch(DataRetrievalException e){

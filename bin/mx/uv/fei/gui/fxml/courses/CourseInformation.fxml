@@ -74,7 +74,7 @@
       </HBox>
       <Pane prefHeight="71.0" prefWidth="369.0">
          <children>
-            <Button fx:id="adminUsersButton" layoutX="60.0" layoutY="16.0" mnemonicParsing="false" onAction="#adminUsersButtonController" prefHeight="40.0" prefWidth="156.0" text="Administrar Usuarios" />
+            <Button fx:id="adminUsersButton" layoutX="60.0" layoutY="16.0" mnemonicParsing="false" onAction="#adminUsersButtonController" prefHeight="40.0" prefWidth="156.0" text="Administrar Users" />
             <Button fx:id="editButton" layoutX="316.0" layoutY="16.0" mnemonicParsing="false" onAction="#editButtonController" prefHeight="40.0" prefWidth="70.0" text="Editar" />
          </children>
       </Pane>

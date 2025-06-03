@@ -39,7 +39,7 @@ public class AcademicBodyHeadDAOTest {
             preloadedAcademicBodyHead.setStatus(ProfessorStatus.ACTIVE.getValue());
             preloadedAcademicBodyHead.setStaffNumber(489328392);
 
-            String userQuery = "INSERT INTO Usuarios(nombre, apellidoPaterno, apellidoMaterno, correo, correoAlterno, numeroTelefono, estado) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            String userQuery = "INSERT INTO Users(nombre, firstSurname, secondSurname, emailAddress, alternateEmail, numeroTelefono, estado) VALUES (?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement userStatement = dataBaseManager.getConnection().prepareStatement(userQuery, Statement.RETURN_GENERATED_KEYS);
             userStatement.setString(1, preloadedAcademicBodyHead.getName());
             userStatement.setString(2, preloadedAcademicBodyHead.getFirstSurname());
@@ -57,14 +57,14 @@ public class AcademicBodyHeadDAOTest {
             generatedUserKeys.close();
             userStatement.close();
             
-            String professorQuery = "INSERT INTO Profesores(NumPersonal, IdUsuario) VALUES (?,?)";
+            String professorQuery = "INSERT INTO Professors(staffNumber, userId) VALUES (?,?)";
             PreparedStatement professorStatement = dataBaseManager.getConnection().prepareStatement(professorQuery);
             professorStatement.setInt(1, preloadedAcademicBodyHead.getStaffNumber());
             professorStatement.setInt(2, preloadedAcademicBodyHead.getUserId());
             professorStatement.executeUpdate();
             professorStatement.close();
 
-            String academicBodyHeadQuery = "INSERT INTO ResponsablesCA(NumPersonal) VALUES (?)";
+            String academicBodyHeadQuery = "INSERT INTO AcademicBodyHeads(staffNumber) VALUES (?)";
             PreparedStatement academicBodyHeadStatement = dataBaseManager.getConnection().prepareStatement(academicBodyHeadQuery);
             academicBodyHeadStatement.setInt(1, preloadedAcademicBodyHead.getStaffNumber());
             academicBodyHeadStatement.executeUpdate();
@@ -98,9 +98,9 @@ public class AcademicBodyHeadDAOTest {
     @AfterClass
     public static void tearDownClass(){
         PreparedStatement statement;
-        String queryToDeleteUser = "DELETE FROM Usuarios WHERE IdUsuario = ? || IdUsuario = ?";
-        String queryToDeleteProfessor = "DELETE FROM Profesores WHERE NumPersonal = ? || NumPersonal = ?";
-        String queryToDeleteAcademicBodyHead = "DELETE FROM ResponsablesCA WHERE NumPersonal = ? || NumPersonal = ?";
+        String queryToDeleteUser = "DELETE FROM Users WHERE userId = ? || userId = ?";
+        String queryToDeleteProfessor = "DELETE FROM Professors WHERE staffNumber = ? || staffNumber = ?";
+        String queryToDeleteAcademicBodyHead = "DELETE FROM AcademicBodyHeads WHERE staffNumber = ? || staffNumber = ?";
         
         try{
             statement = dataBaseManager.getConnection().prepareStatement(queryToDeleteUser);

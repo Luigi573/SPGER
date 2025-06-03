@@ -84,8 +84,7 @@ CREATE TABLE KGALs (
 CREATE TABLE Professors (
     staffNumber INT,
     PRIMARY KEY(staffNumber),
-    userId INT,
-    status VARCHAR(30)
+    userId INT
 );
 
 CREATE TABLE ResearchProjects (
@@ -117,8 +116,7 @@ CREATE TABLE ScholarPeriods (
 CREATE TABLE Students (
     matricle VARCHAR(10),
     PRIMARY KEY(matricle),
-    userId INT,
-    status VARCHAR(30)
+    userId INT
 );
 
 CREATE TABLE StudentsCourses (
@@ -137,7 +135,8 @@ CREATE TABLE Users (
     name VARCHAR(30),
     password VARCHAR(64),
     phoneNumber VARCHAR(15),
-    secondSurname VARCHAR(30)
+    secondSurname VARCHAR(30),
+    status VARCHAR(30)
 );
 
 #CONSTRAINTS

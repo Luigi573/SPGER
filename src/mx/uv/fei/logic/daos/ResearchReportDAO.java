@@ -77,9 +77,9 @@ public class ResearchReportDAO implements IResearchesReportDAO{
         DataBaseManager dataBaseManager = new DataBaseManager();
         ArrayList<ResearchProject> selectedResearches = new ArrayList<>();
 
-        String fullQuery = "SELECT A.título, U.nombre, U.apellidoPaterno, U.apellidoMaterno, K.descripción, A.V°B°, A.fechaInicio, A.fechafin FROM Anteproyectos A " +
-                           "LEFT JOIN Directores D ON A.IdDirector1 = D.IdDirector LEFT JOIN Profesores P ON D.NumPersonal = P.NumPersonal " +
-                           "LEFT JOIN Usuarios U ON P.IdUsuario = U.IdUsuario LEFT JOIN LGAC K ON A.IdLGAC = K.IdLGAC WHERE título = ";
+        String fullQuery = "SELECT A.título, U.nombre, U.firstSurname, U.secondSurname, K.descripción, A.V°B°, A.fechaInicio, A.fechafin FROM Anteproyectos A " +
+                           "LEFT JOIN Directores D ON A.IdDirector1 = D.IdDirector LEFT JOIN Professors P ON D.staffNumber = P.staffNumber " +
+                           "LEFT JOIN Users U ON P.userId = U.userId LEFT JOIN LGAC K ON A.IdLGAC = K.IdLGAC WHERE título = ";
         for(int i = 1; i <= selectedResearchesTitles.size(); i++){
             fullQuery = fullQuery + "?";
             if(i < selectedResearchesTitles.size()){
@@ -101,13 +101,13 @@ public class ResearchReportDAO implements IResearchesReportDAO{
                 research.setTitle(resultSet.getString("título"));
 
                 if(resultSet.getString("nombre") != null &&
-                   resultSet.getString("apellidoPaterno") != null &&
-                   resultSet.getString("apellidoMaterno") != null){
+                   resultSet.getString("firstSurname") != null &&
+                   resultSet.getString("secondSurname") != null){
 
                     Director director = new Director();
                     director.setName(resultSet.getString("nombre"));
-                    director.setFirstSurname(resultSet.getString("apellidoPaterno"));
-                    director.setSecondSurname(resultSet.getString("apellidoMaterno"));
+                    director.setFirstSurname(resultSet.getString("firstSurname"));
+                    director.setSecondSurname(resultSet.getString("secondSurname"));
                     research.addDirector(director);
                 }
                 

@@ -56,7 +56,7 @@ public class CourseInformationController{
             String css = getClass().getResource("/mx/uv/fei/gui/stylesfiles/Styles.css").toExternalForm();
             scene.getStylesheets().add(css);
             Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-            stage.setTitle("Administrar Usuarios");
+            stage.setTitle("Administrar Users");
             stage.setScene(scene);
             stage.setResizable(false);
             stage.show();

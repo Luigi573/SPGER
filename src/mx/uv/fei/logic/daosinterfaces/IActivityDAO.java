@@ -8,9 +8,14 @@ import mx.uv.fei.logic.exceptions.DataRetrievalException;
 
 public interface IActivityDAO {
     public int addActivity(Activity activity) throws DataInsertionException;
+
     public ArrayList<Activity> getActivityList(int researchId) throws DataRetrievalException;
+
     public int modifyActivity(Activity activity) throws DataInsertionException;
+
     public boolean assertActivity(Activity activity);
+
     public int setFeedback(String feedback, int activityId) throws DataInsertionException;
+
     public int setComment(String feedback, int activityId) throws DataInsertionException;
 }

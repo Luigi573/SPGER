@@ -26,7 +26,7 @@ public class DirectorDAO implements IDirectorDAO{
         int generatedId = 0;
         try{
             String queryToInsertDirectorDataToUserColumns = 
-                "INSERT INTO Usuarios (nombre, apellidoPaterno, apellidoMaterno, correo, correoAlterno, numeroTelefono, estado, contraseña) VALUES (?, ?, ?, ?, ?, ?, ?, SHA2(?, 256))";
+                "INSERT INTO Users (nombre, firstSurname, secondSurname, emailAddress, alternateEmail, numeroTelefono, estado, password) VALUES (?, ?, ?, ?, ?, ?, ?, SHA2(?, 256))";
             
             PreparedStatement preparedStatementToInsertDirectorDataToUsersColumns = 
                 dataBaseManager.getConnection().prepareStatement(
@@ -49,7 +49,7 @@ public class DirectorDAO implements IDirectorDAO{
             }
 
             String queryToInsertDirectorDataToProfessorsColumns = 
-                "INSERT INTO Profesores (NumPersonal, IdUsuario) VALUES (?, ?)";
+                "INSERT INTO Professors (staffNumber, userId) VALUES (?, ?)";
             PreparedStatement preparedStatementToInsertDirectorDataToProfessorsColumns = 
                 dataBaseManager.getConnection().prepareStatement(queryToInsertDirectorDataToProfessorsColumns);
             preparedStatementToInsertDirectorDataToProfessorsColumns.setInt(1, director.getStaffNumber());
@@ -57,7 +57,7 @@ public class DirectorDAO implements IDirectorDAO{
             preparedStatementToInsertDirectorDataToProfessorsColumns.executeUpdate();
 
             String queryToInsertDirectorDataToDirectorColumns = 
-                "INSERT INTO Directores (NumPersonal) VALUES (?)";
+                "INSERT INTO Directores (staffNumber) VALUES (?)";
             
             PreparedStatement preparedStatementToInsertDirectorDataToDirectorColumns = 
                 dataBaseManager.getConnection().prepareStatement(queryToInsertDirectorDataToDirectorColumns);
@@ -83,10 +83,10 @@ public class DirectorDAO implements IDirectorDAO{
     public int modifyDirectorData(Director director) throws DataInsertionException, DuplicatedPrimaryKeyException{
         int result = 0;
         try{
-            String queryForUpdateUserData = "UPDATE Usuarios SET nombre = ?, " + 
-                           "apellidoPaterno = ?, apellidoMaterno = ?, correo = ?, " + 
-                           "correoAlterno = ?, numeroTelefono = ?, estado = ? " +
-                           "WHERE IdUsuario = ?";
+            String queryForUpdateUserData = "UPDATE Users SET nombre = ?, " + 
+                           "firstSurname = ?, secondSurname = ?, emailAddress = ?, " + 
+                           "alternateEmail = ?, numeroTelefono = ?, estado = ? " +
+                           "WHERE userId = ?";
             PreparedStatement preparedStatement = dataBaseManager.getConnection().prepareStatement(queryForUpdateUserData);
             preparedStatement.setString(1, director.getName());
             preparedStatement.setString(2, director.getFirstSurname());
@@ -98,8 +98,8 @@ public class DirectorDAO implements IDirectorDAO{
             preparedStatement.setInt(8, director.getUserId());
             result = preparedStatement.executeUpdate();
 
-            String queryForUpdateProfessorData = "UPDATE Profesores SET NumPersonal = ? " + 
-                           "WHERE IdUsuario = ?";
+            String queryForUpdateProfessorData = "UPDATE Professors SET staffNumber = ? " + 
+                           "WHERE userId = ?";
             
             PreparedStatement preparedStatementForUpdateProfessorData = 
                 dataBaseManager.getConnection().prepareStatement(queryForUpdateProfessorData);
@@ -121,8 +121,8 @@ public class DirectorDAO implements IDirectorDAO{
     public ArrayList<Director> getDirectorList() throws DataRetrievalException{
         ArrayList<Director> directorList = new ArrayList<>();
         PreparedStatement statement;
-        String query = "SELECT d.IdDirector, p.NumPersonal, u.nombre, u.apellidoPaterno, u.apellidoMaterno FROM Directores d "
-                + "INNER JOIN Profesores p ON d.NumPersonal = p.NumPersonal INNER JOIN Usuarios u ON u.IdUsuario = p.IdUsuario";
+        String query = "SELECT d.IdDirector, p.staffNumber, u.nombre, u.firstSurname, u.secondSurname FROM Directores d "
+                + "INNER JOIN Professors p ON d.staffNumber = p.staffNumber INNER JOIN Users u ON u.userId = p.userId";
         
         try{
             statement = dataBaseManager.getConnection().prepareStatement(query);
@@ -132,10 +132,10 @@ public class DirectorDAO implements IDirectorDAO{
                 Director director = new Director();
                 
                 director.setDirectorId(resultSet.getInt("d.IdDirector"));
-                director.setStaffNumber(resultSet.getInt("p.NumPersonal"));
+                director.setStaffNumber(resultSet.getInt("p.staffNumber"));
                 director.setName(resultSet.getString("u.nombre"));
-                director.setFirstSurname(resultSet.getString("u.apellidoPaterno"));
-                director.setSecondSurname(resultSet.getString("u.apellidoMaterno"));
+                director.setFirstSurname(resultSet.getString("u.firstSurname"));
+                director.setSecondSurname(resultSet.getString("u.secondSurname"));
                 
                 directorList.add(director);
             }
@@ -154,20 +154,20 @@ public class DirectorDAO implements IDirectorDAO{
 
         try{
             Statement statement = dataBaseManager.getConnection().createStatement();
-            String query = "SELECT * FROM Usuarios U INNER JOIN Profesores P ON U.IdUsuario = P.IdUsuario INNER JOIN Directores D ON P.NumPersonal = D.NumPersonal";
+            String query = "SELECT * FROM Users U INNER JOIN Professors P ON U.userId = P.userId INNER JOIN Directores D ON P.staffNumber = D.staffNumber";
             ResultSet resultSet = statement.executeQuery(query);
             while(resultSet.next()) {
                 Director director = new Director();
-                director.setUserId(resultSet.getInt("IdUsuario"));
+                director.setUserId(resultSet.getInt("userId"));
                 director.setName(resultSet.getString("nombre"));
-                director.setFirstSurname(resultSet.getString("apellidoPaterno"));
-                director.setSecondSurname(resultSet.getString("apellidoMaterno"));
-                director.setEmailAddress(resultSet.getString("correo"));
-                director.setPassword(resultSet.getString("contraseña"));
-                director.setAlternateEmail(resultSet.getString("correoAlterno"));
+                director.setFirstSurname(resultSet.getString("firstSurname"));
+                director.setSecondSurname(resultSet.getString("secondSurname"));
+                director.setEmailAddress(resultSet.getString("emailAddress"));
+                director.setPassword(resultSet.getString("password"));
+                director.setAlternateEmail(resultSet.getString("alternateEmail"));
                 director.setPhoneNumber(resultSet.getString("numeroTelefono"));
                 director.setStatus(resultSet.getString("estado"));
-                director.setStaffNumber(resultSet.getInt("NumPersonal"));
+                director.setStaffNumber(resultSet.getInt("staffNumber"));
                 directors.add(director);
             }
             resultSet.close();
@@ -186,22 +186,22 @@ public class DirectorDAO implements IDirectorDAO{
         ArrayList<Director> directors = new ArrayList<>();
 
         try{
-            String query = "SELECT * FROM Usuarios U INNER JOIN Profesores P ON U.IdUsuario = P.IdUsuario INNER JOIN Directores D ON P.NumPersonal = D.NumPersonal WHERE U.Nombre LIKE ?";
+            String query = "SELECT * FROM Users U INNER JOIN Professors P ON U.userId = P.userId INNER JOIN Directores D ON P.staffNumber = D.staffNumber WHERE U.Nombre LIKE ?";
             PreparedStatement preparedStatement = dataBaseManager.getConnection().prepareStatement(query);
             preparedStatement.setString(1, directorName + '%');
             ResultSet resultSet = preparedStatement.executeQuery();
             while(resultSet.next()) {
                 Director director = new Director();
-                director.setUserId(resultSet.getInt("IdUsuario"));
+                director.setUserId(resultSet.getInt("userId"));
                 director.setName(resultSet.getString("nombre"));
-                director.setFirstSurname(resultSet.getString("apellidoPaterno"));
-                director.setSecondSurname(resultSet.getString("apellidoMaterno"));
-                director.setEmailAddress(resultSet.getString("correo"));
-                director.setPassword(resultSet.getString("contraseña"));
-                director.setAlternateEmail(resultSet.getString("correoAlterno"));
+                director.setFirstSurname(resultSet.getString("firstSurname"));
+                director.setSecondSurname(resultSet.getString("secondSurname"));
+                director.setEmailAddress(resultSet.getString("emailAddress"));
+                director.setPassword(resultSet.getString("password"));
+                director.setAlternateEmail(resultSet.getString("alternateEmail"));
                 director.setPhoneNumber(resultSet.getString("numeroTelefono"));
                 director.setStatus(resultSet.getString("estado"));
-                director.setStaffNumber(resultSet.getInt("NumPersonal"));
+                director.setStaffNumber(resultSet.getInt("staffNumber"));
                 directors.add(director);
             }
             resultSet.close();
@@ -220,21 +220,21 @@ public class DirectorDAO implements IDirectorDAO{
         Director director = new Director();
 
         try{
-            String query = "SELECT * FROM Usuarios U INNER JOIN Profesores P ON U.IdUsuario = P.IdUsuario INNER JOIN Directores D ON P.NumPersonal = D.NumPersonal WHERE D.NumPersonal = ?";
+            String query = "SELECT * FROM Users U INNER JOIN Professors P ON U.userId = P.userId INNER JOIN Directores D ON P.staffNumber = D.staffNumber WHERE D.staffNumber = ?";
             PreparedStatement preparedStatement = dataBaseManager.getConnection().prepareStatement(query);
             preparedStatement.setInt(1, staffNumber);
             ResultSet resultSet = preparedStatement.executeQuery();
             if(resultSet.next()) {
-                director.setUserId(resultSet.getInt("IdUsuario"));
+                director.setUserId(resultSet.getInt("userId"));
                 director.setName(resultSet.getString("nombre"));
-                director.setFirstSurname(resultSet.getString("apellidoPaterno"));
-                director.setSecondSurname(resultSet.getString("apellidoMaterno"));
-                director.setEmailAddress(resultSet.getString("correo"));
-                director.setPassword(resultSet.getString("contraseña"));
-                director.setAlternateEmail(resultSet.getString("correoAlterno"));
+                director.setFirstSurname(resultSet.getString("firstSurname"));
+                director.setSecondSurname(resultSet.getString("secondSurname"));
+                director.setEmailAddress(resultSet.getString("emailAddress"));
+                director.setPassword(resultSet.getString("password"));
+                director.setAlternateEmail(resultSet.getString("alternateEmail"));
                 director.setPhoneNumber(resultSet.getString("numeroTelefono"));
                 director.setStatus(resultSet.getString("estado"));
-                director.setStaffNumber(resultSet.getInt("NumPersonal"));
+                director.setStaffNumber(resultSet.getInt("staffNumber"));
             }
 
             resultSet.close();
@@ -249,14 +249,14 @@ public class DirectorDAO implements IDirectorDAO{
     }
 
     private void deleteDirectorFromUsersTable(Director director) throws DataInsertionException{
-        String queryToInsertUserData = "DELETE FROM Usuarios WHERE IdUsuario = ?";
+        String queryToInsertUserData = "DELETE FROM Users WHERE userId = ?";
         try{
             PreparedStatement preparedStatementToInsertUserData = 
             dataBaseManager.getConnection().prepareStatement(queryToInsertUserData);
             preparedStatementToInsertUserData.setInt(1, director.getUserId());
             preparedStatementToInsertUserData.executeUpdate();
         }catch(SQLException e){
-            throw new DataInsertionException("Error al eliminar director de la tabla usuarios");
+            throw new DataInsertionException("Error al eliminar director de la tabla Users");
         }
     }   
 }

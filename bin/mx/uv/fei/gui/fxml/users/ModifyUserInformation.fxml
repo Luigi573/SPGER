@@ -67,7 +67,7 @@
       <HBox prefHeight="42.0" prefWidth="369.0">
          <children>
             <Label prefHeight="25.0" prefWidth="10.0" />
-            <Label prefHeight="40.0" prefWidth="141.0" text="Correo Electronico: *" />
+            <Label prefHeight="40.0" prefWidth="141.0" text="emailAddress Electronico: *" />
             <AnchorPane prefHeight="200.0" prefWidth="200.0">
                <children>
                   <TextField fx:id="emailTextField" layoutY="8.0" prefHeight="25.0" prefWidth="290.0" />
@@ -78,7 +78,7 @@
       <HBox prefHeight="42.0" prefWidth="261.0">
          <children>
             <Label prefHeight="25.0" prefWidth="10.0" />
-            <Label prefHeight="40.0" prefWidth="116.0" text="Correo Alterno: *" />
+            <Label prefHeight="40.0" prefWidth="116.0" text="emailAddress Alterno: *" />
             <AnchorPane prefHeight="200.0" prefWidth="200.0">
                <children>
                   <TextField fx:id="alternateEmailTextField" layoutY="8.0" prefHeight="25.0" prefWidth="315.0" />

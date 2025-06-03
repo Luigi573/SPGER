@@ -42,7 +42,7 @@ public class StudentDAOTest {
             preloadedStudent.setStatus(StudentStatus.ACTIVE.getValue());
             preloadedStudent.setMatricle("zS34829301");
 
-            String userQuery = "INSERT INTO Usuarios(nombre, apellidoPaterno, apellidoMaterno, correo, correoAlterno, numeroTelefono, estado) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            String userQuery = "INSERT INTO Users(nombre, firstSurname, secondSurname, emailAddress, alternateEmail, numeroTelefono, estado) VALUES (?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement userStatement = dataBaseManager.getConnection().prepareStatement(userQuery, Statement.RETURN_GENERATED_KEYS);
             userStatement.setString(1, preloadedStudent.getName());
             userStatement.setString(2, preloadedStudent.getFirstSurname());
@@ -60,7 +60,7 @@ public class StudentDAOTest {
             generatedUserKeys.close();
             userStatement.close();
             
-            String professorQuery = "INSERT INTO Estudiantes(Matrícula, IdUsuario) VALUES (?,?)";
+            String professorQuery = "INSERT INTO Estudiantes(Matrícula, userId) VALUES (?,?)";
             PreparedStatement professorStatement = dataBaseManager.getConnection().prepareStatement(professorQuery);
             professorStatement.setString(1, preloadedStudent.getMatricle());
             professorStatement.setInt(2, preloadedStudent.getUserId());
@@ -95,7 +95,7 @@ public class StudentDAOTest {
     @AfterClass
     public static void tearDownClass(){
         PreparedStatement statement;
-        String queryToDeleteUser = "DELETE FROM Usuarios WHERE IdUsuario = ? || IdUsuario = ?";
+        String queryToDeleteUser = "DELETE FROM Users WHERE userId = ? || userId = ?";
         String queryToDeleteProfessor = "DELETE FROM Estudiantes WHERE Matrícula = ? || Matrícula = ?";
         
         try{

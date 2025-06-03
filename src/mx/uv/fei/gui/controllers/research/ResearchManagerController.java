@@ -79,7 +79,7 @@ public class ResearchManagerController {
             scene.getStylesheets().add(css);
             
             Stage stage  = (Stage)((Node)event.getSource()).getScene().getWindow();
-            stage.setTitle("Administrar Usuarios del Curso");
+            stage.setTitle("Administrar Users del Curso");
             stage.setScene(scene);
             stage.setResizable(false);
             stage.show();

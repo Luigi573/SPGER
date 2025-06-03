@@ -81,7 +81,7 @@ public class RegisterAdmin{
                     }
 
                 }else{
-                    new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "Error", "El correo electrónico no puede ser el mismo que el correo alterno");
+                    new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "Error", "El emailAddress electrónico no puede ser el mismo que el emailAddress alterno");
                 }
             }else{
                 new AlertPopUpGenerator().showCustomMessage(AlertType.WARNING, "Error", specifiedInvalidDataMessageError());
@@ -141,17 +141,17 @@ public class RegisterAdmin{
 
         if(!emailMatcher.find()){
             if(message.equals("")){
-                message = "correo electrónico";
+                message = "emailAddress electrónico";
             }else{
-                message = message + ", correo electrónico";
+                message = message + ", emailAddress electrónico";
             }
         }
 
         if(!alternateEmailMatcher.find()){
             if(message.equals("")){
-                message = "correo alterno";
+                message = "emailAddress alterno";
             }else{
-                message = message + ", correo alterno";
+                message = message + ", emailAddress alterno";
             }
         }
 

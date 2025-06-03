@@ -1,5 +1,5 @@
 INSERT INTO
-    `Usuarios`
+    `Users`
 VALUES
     (
         1,
@@ -8,7 +8,7 @@ VALUES
         'Sánchez',
         'zS21013906@estudiantes.uv.mx',
         '9bcc29b5c15ebd10b5f50bef90f255bb9891197fd16d9b4fd6238ece98da89ab',
-        'prueba@correo',
+        'prueba@emailAddress',
         '9212313443',
         'Activo'
     ),
@@ -19,7 +19,7 @@ VALUES
         'López',
         'zS21816754@estudiantes.uv.mx',
         'de0cf992e71ca6a96209a8cab7581ff4c506ea5c5216ef2c720c1416054d9e8b',
-        'prueba@correo',
+        'prueba@emailAddress',
         '9212313443',
         'Activo'
     ),
@@ -30,7 +30,7 @@ VALUES
         'Pazos',
         'zS21684532@estudiantes.uv.mx',
         '2a316a4dcd9b00427fcf43b9c8d832da034d2da7e3f8cca3e21a86f9a257e556',
-        'prueba@correo',
+        'prueba@emailAddress',
         '9212313443',
         'Activo'
     ),
@@ -41,7 +41,7 @@ VALUES
         'Conde',
         'zS21894563@estudiantes.uv.mx',
         '134a0ff7f7102b754e8031a8b0e2fb8e02e98d149e55c79d1b15a9046ecacea2',
-        'prueba@correo',
+        'prueba@emailAddress',
         '9212313443',
         'Activo'
     ),
@@ -52,7 +52,7 @@ VALUES
         'Vázquez',
         'zS21849354@estudiantes.uv.mx',
         '1e3d614b95d11b87ecccfbddbdb2b14cdaa386767436feb9b0a960202d7ddd7b',
-        'prueba@correo',
+        'prueba@emailAddress',
         '9212313443',
         'Activo'
     ),
@@ -74,7 +74,7 @@ VALUES
         'Arriaga',
         'elrevo@uv.mx',
         'FcHVP2l$%8',
-        'prueba@correo.mp',
+        'prueba@emailAddress.mp',
         '9212313443',
         'Activo'
     ),
@@ -85,7 +85,7 @@ VALUES
         'Hernández',
         'jocharan@uv.mx',
         '374a9f3cb89081c3de4f25e671eb9e0822e3832f2e5723c3bd4db6f9d723838b',
-        'prueba@correo.mx',
+        'prueba@emailAddress.mx',
         '9212313443',
         'Activo'
     ),
@@ -96,7 +96,7 @@ VALUES
         'Hernández',
         'aaperez@uv.mx',
         'd3030cfc578fc959af598f0f0f40865a54f772bfbeb195420d740eb92e48ab83',
-        'prueba@correo.com',
+        'prueba@emailAddress.com',
         '9212313443',
         'Activo'
     ),
@@ -195,7 +195,7 @@ VALUES
     ('zS21013908', 41);
 
 INSERT INTO
-    `Profesores`
+    `Professors`
 VALUES
     (132432244, 6),
     (5546334, 7),
@@ -203,7 +203,7 @@ VALUES
     (685176533, 9);
 
 INSERT INTO
-    `ResponsablesCA`
+    `AcademicBodyHeads`
 VALUES
     (1, 132432244);
 
