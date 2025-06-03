@@ -6,14 +6,14 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
-import java.util.logging.Logger;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class DataBaseManager {
     private Connection connection;
     private Properties dataBaseUserPropertiesFile;
 
-    public DataBaseManager(){
+    public DataBaseManager() {
         try {
             InputStream fis = getClass().getResourceAsStream("/dependencies/resources/DatabaseAccess.properties");
             dataBaseUserPropertiesFile = new Properties();
@@ -22,29 +22,28 @@ public class DataBaseManager {
             Logger.getLogger(DataBaseManager.class.getName()).log(Level.SEVERE, null, e);
         }
     }
-    
+
     public Connection getConnection() throws SQLException {
         this.connect();
         return connection;
     }
 
-    public void closeConnection(){
-        if(connection != null){
-            try{
-                if(!connection.isClosed()){
+    public void closeConnection() {
+        if (connection != null) {
+            try {
+                if (!connection.isClosed()) {
                     connection.close();
                 }
-            }catch(SQLException exception){
+            } catch (SQLException exception) {
                 Logger.getLogger(DataBaseManager.class.getName()).log(Level.SEVERE, null, exception);
             }
         }
     }
 
-    private void connect() throws SQLException{
+    private void connect() throws SQLException {
         connection = DriverManager.getConnection(
-            dataBaseUserPropertiesFile.getProperty("DATABASE_NAME"),
-            dataBaseUserPropertiesFile.getProperty("DATABASE_USER"),
-            dataBaseUserPropertiesFile.getProperty("DATABASE_PASSWORD")
-        );
+                dataBaseUserPropertiesFile.getProperty("DATABASE_NAME"),
+                dataBaseUserPropertiesFile.getProperty("DATABASE_USER"),
+                dataBaseUserPropertiesFile.getProperty("DATABASE_PASSWORD"));
     }
 }

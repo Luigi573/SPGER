@@ -1,139 +1,155 @@
 package mx.uv.fei.logic.domain;
 
 import java.sql.Date;
-import java.util.ArrayList;
 
 public class ResearchProject {
-    private Date dueDate;
-    private Date startDate;
-    private ArrayList<Director> directors;
-    private ArrayList<Student> students;
-    private int id;
-    private KGAL kgal;
-    private String validationStatus;
+    private int researchProjectId;
+    private int studentId1;
+    private int studentId2;
+    private int directorId1;
+    private int directorId2;
+    private int directorId3;
+    private int kgalId;
     private String description;
-    private String expectedResult;
+    private Date dueDate;
+    private String expectedResults;
     private String requirements;
+    private Date startDate;
     private String suggestedBibliography;
     private String title;
-    
-    public ResearchProject(){
-        directors = new ArrayList<>();
-        students = new ArrayList();
-        kgal = new KGAL();
-    }
-    
-    public void setDueDate(Date dueDate) {
-        this.dueDate = dueDate;
-    }
-    
-    public Date getDueDate() {
-        return dueDate;
-    }
-    
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
-    }
-    
-    public Date getStartDate() {
-        return startDate;
-    }
-    
-    public void addDirector(Director director) {
-        if(directors.size() <= 3){
-            directors.add(director);
-        }
-    }
-    
-    public ArrayList<Director> getDirectors(){
-        return directors;
-    }
-    
-    public void addStudent(Student student) {
-        if(students.size() <= 2){
-            students.add(student);
-        }
+    private String validationStatus;
+
+    public int getResearchProjectId() {
+        return researchProjectId;
     }
 
-    public ArrayList<Student> getStudents() {
-        return students;
+    public void setResearchProjectId(int researchProjectId) {
+        this.researchProjectId = researchProjectId;
     }
-    
-    public void setId(int id) {
-        this.id = id;
+
+    public int getStudentId1() {
+        return studentId1;
     }
-    
-    public int getId() {
-        return id;
+
+    public void setStudentId1(int studentId1) {
+        this.studentId1 = studentId1;
     }
-    
-    public void setKgal(KGAL kgal) {
-        this.kgal = kgal;
+
+    public int getStudentId2() {
+        return studentId2;
     }
-    
-    public KGAL getKgal() {
-        return kgal;
+
+    public void setStudentId2(int studentId2) {
+        this.studentId2 = studentId2;
     }
-    
-    public void setValidationStatus(String validationStatus) {
-        this.validationStatus = validationStatus;
+
+    public int getDirectorId1() {
+        return directorId1;
     }
-    
-    public String getValidationStatus() {
-        return validationStatus;
+
+    public void setDirectorId1(int directorId1) {
+        this.directorId1 = directorId1;
     }
-    
-    public void setDescription(String description) {
-        this.description = description;
+
+    public int getDirectorId2() {
+        return directorId2;
     }
-    
+
+    public void setDirectorId2(int directorId2) {
+        this.directorId2 = directorId2;
+    }
+
+    public int getDirectorId3() {
+        return directorId3;
+    }
+
+    public void setDirectorId3(int directorId3) {
+        this.directorId3 = directorId3;
+    }
+
+    public int getKgalId() {
+        return kgalId;
+    }
+
+    public void setKgalId(int kgalId) {
+        this.kgalId = kgalId;
+    }
+
     public String getDescription() {
         return description;
     }
-    
-    public void setExpectedResult(String expectedResult) {
-        this.expectedResult = expectedResult;
+
+    public void setDescription(String description) {
+        this.description = description;
     }
-    
-    public String getExpectedResult() {
-        return expectedResult;
+
+    public Date getDueDate() {
+        return dueDate;
     }
-    
-    public void setRequirements(String requirements) {
-        this.requirements = requirements;
+
+    public void setDueDate(Date dueDate) {
+        this.dueDate = dueDate;
     }
-    
+
+    public String getExpectedResults() {
+        return expectedResults;
+    }
+
+    public void setExpectedResults(String expectedResults) {
+        this.expectedResults = expectedResults;
+    }
+
     public String getRequirements() {
         return requirements;
     }
-    
-    public void setSuggestedBibliography(String suggestedBibliography) {
-        this.suggestedBibliography = suggestedBibliography;
+
+    public void setRequirements(String requirements) {
+        this.requirements = requirements;
     }
-    
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
     public String getSuggestedBibliography() {
         return suggestedBibliography;
     }
-    
-    public void setTitle(String title) {
-        this.title = title;
+
+    public void setSuggestedBibliography(String suggestedBibliography) {
+        this.suggestedBibliography = suggestedBibliography;
     }
-    
+
     public String getTitle() {
         return title;
     }
-    
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getValidationStatus() {
+        return validationStatus;
+    }
+
+    public void setValidationStatus(String validationStatus) {
+        this.validationStatus = validationStatus;
+    }
+
     @Override
-    public boolean equals(Object obj){
-        if(obj instanceof ResearchProject researchProject){
-            return researchProject.getId() == this.id;
+    public boolean equals(Object obj) {
+        if (obj instanceof ResearchProject researchProject) {
+            return researchProject.getResearchProjectId() == this.researchProjectId;
         }
-        
+
         return false;
     }
-    
+
     @Override
-    public String toString(){
+    public String toString() {
         return title;
     }
 }

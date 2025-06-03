@@ -1,36 +1,36 @@
 package mx.uv.fei.logic.domain;
 
 public class KGAL {
-    private int kgalID;
+    private int kgalId;
     private String description;
-    
-    public void setKgalID(int kgalID) {
-        this.kgalID = kgalID;
+
+    public void setKgalId(int kgalId) {
+        this.kgalId = kgalId;
     }
-    
-    public int getKgalID() {
-        return this.kgalID;
+
+    public int getKgalId() {
+        return this.kgalId;
     }
-    
+
     public void setDescription(String description) {
         this.description = description;
     }
-    
+
     public String getDescription() {
         return this.description;
     }
-    
+
     @Override
     public String toString() {
         return description;
     }
-    
+
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof KGAL)) {
             return false;
         }
-            KGAL kgal = (KGAL) o;
-            return this.description.equals(kgal.description);
+        KGAL kgal = (KGAL) o;
+        return this.description.equals(kgal.description);
     }
 }

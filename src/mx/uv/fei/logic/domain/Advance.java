@@ -1,92 +1,99 @@
 package mx.uv.fei.logic.domain;
 
 import java.sql.Date;
+import java.util.ArrayList;
 
 public class Advance {
     private int advanceID;
     private int activityID;
-    private int fileID;
-    private Date date;
     private String comment;
+    private Date date;
     private String feedback;
-    private String title;    
     private String status;
+    private String title;
+    private ArrayList<File> files;
+
+    public Advance() {
+        files = new ArrayList<>();
+    }
+
+    public int getAdvanceID() {
+        return advanceID;
+    }
 
     public void setAdvanceID(int advanceID) {
         this.advanceID = advanceID;
     }
-    
-    public int getAdvanceID() {
-        return this.advanceID;
+
+    public int getActivityID() {
+        return activityID;
     }
-    
+
     public void setActivityID(int activityID) {
         this.activityID = activityID;
     }
-    
-    public int getActivityID() {
-        return this.activityID;
-    }
-    
-    public void setFileID(int fileID) {
-        this.fileID = fileID;
-    }
-    
-    public int getFileID() {
-        return this.fileID;
-    }
-    
-    public void setDate(Date date){
-        this.date = date;
-    }
-    
-    public Date getDate(){
-        return date;
-    }
-    
-    public void setTitle(String title) {
-        this.title = title;
-    }
-    
-    public String getTitle() {
-        return title;
-    }
-    
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
-    
+
     public String getComment() {
         return comment;
     }
-    
-    public void setFeedback(String feedback){
-        this.feedback = feedback;
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
-    
-    public String getFeedback(){
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public String getFeedback() {
         return feedback;
     }
-    
-    public void setState(String status) {
-        this.status = status;
+
+    public void setFeedback(String feedback) {
+        this.feedback = feedback;
     }
-    
-    public String getState() {
+
+    public String getStatus() {
         return status;
     }
-    
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public ArrayList<File> getFiles() {
+        return files;
+    }
+
+    public void setFiles(ArrayList<File> files) {
+        this.files = files;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof Advance advance) {
-            return this.activityID == advance.getActivityID() && this.title.equals(advance.getTitle()) && this.comment.equals(advance.getComment());
+            return this.activityID == advance.getActivityID() && this.title.equals(advance.getTitle())
+                    && this.comment.equals(advance.getComment());
         }
-            
+
         return false;
     }
 
     @Override
     public String toString() {
-        return "ID Avance: " + advanceID + " ID Actividad: " + activityID + " ID Archivo: " + fileID + " Titulo: " + title + " Comentarios: " + comment;
+        return "ID Avance: " + advanceID + " ID Actividad: " + activityID + " Titulo: "
+                + title + " Comentarios: " + comment;
     }
 }

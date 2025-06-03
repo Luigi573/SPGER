@@ -3,36 +3,36 @@ package mx.uv.fei.logic.domain;
 import java.sql.Date;
 
 public class ScholarPeriod {
+    private int scholarPeriodId;
     private Date endDate;
     private Date startDate;
-    private int ScholarPeriodId;
+
+    public int getScholarPeriodId() {
+        return scholarPeriodId;
+    }
+
+    public void setScholarPeriodId(int scholarPeriodId) {
+        this.scholarPeriodId = scholarPeriodId;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
 
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
-    
-    public Date getEndDate() {
-        return this.endDate;
+
+    public Date getStartDate() {
+        return startDate;
     }
 
     public void setStartDate(Date startDate) {
         this.startDate = startDate;
     }
 
-    public Date getStartDate() {
-        return this.startDate;
-    }
-  
-    public void setScholarPeriodId(int scholarPeriodId) {
-        ScholarPeriodId = scholarPeriodId;
-    }
-      
-    public int getScholarPeriodId() {
-        return this.ScholarPeriodId;
-    }
-
     @Override
-    public String toString(){
+    public String toString() {
         return this.startDate + " " + this.endDate;
     }
 
@@ -43,12 +43,12 @@ public class ScholarPeriod {
         if (scholarPeriod == null)
             return false;
         if (this.getClass() != scholarPeriod.getClass())
-        return false;
+            return false;
 
-        ScholarPeriod s = (ScholarPeriod)scholarPeriod;
+        ScholarPeriod s = (ScholarPeriod) scholarPeriod;
 
         return this.startDate.equals(s.startDate) &&
-               this.endDate.equals(s.endDate);
+                this.endDate.equals(s.endDate);
     }
-    
+
 }
