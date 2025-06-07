@@ -25,8 +25,8 @@ public class ProfessorDAO implements IProfessorDAO{
     public int addProfessor(Professor professor) throws DataInsertionException, DuplicatedPrimaryKeyException{
         int generatedId = 0;
         try{
-            String queryToInsertProfessorDataToUsersColumns = "INSERT INTO Users (nombre, firstSurname, secondSurname, emailAddress, alternateEmail, " +
-                            "numeroTelefono, estado, password) VALUES (?, ?, ?, ?, ?, ?, ?, SHA2(?, 256))";
+            String queryToInsertProfessorDataToUsersColumns = "INSERT INTO Users (name, firstSurname, secondSurname, emailAddress, alternateEmail, " +
+                            "phoneNumber, status, password) VALUES (?, ?, ?, ?, ?, ?, ?, SHA2(?, 256))";
             
             PreparedStatement preparedStatementToInsertProfessorDataToUsersColumns = 
                 dataBaseManager.getConnection().prepareStatement(queryToInsertProfessorDataToUsersColumns, PreparedStatement.RETURN_GENERATED_KEYS);
@@ -72,9 +72,9 @@ public class ProfessorDAO implements IProfessorDAO{
     public int modifyProfessorData(Professor professor) throws DataInsertionException, DuplicatedPrimaryKeyException{
         int result = 0;
         try{
-            String queryForUpdateUserData = "UPDATE Users SET nombre = ?, " + 
+            String queryForUpdateUserData = "UPDATE Users SET name = ?, " + 
                            "firstSurname = ?, secondSurname = ?, emailAddress = ?, " + 
-                           "alternateEmail = ?, numeroTelefono = ?, estado = ? " +
+                           "alternateEmail = ?, phoneNumber = ?, status = ? " +
                            "WHERE userId = ?";
             PreparedStatement preparedStatement = 
                 dataBaseManager.getConnection().prepareStatement(queryForUpdateUserData);
@@ -118,14 +118,14 @@ public class ProfessorDAO implements IProfessorDAO{
             while(resultSet.next()) {
                 Professor professor = new Professor();
                 professor.setUserId(resultSet.getInt("userId"));
-                professor.setName(resultSet.getString("nombre"));
+                professor.setName(resultSet.getString("name"));
                 professor.setFirstSurname(resultSet.getString("firstSurname"));
                 professor.setSecondSurname(resultSet.getString("secondSurname"));
                 professor.setEmailAddress(resultSet.getString("emailAddress"));
                 professor.setPassword(resultSet.getString("password"));
                 professor.setAlternateEmail(resultSet.getString("alternateEmail"));
-                professor.setPhoneNumber(resultSet.getString("numeroTelefono"));
-                professor.setStatus(resultSet.getString("estado"));
+                professor.setPhoneNumber(resultSet.getString("phoneNumber"));
+                professor.setStatus(resultSet.getString("status"));
                 professor.setStaffNumber(resultSet.getInt("staffNumber"));
                 professors.add(professor);
             }
@@ -145,7 +145,7 @@ public class ProfessorDAO implements IProfessorDAO{
         ArrayList<Professor> professors = new ArrayList<>();
         
         try{
-            String query = "SELECT * FROM Users U INNER JOIN Professors P ON U.userId = P.userId WHERE U.Nombre LIKE ?";
+            String query = "SELECT * FROM Users U INNER JOIN Professors P ON U.userId = P.userId WHERE U.name LIKE ?";
             PreparedStatement preparedStatement = dataBaseManager.getConnection().prepareStatement(query);
             preparedStatement.setString(1, professorName + '%');
 
@@ -153,14 +153,14 @@ public class ProfessorDAO implements IProfessorDAO{
             while(resultSet.next()) {
                 Professor professor = new Professor();
                 professor.setUserId(resultSet.getInt("userId"));
-                professor.setName(resultSet.getString("nombre"));
+                professor.setName(resultSet.getString("name"));
                 professor.setFirstSurname(resultSet.getString("firstSurname"));
                 professor.setSecondSurname(resultSet.getString("secondSurname"));
                 professor.setEmailAddress(resultSet.getString("emailAddress"));
                 professor.setPassword(resultSet.getString("password"));
                 professor.setAlternateEmail(resultSet.getString("alternateEmail"));
-                professor.setPhoneNumber(resultSet.getString("numeroTelefono"));
-                professor.setStatus(resultSet.getString("estado"));
+                professor.setPhoneNumber(resultSet.getString("phoneNumber"));
+                professor.setStatus(resultSet.getString("status"));
                 professor.setStaffNumber(resultSet.getInt("staffNumber"));
                 professors.add(professor);
             }
@@ -187,14 +187,14 @@ public class ProfessorDAO implements IProfessorDAO{
             ResultSet resultSet = preparedStatement.executeQuery();
             if(resultSet.next()){
                 professor.setUserId(resultSet.getInt("userId"));
-                professor.setName(resultSet.getString("nombre"));
+                professor.setName(resultSet.getString("name"));
                 professor.setFirstSurname(resultSet.getString("firstSurname"));
                 professor.setSecondSurname(resultSet.getString("secondSurname"));
                 professor.setEmailAddress(resultSet.getString("emailAddress"));
                 professor.setPassword(resultSet.getString("password"));
                 professor.setAlternateEmail(resultSet.getString("alternateEmail"));
-                professor.setPhoneNumber(resultSet.getString("numeroTelefono"));
-                professor.setStatus(resultSet.getString("estado"));
+                professor.setPhoneNumber(resultSet.getString("phoneNumber"));
+                professor.setStatus(resultSet.getString("status"));
                 professor.setStaffNumber(resultSet.getInt("staffNumber"));
             }
 

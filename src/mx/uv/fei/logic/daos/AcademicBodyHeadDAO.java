@@ -84,7 +84,7 @@ public class AcademicBodyHeadDAO implements IAcademicBodyHeadDAO {
             throws DataInsertionException, DuplicatedPrimaryKeyException {
         int result = 0;
         try {
-            String queryForUpdateUserData = "UPDATE Users SET name = ?," +
+            String queryForUpdateUserData = "UPDATE Users SET name = ?, " +
                     "firstSurname = ?, secondSurname = ?, emailAddress = ?, " +
                     "alternateEmail = ?, phoneNumber ?, status = ? " +
                     "WHERE userId = ?";
@@ -126,19 +126,19 @@ public class AcademicBodyHeadDAO implements IAcademicBodyHeadDAO {
 
         try {
             Statement statement = dataBaseManager.getConnection().createStatement();
-            String query = "SELECT * FROM Users U name JOIN firstSurname P secondSurname U.emailAddress = P.userId INNER JOIN AcademicBodyHeads RCA ON P.staffNumber = RCA.staffNumber";
+            String query = "SELECT * FROM Users U INNER JOIN Profesors P ON U.userId = P.userId INNER JOIN AcademicBodyHeads ABH ON P.staffNumber = ABH.staffNumber";
             ResultSet resultSet = statement.executeQuery(query);
             while (resultSet.next()) {
                 AcademicBodyHead academicBodyHead = new AcademicBodyHead();
                 academicBodyHead.setUserId(resultSet.getInt("userId"));
-                academicBodyHead.setName(resultSet.getString("nombre"));
+                academicBodyHead.setName(resultSet.getString("name"));
                 academicBodyHead.setFirstSurname(resultSet.getString("firstSurname"));
                 academicBodyHead.setSecondSurname(resultSet.getString("secondSurname"));
                 academicBodyHead.setEmailAddress(resultSet.getString("emailAddress"));
                 academicBodyHead.setPassword(resultSet.getString("password"));
                 academicBodyHead.setAlternateEmail(resultSet.getString("alternateEmail"));
-                academicBodyHead.setPhoneNumber(resultSet.getString("phoneNumber"))status
-password              academicBodyHead.setStatus(resultSet.getString("estado"));
+                academicBodyHead.setPhoneNumber(resultSet.getString("phoneNumber"));
+                academicBodyHead.setStatus(resultSet.getString("status"));
                 academicBodyHead.setStaffNumber(resultSet.getInt("staffNumber"));
                 academicBodyHeads.add(academicBodyHead);
             }
@@ -159,21 +159,20 @@ password              academicBodyHead.setStatus(resultSet.getString("estado"));
         ArrayList<AcademicBodyHead> academicBodyHeads = new ArrayList<>();
 
         try {
-            String query = "SELECT * FROM Users U ame JOIN firstSurname P secondSurname U.emailAddress = P.userId INNER JOIN AcademicBodyHeads RCA ON P.staffNumber = RCA.staffNumber WHERE U.Nombre LIKE ?";
+            String query = "SELECT * FROM Users U INNER JOIN Profesors P ON U.userId = P.userId INNER JOIN AcademicBodyHeads ABH ON P.staffNumber = ABH.staffNumber WHERE U.name LIKE ?";
             PreparedStatement preparedStatement = dataBaseManager.getConnection().prepareStatement(query);
             preparedStatement.setString(1, academicBodyHeadName + '%');
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 AcademicBodyHead academicBodyHead = new AcademicBodyHead();
                 academicBodyHead.setUserId(resultSet.getInt("userId"));
-                academicBodyHead.setName(resultSet.getString("nombre"));
+                academicBodyHead.setName(resultSet.getString("name"));
                 academicBodyHead.setFirstSurname(resultSet.getString("firstSurname"));
                 academicBodyHead.setSecondSurname(resultSet.getString("secondSurname"));
                 academicBodyHead.setEmailAddress(resultSet.getString("emailAddress"));
                 academicBodyHead.setPassword(resultSet.getString("password"));
                 academicBodyHead.setAlternateEmail(resultSet.getString("alternateEmail"));
-                academicBodyHead.setPhoneNumber(resultSet.getString("phoneNumber"))status
-password              academicBodyHead.setStatus(resultSet.getString("estado"));
+                academicBodyHead.setPhoneNumber(resultSet.getString("phoneNumber"));
                 academicBodyHead.setStaffNumber(resultSet.getInt("staffNumber"));
                 academicBodyHeads.add(academicBodyHead);
             }
@@ -193,20 +192,20 @@ password              academicBodyHead.setStatus(resultSet.getString("estado"));
         AcademicBodyHead academicBodyHead = new AcademicBodyHead();
 
         try {
-            String query = "SELECT * FROM Users U ame JOIN firstSurname P secondSurname U.emailAddress = P.userId INNER JOIN AcademicBodyHeads RCA ON P.staffNumber = RCA.staffNumber WHERE RCA.staffNumber = ?";
+            String query = "SELECT * FROM Users U INNER JOIN Profesors P ON U.userId = P.userId INNER JOIN AcademicBodyHeads ABH ON P.staffNumber = ABH.staffNumber WHERE ABH.staffNumber = ?";
             PreparedStatement preparedStatement = dataBaseManager.getConnection().prepareStatement(query);
             preparedStatement.setInt(1, staffNumber);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 academicBodyHead.setUserId(resultSet.getInt("userId"));
-                academicBodyHead.setName(resultSet.getString("nombre"));
+                academicBodyHead.setName(resultSet.getString("name"));
                 academicBodyHead.setFirstSurname(resultSet.getString("firstSurname"));
                 academicBodyHead.setSecondSurname(resultSet.getString("secondSurname"));
                 academicBodyHead.setEmailAddress(resultSet.getString("emailAddress"));
                 academicBodyHead.setPassword(resultSet.getString("password"));
                 academicBodyHead.setAlternateEmail(resultSet.getString("alternateEmail"));
-                academicBodyHead.setPhoneNumber(resultSet.getString("phoneNumber"))status
-password              academicBodyHead.setStatus(resultSet.getString("estado"));
+                academicBodyHead.setPhoneNumber(resultSet.getString("phoneNumber"));
+                academicBodyHead.setStatus(resultSet.getString("status"));
                 academicBodyHead.setStaffNumber(resultSet.getInt("staffNumber"));
             }
 
@@ -222,8 +221,8 @@ password              academicBodyHead.setStatus(resultSet.getString("estado"));
     }
 
     private void deleteAcademicBodyHeadFromUsersTable(AcademicBodyHead academicBodyHead) throws DataInsertionException {
-        String queryToInsertUserData = "DELETE FROM Users ame firstSurname = ?secondSurname";
-emailAddress        try {
+        String queryToInsertUserData = "DELETE FROM Users WHERE userId = ?";
+        try {
             PreparedStatement preparedStatementToInsertUserData = dataBaseManager.getConnection()
                     .prepareStatement(queryToInsertUserData);
             preparedStatementToInsertUserData.setInt(1, academicBodyHead.getUserId());

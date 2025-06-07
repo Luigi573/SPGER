@@ -208,12 +208,12 @@ VALUES
     (1, 132432244);
 
 INSERT INTO
-    `JefesCarrera`
+    `DegreeBosses`
 VALUES
     (1, 123216338);
 
 INSERT INTO
-    `Directores`
+    `Directors`
 VALUES
     (2, 5546334),
     (3, 123216338),
@@ -300,7 +300,7 @@ VALUES
     );
 
 INSERT INTO
-    `Anteproyectos`
+    `ResearchProjects`
 VALUES
     (
         1,
@@ -444,7 +444,7 @@ VALUES
         3,
         3,
         'Actividad de prueba anteproyecto',
-        'Esta actividad está cargada en un anteproyecto que tiene dos directores y un estudiante asignado',
+        'Esta actividad está cargada en un anteproyecto que tiene dos Directors y un estudiante asignado',
         '2023-09-15',
         '2023-09-18',
         'Por entregar',

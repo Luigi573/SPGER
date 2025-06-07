@@ -42,7 +42,7 @@ public class StudentDAOTest {
             preloadedStudent.setStatus(StudentStatus.ACTIVE.getValue());
             preloadedStudent.setMatricle("zS34829301");
 
-            String userQuery = "INSERT INTO Users(nombre, firstSurname, secondSurname, emailAddress, alternateEmail, numeroTelefono, estado) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            String userQuery = "INSERT INTO Users(name, firstSurname, secondSurname, emailAddress, alternateEmail, phoneNumber, status) VALUES (?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement userStatement = dataBaseManager.getConnection().prepareStatement(userQuery, Statement.RETURN_GENERATED_KEYS);
             userStatement.setString(1, preloadedStudent.getName());
             userStatement.setString(2, preloadedStudent.getFirstSurname());

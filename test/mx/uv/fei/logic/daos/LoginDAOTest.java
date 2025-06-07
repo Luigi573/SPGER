@@ -70,7 +70,7 @@ public class LoginDAOTest {
         
         try{
             //Adding an admin
-            String userQuery = "INSERT INTO Users(nombre, firstSurname, secondSurname, emailAddress, password) VALUES(?, ?, ?, ?, SHA2(?, 256))";
+            String userQuery = "INSERT INTO Users(name, firstSurname, secondSurname, emailAddress, password) VALUES(?, ?, ?, ?, SHA2(?, 256))";
             PreparedStatement userStatement = dataBaseManager.getConnection().prepareStatement(userQuery, Statement.RETURN_GENERATED_KEYS);
             userStatement.setString(1, preloadedAdmin.getName());
             userStatement.setString(2, preloadedAdmin.getFirstSurname());
@@ -91,7 +91,7 @@ public class LoginDAOTest {
             professorStatement.setInt(2, preloadedAdmin.getUserId());
             professorStatement.executeUpdate();
             
-            String adminQuery = "INSERT INTO JefesCarrera(staffNumber) VALUES(?)";
+            String adminQuery = "INSERT INTO DegreeBosses(staffNumber) VALUES(?)";
             PreparedStatement adminStatement = dataBaseManager.getConnection().prepareStatement(adminQuery);
             adminStatement.setInt(1, preloadedAdmin.getStaffNumber());
             adminStatement.executeUpdate();
@@ -177,7 +177,7 @@ public class LoginDAOTest {
             professorStatement.setInt(2, preloadedDirector.getUserId());
             professorStatement.executeUpdate();
             
-            String directorQuery = "INSERT INTO Directores(staffNumber) VALUES(?)";
+            String directorQuery = "INSERT INTO Directors(staffNumber) VALUES(?)";
             PreparedStatement directorStatement = dataBaseManager.getConnection().prepareStatement(directorQuery, PreparedStatement.RETURN_GENERATED_KEYS);
             
             directorStatement.setInt(1, preloadedDirector.getStaffNumber());

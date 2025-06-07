@@ -100,7 +100,7 @@ public class FileDAO implements IFileDAO {
     
     public ArrayList<File> getFilesByActivity(int activityID) throws DataRetrievalException {
         String query = "SELECT archivo.IdArchivo, archivo.ruta FROM ArchivosActividad AS actividad JOIN Archivos AS archivo ON actividad.IdArchivo = archivo.IdArchivo WHERE actividad.IdActividad = ?";
-        ArrayList<File> activityFilesList = new ArrayList();
+        ArrayList<File> activityFilesList = new ArrayList<>();
           
         if (activityID > 0) {
             try {

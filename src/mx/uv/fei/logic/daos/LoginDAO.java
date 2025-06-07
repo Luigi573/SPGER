@@ -22,8 +22,8 @@ public class LoginDAO implements ILoginDAO{
     @Override
     public DegreeBoss logInAdmin(String emailAddress, String password) throws LoginException {
         PreparedStatement statement;
-        String query = "SELECT u.userId, u.nombre, u.firstSurname, u.secondSurname, u.emailAddress, p.staffNumber FROM Users u "
-                + " INNER JOIN Professors p ON u.userId = p.userId INNER JOIN JefesCarrera jc ON p.staffNumber = jc.staffNumber "
+        String query = "SELECT u.userId, u.name, u.firstSurname, u.secondSurname, u.emailAddress, p.staffNumber FROM Users u "
+                + " INNER JOIN Professors p ON u.userId = p.userId INNER JOIN DegreeBosses jc ON p.staffNumber = jc.staffNumber "
                 + " WHERE u.emailAddress = ? AND u.password = SHA2(?, 256)";
         DegreeBoss degreeBoss = new DegreeBoss();
         
@@ -36,7 +36,7 @@ public class LoginDAO implements ILoginDAO{
             ResultSet resultSet = statement.executeQuery();
             
             if(resultSet.next()){
-                degreeBoss.setName(resultSet.getString("u.nombre"));
+                degreeBoss.setName(resultSet.getString("u.name"));
                 degreeBoss.setFirstSurname(resultSet.getString("u.firstSurname"));
                 degreeBoss.setSecondSurname(resultSet.getString("u.secondSurname"));
                 degreeBoss.setEmailAddress(resultSet.getString("u.emailAddress"));
@@ -55,7 +55,7 @@ public class LoginDAO implements ILoginDAO{
     @Override
     public AcademicBodyHead logInAcademicBodyHead(String emailAddress, String password) throws LoginException {
         PreparedStatement statement;
-        String query = "SELECT u.userId, u.nombre, u.firstSurname, u.secondSurname, u.emailAddress, p.staffNumber FROM Users u "
+        String query = "SELECT u.userId, u.name, u.firstSurname, u.secondSurname, u.emailAddress, p.staffNumber FROM Users u "
                 + " INNER JOIN Professors p ON u.userId = p.userId INNER JOIN AcademicBodyHeads rca ON p.staffNumber = rca.staffNumber "
                 + " WHERE u.emailAddress = ? AND u.password = SHA2(?, 256)";
         AcademicBodyHead academicBodyHead = new AcademicBodyHead();
@@ -68,7 +68,7 @@ public class LoginDAO implements ILoginDAO{
             ResultSet resultSet = statement.executeQuery();
             if(resultSet.next()){
                 academicBodyHead.setUserId(resultSet.getInt("u.userId"));
-                academicBodyHead.setName(resultSet.getString("u.nombre"));
+                academicBodyHead.setName(resultSet.getString("u.name"));
                 academicBodyHead.setFirstSurname(resultSet.getString("u.firstSurname"));
                 academicBodyHead.setSecondSurname(resultSet.getString("u.secondSurname"));
                 academicBodyHead.setEmailAddress(resultSet.getString("u.emailAddress"));
@@ -87,8 +87,8 @@ public class LoginDAO implements ILoginDAO{
     public Director logInDirector(String emailAddress, String password) throws LoginException {
         Director director = new Director();
         PreparedStatement statement;
-        String query = "SELECT u.userId, u.nombre, u.firstSurname, u.secondSurname, u.emailAddress, p.staffNumber FROM Users u "
-                + " INNER JOIN Professors p ON u.userId = p.userId INNER JOIN Directores d ON p.staffNumber = d.staffNumber "
+        String query = "SELECT u.userId, u.name, u.firstSurname, u.secondSurname, u.emailAddress, p.staffNumber FROM Users u "
+                + " INNER JOIN Professors p ON u.userId = p.userId INNER JOIN Directors d ON p.staffNumber = d.staffNumber "
                 + " WHERE u.emailAddress = ? AND u.password = SHA2(?, 256)";
         
         try{
@@ -100,7 +100,7 @@ public class LoginDAO implements ILoginDAO{
             ResultSet resultSet = statement.executeQuery();
             
             if(resultSet.next()){
-                director.setName(resultSet.getString("u.nombre"));
+                director.setName(resultSet.getString("u.name"));
                 director.setFirstSurname(resultSet.getString("u.firstSurname"));
                 director.setSecondSurname(resultSet.getString("u.secondSurname"));
                 director.setEmailAddress(resultSet.getString("u.emailAddress"));
@@ -120,7 +120,7 @@ public class LoginDAO implements ILoginDAO{
     public Professor logInProfessor(String emailAddress, String password) throws LoginException{
         PreparedStatement statement;
         Professor professor = new Professor();
-        String query = "SELECT u.userId, u.nombre, u.firstSurname, u.secondSurname, u.emailAddress, p.staffNumber FROM Users u"
+        String query = "SELECT u.userId, u.name, u.firstSurname, u.secondSurname, u.emailAddress, p.staffNumber FROM Users u"
                 + " INNER JOIN Professors p ON u.userId = p.userId WHERE u.emailAddress = ? AND u.password = SHA2(?, 256)";
         
         try{
@@ -131,7 +131,7 @@ public class LoginDAO implements ILoginDAO{
             ResultSet resultSet = statement.executeQuery();
             
             if(resultSet.next()){
-                professor.setName(resultSet.getString("u.nombre"));
+                professor.setName(resultSet.getString("u.name"));
                 professor.setFirstSurname(resultSet.getString("u.firstSurname"));
                 professor.setSecondSurname(resultSet.getString("u.secondSurname"));
                 professor.setEmailAddress(resultSet.getString("u.emailAddress"));
@@ -151,7 +151,7 @@ public class LoginDAO implements ILoginDAO{
     @Override
     public Student logInStudent(String matricle, String password) throws LoginException{
         PreparedStatement statement;
-        String query = "SELECT u.userId, u.nombre, u.firstSurname, u.secondSurname, u.emailAddress, e.Matrícula FROM Users u"
+        String query = "SELECT u.userId, u.name, u.firstSurname, u.secondSurname, u.emailAddress, e.Matrícula FROM Users u"
                 + " INNER JOIN Estudiantes e ON u.userId = e.userId WHERE e.Matrícula = ? AND password = SHA2(?, 256)";
         Student student = new Student();
         
@@ -163,7 +163,7 @@ public class LoginDAO implements ILoginDAO{
             ResultSet resultSet = statement.executeQuery();
             if(resultSet.next()){
                 student.setUserId(resultSet.getInt("u.userId"));
-                student.setName(resultSet.getString("u.nombre"));
+                student.setName(resultSet.getString("u.name"));
                 student.setFirstSurname(resultSet.getString("u.firstSurname"));
                 student.setSecondSurname(resultSet.getString("u.secondSurname"));
                 student.setEmailAddress(resultSet.getString("u.emailAddress"));

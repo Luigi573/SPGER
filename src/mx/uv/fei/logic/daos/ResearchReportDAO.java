@@ -25,7 +25,7 @@ public class ResearchReportDAO implements IResearchesReportDAO{
 
         try{
             if(query.isEmpty()){
-                query = "SELECT título FROM Anteproyectos WHERE título LIKE ?";
+                query = "SELECT título FROM ResearchProjects WHERE título LIKE ?";
             }
             PreparedStatement preparedStatement = dataBaseManager.getConnection().prepareStatement(query);
             preparedStatement.setString(1, title + "%");
@@ -51,7 +51,7 @@ public class ResearchReportDAO implements IResearchesReportDAO{
     @Override
     public ArrayList<ResearchProject> getValidatedResearches(String title) throws DataRetrievalException{
         ArrayList<ResearchProject> validatedResearches;
-        String query = "SELECT título FROM Anteproyectos WHERE título LIKE ? && V°B° = 'Validado'";
+        String query = "SELECT título FROM ResearchProjects WHERE título LIKE ? && V°B° = 'Validado'";
         validatedResearches = getResearches(title, query);
         return validatedResearches;
     }
@@ -59,7 +59,7 @@ public class ResearchReportDAO implements IResearchesReportDAO{
     @Override
     public ArrayList<ResearchProject> getNotValidatedResearches(String title) throws DataRetrievalException{
         ArrayList<ResearchProject> notValidatedResearches;
-        String query = "SELECT título FROM Anteproyectos WHERE título LIKE ? && V°B° = 'No Validado'";
+        String query = "SELECT título FROM ResearchProjects WHERE título LIKE ? && V°B° = 'No Validado'";
         notValidatedResearches = getResearches(title, query);
         return notValidatedResearches;
     }
@@ -67,7 +67,7 @@ public class ResearchReportDAO implements IResearchesReportDAO{
     @Override
     public ArrayList<ResearchProject> getValidatedAndNotValidatedResearches(String title) throws DataRetrievalException{
         ArrayList<ResearchProject> validatedAndNotValidatedResearches;
-        String query = "SELECT título FROM Anteproyectos WHERE título LIKE ? && (V°B° = 'Validado' || V°B° = 'No Validado')";
+        String query = "SELECT título FROM ResearchProjects WHERE título LIKE ? && (V°B° = 'Validado' || V°B° = 'No Validado')";
         validatedAndNotValidatedResearches = getResearches(title, query);
         return validatedAndNotValidatedResearches;
     }
@@ -77,8 +77,8 @@ public class ResearchReportDAO implements IResearchesReportDAO{
         DataBaseManager dataBaseManager = new DataBaseManager();
         ArrayList<ResearchProject> selectedResearches = new ArrayList<>();
 
-        String fullQuery = "SELECT A.título, U.nombre, U.firstSurname, U.secondSurname, K.descripción, A.V°B°, A.fechaInicio, A.fechafin FROM Anteproyectos A " +
-                           "LEFT JOIN Directores D ON A.IdDirector1 = D.IdDirector LEFT JOIN Professors P ON D.staffNumber = P.staffNumber " +
+        String fullQuery = "SELECT A.título, U.name, U.firstSurname, U.secondSurname, K.descripción, A.V°B°, A.fechaInicio, A.fechafin FROM ResearchProjects A " +
+                           "LEFT JOIN Directors D ON A.IdDirector1 = D.IdDirector LEFT JOIN Professors P ON D.staffNumber = P.staffNumber " +
                            "LEFT JOIN Users U ON P.userId = U.userId LEFT JOIN LGAC K ON A.IdLGAC = K.IdLGAC WHERE título = ";
         for(int i = 1; i <= selectedResearchesTitles.size(); i++){
             fullQuery = fullQuery + "?";
@@ -100,12 +100,12 @@ public class ResearchReportDAO implements IResearchesReportDAO{
                 ResearchProject research = new ResearchProject();
                 research.setTitle(resultSet.getString("título"));
 
-                if(resultSet.getString("nombre") != null &&
+                if(resultSet.getString("name") != null &&
                    resultSet.getString("firstSurname") != null &&
                    resultSet.getString("secondSurname") != null){
 
                     Director director = new Director();
-                    director.setName(resultSet.getString("nombre"));
+                    director.setName(resultSet.getString("name"));
                     director.setFirstSurname(resultSet.getString("firstSurname"));
                     director.setSecondSurname(resultSet.getString("secondSurname"));
                     research.addDirector(director);

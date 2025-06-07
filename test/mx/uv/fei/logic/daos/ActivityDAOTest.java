@@ -29,7 +29,7 @@ public class ActivityDAOTest {
     public static void setUpClass() {
         dataBaseManager = new DataBaseManager();
         PreparedStatement researchStatement;
-        String researchQuery = "INSERT INTO Anteproyectos(título) VALUES(?)"; 
+        String researchQuery = "INSERT INTO ResearchProjects(título) VALUES(?)"; 
         
         try{
             researchStatement = dataBaseManager.getConnection().prepareStatement(researchQuery, Statement.RETURN_GENERATED_KEYS);
@@ -52,7 +52,7 @@ public class ActivityDAOTest {
             preloadedActivity.setStatus(ActivityStatus.ACTIVE);
             
             PreparedStatement activityStatement;
-            String activityQuery = "INSERT INTO Actividades(IdAnteproyecto, título, descripción, fechaInicio, fechaFin) VALUES(?,?,?,?,?)";
+            String activityQuery = "INSERT INTO Actividades(researchProjectId, título, descripción, fechaInicio, fechaFin) VALUES(?,?,?,?,?)";
             
             activityStatement = dataBaseManager.getConnection().prepareStatement(activityQuery, Statement.RETURN_GENERATED_KEYS);
             activityStatement.setInt(1, preloadedActivity.getResearchId());
@@ -77,7 +77,7 @@ public class ActivityDAOTest {
     @AfterClass
     public static void tearDownClass() {
         PreparedStatement deleteStatement;
-        String query = "DELETE FROM Anteproyectos WHERE IdAnteproyecto IN(?)";
+        String query = "DELETE FROM ResearchProjects WHERE researchProjectId IN(?)";
         
         try{
             deleteStatement = dataBaseManager.getConnection().prepareStatement(query);

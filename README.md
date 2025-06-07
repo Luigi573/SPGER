@@ -1,3 +1,16 @@
+TODO:
+DAOs:
+* AdvanceDAO
+* FileDAO
+* LoginDAO
+* ProfessorDAO
+* ResearchProjectDAO
+* ResearchProjectReportDAO
+* ScholarPeriodDAO
+* StudentDAO
+* StudentCoursesDAO
+Agregar DAOs ActivityFiles y AdvanceFiles
+
 # SPGER
 Proyecto Final de la Materia "Principios de Construcción de Software".
 SPGER es un sistema pensado para que los involucrados en las Experiencias Educativas "Proyecto Guiado" y "Experiencia Recepcional" de la Licenciatura en Ingeniería de Software de la Universidad Veracruzana puedan realizar sus actividades afines a dichas Experiencias Educativas de una manera más eficiente.

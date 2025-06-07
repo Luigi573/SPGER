@@ -68,7 +68,7 @@ public class FileDAOTest {
         preloadedActivity.setStatus(ActivityStatus.ACTIVE);
         preloadedActivity.setFeedback("Actividad no ha sido revisada");
         
-        String activityQuery = "INSERT INTO Actividades(IdAnteproyecto, título, descripción, estado, comentario, retroalimentación) VALUES(?, ?, ?, ?, ?, ?)";
+        String activityQuery = "INSERT INTO Actividades(researchProjectId, título, descripción, status, comentario, retroalimentación) VALUES(?, ?, ?, ?, ?, ?)";
         try {
             preparedStatement = dataBaseManager.getConnection().prepareStatement(activityQuery, PreparedStatement.RETURN_GENERATED_KEYS);
             preparedStatement.setInt(1, preloadedActivity.getResearchId());

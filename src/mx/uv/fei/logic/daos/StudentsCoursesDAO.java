@@ -83,11 +83,11 @@ public class StudentsCoursesDAO implements IStudentsCoursesDAO{
     public ArrayList<Course> getStudentCourses(String matricle) throws DataRetrievalException{
         ArrayList<Course> courseList = new ArrayList<>();
         PreparedStatement statement;
-        String query = "SELECT c.NRC, c.staffNumber, c.nombre, c.sección, c.bloque, up.nombre, up.firstSurname, up.secondSurname, "
+        String query = "SELECT c.NRC, c.staffNumber, c.name, c.sección, c.bloque, up.name, up.firstSurname, up.secondSurname, "
                 + "pe.fechaInicio, pe.fechaFin FROM EstudiantesCurso ec LEFT JOIN Cursos c ON ec.NRC = c.NRC "
                 + "LEFT JOIN PeriodosEscolares pe ON c.IdPeriodoEscolar = pe.IdPeriodoEscolar "
                 + "LEFT JOIN Professors p ON c.staffNumber = p.staffNumber LEFT JOIN Users up ON p.userId = up.userId "
-                + "WHERE ec.Matrícula = ? AND c.estado = 'Activo'  AND c.staffNumber IS NOT NULL";
+                + "WHERE ec.Matrícula = ? AND c.status = 'Activo'  AND c.staffNumber IS NOT NULL";
         
         try{
             statement = dataBaseManager.getConnection().prepareStatement(query);
@@ -97,7 +97,7 @@ public class StudentsCoursesDAO implements IStudentsCoursesDAO{
             while(resultSet.next()){
                 Course course = new Course();
                 
-                course.setName(resultSet.getString("c.nombre"));
+                course.setName(resultSet.getString("c.name"));
                 course.setSection(resultSet.getInt("c.sección"));
                 course.setBlock(resultSet.getInt("c.bloque"));
                 course.setNrc(resultSet.getInt("c.NRC"));
@@ -107,7 +107,7 @@ public class StudentsCoursesDAO implements IStudentsCoursesDAO{
                     course.setProfessor(professor);
                     
                     course.getProfessor().setStaffNumber(resultSet.getInt("c.staffNumber"));
-                    course.getProfessor().setName(resultSet.getString("up.nombre"));
+                    course.getProfessor().setName(resultSet.getString("up.name"));
                     course.getProfessor().setFirstSurname(resultSet.getString("up.firstSurname"));
                     course.getProfessor().setSecondSurname(resultSet.getString("up.secondSurname"));
                 }else{

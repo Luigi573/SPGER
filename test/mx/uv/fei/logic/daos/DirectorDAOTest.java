@@ -42,7 +42,7 @@ public class DirectorDAOTest {
             preloadedDirector.setStatus(ProfessorStatus.ACTIVE.getValue());
             preloadedDirector.setStaffNumber(489328392);
 
-            String userQuery = "INSERT INTO Users(nombre, firstSurname, secondSurname, emailAddress, alternateEmail, numeroTelefono, estado) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            String userQuery = "INSERT INTO Users(name, firstSurname, secondSurname, emailAddress, alternateEmail, phoneNumber, status) VALUES (?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement userStatement = dataBaseManager.getConnection().prepareStatement(userQuery, Statement.RETURN_GENERATED_KEYS);
             userStatement.setString(1, preloadedDirector.getName());
             userStatement.setString(2, preloadedDirector.getFirstSurname());
@@ -67,7 +67,7 @@ public class DirectorDAOTest {
             professorStatement.executeUpdate();
             professorStatement.close();
 
-            String DirectorQuery = "INSERT INTO Directores(staffNumber) VALUES (?)";
+            String DirectorQuery = "INSERT INTO Directors(staffNumber) VALUES (?)";
             PreparedStatement DirectorStatement = dataBaseManager.getConnection().prepareStatement(DirectorQuery);
             DirectorStatement.setInt(1, preloadedDirector.getStaffNumber());
             DirectorStatement.executeUpdate();
@@ -103,7 +103,7 @@ public class DirectorDAOTest {
         PreparedStatement statement;
         String queryToDeleteUser = "DELETE FROM Users WHERE userId = ? || userId = ?";
         String queryToDeleteProfessor = "DELETE FROM Professors WHERE staffNumber = ? || staffNumber = ?";
-        String queryToDeleteDirector = "DELETE FROM Directores WHERE staffNumber = ? || staffNumber = ?";
+        String queryToDeleteDirector = "DELETE FROM Directors WHERE staffNumber = ? || staffNumber = ?";
         
         try{
             statement = dataBaseManager.getConnection().prepareStatement(queryToDeleteUser);

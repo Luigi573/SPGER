@@ -37,7 +37,7 @@ public class StudentsCoursesDAOTest {
             preloadedStudent.setEmailAddress("zS28765676@estudiantes.uv.mx");
             preloadedStudent.setMatricle("zS28765676");
            
-            String userQuery = "INSERT INTO Users(nombre, firstSurname, secondSurname, emailAddress) VALUES (?, ?, ?, ?)";
+            String userQuery = "INSERT INTO Users(name, firstSurname, secondSurname, emailAddress) VALUES (?, ?, ?, ?)";
             PreparedStatement userStatement = dataBaseManager.getConnection().prepareStatement(userQuery, Statement.RETURN_GENERATED_KEYS);
             userStatement.setString(1, preloadedStudent.getName());
             userStatement.setString(2, preloadedStudent.getFirstSurname());
@@ -65,7 +65,7 @@ public class StudentsCoursesDAOTest {
             preloadedCourse.setBlock(1);
             preloadedCourse.setSection(8);
             preloadedCourse.setNrc(73898);
-            String courseQuery = "INSERT INTO Cursos (nombre, bloque, sección, NRC) VALUES (?, ?, ?, ?)";
+            String courseQuery = "INSERT INTO Cursos (name, bloque, sección, NRC) VALUES (?, ?, ?, ?)";
             PreparedStatement courseStatement = dataBaseManager.getConnection().prepareStatement(courseQuery);
             courseStatement.setString(1, preloadedCourse.getName());
             courseStatement.setInt(2, preloadedCourse.getBlock());

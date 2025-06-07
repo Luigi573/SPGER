@@ -39,7 +39,7 @@ public class AcademicBodyHeadDAOTest {
             preloadedAcademicBodyHead.setStatus(ProfessorStatus.ACTIVE.getValue());
             preloadedAcademicBodyHead.setStaffNumber(489328392);
 
-            String userQuery = "INSERT INTO Users(nombre, firstSurname, secondSurname, emailAddress, alternateEmail, numeroTelefono, estado) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            String userQuery = "INSERT INTO Users(name, firstSurname, secondSurname, emailAddress, alternateEmail, phoneNumber, status) VALUES (?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement userStatement = dataBaseManager.getConnection().prepareStatement(userQuery, Statement.RETURN_GENERATED_KEYS);
             userStatement.setString(1, preloadedAcademicBodyHead.getName());
             userStatement.setString(2, preloadedAcademicBodyHead.getFirstSurname());

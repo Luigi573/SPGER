@@ -36,7 +36,7 @@ public class ResearchDAOTest {
         dataBaseManager = new DataBaseManager();
         PreparedStatement statement;
         
-        String query = "INSERT INTO Anteproyectos(fechaFin, fechaInicio, título, descripción, "
+        String query = "INSERT INTO ResearchProjects(fechaFin, fechaInicio, título, descripción, "
                 + "resultadosEsperados, requisitos) "
                 + "VALUES(?,?,?,?,?,?);";
         
@@ -66,7 +66,7 @@ public class ResearchDAOTest {
     @AfterClass
     public static void tearDownClass() {
         PreparedStatement statement;
-        String query = "DELETE FROM Anteproyectos WHERE IdAnteproyecto IN(?)";
+        String query = "DELETE FROM ResearchProjects WHERE researchProjectId IN(?)";
         
         try{
             statement = dataBaseManager.getConnection().prepareStatement(query);

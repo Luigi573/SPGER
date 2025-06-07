@@ -23,17 +23,17 @@ public class AdvanceDAO implements IAdvanceDAO{
     @Override
     public int addAdvance(Advance advance) throws DataInsertionException {
         int generatedId = 0;
-        String query = "insert into Avances(IdActividad, IdArchivo, título, comentario, estado, fecha) values(?, ?, ?, ?, ?, NOW())";
+        String query = "insert into Advances(activityId, IdArchivo, título, comentario, status, fecha) values(?, ?, ?, ?, ?, NOW())";
         try {
             PreparedStatement statement = dataBaseManager.getConnection().prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
             statement.setInt(1, advance.getActivityID());
             
             if (advance.getFileID() > 0) {
                 statement.setInt(2, advance.getFileID());
-                advance.setState("Entregado");
+                advance.setStatus("Entregado");
             } else {
                 statement.setNull(2, Types.INTEGER);
-                advance.setState("Entregado");
+                advance.setStatus("Entregado");
             }
             
             if (!advance.getTitle().equals("")) {
@@ -42,7 +42,7 @@ public class AdvanceDAO implements IAdvanceDAO{
                 throw new DataInsertionException("El título del avance no puede estar vacío.");
             }
             statement.setString(4, advance.getComment());
-            statement.setString(5, advance.getState());
+            statement.setString(5, advance.getStatus());
             
             statement.executeUpdate();
             
@@ -58,20 +58,20 @@ public class AdvanceDAO implements IAdvanceDAO{
     
     @Override
     public ArrayList<Advance> getAdvancesList() throws DataRetrievalException {
-        ArrayList<Advance> advancesList = new ArrayList();
+        ArrayList<Advance> advancesList = new ArrayList<>();
         
-        String query = "SELECT * FROM Avances";
+        String query = "SELECT * FROM Advances";
         try {
             Statement statement = dataBaseManager.getConnection().createStatement();
             ResultSet resultSet = statement.executeQuery(query);
             while(resultSet.next()) {
                 Advance advance = new Advance();
                 advance.setAdvanceID(resultSet.getInt("IdAvances"));
-                advance.setActivityID(resultSet.getInt("IdActividad"));
+                advance.setActivityID(resultSet.getInt("activityId"));
                 advance.setFileID(resultSet.getInt("IdArchivo"));
                 advance.setTitle(resultSet.getString("título"));
                 advance.setComment(resultSet.getString("comentario"));
-                advance.setState(resultSet.getString("estado"));
+                advance.setStatus(resultSet.getString("status"));
                 
                advancesList.add(advance);
             }
@@ -85,7 +85,7 @@ public class AdvanceDAO implements IAdvanceDAO{
     public ArrayList<Advance> getActivityAdvanceList(int activityId) throws DataRetrievalException {
         ArrayList<Advance> advanceList = new ArrayList<>();
         PreparedStatement statement;
-        String query = "SELECT IdAvance, IdActividad, IdArchivo, título, fecha, comentario, retroalimentación, estado FROM Avances WHERE IdActividad IN(?)";
+        String query = "SELECT IdAvance, activityId, IdArchivo, título, fecha, comentario, retroalimentación, status FROM Advances WHERE activityId IN(?)";
         
         try {
             statement = dataBaseManager.getConnection().prepareStatement(query);
@@ -96,12 +96,12 @@ public class AdvanceDAO implements IAdvanceDAO{
             while(resultSet.next()) {
                 Advance advance = new Advance();
                 advance.setAdvanceID(resultSet.getInt("IdAvance"));
-                advance.setActivityID(resultSet.getInt("IdActividad"));
+                advance.setActivityID(resultSet.getInt("activityId"));
                 advance.setTitle(resultSet.getString("título"));
                 advance.setDate(resultSet.getDate("fecha"));
                 advance.setComment(resultSet.getString("comentario"));
                 advance.setFeedback(resultSet.getString("retroalimentación"));
-                advance.setState(resultSet.getString("estado"));
+                advance.setStatus(resultSet.getString("status"));
                 advance.setFileID(resultSet.getInt("IdArchivo"));
                 
                advanceList.add(advance);
@@ -116,7 +116,7 @@ public class AdvanceDAO implements IAdvanceDAO{
      public int setFeedback(Advance advance) throws DataInsertionException{
         int result = 0;
         PreparedStatement statement;
-        String query = "UPDATE Avances SET retroalimentación = ?, estado = ? WHERE IdAvance IN(?)";
+        String query = "UPDATE Advances SET retroalimentación = ?, status = ? WHERE IdAvance IN(?)";
         
         try{
             statement = dataBaseManager.getConnection().prepareStatement(query);
@@ -156,7 +156,7 @@ public class AdvanceDAO implements IAdvanceDAO{
     @Override
     public int updateAdvanceInfo(int advanceToBeUpdatedID, Advance newAdvanceInfo) throws DataRetrievalException {
         int result;
-        String query = "update Avances set IdArchivo = ?, título = ?, comentario = ? where IdAvance = ?";
+        String query = "update Advances set IdArchivo = ?, título = ?, comentario = ? where IdAvance = ?";
         try {
             PreparedStatement statement = dataBaseManager.getConnection().prepareStatement(query);
             if (newAdvanceInfo.getFileID() != 0) {
