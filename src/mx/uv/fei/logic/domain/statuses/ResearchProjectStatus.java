@@ -2,6 +2,7 @@ package mx.uv.fei.logic.domain.statuses;
 
 public enum ResearchProjectStatus {
     PROPOSED("Propuesto"), 
+    NOT_VALIDATED("No Validado"),
     VALIDATED("Validado"),
     ASSIGNED("Asignado");
 

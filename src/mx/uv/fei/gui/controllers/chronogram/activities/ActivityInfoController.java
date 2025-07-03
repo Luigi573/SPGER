@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
+
+import org.apache.commons.io.FileUtils;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -24,24 +27,22 @@ import javafx.stage.Stage;
 import mx.uv.fei.gui.AlertPopUpGenerator;
 import mx.uv.fei.gui.controllers.HeaderPaneController;
 import mx.uv.fei.gui.controllers.chronogram.ChronogramController;
-import mx.uv.fei.gui.controllers.chronogram.advances.CreateNewAdvanceController;
 import mx.uv.fei.gui.controllers.chronogram.advances.AdvanceVBoxPaneController;
+import mx.uv.fei.gui.controllers.chronogram.advances.CreateNewAdvanceController;
 import mx.uv.fei.logic.daos.ActivityDAO;
 import mx.uv.fei.logic.daos.AdvanceDAO;
 import mx.uv.fei.logic.daos.FileDAO;
 import mx.uv.fei.logic.domain.Activity;
 import mx.uv.fei.logic.domain.Advance;
 import mx.uv.fei.logic.domain.Course;
-import mx.uv.fei.logic.domain.Director;
 import mx.uv.fei.logic.domain.Professor;
 import mx.uv.fei.logic.domain.User;
 import mx.uv.fei.logic.domain.statuses.ActivityStatus;
 import mx.uv.fei.logic.exceptions.DataDeletionException;
 import mx.uv.fei.logic.exceptions.DataInsertionException;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
-import org.apache.commons.io.FileUtils;
 
-public class ActivityInfoController{
+public class ActivityInfoController {
     private Activity activity;
     private ArrayList<File> filesList;
     private ArrayList<File> deletedFilesList;
@@ -49,7 +50,7 @@ public class ActivityInfoController{
     private Course course;
     private int deliverySize;
     private User user;
-    
+
     @FXML
     private Button addAdvanceButton;
     @FXML
@@ -80,102 +81,109 @@ public class ActivityInfoController{
     private VBox fileVBox;
     @FXML
     private VBox advanceVBox;
-    
+
     @FXML
     public void initialize() {
-        filesList = new ArrayList();
-        deletedFilesList = new ArrayList();
-        existingFilesList = new ArrayList();
+        filesList = new ArrayList<>();
+        deletedFilesList = new ArrayList<>();
+        existingFilesList = new ArrayList<>();
     }
-    
+
     @FXML
     private void editActivity(ActionEvent event) {
-        try{
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/activities/ModifyActivity.fxml"));
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/activities/ModifyActivity.fxml"));
             Parent parent = loader.load();
-            ModifyActivityController controller = (ModifyActivityController)loader.getController();
+            ModifyActivityController controller = (ModifyActivityController) loader.getController();
             controller.setActivity(activity);
-            
-            if(user != null){
+
+            if (user != null) {
                 controller.setUser(user);
                 controller.setCourse(course);
             }
-            
+
             Scene scene = new Scene(parent);
             String css = this.getClass().getResource("/mx/uv/fei/gui/stylesfiles/Styles.css").toExternalForm();
             scene.getStylesheets().add(css);
-            
-            Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setTitle("SPGER");
             stage.setScene(scene);
-            
+
             stage.show();
-        }catch(IOException exception){
+        } catch (IOException exception) {
             new AlertPopUpGenerator().showMissingFilesMessage();
         }
     }
-    
+
     @FXML
     private void uploadFileForDelivery(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Seleccione el archivo a entregar");
-        File file = fileChooser.showOpenDialog((Stage)((Node)event.getSource()).getScene().getWindow());
-        
-        if (file != null){
-            if((deliverySize + file.length()) < 20971520){
-                try{
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/activities/ActivityFileItem.fxml"));
+        File file = fileChooser.showOpenDialog((Stage) ((Node) event.getSource()).getScene().getWindow());
+
+        if (file != null) {
+            if ((deliverySize + file.length()) < 20971520) {
+                try {
+                    FXMLLoader loader = new FXMLLoader(
+                            getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/activities/ActivityFileItem.fxml"));
                     Pane pane = loader.load();
-                    ActivityFileItemController controller = (ActivityFileItemController)loader.getController();
+                    ActivityFileItemController controller = (ActivityFileItemController) loader.getController();
                     controller.setFile(file);
                     controller.hideDownloadButton();
-                    
+
                     deliverySize += file.length();
                     fileVBox.getChildren().add(pane);
                     filesList.add(file);
-                }catch(IOException exception) {
+                } catch (IOException exception) {
                     new AlertPopUpGenerator().showMissingFilesMessage();
                 }
-            }else{
-                new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.WARNING, "Error al subir el archivo", "El tamaño máximo permitido para una entrega es de 20Mb");
+            } else {
+                new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.WARNING, "Error al subir el archivo",
+                        "El tamaño máximo permitido para una entrega es de 20Mb");
             }
         }
     }
-    
+
     @FXML
     private void deliverActivity(ActionEvent event) {
-        if(commentTextArea.getText() != null){
+        if (commentTextArea.getText() != null) {
             int fileResult;
             int successfulSaves = 0;
             ArrayList<String> failedSaves = new ArrayList();
             ArrayList<String> failedCopiedFiles = new ArrayList();
-            
-            String activityDirectoryPath = System.getProperty("user.dir") + "\\Evidencias\\" + String.valueOf(user.getUserId()) + user.getFirstSurname() + user.getSecondSurname() + user.getName().replaceAll("\\s+", "") + "\\Actividades";
+
+            String activityDirectoryPath = System.getProperty("user.dir") + "\\Evidencias\\"
+                    + String.valueOf(user.getUserId()) + user.getFirstSurname() + user.getSecondSurname()
+                    + user.getName().replaceAll("\\s+", "") + "\\Actividades";
             File activityDirectory = new File(activityDirectoryPath);
             if (!activityDirectory.exists()) {
                 if (!activityDirectory.mkdirs()) {
-                    new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.ERROR, "Error al guardar archivo", "No se pudo guardar la copia del archivo en el servidor.");
+                    new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.ERROR, "Error al guardar archivo",
+                            "No se pudo guardar la copia del archivo en el servidor.");
                 }
             }
-            
-            for(File file : deletedFilesList){
-                try{
+
+            for (File file : deletedFilesList) {
+                try {
                     FileDAO fileDAO = new FileDAO();
-                    
+
                     file.delete();
                     fileDAO.removeActivityFile(file.getPath());
-                }catch(DataDeletionException exception){
-                    new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.ERROR, "Error al borrar la actividad", exception.getMessage());
+                } catch (DataDeletionException exception) {
+                    new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.ERROR, "Error al borrar la actividad",
+                            exception.getMessage());
                 }
             }
-            
+
             for (File file : filesList) {
                 File fileCopy = new File(activityDirectoryPath + "\\" + file.getName());
-                
+
                 if (!fileCopy.exists()) {
                     try {
                         FileUtils.copyFile(file, fileCopy);
-                        
+
                         FileDAO fileDAO = new FileDAO();
                         try {
                             fileResult = fileDAO.addActivityFile(fileCopy.getPath(), activity.getId());
@@ -193,89 +201,95 @@ public class ActivityInfoController{
             }
 
             for (String fileName : failedSaves) {
-                new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.ERROR, "Error al guardar la ruta del archivo.", fileName);
+                new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.ERROR,
+                        "Error al guardar la ruta del archivo.", fileName);
             }
-            
+
             for (String fileName : failedCopiedFiles) {
-                new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.ERROR, "Error al guardar la copia del archivo en el servidor.", fileName);
+                new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.ERROR,
+                        "Error al guardar la copia del archivo en el servidor.", fileName);
             }
-            
-            try{
+
+            try {
                 ActivityDAO activityDAO = new ActivityDAO();
-                if(activityDAO.setComment(commentTextArea.getText().trim(), activity.getId()) > 0){
-                    new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.INFORMATION, "", "Entrega guardada exitosamente");
-                    
+                if (activityDAO.setComment(commentTextArea.getText().trim(), activity.getId()) > 0) {
+                    new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.INFORMATION, "",
+                            "Entrega guardada exitosamente");
+
                     goBack(event);
                 }
-            }catch(DataInsertionException exception){
+            } catch (DataInsertionException exception) {
                 new AlertPopUpGenerator().showConnectionErrorMessage();
             }
-        }else{
-            new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.WARNING, "No se puede guardar la información", "Debe definir un comentario para la actividad");
+        } else {
+            new AlertPopUpGenerator().showCustomMessage(Alert.AlertType.WARNING, "No se puede guardar la información",
+                    "Debe definir un comentario para la actividad");
         }
     }
-    
+
     @FXML
-    private void modifyActivityDelivery(ActionEvent event){
+    private void modifyActivityDelivery(ActionEvent event) {
         addAdvanceButton.setVisible(false);
         commentTextArea.setEditable(true);
         deliveryButton.setVisible(true);
         editButton.setVisible(false);
         uploadFileButton.setVisible(true);
         removeFilesButton.setVisible(true);
-        
-        for(Node node : fileVBox.getChildren()){
-            Pane fileItemPane = (Pane)node;
-            Button downloadButton = (Button)fileItemPane.lookup("#downloadFileButton");
+
+        for (Node node : fileVBox.getChildren()) {
+            Pane fileItemPane = (Pane) node;
+            Button downloadButton = (Button) fileItemPane.lookup("#downloadFileButton");
             downloadButton.setVisible(false);
         }
     }
-    
+
     @FXML
-    private void openFeedbackPopUp(ActionEvent event){
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/activities/FeedbackPopUp.fxml"));
-        
-        try{
+    private void openFeedbackPopUp(ActionEvent event) {
+        FXMLLoader loader = new FXMLLoader(
+                getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/activities/FeedbackPopUp.fxml"));
+
+        try {
             Parent parent = loader.load();
-            FeedbackPopUpController controller = (FeedbackPopUpController)loader.getController();
+            FeedbackPopUpController controller = (FeedbackPopUpController) loader.getController();
             controller.setActivity(activity);
-            
-            if(course != null){
+
+            if (course != null) {
                 controller.disableWriting();
             }
-            
+
             Scene scene = new Scene(parent);
             String css = this.getClass().getResource("/mx/uv/fei/gui/stylesfiles/Styles.css").toExternalForm();
             scene.getStylesheets().add(css);
-            
+
             Stage stage = new Stage();
             stage.setScene(scene);
             stage.initModality(Modality.WINDOW_MODAL);
-            stage.initOwner((Stage)((Node)event.getSource()).getScene().getWindow());
+            stage.initOwner((Stage) ((Node) event.getSource()).getScene().getWindow());
             stage.setResizable(false);
-            
+
             stage.showAndWait();
-        }catch(IOException exception){
+        } catch (IOException exception) {
             new AlertPopUpGenerator().showMissingFilesMessage();
         }
     }
-    
+
     @FXML
     private void createNewAdvance(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/advances/CreateNewAdvance.fxml"));
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/advances/CreateNewAdvance.fxml"));
             Parent parent = loader.load();
-            CreateNewAdvanceController createNewAdvanceController = (CreateNewAdvanceController)loader.getController();
+            CreateNewAdvanceController createNewAdvanceController = (CreateNewAdvanceController) loader.getController();
             createNewAdvanceController.setActivity(activity);
             createNewAdvanceController.setCourse(course);
             createNewAdvanceController.setUser(user);
             createNewAdvanceController.loadHeader();
-            
+
             Scene scene = new Scene(parent);
             String css = this.getClass().getResource("/mx/uv/fei/gui/stylesfiles/Styles.css").toExternalForm();
             scene.getStylesheets().add(css);
-            
-            Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setTitle("SPGER");
             stage.setScene(scene);
             stage.show();
@@ -283,27 +297,27 @@ public class ActivityInfoController{
             new AlertPopUpGenerator().showMissingFilesMessage();
         }
     }
-    
+
     @FXML
     public void removeFiles(ActionEvent event) {
-        if(activity.getStatus().equals(ActivityStatus.DELIVERED)){
-            for(File file: existingFilesList){
+        if (activity.getStatus().equals(ActivityStatus.DELIVERED)) {
+            for (File file : existingFilesList) {
                 deletedFilesList.add(file);
             }
         }
-        
+
         deliverySize = 0;
         fileVBox.getChildren().clear();
         filesList.clear();
     }
-    
+
     @FXML
-    private void goBack(ActionEvent event){
+    private void goBack(ActionEvent event) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/Chronogram.fxml"));
-        
-        try{
+
+        try {
             Parent parent = loader.load();
-            ChronogramController controller = (ChronogramController)loader.getController();
+            ChronogramController controller = (ChronogramController) loader.getController();
             controller.setCourse(course);
             controller.setUser(user);
             controller.loadHeader();
@@ -311,69 +325,69 @@ public class ActivityInfoController{
             Scene scene = new Scene(parent);
             String css = this.getClass().getResource("/mx/uv/fei/gui/stylesfiles/Styles.css").toExternalForm();
             scene.getStylesheets().add(css);
-            
-            Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(scene);
             stage.show();
-        }catch(IOException exception){
-            new AlertPopUpGenerator().showMissingFilesMessage();
-        }
-    }
-    
-    public void loadHeader(){
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/HeaderPane.fxml"));
-        
-        try{
-            if(user != null){
-                Pane header = loader.load();
-                HeaderPaneController controller = (HeaderPaneController)loader.getController();
-                controller.setCourse(course);
-                controller.setUser(user);
-                
-                headerPane.getChildren().setAll(header);
-            }
-        }catch(IOException exception){
+        } catch (IOException exception) {
             new AlertPopUpGenerator().showMissingFilesMessage();
         }
     }
 
-    
-    public void loadAdvances(){
+    public void loadHeader() {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/HeaderPane.fxml"));
+
+        try {
+            if (user != null) {
+                Pane header = loader.load();
+                HeaderPaneController controller = (HeaderPaneController) loader.getController();
+                controller.setCourse(course);
+                controller.setUser(user);
+
+                headerPane.getChildren().setAll(header);
+            }
+        } catch (IOException exception) {
+            new AlertPopUpGenerator().showMissingFilesMessage();
+        }
+    }
+
+    public void loadAdvances() {
         AdvanceDAO advanceDAO = new AdvanceDAO();
-        
-        try{
-            ArrayList<Advance> advanceList  = advanceDAO.getActivityAdvanceList(activity.getId());
-            
-            for(Advance advance : advanceList){
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/advances/AdvanceVBoxPane.fxml"));
-                
-                try{
+
+        try {
+            ArrayList<Advance> advanceList = advanceDAO.getActivityAdvanceList(activity.getId());
+
+            for (Advance advance : advanceList) {
+                FXMLLoader loader = new FXMLLoader(
+                        getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/advances/AdvanceVBoxPane.fxml"));
+
+                try {
                     Pane advancePane = loader.load();
-                    AdvanceVBoxPaneController controller = (AdvanceVBoxPaneController)loader.getController();
+                    AdvanceVBoxPaneController controller = (AdvanceVBoxPaneController) loader.getController();
                     controller.setActivity(activity);
                     controller.setAdvance(advance);
                     controller.setCourse(course);
                     controller.setUser(user);
-                    
+
                     advanceVBox.getChildren().add(advancePane);
-                }catch(IOException exception){
+                } catch (IOException exception) {
                     new AlertPopUpGenerator().showMissingFilesMessage();
                 }
             }
-        }catch(DataRetrievalException exception){
+        } catch (DataRetrievalException exception) {
             new AlertPopUpGenerator().showConnectionErrorMessage();
         }
     }
-        
-    public void setActivity(Activity activity){
+
+    public void setActivity(Activity activity) {
         this.activity = activity;
         titleLabel.setText(activity.getTitle());
         startDateLabel.setText(activity.getStartDate().toString());
         dueDateLabel.setText(activity.getDueDate().toString());
         descriptionText.setText(activity.getDescription());
         commentTextArea.setText(activity.getComment());
-        
-        if(!activity.getStatus().equals(ActivityStatus.ACTIVE)){
+
+        if (!activity.getStatus().equals(ActivityStatus.ACTIVE)) {
             addAdvanceButton.setVisible(false);
             commentTextArea.setEditable(false);
             deliveryButton.setVisible(false);
@@ -382,35 +396,35 @@ public class ActivityInfoController{
             removeFilesButton.setVisible(false);
             commentTextArea.setEditable(false);
         }
-        
-        if(!activity.getStatus().equals(ActivityStatus.DELIVERED)){
+
+        if (!activity.getStatus().equals(ActivityStatus.DELIVERED)) {
             modifyDeliveryButton.setVisible(false);
         }
-        
-        if(!activity.getStatus().equals(ActivityStatus.REVIEWED)){
+
+        if (!activity.getStatus().equals(ActivityStatus.REVIEWED)) {
             feedbackButton.setVisible(false);
         }
-        
-        if(activity.getDueDate().compareTo(Date.valueOf(LocalDate.now())) >= 0){
+
+        if (activity.getDueDate().compareTo(Date.valueOf(LocalDate.now())) >= 0) {
             editButton.setVisible(false);
         }
-        
+
         loadActivityFiles();
     }
-    
-    public void setCourse(Course course){
+
+    public void setCourse(Course course) {
         this.course = course;
-        
-        if(course == null){
+
+        if (course == null) {
             feedbackButton.setVisible(true);
             feedbackButton.setText("Retroalimentar");
         }
     }
-    
-    public void setUser(User user){
+
+    public void setUser(User user) {
         this.user = user;
-        
-        if(Professor.class.isAssignableFrom(user.getClass())){
+
+        if (Professor.class.isAssignableFrom(user.getClass())) {
             addAdvanceButton.setVisible(false);
             commentTextArea.setEditable(false);
             deliveryButton.setVisible(false);
@@ -420,27 +434,28 @@ public class ActivityInfoController{
             uploadFileButton.setVisible(false);
         }
     }
-    
-    private void loadActivityFiles(){
+
+    private void loadActivityFiles() {
         ArrayList<mx.uv.fei.logic.domain.File> activityFilesList = new ArrayList();
         FileDAO fileDAO = new FileDAO();
-        
+
         try {
             activityFilesList = fileDAO.getFilesByActivity(activity.getId());
         } catch (DataRetrievalException exception) {
             new AlertPopUpGenerator().showConnectionErrorMessage();
         }
-        
+
         for (mx.uv.fei.logic.domain.File fileFromList : activityFilesList) {
             String path = fileFromList.getFilePath();
             if (path != null) {
                 File file = new File(path);
                 try {
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/activities/ActivityFileItem.fxml"));
+                    FXMLLoader loader = new FXMLLoader(
+                            getClass().getResource("/mx/uv/fei/gui/fxml/chronogram/activities/ActivityFileItem.fxml"));
                     Pane pane = loader.load();
                     ActivityFileItemController controller = (ActivityFileItemController) loader.getController();
                     controller.setFile(file);
-                    
+
                     fileVBox.getChildren().add(pane);
                     filesList.add(file);
                     existingFilesList.add(file);

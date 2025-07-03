@@ -14,22 +14,23 @@ import mx.uv.fei.logic.exceptions.DataInsertionException;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
 import mx.uv.fei.logic.exceptions.DuplicatedPrimaryKeyException;
 
-public class ProfessorDAO implements IProfessorDAO{
+public class ProfessorDAO implements IProfessorDAO {
     private final DataBaseManager dataBaseManager;
 
-    public ProfessorDAO(){
+    public ProfessorDAO() {
         dataBaseManager = new DataBaseManager();
     }
 
     @Override
-    public int addProfessor(Professor professor) throws DataInsertionException, DuplicatedPrimaryKeyException{
+    public int addProfessor(Professor professor) throws DataInsertionException, DuplicatedPrimaryKeyException {
         int generatedId = 0;
-        try{
+        try {
             String queryToInsertProfessorDataToUsersColumns = "INSERT INTO Users (name, firstSurname, secondSurname, emailAddress, alternateEmail, " +
-                            "phoneNumber, status, password) VALUES (?, ?, ?, ?, ?, ?, ?, SHA2(?, 256))";
-            
-            PreparedStatement preparedStatementToInsertProfessorDataToUsersColumns = 
-                dataBaseManager.getConnection().prepareStatement(queryToInsertProfessorDataToUsersColumns, PreparedStatement.RETURN_GENERATED_KEYS);
+                    "phoneNumber, status, password) VALUES (?, ?, ?, ?, ?, ?, ?, SHA2(?, 256))";
+
+            PreparedStatement preparedStatementToInsertProfessorDataToUsersColumns = dataBaseManager.getConnection()
+                    .prepareStatement(queryToInsertProfessorDataToUsersColumns,
+                            PreparedStatement.RETURN_GENERATED_KEYS);
             preparedStatementToInsertProfessorDataToUsersColumns.setString(1, professor.getName());
             preparedStatementToInsertProfessorDataToUsersColumns.setString(2, professor.getFirstSurname());
             preparedStatementToInsertProfessorDataToUsersColumns.setString(3, professor.getSecondSurname());
@@ -41,15 +42,14 @@ public class ProfessorDAO implements IProfessorDAO{
             preparedStatementToInsertProfessorDataToUsersColumns.executeUpdate();
 
             ResultSet resultSet = preparedStatementToInsertProfessorDataToUsersColumns.getGeneratedKeys();
-            if(resultSet.next()){
+            if (resultSet.next()) {
                 generatedId = resultSet.getInt(1);
                 professor.setUserId(generatedId);
             }
 
-            String queryToInsertProfessorDataToProfessorColumns = 
-                "INSERT INTO Professors (staffNumber, userId) VALUES (?, ?)";
-            PreparedStatement preparedStatementToInsertProfessorDataToProfessorColumns = 
-                dataBaseManager.getConnection().prepareStatement(queryToInsertProfessorDataToProfessorColumns);
+            String queryToInsertProfessorDataToProfessorColumns = "INSERT INTO Professors (staffNumber, userId) VALUES (?, ?)";
+            PreparedStatement preparedStatementToInsertProfessorDataToProfessorColumns = dataBaseManager.getConnection()
+                    .prepareStatement(queryToInsertProfessorDataToProfessorColumns);
             preparedStatementToInsertProfessorDataToProfessorColumns.setInt(1, professor.getStaffNumber());
             preparedStatementToInsertProfessorDataToProfessorColumns.setInt(2, professor.getUserId());
             preparedStatementToInsertProfessorDataToProfessorColumns.executeUpdate();
@@ -57,27 +57,27 @@ public class ProfessorDAO implements IProfessorDAO{
             preparedStatementToInsertProfessorDataToProfessorColumns.close();
             dataBaseManager.getConnection().close();
 
-        }catch(SQLIntegrityConstraintViolationException e){
+        } catch (SQLIntegrityConstraintViolationException e) {
             deleteProfessorFromUsersTable(professor);
             throw new DuplicatedPrimaryKeyException("Profesor ya registrado en el sistema");
-        }catch(SQLException e){
+        } catch (SQLException e) {
             throw new DataInsertionException("Error al agregar profesor. Inténtelo de nuevo más tarde");
-        }finally{
+        } finally {
             dataBaseManager.closeConnection();
         }
         return generatedId;
     }
 
     @Override
-    public int modifyProfessorData(Professor professor) throws DataInsertionException, DuplicatedPrimaryKeyException{
+    public int modifyProfessorData(Professor professor) throws DataInsertionException, DuplicatedPrimaryKeyException {
         int result = 0;
-        try{
-            String queryForUpdateUserData = "UPDATE Users SET name = ?, " + 
-                           "firstSurname = ?, secondSurname = ?, emailAddress = ?, " + 
-                           "alternateEmail = ?, phoneNumber = ?, status = ? " +
-                           "WHERE userId = ?";
-            PreparedStatement preparedStatement = 
-                dataBaseManager.getConnection().prepareStatement(queryForUpdateUserData);
+        try {
+            String queryForUpdateUserData = "UPDATE Users SET name = ?, " +
+                    "firstSurname = ?, secondSurname = ?, emailAddress = ?, " +
+                    "alternateEmail = ?, phoneNumber = ?, status = ? " +
+                    "WHERE userId = ?";
+            PreparedStatement preparedStatement = dataBaseManager.getConnection()
+                    .prepareStatement(queryForUpdateUserData);
             preparedStatement.setString(1, professor.getName());
             preparedStatement.setString(2, professor.getFirstSurname());
             preparedStatement.setString(3, professor.getSecondSurname());
@@ -88,19 +88,19 @@ public class ProfessorDAO implements IProfessorDAO{
             preparedStatement.setInt(8, professor.getUserId());
             result = preparedStatement.executeUpdate();
 
-            String queryForUpdateProfessorData = "UPDATE Professors SET staffNumber = ? " + 
-                           "WHERE userId = ?";
-            
-            PreparedStatement preparedStatementForUpdateProfessorData = 
-                dataBaseManager.getConnection().prepareStatement(queryForUpdateProfessorData);
+            String queryForUpdateProfessorData = "UPDATE Professors SET staffNumber = ? " +
+                    "WHERE userId = ?";
+
+            PreparedStatement preparedStatementForUpdateProfessorData = dataBaseManager.getConnection()
+                    .prepareStatement(queryForUpdateProfessorData);
             preparedStatementForUpdateProfessorData.setInt(1, professor.getStaffNumber());
             preparedStatementForUpdateProfessorData.setInt(2, professor.getUserId());
             preparedStatementForUpdateProfessorData.executeUpdate();
-        }catch(SQLIntegrityConstraintViolationException e){
+        } catch (SQLIntegrityConstraintViolationException e) {
             throw new DuplicatedPrimaryKeyException("Profesor ya registrado en el sistema");
-        }catch(SQLException e){
+        } catch (SQLException e) {
             throw new DataInsertionException("Error al modificar profesor. Inténtelo de nuevo más tarde");
-        }finally{
+        } finally {
             dataBaseManager.closeConnection();
         }
 
@@ -108,14 +108,14 @@ public class ProfessorDAO implements IProfessorDAO{
     }
 
     @Override
-    public ArrayList<Professor> getProfessors() throws DataRetrievalException{
+    public ArrayList<Professor> getProfessors() throws DataRetrievalException {
         ArrayList<Professor> professors = new ArrayList<>();
-        
-        try{
+
+        try {
             Statement statement = dataBaseManager.getConnection().createStatement();
             String query = "SELECT * FROM Users U INNER JOIN Professors P ON U.userId = P.userId";
             ResultSet resultSet = statement.executeQuery(query);
-            while(resultSet.next()) {
+            while (resultSet.next()) {
                 Professor professor = new Professor();
                 professor.setUserId(resultSet.getInt("userId"));
                 professor.setName(resultSet.getString("name"));
@@ -131,9 +131,9 @@ public class ProfessorDAO implements IProfessorDAO{
             }
             resultSet.close();
             dataBaseManager.closeConnection();
-        }catch(SQLException e) {
+        } catch (SQLException e) {
             throw new DataRetrievalException("Fallo al recuperar la informacion. Inténtelo de nuevo más tarde");
-        }finally{
+        } finally {
             dataBaseManager.closeConnection();
         }
 
@@ -141,16 +141,16 @@ public class ProfessorDAO implements IProfessorDAO{
     }
 
     @Override
-    public ArrayList<Professor> getSpecifiedProfessors(String professorName) throws DataRetrievalException{
+    public ArrayList<Professor> getSpecifiedProfessors(String professorName) throws DataRetrievalException {
         ArrayList<Professor> professors = new ArrayList<>();
-        
-        try{
+
+        try {
             String query = "SELECT * FROM Users U INNER JOIN Professors P ON U.userId = P.userId WHERE U.name LIKE ?";
             PreparedStatement preparedStatement = dataBaseManager.getConnection().prepareStatement(query);
             preparedStatement.setString(1, professorName + '%');
 
             ResultSet resultSet = preparedStatement.executeQuery();
-            while(resultSet.next()) {
+            while (resultSet.next()) {
                 Professor professor = new Professor();
                 professor.setUserId(resultSet.getInt("userId"));
                 professor.setName(resultSet.getString("name"));
@@ -166,9 +166,9 @@ public class ProfessorDAO implements IProfessorDAO{
             }
             resultSet.close();
             dataBaseManager.closeConnection();
-        }catch(SQLException e){
+        } catch (SQLException e) {
             throw new DataRetrievalException("Fallo al recuperar la informacion. Inténtelo de nuevo más tarde");
-        }finally{
+        } finally {
             dataBaseManager.closeConnection();
         }
 
@@ -176,16 +176,16 @@ public class ProfessorDAO implements IProfessorDAO{
     }
 
     @Override
-    public Professor getProfessor(int staffNumber) throws DataRetrievalException{
+    public Professor getProfessor(int staffNumber) throws DataRetrievalException {
         Professor professor = new Professor();
 
-        try{
+        try {
             String query = "SELECT * FROM Users U INNER JOIN Professors P ON U.userId = P.userId WHERE P.staffNumber = ?";
             PreparedStatement preparedStatement = dataBaseManager.getConnection().prepareStatement(query);
             preparedStatement.setInt(1, staffNumber);
-            
+
             ResultSet resultSet = preparedStatement.executeQuery();
-            if(resultSet.next()){
+            if (resultSet.next()) {
                 professor.setUserId(resultSet.getInt("userId"));
                 professor.setName(resultSet.getString("name"));
                 professor.setFirstSurname(resultSet.getString("firstSurname"));
@@ -200,23 +200,23 @@ public class ProfessorDAO implements IProfessorDAO{
 
             resultSet.close();
             dataBaseManager.closeConnection();
-        }catch(SQLException e){
+        } catch (SQLException e) {
             throw new DataRetrievalException("Fallo al recuperar la informacion. Inténtelo de nuevo más tarde");
-        }finally{
+        } finally {
             dataBaseManager.closeConnection();
         }
 
         return professor;
     }
-    
-    private void deleteProfessorFromUsersTable(Professor professor) throws DataInsertionException{
+
+    private void deleteProfessorFromUsersTable(Professor professor) throws DataInsertionException {
         String queryToInsertUserData = "DELETE FROM Users WHERE userId = ?";
-        try{
-            PreparedStatement preparedStatementToInsertUserData = 
-            dataBaseManager.getConnection().prepareStatement(queryToInsertUserData);
+        try {
+            PreparedStatement preparedStatementToInsertUserData = dataBaseManager.getConnection()
+                    .prepareStatement(queryToInsertUserData);
             preparedStatementToInsertUserData.setInt(1, professor.getUserId());
             preparedStatementToInsertUserData.executeUpdate();
-        }catch(SQLException e){
+        } catch (SQLException e) {
             throw new DataInsertionException("Error al eliminar profesor de la tabla Users");
         }
     }

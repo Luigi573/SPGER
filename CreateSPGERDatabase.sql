@@ -90,11 +90,11 @@ CREATE TABLE Professors (
 CREATE TABLE ResearchProjects (
     researchProjectId INT AUTO_INCREMENT,
     PRIMARY KEY(researchProjectId),
-    studentId1 VARCHAR(10),
-    studentId2 VARCHAR(10),
-    directorId1 INT,
-    directorId2 INT,
-    directorId3 INT,
+    studentMatricle1 VARCHAR(10),
+    studentMatricle2 VARCHAR(10),
+    directorStaffNumber1 INT,
+    directorStaffNumber2 INT,
+    directorStaffNumber3 INT,
     kgalId INT,
     description TEXT,
     dueDate DATE,
@@ -203,27 +203,27 @@ ADD
 ALTER TABLE
     ResearchProjects
 ADD
-    CONSTRAINT FK_studentId1_ResearchProjects FOREIGN KEY(studentId1) REFERENCES Students(matricle) ON UPDATE CASCADE ON DELETE CASCADE;
+    CONSTRAINT FK_studentMatricle1_ResearchProjects FOREIGN KEY(studentMatricle1) REFERENCES Students(matricle) ON UPDATE CASCADE ON DELETE CASCADE;
 
 ALTER TABLE
     ResearchProjects
 ADD
-    CONSTRAINT FK_studentId2_ResearchProjects FOREIGN KEY(studentId2) REFERENCES Students(matricle) ON UPDATE CASCADE ON DELETE CASCADE;
+    CONSTRAINT FK_studentMatricle2_ResearchProjects FOREIGN KEY(studentMatricle2) REFERENCES Students(matricle) ON UPDATE CASCADE ON DELETE CASCADE;
 
 ALTER TABLE
     ResearchProjects
 ADD
-    CONSTRAINT FK_directorId1_ResearchProjects FOREIGN KEY(directorId1) REFERENCES Directors(directorId) ON DELETE CASCADE;
+    CONSTRAINT FK_directorStaffNumber1_ResearchProjects FOREIGN KEY(directorStaffNumber1) REFERENCES Directors(directorId) ON DELETE CASCADE;
 
 ALTER TABLE
     ResearchProjects
 ADD
-    CONSTRAINT FK_directorId2_ResearchProjects FOREIGN KEY(directorId2) REFERENCES Directors(directorId) ON DELETE CASCADE;
+    CONSTRAINT FK_directorStaffNumber2_ResearchProjects FOREIGN KEY(directorStaffNumber2) REFERENCES Directors(directorId) ON DELETE CASCADE;
 
 ALTER TABLE
     ResearchProjects
 ADD
-    CONSTRAINT FK_directorId3_ResearchProjects FOREIGN KEY(directorId3) REFERENCES Directors(directorId) ON DELETE CASCADE;
+    CONSTRAINT FK_directorStaffNumber3_ResearchProjects FOREIGN KEY(directorStaffNumber3) REFERENCES Directors(directorId) ON DELETE CASCADE;
 
 ALTER TABLE
     ResearchProjects
@@ -238,7 +238,7 @@ ADD
 ALTER TABLE
     StudentsCourses
 ADD
-    CONSTRAINT FK_studentId_StudentsCourses FOREIGN KEY(matricle) REFERENCES Students(matricle) ON UPDATE CASCADE ON DELETE CASCADE;
+    CONSTRAINT FK_studentMatricle_StudentsCourses FOREIGN KEY(matricle) REFERENCES Students(matricle) ON UPDATE CASCADE ON DELETE CASCADE;
 
 ALTER TABLE
     StudentsCourses

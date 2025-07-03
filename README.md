@@ -2,13 +2,7 @@ TODO:
 DAOs:
 * AdvanceDAO
 * FileDAO
-* LoginDAO
-* ProfessorDAO
 * ResearchProjectDAO
-* ResearchProjectReportDAO
-* ScholarPeriodDAO
-* StudentDAO
-* StudentCoursesDAO
 Agregar DAOs ActivityFiles y AdvanceFiles
 
 # SPGER

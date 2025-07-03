@@ -4,11 +4,11 @@ import java.sql.Date;
 
 public class ResearchProject {
     private int researchProjectId;
-    private int studentId1;
-    private int studentId2;
-    private int directorId1;
-    private int directorId2;
-    private int directorId3;
+    private int studentMatricle1;
+    private int studentMatricle2;
+    private int directorStaffNumber1;
+    private int directorStaffNumber2;
+    private int directorStaffNumber3;
     private int kgalId;
     private String description;
     private Date dueDate;
@@ -27,44 +27,44 @@ public class ResearchProject {
         this.researchProjectId = researchProjectId;
     }
 
-    public int getStudentId1() {
-        return studentId1;
+    public int getStudentMatricle1() {
+        return studentMatricle1;
     }
 
-    public void setStudentId1(int studentId1) {
-        this.studentId1 = studentId1;
+    public void setStudentMatricle1(int studentMatricle1) {
+        this.studentMatricle1 = studentMatricle1;
     }
 
-    public int getStudentId2() {
-        return studentId2;
+    public int getStudentMatricle2() {
+        return studentMatricle2;
     }
 
-    public void setStudentId2(int studentId2) {
-        this.studentId2 = studentId2;
+    public void setStudentMatricle2(int studentMatricle2) {
+        this.studentMatricle2 = studentMatricle2;
     }
 
-    public int getDirectorId1() {
-        return directorId1;
+    public int getDirectorStaffNumber1() {
+        return directorStaffNumber1;
     }
 
-    public void setDirectorId1(int directorId1) {
-        this.directorId1 = directorId1;
+    public void setDirectorStaffNumber1(int directorStaffNumber1) {
+        this.directorStaffNumber1 = directorStaffNumber1;
     }
 
-    public int getDirectorId2() {
-        return directorId2;
+    public int getDirectorStaffNumber2() {
+        return directorStaffNumber2;
     }
 
-    public void setDirectorId2(int directorId2) {
-        this.directorId2 = directorId2;
+    public void setDirectorStaffNumber2(int directorStaffNumber2) {
+        this.directorStaffNumber2 = directorStaffNumber2;
     }
 
-    public int getDirectorId3() {
-        return directorId3;
+    public int getDirectorStaffNumber3() {
+        return directorStaffNumber3;
     }
 
-    public void setDirectorId3(int directorId3) {
-        this.directorId3 = directorId3;
+    public void setDirectorStaffNumber3(int directorStaffNumber3) {
+        this.directorStaffNumber3 = directorStaffNumber3;
     }
 
     public int getKgalId() {
