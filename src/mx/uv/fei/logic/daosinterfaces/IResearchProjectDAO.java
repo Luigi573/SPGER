@@ -11,11 +11,21 @@ public interface IResearchProjectDAO {
 
     public ArrayList<ResearchProject> getResearchProjectsList() throws DataRetrievalException;
 
-    public ArrayList<ResearchProject> getDirectorsResearch(int staffNumber) throws DataRetrievalException;
+    public ArrayList<ResearchProject> getDirectorResearchProjects(int staffNumber) throws DataRetrievalException;
+
+    public ResearchProject getStudentResearchProject(String matricle) throws DataRetrievalException;
+
+    public ArrayList<ResearchProject> getCourseResearchProjects(int NRC) throws DataRetrievalException;
+
+    public ArrayList<ResearchProject> getSpecifiedResearchProjectList(String researchName) throws DataRetrievalException;
+
+    public ArrayList<ResearchProject> getSpecifiedValidatedResearchProjectList(String researchName) throws DataRetrievalException;
+
+    public ArrayList<ResearchProject> getSpecifiedNotValidatedResearchProjectList(String researchName) throws DataRetrievalException;
+
+    public ArrayList<ResearchProject> getSpecifiedValidatedAndNotValidatedResearchProjectList(String researchName) throws DataRetrievalException;
 
     public int modifyResearchProject(ResearchProject researchProject) throws DataInsertionException;
-
-    public boolean assertResearchProject(ResearchProject researchProject);
 
     public void validateResearchProject(ResearchProject researchProject) throws DataInsertionException;
 }

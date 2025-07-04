@@ -2,7 +2,6 @@ TODO:
 DAOs:
 * AdvanceDAO
 * FileDAO
-* ResearchProjectDAO
 Agregar DAOs ActivityFiles y AdvanceFiles
 
 # SPGER

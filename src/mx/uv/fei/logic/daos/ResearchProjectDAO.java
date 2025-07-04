@@ -8,9 +8,7 @@ import java.util.ArrayList;
 
 import mx.uv.fei.dataaccess.DataBaseManager;
 import mx.uv.fei.logic.daosinterfaces.IResearchProjectDAO;
-import mx.uv.fei.logic.domain.Director;
 import mx.uv.fei.logic.domain.ResearchProject;
-import mx.uv.fei.logic.domain.Student;
 import mx.uv.fei.logic.domain.statuses.ResearchProjectStatus;
 import mx.uv.fei.logic.exceptions.DataInsertionException;
 import mx.uv.fei.logic.exceptions.DataRetrievalException;
@@ -26,52 +24,34 @@ public class ResearchProjectDAO implements IResearchProjectDAO {
     public int addResearchProject(ResearchProject researchProject) throws DataInsertionException {
         int generatedId = 0;
         PreparedStatement statement;
-        String query = "INSERT INTO ResearchProjects(fechaFin, fechaInicio, IdLGAC, descripción, "
-                + "resultadosEsperados, requisitos, bibliografíaRecomendada, título, Matrícula1, Matrícula2, V°B°, "
-                + "IdDirector1, IdDirector2, IdDirector3) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+        String query = "INSERT INTO ResearchProjects(dueDate, startDate, kgalId, description, "
+                + "expectedResults, requirements, suggestedBibliography, title, studentMatricle1, studentMatricle2, validationStatus, "
+                + "directorStaffNumber1, directorStaffNumber2, directorStaffNumber3) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
 
         try {
             statement = dataBaseManager.getConnection().prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 
             statement.setDate(1, researchProject.getDueDate());
             statement.setDate(2, researchProject.getStartDate());
-
-            if (researchProject.getKgal().getKgalID() != 0) {
-                statement.setInt(3, researchProject.getKgal().getKgalID());
-            } else {
-                statement.setNull(3, java.sql.Types.INTEGER);
-            }
-
+            statement.setInt(3, researchProject.getKgalId());
             statement.setString(4, researchProject.getDescription());
-            statement.setString(5, researchProject.getExpectedResult());
+            statement.setString(5, researchProject.getExpectedResults());
             statement.setString(6, researchProject.getRequirements());
             statement.setString(7, researchProject.getSuggestedBibliography());
             statement.setString(8, researchProject.getTitle());
-
-            for (int i = 0; i < 2; i++) {
-                if (i < researchProject.getStudents().size()) {
-                    statement.setString(i + 9, researchProject.getStudents().get(i).getMatricle());
-                } else {
-                    statement.setNull(i + 9, java.sql.Types.INTEGER);
-                }
-            }
-
+            statement.setString(9, researchProject.getStudentMatricle1());
+            statement.setString(10, researchProject.getStudentMatricle2());
             statement.setString(11, researchProject.getValidationStatus());
-
-            for (int i = 0; i < 3; i++) {
-                if (i < researchProject.getDirectors().size()) {
-                    statement.setInt(i + 12, researchProject.getDirectors().get(i).getDirectorId());
-                } else {
-                    statement.setNull(i + 12, java.sql.Types.INTEGER);
-                }
-            }
-
+            statement.setInt(12, researchProject.getDirectorStaffNumber1());
+            statement.setInt(13, researchProject.getDirectorStaffNumber2());
+            statement.setInt(14, researchProject.getDirectorStaffNumber3());
             statement.executeUpdate();
-            ResultSet generatedKeys = statement.getGeneratedKeys();
 
+            ResultSet generatedKeys = statement.getGeneratedKeys();
             if (generatedKeys.next()) {
                 generatedId = generatedKeys.getInt(1);
             }
+
         } catch (SQLException exception) {
             throw new DataInsertionException("Error de conexión. Inténtelo de nuevo más tarde");
         } finally {
@@ -85,78 +65,31 @@ public class ResearchProjectDAO implements IResearchProjectDAO {
     public ArrayList<ResearchProject> getResearchProjectsList() throws DataRetrievalException {
         ArrayList<ResearchProject> researchProjectList = new ArrayList<>();
         PreparedStatement statement;
-        String query = "SELECT DISTINCT a.researchProjectId, a.fechaFin, a.fechaInicio, l.IdLGAC, l.descripción AS LGAC, a.título, a.V°B°, "
-                + " a.IdDirector1, up1.name, up1.firstSurname, up1.secondSurname, a.IdDirector2, up2.name, up2.firstSurname, up2.secondSurname, a.IdDirector3, "
-                + " up3.name, up3.firstSurname, up3.secondSurname, a.descripción, a.resultadosEsperados, a.requisitos, a.bibliografíaRecomendada, "
-                + " a.Matrícula1, ue1.name, ue1.firstSurname, ue1.secondSurname, "
-                + " a.Matrícula2, ue2.name, ue2.firstSurname, ue2.secondSurname FROM ResearchProjects a "
-                + " LEFT JOIN Directors d1 ON a.IdDirector1 = d1.IdDirector LEFT JOIN Professors p1 ON d1.staffNumber = p1.staffNumber LEFT JOIN Users up1 ON p1.userId = up1.userId "
-                + " LEFT JOIN Directors d2 ON a.IdDirector2 = d2.IdDirector LEFT JOIN Professors p2 ON d2.staffNumber = p2.staffNumber LEFT JOIN Users up2 ON p2.userId = up2.userId "
-                + " LEFT JOIN Directors d3 ON a.IdDirector3 = d3.IdDirector LEFT JOIN Professors p3 ON d3.staffNumber = p3.staffNumber LEFT JOIN Users up3 ON p3.userId = up3.userId "
-                + " LEFT JOIN Estudiantes e1 ON a.Matrícula1 = e1.Matrícula LEFT JOIN Users ue1 ON e1.userId = ue1.userId "
-                + " LEFT JOIN Estudiantes e2 ON a.Matrícula2 = e2.Matrícula LEFT JOIN Users ue2 ON e2.userId = ue2.userId "
-                + " LEFT JOIN LGAC l ON l.IdLGAC = a.IdLGAC ORDER BY fechaFin, fechaInicio, título ASC";
-
+        String query = "SELECT researchProjectId, dueDate, startDate, kgalId, description, title, validationStatus, "
+                + " directorStaffNumber1, directorStaffNumber2, directorStaffNumber3, expectedResults, requirements, "
+                + " suggestedBibliography, studentMatricle1, studentMatricle2 FROM ResearchProjects";
         try {
             statement = dataBaseManager.getConnection().prepareStatement(query);
             ResultSet resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
-                ResearchProject research = new ResearchProject();
-
-                research.setId(resultSet.getInt("a.researchProjectId"));
-                research.setDueDate(resultSet.getDate("a.fechaFin"));
-                research.setStartDate(resultSet.getDate("a.fechaInicio"));
-
-                // Concatenating column names since they're almost the same
-                for (int i = 1; i <= 3; i++) {
-                    Director director = new Director();
-                    director.setDirectorId(resultSet.getInt("a.IdDirector" + i));
-
-                    if (!resultSet.wasNull()) {
-                        director.setName(resultSet.getString("up" + i + ".name"));
-                        director.setFirstSurname(resultSet.getString("up" + i + ".firstSurname"));
-                        director.setSecondSurname(resultSet.getString("up" + i + ".secondSurname"));
-
-                        research.addDirector(director);
-                    }
-                }
-
-                research.getKgal().setKgalID(resultSet.getInt("l.IdLGAC"));
-
-                if (!resultSet.wasNull()) {
-                    research.getKgal().setDescription(resultSet.getString("LGAC"));
-                }
-
-                research.setDescription(resultSet.getString("a.descripción"));
-                research.setExpectedResult(resultSet.getString("a.resultadosEsperados"));
-                research.setRequirements(resultSet.getString("a.requisitos"));
-                research.setSuggestedBibliography(resultSet.getString("a.bibliografíaRecomendada"));
-                research.setTitle(resultSet.getString("a.título"));
-                research.setValidationStatus(resultSet.getString("a.V°B°"));
-
-                Student student = new Student();
-                student.setMatricle(resultSet.getString("a.Matrícula1"));
-
-                if (!resultSet.wasNull()) {
-                    student.setName(resultSet.getString("ue1.name"));
-                    student.setFirstSurname(resultSet.getString("ue1.firstSurname"));
-                    student.setSecondSurname(resultSet.getString("ue1.secondSurname"));
-
-                    research.addStudent(student);
-                }
-
-                Student student2 = new Student();
-                student2.setMatricle(resultSet.getString("a.Matrícula2"));
-                if (!resultSet.wasNull()) {
-                    student2.setName(resultSet.getString("ue2.name"));
-                    student2.setFirstSurname(resultSet.getString("ue2.firstSurname"));
-                    student2.setSecondSurname(resultSet.getString("ue2.secondSurname"));
-
-                    research.addStudent(student2);
-                }
-
-                researchProjectList.add(research);
+                ResearchProject researchProject = new ResearchProject();
+                researchProject.setResearchProjectId(resultSet.getInt("researchProjectId"));
+                researchProject.setDueDate(resultSet.getDate("dueDate"));
+                researchProject.setStartDate(resultSet.getDate("startDate"));
+                researchProject.setKgalId(resultSet.getInt("kgalId"));
+                researchProject.setDescription(resultSet.getString("description"));
+                researchProject.setTitle(resultSet.getString("title"));
+                researchProject.setValidationStatus(resultSet.getString("validationStatus"));
+                researchProject.setDirectorStaffNumber1(resultSet.getInt("directorStaffNumber1"));
+                researchProject.setDirectorStaffNumber2(resultSet.getInt("directorStaffNumber2"));
+                researchProject.setDirectorStaffNumber3(resultSet.getInt("directorStaffNumber3"));
+                researchProject.setExpectedResults(resultSet.getString("expectedResults"));
+                researchProject.setRequirements(resultSet.getString("requirements"));
+                researchProject.setSuggestedBibliography(resultSet.getString("suggestedBibliography"));
+                researchProject.setStudentMatricle1(resultSet.getString("studentMatricle1"));
+                researchProject.setStudentMatricle2(resultSet.getString("studentMatricle2"));
+                researchProjectList.add(researchProject);
             }
         } catch (SQLException exception) {
             throw new DataRetrievalException("Fallo al recuperar la informacion. Inténtelo de nuevo más tarde");
@@ -167,23 +100,11 @@ public class ResearchProjectDAO implements IResearchProjectDAO {
         return researchProjectList;
     }
 
-    public ArrayList<ResearchProject> getDirectorsResearch(int staffNumber) throws DataRetrievalException {
+    public ArrayList<ResearchProject> getDirectorResearchProjects(int staffNumber) throws DataRetrievalException {
         ArrayList<ResearchProject> researchList = new ArrayList<>();
         PreparedStatement statement;
-        String query = "SELECT DISTINCT a.researchProjectId, a.título, a.Matrícula1, u1.name, u1.firstSurname, u1.secondSurname, "
-                +
-                " a.Matrícula2, u2.name, u2.firstSurname, u2.secondSurname FROM ResearchProjects a " +
-                " LEFT JOIN Directors d1 ON a.IdDirector1 = d1.IdDirector LEFT JOIN Professors p1 ON d1.staffNumber = p1.staffNumber "
-                +
-                " LEFT JOIN Directors d2 ON a.IdDirector2 = d2.IdDirector  LEFT JOIN Professors p2 ON d2.staffNumber = p2.staffNumber "
-                +
-                " LEFT JOIN Directors d3 ON a.IdDirector3 = d3.IdDirector LEFT JOIN Professors p3 ON d3.staffNumber = p3.staffNumber "
-                +
-                " LEFT JOIN Estudiantes e1 ON a.Matrícula1 = e1.Matrícula LEFT JOIN Users u1 ON e1.userId = u1.userId "
-                +
-                " LEFT JOIN Estudiantes e2 ON a.Matrícula2 = e2.Matrícula LEFT JOIN Users u2 ON e2.userId = u2.userId "
-                +
-                " WHERE (p1.staffNumber = ? OR p2.staffNumber = ? OR p3.staffNumber = ?)";
+        String query = "SELECT researchProjectId, title, studentMatricle1, studentMatricle2, FROM ResearchProjects"
+                + " WHERE (directorStaffNumber1 = ? OR directorStaffNumber2 = ? OR directorStaffNumber3 = ?)";
 
         try {
             statement = dataBaseManager.getConnection().prepareStatement(query);
@@ -193,26 +114,12 @@ public class ResearchProjectDAO implements IResearchProjectDAO {
 
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                ResearchProject research = new ResearchProject();
-
-                research.setId(resultSet.getInt("a.researchProjectId"));
-                research.setTitle(resultSet.getString("a.título"));
-
-                Student student1 = new Student();
-                student1.setMatricle(resultSet.getString("a.Matrícula1"));
-                student1.setName(resultSet.getString("u1.name"));
-                student1.setFirstSurname(resultSet.getString("u1.firstSurname"));
-                student1.setSecondSurname(resultSet.getString("u1.secondSurname"));
-                research.addStudent(student1);
-
-                Student student2 = new Student();
-                student2.setMatricle(resultSet.getString("a.Matrícula2"));
-                student2.setName(resultSet.getString("u2.name"));
-                student2.setFirstSurname(resultSet.getString("u2.firstSurname"));
-                student2.setSecondSurname(resultSet.getString("u2.secondSurname"));
-                research.addStudent(student2);
-
-                researchList.add(research);
+                ResearchProject researchProject = new ResearchProject();
+                researchProject.setResearchProjectId(resultSet.getInt("researchProjectId"));
+                researchProject.setTitle(resultSet.getString("title"));
+                researchProject.setStudentMatricle1(resultSet.getString("studentMatricle1"));
+                researchProject.setStudentMatricle2(resultSet.getString("studentMatricle2"));
+                researchList.add(researchProject);
             }
         } catch (SQLException exception) {
             throw new DataRetrievalException("No se pudo establecer conexión con la base de datos, inténtelo de nuevo");
@@ -223,10 +130,10 @@ public class ResearchProjectDAO implements IResearchProjectDAO {
         return researchList;
     }
 
-    public ResearchProject getStudentsResearch(String matricle) throws DataRetrievalException {
-        ResearchProject research = new ResearchProject();
+    public ResearchProject getStudentResearchProject(String matricle) throws DataRetrievalException {
+        ResearchProject researchProject = new ResearchProject();
         PreparedStatement statement;
-        String query = "SELECT researchProjectId, título FROM ResearchProjects WHERE Matrícula1 IN(?) OR Matrícula2 IN(?)";
+        String query = "SELECT researchProjectId, title FROM ResearchProjects WHERE studentMatricle1 IN(?) OR studentMatricle2 IN(?)";
 
         try {
             statement = dataBaseManager.getConnection().prepareStatement(query);
@@ -235,8 +142,8 @@ public class ResearchProjectDAO implements IResearchProjectDAO {
 
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                research.setId(resultSet.getInt("researchProjectId"));
-                research.setTitle(resultSet.getString("título"));
+                researchProject.setResearchProjectId(resultSet.getInt("researchProjectId"));
+                researchProject.setTitle(resultSet.getString("title"));
             }
 
             resultSet.close();
@@ -247,54 +154,32 @@ public class ResearchProjectDAO implements IResearchProjectDAO {
             dataBaseManager.closeConnection();
         }
 
-        return research;
+        return researchProject;
     }
 
-    public ArrayList<ResearchProject> getCourseResearch(int NRC) throws DataRetrievalException {
+    public ArrayList<ResearchProject> getCourseResearchProjects(int nrc) throws DataRetrievalException {
         ArrayList<ResearchProject> researchList = new ArrayList<>();
         PreparedStatement statement;
-        String query = "SELECT DISTINCT a.researchProjectId, a.título, a.Matrícula1, u1.name, u1.firstSurname, u1.secondSurname, "
-                + "a.Matrícula2, u2.name, u2.firstSurname, u2.secondSurname FROM ResearchProjects a "
-                + "LEFT JOIN Estudiantes e1 ON a.Matrícula1 = e1.Matrícula INNER JOIN EstudiantesCurso ec1 ON e1.Matrícula = ec1.Matrícula "
-                + "LEFT JOIN Estudiantes e2 ON a.Matrícula2 = e2.Matrícula INNER JOIN EstudiantesCurso ec2 ON e2.Matrícula = ec2.Matrícula "
-                + "LEFT JOIN Cursos c1 ON ec1.NRC = c1.NRC INNER JOIN Users u1 ON e1.userId = u1.userId "
-                + "LEFT JOIN Cursos c2 ON ec1.NRC = c2.NRC INNER JOIN Users u2 ON e2.userId = u2.userId "
-                + "WHERE c1.NRC IN(?) OR c2.NRC IN(?);";
+        String query = "SELECT DISTINCT rp.researchProjectId, rp.title, rp.studentMatricle1, rp.studentMatricle2 FROM ResearchProjects rp "
+                + "LEFT JOIN Students s1 ON rp.studentMatricle1 = s1.matricle INNER JOIN StudentsCourses sc1 ON s1.matricle = sc1.matricle "
+                + "LEFT JOIN Students s2 ON rp.studentMatricle2 = s2.matricle INNER JOIN StudentsCourses sc2 ON s2.matricle = sc2.matricle "
+                + "LEFT JOIN Courses c1 ON sc1.nrc = c1.nrc INNER JOIN Users u1 ON s1.userId = u1.userId "
+                + "LEFT JOIN Courses c2 ON sc1.nrc = c2.nrc INNER JOIN Users u2 ON s2.userId = u2.userId "
+                + "WHERE c1.nrc IN(?) OR c2.nrc IN(?);";
 
         try {
             statement = dataBaseManager.getConnection().prepareStatement(query);
-            statement.setInt(1, NRC);
-            statement.setInt(2, NRC);
+            statement.setInt(1, nrc);
+            statement.setInt(2, nrc);
 
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                ResearchProject research = new ResearchProject();
-
-                research.setId(resultSet.getInt("a.researchProjectId"));
-                research.setTitle(resultSet.getString("a.título"));
-
-                Student student = new Student();
-                student.setMatricle(resultSet.getString("a.Matrícula1"));
-
-                if (!resultSet.wasNull()) {
-                    student.setName(resultSet.getString("u1.name"));
-                    student.setFirstSurname(resultSet.getString("u1.firstSurname"));
-                    student.setSecondSurname(resultSet.getString("u1.secondSurname"));
-
-                    research.addStudent(student);
-                }
-
-                Student student2 = new Student();
-                student2.setMatricle(resultSet.getString("a.Matrícula2"));
-                if (!resultSet.wasNull()) {
-                    student2.setName(resultSet.getString("u2.name"));
-                    student2.setFirstSurname(resultSet.getString("u2.firstSurname"));
-                    student2.setSecondSurname(resultSet.getString("u2.secondSurname"));
-
-                    research.addStudent(student2);
-                }
-
-                researchList.add(research);
+                ResearchProject researchProject = new ResearchProject();
+                researchProject.setResearchProjectId(resultSet.getInt("rp.researchProjectId"));
+                researchProject.setTitle(resultSet.getString("rp.title"));
+                researchProject.setStudentMatricle1(resultSet.getString("rp.studentMatricle1"));
+                researchProject.setStudentMatricle2(resultSet.getString("rp.studentMatricle2"));
+                researchList.add(researchProject);
             }
 
         } catch (SQLException exception) {
@@ -311,78 +196,33 @@ public class ResearchProjectDAO implements IResearchProjectDAO {
             throws DataRetrievalException {
         ArrayList<ResearchProject> researchProjectList = new ArrayList<>();
         PreparedStatement statement;
-        String query = "SELECT DISTINCT a.researchProjectId, a.fechaFin, a.fechaInicio, l.IdLGAC, l.descripción AS LGAC, a.título, a.V°B°, "
-                + " a.IdDirector1, up1.name, up1.firstSurname, up1.secondSurname, a.IdDirector2, up2.name, up2.firstSurname, up2.secondSurname, a.IdDirector3, "
-                + " up3.name, up3.firstSurname, up3.secondSurname, a.descripción, a.resultadosEsperados, a.requisitos, a.bibliografíaRecomendada, "
-                + " a.Matrícula1, ue1.name, ue1.firstSurname, ue1.secondSurname, a.Matrícula2, ue2.name, ue2.firstSurname, ue2.secondSurname FROM ResearchProjects a "
-                + " LEFT JOIN Directors d1 ON a.IdDirector1 = d1.IdDirector LEFT JOIN Professors p1 ON d1.staffNumber = p1.staffNumber LEFT JOIN Users up1 ON p1.userId = up1.userId "
-                + " LEFT JOIN Directors d2 ON a.IdDirector2 = d2.IdDirector LEFT JOIN Professors p2 ON d2.staffNumber = p2.staffNumber LEFT JOIN Users up2 ON p2.userId = up2.userId "
-                + " LEFT JOIN Directors d3 ON a.IdDirector3 = d3.IdDirector LEFT JOIN Professors p3 ON d3.staffNumber = p3.staffNumber LEFT JOIN Users up3 ON p3.userId = up3.userId "
-                + " LEFT JOIN Estudiantes e1 ON a.Matrícula1 = e1.Matrícula LEFT JOIN Users ue1 ON e1.userId = ue1.userId "
-                + " LEFT JOIN Estudiantes e2 ON a.Matrícula2 = e2.Matrícula LEFT JOIN Users ue2 ON e2.userId = ue2.userId "
-                + " LEFT JOIN LGAC l ON l.IdLGAC = a.IdLGAC WHERE a.título LIKE ? ORDER BY fechaFin, fechaInicio, título ASC";
+        String query = "SELECT researchProjectId, dueDate, startDate, kgalId, description, title, validationStatus, " +
+                "directorStaffNumber1, directorStaffNumber2, directorStaffNumber3, expectedResults, requirements, " +
+                "suggestedBibliography, studentMatricle1, studentMatricle2 FROM ResearchProjects WHERE title LIKE ?";
 
         try {
             statement = dataBaseManager.getConnection().prepareStatement(query);
             statement.setString(1, researchName + '%');
+
             ResultSet resultSet = statement.executeQuery();
-
             while (resultSet.next()) {
-                ResearchProject research = new ResearchProject();
-
-                research.setId(resultSet.getInt("a.researchProjectId"));
-                research.setDueDate(resultSet.getDate("a.fechaFin"));
-                research.setStartDate(resultSet.getDate("a.fechaInicio"));
-
-                // Concatenating column names since they're almost the same
-                for (int i = 1; i <= 3; i++) {
-                    Director director = new Director();
-                    director.setDirectorId(resultSet.getInt("a.IdDirector" + i));
-
-                    if (!resultSet.wasNull()) {
-                        director.setName(resultSet.getString("up" + i + ".name"));
-                        director.setFirstSurname(resultSet.getString("up" + i + ".firstSurname"));
-                        director.setSecondSurname(resultSet.getString("up" + i + ".firstSurname"));
-
-                        research.addDirector(director);
-                    }
-                }
-
-                research.getKgal().setKgalID(resultSet.getInt("l.IdLGAC"));
-
-                if (!resultSet.wasNull()) {
-                    research.getKgal().setDescription(resultSet.getString("LGAC"));
-                }
-
-                research.setDescription(resultSet.getString("a.descripción"));
-                research.setExpectedResult(resultSet.getString("a.resultadosEsperados"));
-                research.setRequirements(resultSet.getString("a.requisitos"));
-                research.setSuggestedBibliography(resultSet.getString("a.bibliografíaRecomendada"));
-                research.setTitle(resultSet.getString("a.título"));
-                research.setValidationStatus(resultSet.getString("a.V°B°"));
-
-                Student student = new Student();
-                student.setMatricle(resultSet.getString("a.Matrícula1"));
-
-                if (!resultSet.wasNull()) {
-                    student.setName(resultSet.getString("ue1.name"));
-                    student.setFirstSurname(resultSet.getString("ue1.firstSurname"));
-                    student.setSecondSurname(resultSet.getString("ue1.secondSurname"));
-
-                    research.addStudent(student);
-                }
-
-                Student student2 = new Student();
-                student2.setMatricle(resultSet.getString("a.Matrícula2"));
-                if (!resultSet.wasNull()) {
-                    student2.setName(resultSet.getString("ue2.name"));
-                    student2.setFirstSurname(resultSet.getString("ue2.firstSurname"));
-                    student2.setSecondSurname(resultSet.getString("ue2.secondSurname"));
-
-                    research.addStudent(student2);
-                }
-
-                researchProjectList.add(research);
+                ResearchProject researchProject = new ResearchProject();
+                researchProject.setResearchProjectId(resultSet.getInt("researchProjectId"));
+                researchProject.setDueDate(resultSet.getDate("dueDate"));
+                researchProject.setStartDate(resultSet.getDate("startDate"));
+                researchProject.setKgalId(resultSet.getInt("kgalId"));
+                researchProject.setDescription(resultSet.getString("description"));
+                researchProject.setTitle(resultSet.getString("title"));
+                researchProject.setValidationStatus(resultSet.getString("validationStatus"));
+                researchProject.setDirectorStaffNumber1(resultSet.getInt("directorStaffNumber1"));
+                researchProject.setDirectorStaffNumber2(resultSet.getInt("directorStaffNumber2"));
+                researchProject.setDirectorStaffNumber3(resultSet.getInt("directorStaffNumber3"));
+                researchProject.setExpectedResults(resultSet.getString("expectedResults"));
+                researchProject.setRequirements(resultSet.getString("requirements"));
+                researchProject.setSuggestedBibliography(resultSet.getString("suggestedBibliography"));
+                researchProject.setStudentMatricle1(resultSet.getString("studentMatricle1"));
+                researchProject.setStudentMatricle2(resultSet.getString("studentMatricle2"));
+                researchProjectList.add(researchProject);
             }
         } catch (SQLException exception) {
             throw new DataRetrievalException("Fallo al recuperar la informacion. Inténtelo de nuevo más tarde");
@@ -398,76 +238,34 @@ public class ResearchProjectDAO implements IResearchProjectDAO {
         ArrayList<ResearchProject> researchProjectList = new ArrayList<>();
         PreparedStatement statement;
 
-        String query = "SELECT DISTINCT a.researchProjectId, a.fechaFin, a.fechaInicio, l.IdLGAC, l.descripción AS LGAC, a.título, a.V°B°, "
-                + " a.IdDirector1, up1.name, up1.firstSurname, up1.secondSurname, a.IdDirector2, up2.name, up2.firstSurname, up2.secondSurname, a.IdDirector3, "
-                + " up3.name, up3.firstSurname, up3.secondSurname, a.descripción, a.resultadosEsperados, a.requisitos, a.bibliografíaRecomendada, "
-                + " a.Matrícula1, ue1.name, ue1.firstSurname, ue1.secondSurname, a.Matrícula2, ue2.name, ue2.firstSurname, ue2.secondSurname FROM ResearchProjects a "
-                + " LEFT JOIN Directors d1 ON a.IdDirector1 = d1.IdDirector LEFT JOIN Professors p1 ON d1.staffNumber = p1.staffNumber LEFT JOIN Users up1 ON p1.userId = up1.userId "
-                + " LEFT JOIN Directors d2 ON a.IdDirector2 = d2.IdDirector LEFT JOIN Professors p2 ON d2.staffNumber = p2.staffNumber LEFT JOIN Users up2 ON p2.userId = up2.userId "
-                + " LEFT JOIN Directors d3 ON a.IdDirector3 = d3.IdDirector LEFT JOIN Professors p3 ON d3.staffNumber = p3.staffNumber LEFT JOIN Users up3 ON p3.userId = up3.userId "
-                + " LEFT JOIN Estudiantes e1 ON a.Matrícula1 = e1.Matrícula LEFT JOIN Users ue1 ON e1.userId = ue1.userId "
-                + " LEFT JOIN Estudiantes e2 ON a.Matrícula2 = e2.Matrícula LEFT JOIN Users ue2 ON e2.userId = ue2.userId "
-                + " LEFT JOIN LGAC l ON l.IdLGAC = a.IdLGAC WHERE a.título LIKE ? && a.V°B° = 'Validado' ORDER BY fechaFin, fechaInicio, título ASC";
+        String query = "SELECT researchProjectId, dueDate, startDate, kgalId, description, title, validationStatus, " +
+                "directorStaffNumber1, directorStaffNumber2, directorStaffNumber3, expectedResults, requirements, " +
+                "suggestedBibliography, studentMatricle1, studentMatricle2 FROM ResearchProjects WHERE title LIKE ? && validationStatus = ?";
 
         try {
             statement = dataBaseManager.getConnection().prepareStatement(query);
             statement.setString(1, researchName + '%');
+            statement.setString(2, ResearchProjectStatus.VALIDATED.getValue());
+
             ResultSet resultSet = statement.executeQuery();
-
             while (resultSet.next()) {
-                ResearchProject research = new ResearchProject();
-
-                research.setId(resultSet.getInt("a.researchProjectId"));
-                research.setDueDate(resultSet.getDate("a.fechaFin"));
-                research.setStartDate(resultSet.getDate("a.fechaInicio"));
-
-                // Concatenating column names since they're almost the same
-                for (int i = 1; i <= 3; i++) {
-                    Director director = new Director();
-                    director.setDirectorId(resultSet.getInt("a.IdDirector" + i));
-
-                    if (!resultSet.wasNull()) {
-                        director.setName(resultSet.getString("up" + i + ".name"));
-                        director.setFirstSurname(resultSet.getString("up" + i + ".firstSurname"));
-                        director.setSecondSurname(resultSet.getString("up" + i + ".firstSurname"));
-
-                        research.addDirector(director);
-                    }
-                }
-
-                research.getKgal().setKgalID(resultSet.getInt("l.IdLGAC"));
-
-                if (!resultSet.wasNull()) {
-                    research.getKgal().setDescription(resultSet.getString("LGAC"));
-                }
-
-                research.setDescription(resultSet.getString("a.descripción"));
-                research.setExpectedResult(resultSet.getString("a.resultadosEsperados"));
-                research.setRequirements(resultSet.getString("a.requisitos"));
-                research.setSuggestedBibliography(resultSet.getString("a.bibliografíaRecomendada"));
-                research.setTitle(resultSet.getString("a.título"));
-                research.setValidationStatus(resultSet.getString("a.V°B°"));
-
-                Student student = new Student();
-                student.setMatricle(resultSet.getString("a.Matrícula1"));
-
-                if (!resultSet.wasNull()) {
-                    student.setName(resultSet.getString("ue1.name"));
-                    student.setFirstSurname(resultSet.getString("ue1.firstSurname"));
-                    student.setSecondSurname(resultSet.getString("ue1.secondSurname"));
-                }
-
-                Student student2 = new Student();
-                student2.setMatricle(resultSet.getString("a.Matrícula2"));
-                if (!resultSet.wasNull()) {
-                    student2.setName(resultSet.getString("ue2.name"));
-                    student2.setFirstSurname(resultSet.getString("ue2.firstSurname"));
-                    student2.setSecondSurname(resultSet.getString("ue2.secondSurname"));
-
-                    research.getStudents().add(student2);
-                }
-
-                researchProjectList.add(research);
+                ResearchProject researchProject = new ResearchProject();
+                researchProject.setResearchProjectId(resultSet.getInt("researchProjectId"));
+                researchProject.setDueDate(resultSet.getDate("dueDate"));
+                researchProject.setStartDate(resultSet.getDate("startDate"));
+                researchProject.setKgalId(resultSet.getInt("kgalId"));
+                researchProject.setDescription(resultSet.getString("description"));
+                researchProject.setTitle(resultSet.getString("title"));
+                researchProject.setValidationStatus(resultSet.getString("validationStatus"));
+                researchProject.setDirectorStaffNumber1(resultSet.getInt("directorStaffNumber1"));
+                researchProject.setDirectorStaffNumber2(resultSet.getInt("directorStaffNumber2"));
+                researchProject.setDirectorStaffNumber3(resultSet.getInt("directorStaffNumber3"));
+                researchProject.setExpectedResults(resultSet.getString("expectedResults"));
+                researchProject.setRequirements(resultSet.getString("requirements"));
+                researchProject.setSuggestedBibliography(resultSet.getString("suggestedBibliography"));
+                researchProject.setStudentMatricle1(resultSet.getString("studentMatricle1"));
+                researchProject.setStudentMatricle2(resultSet.getString("studentMatricle2"));
+                researchProjectList.add(researchProject);
             }
         } catch (SQLException exception) {
             throw new DataRetrievalException("Fallo al recuperar la informacion. Inténtelo de nuevo más tarde");
@@ -483,76 +281,34 @@ public class ResearchProjectDAO implements IResearchProjectDAO {
         ArrayList<ResearchProject> researchProjectList = new ArrayList<>();
         PreparedStatement statement;
 
-        String query = "SELECT DISTINCT a.researchProjectId, a.fechaFin, a.fechaInicio, l.IdLGAC, l.descripción AS LGAC, a.título, a.V°B°, "
-                + " a.IdDirector1, up1.name, up1.firstSurname, up1.secondSurname, a.IdDirector2, up2.name, up2.firstSurname, up2.secondSurname, a.IdDirector3, "
-                + " up3.name, up3.firstSurname, up3.secondSurname, a.descripción, a.resultadosEsperados, a.requisitos, a.bibliografíaRecomendada, "
-                + " a.Matrícula1, ue1.name, ue1.firstSurname, ue1.secondSurname, a.Matrícula2, ue2.name, ue2.firstSurname, ue2.secondSurname FROM ResearchProjects a "
-                + " LEFT JOIN Directors d1 ON a.IdDirector1 = d1.IdDirector LEFT JOIN Professors p1 ON d1.staffNumber = p1.staffNumber LEFT JOIN Users up1 ON p1.userId = up1.userId "
-                + " LEFT JOIN Directors d2 ON a.IdDirector2 = d2.IdDirector LEFT JOIN Professors p2 ON d2.staffNumber = p2.staffNumber LEFT JOIN Users up2 ON p2.userId = up2.userId "
-                + " LEFT JOIN Directors d3 ON a.IdDirector3 = d3.IdDirector LEFT JOIN Professors p3 ON d3.staffNumber = p3.staffNumber LEFT JOIN Users up3 ON p3.userId = up3.userId "
-                + " LEFT JOIN Estudiantes e1 ON a.Matrícula1 = e1.Matrícula LEFT JOIN Users ue1 ON e1.userId = ue1.userId "
-                + " LEFT JOIN Estudiantes e2 ON a.Matrícula2 = e2.Matrícula LEFT JOIN Users ue2 ON e2.userId = ue2.userId "
-                + " LEFT JOIN LGAC l ON l.IdLGAC = a.IdLGAC WHERE a.título LIKE ? && a.V°B° = 'Propuesto' ORDER BY fechaFin, fechaInicio, título ASC";
+        String query = "SELECT researchProjectId, dueDate, startDate, kgalId, description, title, validationStatus, " +
+                "directorStaffNumber1, directorStaffNumber2, directorStaffNumber3, expectedResults, requirements, " +
+                "suggestedBibliography, studentMatricle1, studentMatricle2 FROM ResearchProjects WHERE title LIKE ? && validationStatus = ?";
 
         try {
             statement = dataBaseManager.getConnection().prepareStatement(query);
             statement.setString(1, researchName + '%');
+            statement.setString(2, ResearchProjectStatus.PROPOSED.getValue());
+
             ResultSet resultSet = statement.executeQuery();
-
             while (resultSet.next()) {
-                ResearchProject research = new ResearchProject();
-
-                research.setId(resultSet.getInt("a.researchProjectId"));
-                research.setDueDate(resultSet.getDate("a.fechaFin"));
-                research.setStartDate(resultSet.getDate("a.fechaInicio"));
-
-                // Concatenating column names since they're almost the same
-                for (int i = 1; i <= 3; i++) {
-                    Director director = new Director();
-                    director.setDirectorId(resultSet.getInt("a.IdDirector" + i));
-
-                    if (!resultSet.wasNull()) {
-                        director.setName(resultSet.getString("up" + i + ".name"));
-                        director.setFirstSurname(resultSet.getString("up" + i + ".firstSurname"));
-                        director.setSecondSurname(resultSet.getString("up" + i + ".firstSurname"));
-
-                        research.addDirector(director);
-                    }
-                }
-
-                research.getKgal().setKgalID(resultSet.getInt("l.IdLGAC"));
-
-                if (!resultSet.wasNull()) {
-                    research.getKgal().setDescription(resultSet.getString("LGAC"));
-                }
-
-                research.setDescription(resultSet.getString("a.descripción"));
-                research.setExpectedResult(resultSet.getString("a.resultadosEsperados"));
-                research.setRequirements(resultSet.getString("a.requisitos"));
-                research.setSuggestedBibliography(resultSet.getString("a.bibliografíaRecomendada"));
-                research.setTitle(resultSet.getString("a.título"));
-                research.setValidationStatus(resultSet.getString("a.V°B°"));
-
-                Student student = new Student();
-                student.setMatricle(resultSet.getString("a.Matrícula1"));
-
-                if (!resultSet.wasNull()) {
-                    student.setName(resultSet.getString("ue1.name"));
-                    student.setFirstSurname(resultSet.getString("ue1.firstSurname"));
-                    student.setSecondSurname(resultSet.getString("ue1.secondSurname"));
-                }
-
-                Student student2 = new Student();
-                student2.setMatricle(resultSet.getString("a.Matrícula2"));
-                if (!resultSet.wasNull()) {
-                    student2.setName(resultSet.getString("ue2.name"));
-                    student2.setFirstSurname(resultSet.getString("ue2.firstSurname"));
-                    student2.setSecondSurname(resultSet.getString("ue2.secondSurname"));
-
-                    research.getStudents().add(student2);
-                }
-
-                researchProjectList.add(research);
+                ResearchProject researchProject = new ResearchProject();
+                researchProject.setResearchProjectId(resultSet.getInt("researchProjectId"));
+                researchProject.setDueDate(resultSet.getDate("dueDate"));
+                researchProject.setStartDate(resultSet.getDate("startDate"));
+                researchProject.setKgalId(resultSet.getInt("kgalId"));
+                researchProject.setDescription(resultSet.getString("description"));
+                researchProject.setTitle(resultSet.getString("title"));
+                researchProject.setValidationStatus(resultSet.getString("validationStatus"));
+                researchProject.setDirectorStaffNumber1(resultSet.getInt("directorStaffNumber1"));
+                researchProject.setDirectorStaffNumber2(resultSet.getInt("directorStaffNumber2"));
+                researchProject.setDirectorStaffNumber3(resultSet.getInt("directorStaffNumber3"));
+                researchProject.setExpectedResults(resultSet.getString("expectedResults"));
+                researchProject.setRequirements(resultSet.getString("requirements"));
+                researchProject.setSuggestedBibliography(resultSet.getString("suggestedBibliography"));
+                researchProject.setStudentMatricle1(resultSet.getString("studentMatricle1"));
+                researchProject.setStudentMatricle2(resultSet.getString("studentMatricle2"));
+                researchProjectList.add(researchProject);
             }
         } catch (SQLException exception) {
             throw new DataRetrievalException("Fallo al recuperar la informacion. Inténtelo de nuevo más tarde");
@@ -568,78 +324,37 @@ public class ResearchProjectDAO implements IResearchProjectDAO {
         ArrayList<ResearchProject> researchProjectList = new ArrayList<>();
         PreparedStatement statement;
 
-        String query = "SELECT DISTINCT a.researchProjectId, a.fechaFin, a.fechaInicio, l.IdLGAC, l.descripción AS LGAC, a.título, a.V°B°, "
-                + " a.IdDirector1, up1.name, up1.firstSurname, up1.secondSurname, a.IdDirector2, up2.name, up2.firstSurname, up2.secondSurname, a.IdDirector3, "
-                + " up3.name, up3.firstSurname, up3.secondSurname, a.descripción, a.resultadosEsperados, a.requisitos, a.bibliografíaRecomendada, "
-                + " a.Matrícula1, ue1.name, ue1.firstSurname, ue1.secondSurname, a.Matrícula2, ue2.name, ue2.firstSurname, ue2.secondSurname FROM ResearchProjects a "
-                + " LEFT JOIN Directors d1 ON a.IdDirector1 = d1.IdDirector LEFT JOIN Professors p1 ON d1.staffNumber = p1.staffNumber LEFT JOIN Users up1 ON p1.userId = up1.userId "
-                + " LEFT JOIN Directors d2 ON a.IdDirector2 = d2.IdDirector LEFT JOIN Professors p2 ON d2.staffNumber = p2.staffNumber LEFT JOIN Users up2 ON p2.userId = up2.userId "
-                + " LEFT JOIN Directors d3 ON a.IdDirector3 = d3.IdDirector LEFT JOIN Professors p3 ON d3.staffNumber = p3.staffNumber LEFT JOIN Users up3 ON p3.userId = up3.userId "
-                + " LEFT JOIN Estudiantes e1 ON a.Matrícula1 = e1.Matrícula LEFT JOIN Users ue1 ON e1.userId = ue1.userId "
-                + " LEFT JOIN Estudiantes e2 ON a.Matrícula2 = e2.Matrícula LEFT JOIN Users ue2 ON e2.userId = ue2.userId "
-                + " LEFT JOIN LGAC l ON l.IdLGAC = a.IdLGAC WHERE a.título LIKE ? && (a.V°B° = 'Validado' || a.V°B° = 'Propuesto') ORDER BY fechaFin, fechaInicio, título ASC";
+        String query = "SELECT researchProjectId, dueDate, startDate, kgalId, description, title, validationStatus, " +
+                "directorStaffNumber1, directorStaffNumber2, directorStaffNumber3, expectedResults, requirements, " +
+                "suggestedBibliography, studentMatricle1, studentMatricle2 FROM ResearchProjects WHERE title LIKE ? && "
+                +
+                "(validationStatus = ? || validationStatus = ?)";
 
         try {
             statement = dataBaseManager.getConnection().prepareStatement(query);
             statement.setString(1, researchName + '%');
+            statement.setString(2, ResearchProjectStatus.VALIDATED.getValue());
+            statement.setString(3, ResearchProjectStatus.PROPOSED.getValue());
+
             ResultSet resultSet = statement.executeQuery();
-
             while (resultSet.next()) {
-                ResearchProject research = new ResearchProject();
-
-                research.setId(resultSet.getInt("a.researchProjectId"));
-                research.setDueDate(resultSet.getDate("a.fechaFin"));
-                research.setStartDate(resultSet.getDate("a.fechaInicio"));
-
-                // Concatenating column names since they're almost the same
-                for (int i = 1; i <= 3; i++) {
-                    Director director = new Director();
-                    director.setDirectorId(resultSet.getInt("a.IdDirector" + i));
-
-                    if (!resultSet.wasNull()) {
-                        director.setName(resultSet.getString("up" + i + ".name"));
-                        director.setFirstSurname(resultSet.getString("up" + i + ".firstSurname"));
-                        director.setSecondSurname(resultSet.getString("up" + i + ".firstSurname"));
-
-                        research.addDirector(director);
-                    }
-                }
-
-                research.getKgal().setKgalID(resultSet.getInt("l.IdLGAC"));
-
-                if (!resultSet.wasNull()) {
-                    research.getKgal().setDescription(resultSet.getString("LGAC"));
-                }
-
-                research.setDescription(resultSet.getString("a.descripción"));
-                research.setExpectedResult(resultSet.getString("a.resultadosEsperados"));
-                research.setRequirements(resultSet.getString("a.requisitos"));
-                research.setSuggestedBibliography(resultSet.getString("a.bibliografíaRecomendada"));
-                research.setTitle(resultSet.getString("a.título"));
-                research.setValidationStatus(resultSet.getString("a.V°B°"));
-
-                Student student = new Student();
-                student.setMatricle(resultSet.getString("a.Matrícula1"));
-
-                if (!resultSet.wasNull()) {
-                    student.setName(resultSet.getString("ue1.name"));
-                    student.setFirstSurname(resultSet.getString("ue1.firstSurname"));
-                    student.setSecondSurname(resultSet.getString("ue1.secondSurname"));
-
-                    research.addStudent(student);
-                }
-
-                Student student2 = new Student();
-                student2.setMatricle(resultSet.getString("a.Matrícula2"));
-                if (!resultSet.wasNull()) {
-                    student2.setName(resultSet.getString("ue2.name"));
-                    student2.setFirstSurname(resultSet.getString("ue2.firstSurname"));
-                    student2.setSecondSurname(resultSet.getString("ue2.secondSurname"));
-
-                    research.addStudent(student2);
-                }
-
-                researchProjectList.add(research);
+                ResearchProject researchProject = new ResearchProject();
+                researchProject.setResearchProjectId(resultSet.getInt("researchProjectId"));
+                researchProject.setDueDate(resultSet.getDate("dueDate"));
+                researchProject.setStartDate(resultSet.getDate("startDate"));
+                researchProject.setKgalId(resultSet.getInt("kgalId"));
+                researchProject.setDescription(resultSet.getString("description"));
+                researchProject.setTitle(resultSet.getString("title"));
+                researchProject.setValidationStatus(resultSet.getString("validationStatus"));
+                researchProject.setDirectorStaffNumber1(resultSet.getInt("directorStaffNumber1"));
+                researchProject.setDirectorStaffNumber2(resultSet.getInt("directorStaffNumber2"));
+                researchProject.setDirectorStaffNumber3(resultSet.getInt("directorStaffNumber3"));
+                researchProject.setExpectedResults(resultSet.getString("expectedResults"));
+                researchProject.setRequirements(resultSet.getString("requirements"));
+                researchProject.setSuggestedBibliography(resultSet.getString("suggestedBibliography"));
+                researchProject.setStudentMatricle1(resultSet.getString("studentMatricle1"));
+                researchProject.setStudentMatricle2(resultSet.getString("studentMatricle2"));
+                researchProjectList.add(researchProject);
             }
         } catch (SQLException exception) {
             throw new DataRetrievalException("Fallo al recuperar la informacion. Inténtelo de nuevo más tarde");
@@ -651,48 +366,30 @@ public class ResearchProjectDAO implements IResearchProjectDAO {
     }
 
     @Override
-    public int modifyResearch(ResearchProject research) throws DataInsertionException {
+    public int modifyResearchProject(ResearchProject researchProject) throws DataInsertionException {
         int result = 0;
         PreparedStatement statement;
-        String query = "UPDATE ResearchProjects SET fechaFin = ?, fechaInicio = ?, IdLGAC = ?, descripción = ?, resultadosEsperados = ?, "
-                + " requisitos = ?, bibliografíaRecomendada = ?, título = ?, Matrícula1 = ?, Matrícula2 = ?, IdDirector1 = ?, IdDirector2 = ?, IdDirector3 = ? "
+        String query = "UPDATE ResearchProjects SET dueDate = ?, startDate = ?, kgalId = ?, description = ?, expectedResults = ?, "
+                + " requirements = ?, suggestedBibliography = ?, title = ?, studentMatricle1 = ?, studentMatricle2 = ?, directorStaffNumber1 = ?, directorStaffNumber2 = ?, directorStaffNumber3 = ? "
                 + " WHERE researchProjectId = ?";
 
         try {
             statement = dataBaseManager.getConnection().prepareStatement(query);
 
-            statement.setDate(1, research.getDueDate());
-            statement.setDate(2, research.getStartDate());
-
-            if (research.getKgal().getKgalID() != 0) {
-                statement.setInt(3, research.getKgal().getKgalID());
-            } else {
-                statement.setNull(3, java.sql.Types.INTEGER);
-            }
-
-            statement.setString(4, research.getDescription());
-            statement.setString(5, research.getExpectedResult());
-            statement.setString(6, research.getRequirements());
-            statement.setString(7, research.getSuggestedBibliography());
-            statement.setString(8, research.getTitle());
-
-            for (int i = 0; i < 2; i++) {
-                if (i < research.getStudents().size()) {
-                    statement.setString(i + 9, research.getStudents().get(i).getMatricle());
-                } else {
-                    statement.setNull(i + 9, java.sql.Types.INTEGER);
-                }
-            }
-
-            for (int i = 0; i < 3; i++) {
-                if (i < research.getDirectors().size()) {
-                    statement.setInt(i + 11, research.getDirectors().get(i).getDirectorId());
-                } else {
-                    statement.setNull(i + 11, java.sql.Types.INTEGER);
-                }
-            }
-
-            statement.setInt(14, research.getId());
+            statement.setDate(1, researchProject.getDueDate());
+            statement.setDate(2, researchProject.getStartDate());
+            statement.setInt(3, researchProject.getKgalId());
+            statement.setString(4, researchProject.getDescription());
+            statement.setString(5, researchProject.getExpectedResults());
+            statement.setString(6, researchProject.getRequirements());
+            statement.setString(7, researchProject.getSuggestedBibliography());
+            statement.setString(8, researchProject.getTitle());
+            statement.setString(9, researchProject.getStudentMatricle1());
+            statement.setString(10, researchProject.getStudentMatricle2());
+            statement.setInt(11, researchProject.getDirectorStaffNumber1());
+            statement.setInt(12, researchProject.getDirectorStaffNumber2());
+            statement.setInt(13, researchProject.getDirectorStaffNumber3());
+            statement.setInt(14, researchProject.getResearchProjectId());
 
             result = statement.executeUpdate();
         } catch (SQLException exception) {
@@ -705,15 +402,15 @@ public class ResearchProjectDAO implements IResearchProjectDAO {
     }
 
     @Override
-    public void validateResearch(ResearchProject researchProject) throws DataInsertionException {
+    public void validateResearchProject(ResearchProject researchProject) throws DataInsertionException {
         PreparedStatement statement;
-        String query = "UPDATE ResearchProjects SET V°B° = ? WHERE researchProjectId = ?";
+        String query = "UPDATE ResearchProjects SET validationStatus = ? WHERE researchProjectId = ?";
 
         try {
             statement = dataBaseManager.getConnection().prepareStatement(query);
 
             statement.setString(1, ResearchProjectStatus.VALIDATED.getValue());
-            statement.setInt(2, researchProject.getId());
+            statement.setInt(2, researchProject.getResearchProjectId());
             statement.executeUpdate();
         } catch (SQLException exception) {
             throw new DataInsertionException("Error de conexión. Inténtelo de nuevo más tarde");
@@ -722,40 +419,15 @@ public class ResearchProjectDAO implements IResearchProjectDAO {
         }
     }
 
-    @Override
-    public boolean assertResearch(ResearchProject research) {
-        return !isBlank(research) && isValidDate(research) && areDirectorsDifferent(research);
+    public boolean assertResearchProject(ResearchProject researchProject) {
+        return !isBlank(researchProject) && isValidDate(researchProject);
     }
 
-    public boolean isBlank(ResearchProject research) {
-        return research.getTitle().isBlank();
+    public boolean isBlank(ResearchProject researchProject) {
+        return researchProject.getTitle().isBlank();
     }
 
-    public boolean isValidDate(ResearchProject research) {
-        return research.getStartDate().compareTo(research.getDueDate()) <= 0;
-    }
-
-    public boolean areDirectorsDifferent(ResearchProject research) {
-        boolean result = true;
-
-        if (research.getDirectors().size() >= 2) {
-            for (int i = 1; i < research.getDirectors().size(); i++) {
-                result = !research.getDirectors().get(i).equals(research.getDirectors().get(i - 1));
-            }
-        }
-
-        return result;
-    }
-
-    public boolean areStudentsDifferent(ResearchProject research) {
-        boolean result = true;
-
-        if (research.getStudents().size() >= 2) {
-            for (int i = 1; i < research.getStudents().size(); i++) {
-                result = !research.getStudents().get(i).equals(research.getStudents().get(i - 1));
-            }
-        }
-
-        return result;
+    public boolean isValidDate(ResearchProject researchProject) {
+        return researchProject.getStartDate().compareTo(researchProject.getDueDate()) <= 0;
     }
 }

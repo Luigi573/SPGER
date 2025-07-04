@@ -4,8 +4,8 @@ import java.sql.Date;
 
 public class ResearchProject {
     private int researchProjectId;
-    private int studentMatricle1;
-    private int studentMatricle2;
+    private String studentMatricle1;
+    private String studentMatricle2;
     private int directorStaffNumber1;
     private int directorStaffNumber2;
     private int directorStaffNumber3;
@@ -27,19 +27,19 @@ public class ResearchProject {
         this.researchProjectId = researchProjectId;
     }
 
-    public int getStudentMatricle1() {
+    public String getStudentMatricle1() {
         return studentMatricle1;
     }
 
-    public void setStudentMatricle1(int studentMatricle1) {
+    public void setStudentMatricle1(String studentMatricle1) {
         this.studentMatricle1 = studentMatricle1;
     }
 
-    public int getStudentMatricle2() {
+    public String getStudentMatricle2() {
         return studentMatricle2;
     }
 
-    public void setStudentMatricle2(int studentMatricle2) {
+    public void setStudentMatricle2(String studentMatricle2) {
         this.studentMatricle2 = studentMatricle2;
     }
 

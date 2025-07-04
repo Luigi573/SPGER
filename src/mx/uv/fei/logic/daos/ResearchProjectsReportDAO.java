@@ -160,8 +160,8 @@ public class ResearchProjectsReportDAO implements IResearchProjectsReportDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 ResearchProject researchProject = new ResearchProject();
-                researchProject.setStudentMatricle1(resultSet.getInt("studentMatricle1"));
-                researchProject.setStudentMatricle2(resultSet.getInt("studentMatricle2"));
+                researchProject.setStudentMatricle1(resultSet.getString("studentMatricle1"));
+                researchProject.setStudentMatricle2(resultSet.getString("studentMatricle2"));
                 researchProject.setDirectorStaffNumber1(resultSet.getInt("directorStaffNumber1"));
                 researchProject.setDirectorStaffNumber2(resultSet.getInt("directorStaffNumber2"));
                 researchProject.setDirectorStaffNumber3(resultSet.getInt("directorStaffNumber3"));
